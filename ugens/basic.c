@@ -50,7 +50,6 @@ int sporth_constant(sporth_stack *stack, void *ud)
            printf("Error: Unknown mode!"); 
            break;
     }   
-    sporth_stack_push_float(stack, val);
     return SPORTH_OK;
 }
 
@@ -81,6 +80,7 @@ int sporth_sine(sporth_stack *stack, void *ud)
             sp_osc_init(pd->sp, data->osc, data->ft);
             plumber_add_module(pd, SPORTH_SINE, sizeof(data), 
                     data);
+            sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
             pipe = pd->last;
@@ -95,6 +95,7 @@ int sporth_sine(sporth_stack *stack, void *ud)
             data = pipe->ud;
             sp_ftbl_destroy(&data->ft);
             sp_osc_destroy(&data->osc);
+            free(data);
             break;
         default:
            printf("Error: Unknown mode!"); 
@@ -121,7 +122,24 @@ int sporth_mul(sporth_stack *stack, void *ud)
     }
     float v1 = sporth_stack_pop_float(stack);
     float v2 = sporth_stack_pop_float(stack);
-    sporth_stack_push_float(stack, v1 * v2);
+    plumber_data *pd = ud;
+    SPFLOAT val = 0;
+    int n;
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+            printf("creating mul function... \n");
+            plumber_add_module(pd, SPORTH_MUL, 0, 
+                    NULL);
+            break;
+        case PLUMBER_COMPUTE:
+            sporth_stack_push_float(stack, v1 * v2);
+            break;
+        case PLUMBER_DESTROY:
+            break;
+        default:
+           printf("Mul error: Unknown mode!"); 
+           break;
+    }   
     return SPORTH_OK;
 }
 

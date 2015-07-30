@@ -14,22 +14,30 @@ int plumber_parse(plumber_data *plumb, int mode)
     plumber_pipe *pipe = plumb->root.next, *next;
     uint32_t n;
     float *fval;
+    int rc;
     sporth_data *sporth = &plumb->sporth;
     for(n = 0; n < plumb->npipes; n++) {
         next = pipe->next;
         switch(pipe->type) {
             case SPORTH_FLOAT:
                 fval = pipe->ud;
-                sporth_stack_push_float(&sporth->stack, *fval);
+                if(sporth_stack_push_float(&sporth->stack, *fval) == SPORTH_NOTOK){
+                    //plumb->mode = PLUMBER_PANIC;
+                    return PLUMBER_NOTOK; 
+                };
                 break;
             default:
                 plumb->last = pipe;
-                sporth->flist[pipe->type - SPORTH_FOFFSET].func(&sporth->stack, 
+                rc = sporth->flist[pipe->type - SPORTH_FOFFSET].func(&sporth->stack, 
                         sporth->flist[pipe->type - SPORTH_FOFFSET].ud);
+                if (rc == PLUMBER_NOTOK) {
+                    //plumb->mode = PLUMBER_PANIC;
+                }
                 break;
         } 
        pipe = next; 
     }
+    return PLUMBER_OK;
 }
 
 int plumber_clean(plumber_data *plumb)
@@ -40,7 +48,8 @@ int plumber_clean(plumber_data *plumb)
     pipe = plumb->root.next;
     for(n = 0; n < plumb->npipes; n++) {
         next = pipe->next;
-        if(pipe->size > 0) free(pipe->ud);
+        if(pipe->type == SPORTH_FLOAT || pipe->type == SPORTH_STRING) 
+            free(pipe->ud);
         free(pipe);
         pipe = next;
     } 

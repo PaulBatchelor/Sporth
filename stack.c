@@ -9,7 +9,7 @@ int sporth_stack_push_float(sporth_stack *stack, float val)
         return SPORTH_OK;
     } else {
         printf("Stack limit of %d reached, cannot push float value.\n", stack->pos);
-    }
+        return SPORTH_NOTOK; }
 }
 
 int sporth_stack_push_string(sporth_stack *stack, const char *str)
@@ -25,6 +25,7 @@ int sporth_stack_push_string(sporth_stack *stack, const char *str)
         return SPORTH_OK;
     } else {
         printf("Stack limit of %d reached, cannot push float value.\n", stack->pos);
+        return SPORTH_NOTOK;
     }
     return SPORTH_OK;
 }

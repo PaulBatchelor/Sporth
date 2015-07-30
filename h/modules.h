@@ -11,3 +11,5 @@ int sporth_add(sporth_stack *stack, void *ud);
 int sporth_mul(sporth_stack *stack, void *ud);
 int sporth_sub(sporth_stack *stack, void *ud);
 int sporth_divide(sporth_stack *stack, void *ud);
+int sporth_metro(sporth_stack *stack, void *ud);
+int sporth_tenv(sporth_stack *stack, void *ud);

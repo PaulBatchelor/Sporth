@@ -1,3 +1,0 @@
-350 c 0.3 c sine 
-440 c 0.3 c sine 
-mix
