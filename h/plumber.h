@@ -37,3 +37,4 @@ int plumber_compute(plumber_data *plumb, int mode);
 int plumber_parse(plumber_data *plumb, const char *filename);
 int plumber_gettype(plumber_data *plumb, char *str, int mode);
 int plumber_show_pipes(plumber_data *plumb);
+int plumber_error(plumber_data *plumb, const char *str);

@@ -20,6 +20,7 @@ typedef struct {
 
 typedef struct {
     int pos;
+    uint32_t error;
     sporth_stack_val stack[32];
 } sporth_stack;
 
@@ -69,3 +70,4 @@ int sporth_exec(sporth_data *sporth, const char *keyword);
 
 int sporth_gettype(sporth_data *sporth, char *str, int mode);
 int sporth_parse(sporth_data *sporth, const char *filename);
+

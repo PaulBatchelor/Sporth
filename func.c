@@ -29,10 +29,14 @@ int sporth_exec(sporth_data *sporth, const char *keyword)
 
 int sporth_check_args(sporth_stack *stack, const char *args)
 {
+    if(stack->error > 0) return SPORTH_NOTOK;
+
     int len = strlen(args);
     int i;
     if(len > stack->pos) {
         printf("Not enough arguments in the stack!\n");
+        stack->error++;
+        return SPORTH_NOTOK;
     }
     int pos = stack->pos - len;
     for(i = 0; i < len; i++) {
@@ -40,12 +44,14 @@ int sporth_check_args(sporth_stack *stack, const char *args)
             case 'f':
                 if(stack->stack[pos].type != SPORTH_FLOAT) {
                     printf("Argument %d was expecting a float\n", i);
+                    stack->error++;
                     return SPORTH_NOTOK;
                 }
                 break;
             case 's':
                 if(stack->stack[pos].type != SPORTH_STRING) {
                     printf("Argument %d was expecting a string\n", i);
+                    stack->error++;
                     return SPORTH_NOTOK;
                 }
                 break;

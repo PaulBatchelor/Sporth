@@ -2,6 +2,8 @@
 
 int sporth_stack_push_float(sporth_stack *stack, float val)
 {
+    if(stack->error > 0) return SPORTH_NOTOK;
+
     if(stack->pos <= 32) {
         //printf("Pushing value %g.\n", val);
         stack->pos++;
@@ -9,14 +11,17 @@ int sporth_stack_push_float(sporth_stack *stack, float val)
         return SPORTH_OK;
     } else {
         printf("Stack limit of %d reached, cannot push float value.\n", stack->pos);
-        return SPORTH_NOTOK; }
+        stack->error++;
+        return SPORTH_NOTOK; 
+    }
 }
 
 int sporth_stack_push_string(sporth_stack *stack, const char *str)
 {
+    if(stack->error > 0) return SPORTH_NOTOK;
+
     sporth_stack_val *pstack;
     if(stack->pos <= 32) {
-        //printf("Pushing value %s.\n", str);
         stack->pos++;
         pstack = &stack->stack[stack->pos - 1];
         strcpy(pstack->sval, str);
@@ -25,6 +30,7 @@ int sporth_stack_push_string(sporth_stack *stack, const char *str)
         return SPORTH_OK;
     } else {
         printf("Stack limit of %d reached, cannot push float value.\n", stack->pos);
+        stack->error++;
         return SPORTH_NOTOK;
     }
     return SPORTH_OK;
@@ -32,17 +38,21 @@ int sporth_stack_push_string(sporth_stack *stack, const char *str)
 
 float sporth_stack_pop_float(sporth_stack *stack)
 {
+    if(stack->error > 0) return SPORTH_NOTOK;
+
     sporth_stack_val *pstack;
 
     if(stack->pos == 0) {
        printf("Stack is empty.\n");
-       return 0;
+       stack->error++;
+       return SPORTH_NOTOK;
     }
     pstack = &stack->stack[stack->pos - 1];
 
     if(pstack->type != SPORTH_FLOAT) {
         printf("Value is not a float.\n");
-        return 0;
+        stack->error++;
+        return SPORTH_NOTOK;
     }
 
     stack->pos--;
@@ -51,17 +61,21 @@ float sporth_stack_pop_float(sporth_stack *stack)
 
 char * sporth_stack_pop_string(sporth_stack *stack)
 {
+    if(stack->error > 0) return NULL;
+
     char *str;
     sporth_stack_val *pstack;
 
     if(stack->pos == 0) {
        printf("Stack is empty.\n");
+       stack->error++;
        return NULL;
     }
     pstack = &stack->stack[stack->pos - 1];
 
     if(pstack->type != SPORTH_STRING) {
         printf("Value is not a string.\n");
+        stack->error++;
         return NULL;
     }
 
@@ -74,6 +88,7 @@ char * sporth_stack_pop_string(sporth_stack *stack)
 int sporth_stack_init(sporth_stack *stack)
 {
     stack->pos = 0;
+    stack->error = 0;
     return SPORTH_OK;
 }
 

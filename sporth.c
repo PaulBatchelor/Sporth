@@ -34,6 +34,10 @@ int main(int argc, char *argv[])
         plumber_show_pipes(&plumb_g);
         sp_process(sp, &plumb_g, osc_compute);
     }
+    if(plumb_g.sporth.stack.error > 0) {
+        printf("Uh-oh! Sporth created %d error(s).\n", 
+                plumb_g.sporth.stack.error);
+    }
     plumber_clean(&plumb_g);
     sp_destroy(&sp);
     return 0;

@@ -30,6 +30,7 @@ int plumber_compute(plumber_data *plumb, int mode)
     float *fval;
     int rc;
     sporth_data *sporth = &plumb->sporth;
+    if(sporth->stack.error > 0) return PLUMBER_NOTOK;
     for(n = 0; n < plumb->npipes; n++) {
         next = pipe->next;
         switch(pipe->type) {
@@ -304,7 +305,9 @@ int plumber_gettype(plumber_data *plumb, char *str, int mode)
                 plumber_add_float(plumb, atof(val));
                 break;
             case LEX_FUNC:
-                sporth_exec(&plumb->sporth, val);
+                if(sporth_exec(&plumb->sporth, val) == SPORTH_NOTOK) {
+                    plumb->sporth.stack.error++;
+                } 
                 break;
             default:
                 break;
@@ -313,4 +316,10 @@ int plumber_gettype(plumber_data *plumb, char *str, int mode)
        printf(" string!\n"); 
     }
     return 0;
+}
+
+int plumber_error(plumber_data *plumb, const char *str)
+{
+    printf("%s\n", str);
+    exit(1);
 }

@@ -141,6 +141,8 @@ int sporth_add(sporth_stack *stack, void *ud)
 
 int sporth_mul(sporth_stack *stack, void *ud)
 {
+    if(stack->error > 0) return PLUMBER_NOTOK;
+
     plumber_data *pd = ud;
     SPFLOAT out, v1, v2;
     switch(pd->mode){
@@ -149,6 +151,7 @@ int sporth_mul(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_INIT:
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
+                stack->error++;
                 return PLUMBER_NOTOK;
             }
             v1 = sporth_stack_pop_float(stack);
@@ -167,6 +170,7 @@ int sporth_mul(sporth_stack *stack, void *ud)
             break;
         default:
            printf("Error: Unknown mode!"); 
+           stack->error++;
            return PLUMBER_NOTOK;
            break;
     }   
