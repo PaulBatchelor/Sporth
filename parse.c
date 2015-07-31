@@ -138,16 +138,15 @@ int sporth_parse(sporth_data *sporth , const char *filename) {
     //while(!feof(fp)){
     while(c2 != EOF){
         c2 = fgetc(fp);
+        if(c2 == '\n') {
+            c2 = ' ';
+        }
         if(c1 == '"' && mode != QUOTE) {
             mode = QUOTE;
             c1 = c2;
             c2 = fgetc(fp);
         } 
         while (c1 == ' ' && mode != QUOTE) {
-            c1 = c2;
-            c2 = fgetc(fp);
-        }
-        while(c1 == '\n') {
             c1 = c2;
             c2 = fgetc(fp);
         }

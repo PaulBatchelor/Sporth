@@ -8,7 +8,7 @@ plumber_data plumb_g;
 
 void osc_compute(sp_data *sp, void *ud){
     plumber_data *pd = ud;
-    plumber_parse(pd, PLUMBER_COMPUTE);
+    plumber_compute(pd, PLUMBER_COMPUTE);
     SPFLOAT out;
     out = sporth_stack_pop_float(&pd->sporth.stack);
     sp->out[0] = out;
@@ -27,9 +27,11 @@ int main(int argc, char *argv[])
     sp_create(&sp);
     plumber_init(&plumb_g);
     plumb_g.sp = sp;
-    sp->len = 44100;
-    if(sporth_parse(&plumb_g.sporth, argv[1]) == SPORTH_OK){
+    sp->len = 3 * 44100;
+    if(plumber_parse(&plumb_g, argv[1]) == SPORTH_OK){
+        plumber_compute(&plumb_g, PLUMBER_INIT);
         plumb_g.sporth.stack.pos = 0;
+        plumber_show_pipes(&plumb_g);
         sp_process(sp, &plumb_g, osc_compute);
     }
     plumber_clean(&plumb_g);

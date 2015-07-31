@@ -1,6 +1,6 @@
 static sporth_func flist[] = {
-    {"add", sporth_add, NULL},
-    {"sub", sporth_sub, NULL},
+    {"add", sporth_add, &plumb_g},
+    {"sub", sporth_sub, &plumb_g},
     {"mul", sporth_mul, &plumb_g},
     {"div", sporth_divide, &plumb_g},
     {"sine", sporth_sine, &plumb_g},
