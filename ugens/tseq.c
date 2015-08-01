@@ -1,67 +1,57 @@
 #include "plumber.h"
 #include "macros.h"
 
-typedef struct {
-    sp_fosc *osc;
-    sp_ftbl *ft;
-} sporth_fm_d;
-
-int sporth_osc(sporth_stack *stack, void *ud) 
+int sporth_tseq(sporth_stack *stack, void *ud) 
 {
     if(stack->error > 0) return PLUMBER_NOTOK;
 
     plumber_data *pd = ud;
-    SPFLOAT out = 0, amp, freq;
+    SPFLOAT out = 0, trig = 0;
     char *ftname;
     sp_ftbl *ft;
-    sp_osc *osc;
+    sp_tseq *tseq;
     switch(pd->mode){
         case PLUMBER_CREATE:
-            printf("Creating osc function... \n");
-            sp_osc_create(&osc);
-            plumber_add_module(pd, SPORTH_OSC, sizeof(sp_osc), osc);
+            printf("Creating tseq function... \n");
+            sp_tseq_create(&tseq);
+            plumber_add_module(pd, SPORTH_TSEQ, sizeof(sp_tseq), tseq);
             break;
         case PLUMBER_INIT:
-            if(sporth_check_args(stack, "ffs") != SPORTH_OK) {
+            if(sporth_check_args(stack, "fs") != SPORTH_OK) {
                 stack->error++;
-                printf("Invalid arguments for osc.\n");
+                printf("Invalid arguments for tseq.\n");
                 return PLUMBER_NOTOK;
             }
-            osc = pd->last->ud;
+            tseq = pd->last->ud;
 
             ftname = sporth_stack_pop_string(stack);
-            amp = sporth_stack_pop_float(stack);
-            freq = sporth_stack_pop_float(stack);
+            trig = sporth_stack_pop_float(stack);
 
             if(plumber_ftmap_search(pd, ftname, &ft) == PLUMBER_NOTOK) {
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
 
-            sp_osc_init(pd->sp, osc, ft);
+            sp_tseq_init(pd->sp, tseq, ft);
             sporth_stack_push_float(stack, 0.0);
             free(ftname);
             break;
 
         case PLUMBER_COMPUTE:
-            osc = pd->last->ud;
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
+            tseq = pd->last->ud;
+            if(sporth_check_args(stack, "f") != SPORTH_OK) {
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
 
-            amp = sporth_stack_pop_float(stack);
-            freq = sporth_stack_pop_float(stack);
+            trig = sporth_stack_pop_float(stack);
 
-            osc->amp = amp;
-            osc->freq = freq;
-
-            sp_osc_compute(pd->sp, osc, NULL, &out);
+            sp_tseq_compute(pd->sp, tseq, &trig, &out);
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
-            osc = pd->last->ud;
-            sp_osc_destroy(&osc);
+            tseq = pd->last->ud;
+            sp_tseq_destroy(&tseq);
             break;
         default:
             printf("Error: Unknown mode!"); 
