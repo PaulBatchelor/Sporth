@@ -56,5 +56,5 @@ int plumber_show_pipes(plumber_data *plumb);
 int plumber_error(plumber_data *plumb, const char *str);
 int plumber_ftmap_init(plumber_data *plumb);
 int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft);
-int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl *ft);
+int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft);
 int plumber_ftmap_destroy(plumber_data *plumb);

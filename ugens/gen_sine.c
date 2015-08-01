@@ -8,7 +8,7 @@ int sporth_gen_sine(sporth_stack *stack, void *ud)
     int size;
     SPFLOAT out = 0;
     sp_ftbl *ft;
-    static char *str;
+    char *str;
 
     switch(pd->mode){
         case PLUMBER_CREATE:
@@ -26,6 +26,7 @@ int sporth_gen_sine(sporth_stack *stack, void *ud)
             sp_ftbl_create(pd->sp, &ft, size);
             sp_gen_sine(pd->sp, ft);
             plumber_ftmap_add(pd, str, ft);
+            free(str);
             break;
 
         case PLUMBER_COMPUTE:
@@ -33,7 +34,6 @@ int sporth_gen_sine(sporth_stack *stack, void *ud)
             break;
 
         case PLUMBER_DESTROY:
-            free(str);
             break; 
 
         default:

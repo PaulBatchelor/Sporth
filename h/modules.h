@@ -14,3 +14,4 @@ int sporth_swap(sporth_stack *stack, void *ud);
 int sporth_drop(sporth_stack *stack, void *ud);
 int sporth_revsc(sporth_stack *stack, void *ud);
 int sporth_gen_sine(sporth_stack *stack, void *ud);
+int sporth_osc(sporth_stack *stack, void *ud);

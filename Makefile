@@ -2,7 +2,7 @@
 #default: func
 default: sporth
 
-UGENS = basic metro tenv fm revsc gen_sine
+UGENS = basic metro tenv fm revsc gen_sine osc
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 

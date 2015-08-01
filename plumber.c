@@ -387,7 +387,7 @@ int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
     return PLUMBER_OK;
 }
 
-int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl *ft)
+int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
 {
     uint32_t pos = sporth_hash(str);
     uint32_t n;
@@ -397,11 +397,13 @@ int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl *ft)
     for(n = 0; n < entry->nftbl; n++) {
         next = ftbl->next;
         if(!strcmp(str, ftbl->name)){
-            ft = ftbl->ft;
+            printf("found the ftable!\n");
+            *ft = ftbl->ft;
             return PLUMBER_OK;
         } 
         ftbl = next;
     }
+    printf("Could not find an ftable match for %s.\n", str);
     return PLUMBER_NOTOK;
 }
 

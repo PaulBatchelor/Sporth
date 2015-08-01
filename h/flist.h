@@ -16,5 +16,6 @@ static sporth_func flist[] = {
     {"drop", sporth_drop, &plumb_g},
     {"revsc", sporth_revsc, &plumb_g},
     {"gen_sine", sporth_gen_sine, &plumb_g},
+    {"osc", sporth_osc, &plumb_g},
     {NULL, NULL, NULL}
 };
