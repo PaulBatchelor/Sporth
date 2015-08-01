@@ -1,3 +1,4 @@
+/* These *must* be in the same order as they appear in flist.h */
 enum {
 SPORTH_ADD = SPORTH_FOFFSET,
 SPORTH_SUB,
@@ -8,5 +9,8 @@ SPORTH_CONSTANT,
 SPORTH_MIX,
 SPORTH_METRO,
 SPORTH_TENV,
-SPORTH_FM
+SPORTH_FM,
+SPORTH_MTOF,
+SPORTH_DUP,
+SPORTH_SWAP
 };

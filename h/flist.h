@@ -9,5 +9,8 @@ static sporth_func flist[] = {
     {"metro", sporth_metro, &plumb_g},
     {"tenv", sporth_tenv, &plumb_g},
     {"fm", sporth_fm, &plumb_g},
+    {"mtof", sporth_mtof, &plumb_g},
+    {"dup", sporth_dup, &plumb_g},
+    {"swap", sporth_swap, &plumb_g},
     {NULL, NULL, NULL}
 };
