@@ -21,14 +21,44 @@ int main(int argc, char *argv[])
        printf("Usage: sporth input.sp\n"); 
        return 1;
     }
+
+    unsigned long len = 3 * 44100;
+    *argv++; 
+    argc--;
+    while(argc > 0 && argv[0][0] == '-') {
+        switch(argv[0][1]){
+            case 'l':
+                if(--argc) {
+                    printf("setting length\n");
+                    len = atol(argv[0]);
+                    *argv++;
+                } else {
+                    printf("There was a problem..\n");
+                    exit(1);
+                }
+                break;
+            default: 
+                printf("default.. \n");
+                break;
+        } 
+        printf("argpos at %d\n", argc);
+        *argv++;
+        argc--;
+    }
+
+    if(argc <= 0) {
+        printf("You must specify a file!\n");
+        exit(1);
+    }
+
     sporth_htable_init(&plumb_g.sporth.dict);
     sporth_register_func(&plumb_g.sporth, flist); 
     sp_data *sp;
     sp_create(&sp);
     plumber_init(&plumb_g);
     plumb_g.sp = sp;
-    sp->len = 3 * 44100;
-    if(plumber_parse(&plumb_g, argv[1]) == SPORTH_OK){
+    sp->len = len;
+    if(plumber_parse(&plumb_g, argv[0]) == SPORTH_OK){
         plumber_compute(&plumb_g, PLUMBER_INIT);
         plumb_g.sporth.stack.pos = 0;
         plumber_show_pipes(&plumb_g);
