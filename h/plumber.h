@@ -19,6 +19,7 @@ typedef struct plumber_pipe {
 } plumber_pipe;
 
 typedef struct plumber_data {
+    int nchan;
     int mode;
     sp_data *sp;
     sporth_data sporth;

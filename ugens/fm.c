@@ -15,6 +15,7 @@ int sporth_fm(sporth_stack *stack, void *ud)
     sporth_fm_d *fm;
     switch(pd->mode){
         case PLUMBER_CREATE:
+            printf("creating FM function... \n");
             fm = malloc(sizeof(sporth_fm_d));
             sp_ftbl_create(pd->sp, &fm->ft, 4096);
             sp_fosc_create(&fm->osc);
@@ -26,11 +27,13 @@ int sporth_fm(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             fm = pd->last->ud;
+
             index = sporth_stack_pop_float(stack);
             mod = sporth_stack_pop_float(stack);
             car = sporth_stack_pop_float(stack);
             amp = sporth_stack_pop_float(stack);
             freq = sporth_stack_pop_float(stack);
+
             sp_gen_sine(pd->sp, fm->ft);
             sp_fosc_init(pd->sp, fm->osc, fm->ft);
             sporth_stack_push_float(stack, 0.0);
@@ -41,6 +44,7 @@ int sporth_fm(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
+
             index = sporth_stack_pop_float(stack);
             mod = sporth_stack_pop_float(stack);
             car = sporth_stack_pop_float(stack);

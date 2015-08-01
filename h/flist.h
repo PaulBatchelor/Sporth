@@ -1,3 +1,4 @@
+/* These *must* be in the same order as they appear in macros.h */
 static sporth_func flist[] = {
     {"add", sporth_add, &plumb_g},
     {"sub", sporth_sub, &plumb_g},
@@ -12,5 +13,7 @@ static sporth_func flist[] = {
     {"mtof", sporth_mtof, &plumb_g},
     {"dup", sporth_dup, &plumb_g},
     {"swap", sporth_swap, &plumb_g},
+    {"drop", sporth_drop, &plumb_g},
+    {"revsc", sporth_revsc, &plumb_g},
     {NULL, NULL, NULL}
 };

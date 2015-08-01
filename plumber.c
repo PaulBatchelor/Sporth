@@ -18,6 +18,7 @@ int plumber_init(plumber_data *plumb)
     plumb->mode = PLUMBER_CREATE;
     plumb->last = &plumb->root;
     plumb->npipes = 0;
+    plumb->nchan = 1;
     sporth_stack_init(&plumb->sporth.stack);
     return PLUMBER_OK;
 }
@@ -36,6 +37,7 @@ int plumber_compute(plumber_data *plumb, int mode)
         switch(pipe->type) {
             case SPORTH_FLOAT:
                 fval = pipe->ud;
+                if(mode != PLUMBER_DESTROY)
                 sporth_stack_push_float(&sporth->stack, *fval);
                 break;
             default:
@@ -111,7 +113,6 @@ int plumber_add_float(plumber_data *plumb, float num)
     plumb->npipes++;
     return PLUMBER_OK;
 }
-
 int plumber_add_module(plumber_data *plumb, 
         uint32_t id, size_t size, void *ud)
 {
@@ -158,6 +159,8 @@ int plumber_parse(plumber_data *plumb, const char *filename)
         while (c1 == ' ' && mode != QUOTE) {
             c1 = c2;
             c2 = fgetc(fp);
+            /*TODO: Make things more whitespace friendly. */
+            if(c2 == '\n') c2 = ' ';
         }
         if(mode == SPACE) {
             switch(c2) {

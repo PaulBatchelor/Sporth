@@ -10,8 +10,11 @@ void osc_compute(sp_data *sp, void *ud){
     plumber_data *pd = ud;
     plumber_compute(pd, PLUMBER_COMPUTE);
     SPFLOAT out;
-    out = sporth_stack_pop_float(&pd->sporth.stack);
-    sp->out[0] = out;
+    int chan;
+    for (chan = 0; chan < pd->nchan; chan++) {
+        out = sporth_stack_pop_float(&pd->sporth.stack);
+        sp->out[chan] = out;
+    }
 }
 
 
@@ -21,19 +24,52 @@ int main(int argc, char *argv[])
        printf("Usage: sporth input.sp\n"); 
        return 1;
     }
-
-    unsigned long len = 3 * 44100;
+    char filename[60];
+    sprintf(filename, "test.wav");
+    unsigned long len = 5 * 44100;
+    int sr = 44100;
+    int nchan = 1;
     *argv++; 
     argc--;
     while(argc > 0 && argv[0][0] == '-') {
         switch(argv[0][1]){
             case 'l':
                 if(--argc) {
-                    printf("setting length\n");
-                    len = atol(argv[0]);
                     *argv++;
+                    printf("setting length to %s\n", argv[0]);
+                    len = atol(argv[0]);
                 } else {
-                    printf("There was a problem..\n");
+                    printf("There was a problem setting the length..\n");
+                    exit(1);
+                }
+                break;
+            case 'o':
+                if(--argc) {
+                    *argv++;
+                    printf("setting filename to %s\n", argv[0]);
+                    strncpy(filename, argv[0], 60);
+                } else {
+                    printf("There was a problem setting the length..\n");
+                    exit(1);
+                }
+                break;
+            case 'r':
+                if(--argc) {
+                    *argv++;
+                    printf("setting samplerate to %s\n", argv[0]);
+                    sr = atoi(argv[0]);
+                } else {
+                    printf("There was a problem setting the samplerate..\n");
+                    exit(1);
+                }
+                break;
+            case 'c':
+                if(--argc) {
+                    *argv++;
+                    printf("setting nchannels to %s\n", argv[0]);
+                    nchan = atoi(argv[0]);
+                } else {
+                    printf("There was a problem setting the samplerate..\n");
                     exit(1);
                 }
                 break;
@@ -53,11 +89,18 @@ int main(int argc, char *argv[])
 
     sporth_htable_init(&plumb_g.sporth.dict);
     sporth_register_func(&plumb_g.sporth, flist); 
-    sp_data *sp;
-    sp_create(&sp);
+
     plumber_init(&plumb_g);
+    plumb_g.nchan = nchan;
+    sp_data *sp;
+
+    sp_createn(&sp, plumb_g.nchan);
+    //sp_create(&sp);
     plumb_g.sp = sp;
+    sprintf(sp->filename, "%s", filename);
     sp->len = len;
+    sp->sr = sr;
+
     if(plumber_parse(&plumb_g, argv[0]) == SPORTH_OK){
         plumber_compute(&plumb_g, PLUMBER_INIT);
         plumb_g.sporth.stack.pos = 0;

@@ -38,7 +38,7 @@ int sporth_stack_push_string(sporth_stack *stack, const char *str)
 
 float sporth_stack_pop_float(sporth_stack *stack)
 {
-    if(stack->error > 0) return SPORTH_NOTOK;
+    if(stack->error > 0) return 0;
 
     sporth_stack_val *pstack;
 

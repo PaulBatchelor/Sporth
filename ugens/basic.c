@@ -1,5 +1,4 @@
 #include "plumber.h"
-
 #include "macros.h"
 
 int sporth_mix(sporth_stack *stack, void *ud) 
@@ -8,19 +7,59 @@ int sporth_mix(sporth_stack *stack, void *ud)
     SPFLOAT val = 0;
     SPFLOAT sum = 0;
     int n;
+    int count;
     switch(pd->mode){
         case PLUMBER_CREATE:
             plumber_add_module(pd, SPORTH_MIX, 0, 
                     NULL);
             break;
         case PLUMBER_INIT:
+            count = stack->pos;
+            if(count > 1) {
+                for(n = 1; n <= count; n++){
+                    val = sporth_stack_pop_float(stack);
+                }
+                sporth_stack_push_float(stack, val);
+            } 
             break;
         case PLUMBER_COMPUTE:
-            for(n = 0; n < stack->pos - 1; n++){
-                val = sporth_stack_pop_float(stack);
-                sum += val;
+            count = stack->pos;
+            if(count > 1) {
+                for(n = 1; n <= count; n++){
+                    val = sporth_stack_pop_float(stack);
+                    sum += val;
+                }
+                sporth_stack_push_float(stack, sum);
+            } else {
+                //printf("not enough args!\n");
             }
-            sporth_stack_push_float(stack, sum);
+
+            break;
+        case PLUMBER_DESTROY:
+            break;
+        default:
+           printf("Error: Unknown mode!"); 
+           break;
+    }   
+    return SPORTH_OK;
+}
+
+int sporth_drop(sporth_stack *stack, void *ud) 
+{
+    plumber_data *pd = ud;
+    int count;
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+            plumber_add_module(pd, SPORTH_DROP, 0, 
+                    NULL);
+            break;
+        case PLUMBER_INIT:
+            count = stack->pos;
+            sporth_stack_pop_float(stack);
+            break;
+        case PLUMBER_COMPUTE:
+            count = stack->pos;
+            sporth_stack_pop_float(stack);
             break;
         case PLUMBER_DESTROY:
             break;
@@ -42,8 +81,10 @@ int sporth_dup(sporth_stack *stack, void *ud)
                     NULL);
             break;
         case PLUMBER_INIT:
-            break;
+            val = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, 0);
+            sporth_stack_push_float(stack, 0);
+            break;
         case PLUMBER_COMPUTE:
             if(stack->pos == 0) {
                 printf("Nothing to duplicate\n");

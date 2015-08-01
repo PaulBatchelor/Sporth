@@ -11,3 +11,5 @@ int sporth_fm(sporth_stack *stack, void *ud);
 int sporth_mtof(sporth_stack *stack, void *ud);
 int sporth_dup(sporth_stack *stack, void *ud);
 int sporth_swap(sporth_stack *stack, void *ud);
+int sporth_drop(sporth_stack *stack, void *ud);
+int sporth_revsc(sporth_stack *stack, void *ud);
