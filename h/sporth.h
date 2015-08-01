@@ -11,10 +11,11 @@ SPORTH_OK
 };
 
 #define SPORTH_FOFFSET 2
+#define SPORTH_MAXCHAR 200
 
 typedef struct {
     float fval;
-    char sval[140];
+    char sval[SPORTH_MAXCHAR];
     int type;
 } sporth_stack_val;
 

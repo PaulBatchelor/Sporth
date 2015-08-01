@@ -8,6 +8,7 @@ int sporth_stack_push_float(sporth_stack *stack, float val)
         //printf("Pushing value %g.\n", val);
         stack->pos++;
         stack->stack[stack->pos - 1].fval = val;
+        stack->stack[stack->pos - 1].type = SPORTH_FLOAT;
         return SPORTH_OK;
     } else {
         printf("Stack limit of %d reached, cannot push float value.\n", stack->pos);
@@ -24,7 +25,7 @@ int sporth_stack_push_string(sporth_stack *stack, const char *str)
     if(stack->pos <= 32) {
         stack->pos++;
         pstack = &stack->stack[stack->pos - 1];
-        strcpy(pstack->sval, str);
+        strncpy(pstack->sval, str, SPORTH_MAXCHAR);
         pstack->fval = strlen(str);
         pstack->type = SPORTH_STRING;
         return SPORTH_OK;
@@ -91,6 +92,7 @@ int sporth_stack_init(sporth_stack *stack)
     stack->error = 0;
     return SPORTH_OK;
 }
+
 
 /*
 int main()

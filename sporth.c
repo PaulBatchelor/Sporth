@@ -6,7 +6,7 @@
 plumber_data plumb_g;
 #include "flist.h"
 
-void osc_compute(sp_data *sp, void *ud){
+void process(sp_data *sp, void *ud){
     plumber_data *pd = ud;
     plumber_compute(pd, PLUMBER_COMPUTE);
     SPFLOAT out;
@@ -16,7 +16,6 @@ void osc_compute(sp_data *sp, void *ud){
         sp->out[chan] = out;
     }
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -95,7 +94,6 @@ int main(int argc, char *argv[])
     sp_data *sp;
 
     sp_createn(&sp, plumb_g.nchan);
-    //sp_create(&sp);
     plumb_g.sp = sp;
     sprintf(sp->filename, "%s", filename);
     sp->len = len;
@@ -105,7 +103,7 @@ int main(int argc, char *argv[])
         plumber_compute(&plumb_g, PLUMBER_INIT);
         plumb_g.sporth.stack.pos = 0;
         plumber_show_pipes(&plumb_g);
-        sp_process(sp, &plumb_g, osc_compute);
+        sp_process(sp, &plumb_g, process);
     }
     if(plumb_g.sporth.stack.error > 0) {
         printf("Uh-oh! Sporth created %d error(s).\n", 
