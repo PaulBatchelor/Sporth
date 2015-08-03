@@ -185,17 +185,17 @@ int plumber_parse(plumber_data *plumb, const char *filename)
         c2 = fgetc(fp);
         if(c2 == '\n') c2 = ' ';
         if(c1 == '\n') c1 = ' ';
-        if(c1 == '"' && mode != QUOTE) {
-            mode = QUOTE;
-            c1 = c2;
-            c2 = fgetc(fp);
-        } 
         while (c1 == ' ' && mode != QUOTE) {
             c1 = c2;
             c2 = fgetc(fp);
             /*TODO: Make things more whitespace friendly. */
             if(c2 == '\n') c2 = ' ';
         }
+        if(c1 == '"' && mode != QUOTE) {
+            mode = QUOTE;
+            c1 = c2;
+            c2 = fgetc(fp);
+        } 
         if(mode == SPACE) {
             switch(c2) {
                 case ' ':
@@ -220,6 +220,9 @@ int plumber_parse(plumber_data *plumb, const char *filename)
                         str[pos] = '\0';
                         plumber_gettype(plumb, str, mode);
                         c1 = fgetc(fp);
+                        while(c1 == ' ') { 
+                            c1 = fgetc(fp);
+                        }
                         pos = 0;
                         mode = SPACE;
                     } else {
@@ -397,7 +400,6 @@ int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
     for(n = 0; n < entry->nftbl; n++) {
         next = ftbl->next;
         if(!strcmp(str, ftbl->name)){
-            printf("found the ftable!\n");
             *ft = ftbl->ft;
             return PLUMBER_OK;
         } 

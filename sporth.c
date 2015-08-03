@@ -41,7 +41,9 @@ int main(int argc, char *argv[])
             case 'l':
                 if(--argc) {
                     *argv++;
+#ifdef DEBUG_MODE
                     printf("setting length to %s\n", argv[0]);
+#endif
                     len = atol(argv[0]);
                 } else {
                     printf("There was a problem setting the length..\n");
@@ -51,7 +53,9 @@ int main(int argc, char *argv[])
             case 'o':
                 if(--argc) {
                     *argv++;
+#ifdef DEBUG_MODE
                     printf("setting filename to %s\n", argv[0]);
+#endif
                     strncpy(filename, argv[0], 60);
                 } else {
                     printf("There was a problem setting the length..\n");
@@ -61,7 +65,9 @@ int main(int argc, char *argv[])
             case 'r':
                 if(--argc) {
                     *argv++;
+#ifdef DEBUG_MODE
                     printf("setting samplerate to %s\n", argv[0]);
+#endif
                     sr = atoi(argv[0]);
                 } else {
                     printf("There was a problem setting the samplerate..\n");
@@ -71,13 +77,15 @@ int main(int argc, char *argv[])
             case 'c':
                 if(--argc) {
                     *argv++;
+#ifdef DEBUG_MODE
                     printf("setting nchannels to %s\n", argv[0]);
+#endif
                     nchan = atoi(argv[0]);
                 } else {
                     printf("There was a problem setting the samplerate..\n");
                     exit(1);
                 }
-            case 'd':
+            case 'b':
                 if(--argc) {
                     *argv++;
                     if (!strcmp(argv[0], "file")) {

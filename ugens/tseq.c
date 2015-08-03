@@ -12,7 +12,9 @@ int sporth_tseq(sporth_stack *stack, void *ud)
     sp_tseq *tseq;
     switch(pd->mode){
         case PLUMBER_CREATE:
+#ifdef DEBUG_MODE
             printf("Creating tseq function... \n");
+#endif
             sp_tseq_create(&tseq);
             plumber_add_module(pd, SPORTH_TSEQ, sizeof(sp_tseq), tseq);
             break;

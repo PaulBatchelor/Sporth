@@ -21,7 +21,9 @@ int sporth_gen_vals(sporth_stack *stack, void *ud)
             }
             args = sporth_stack_pop_string(stack);
             str = sporth_stack_pop_string(stack);
+#ifdef DEBUG_MODE
             printf("Creating value table %s\n", str);
+#endif
             sp_ftbl_create(pd->sp, &ft, 1);
             sp_gen_vals(pd->sp, ft, args);
             plumber_ftmap_add(pd, str, ft);

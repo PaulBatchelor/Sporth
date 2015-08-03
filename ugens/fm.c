@@ -15,7 +15,9 @@ int sporth_fm(sporth_stack *stack, void *ud)
     sporth_fm_d *fm;
     switch(pd->mode){
         case PLUMBER_CREATE:
+#ifdef DEBUG_MODE
             printf("creating FM function... \n");
+#endif
             fm = malloc(sizeof(sporth_fm_d));
             sp_ftbl_create(pd->sp, &fm->ft, 4096);
             sp_fosc_create(&fm->osc);

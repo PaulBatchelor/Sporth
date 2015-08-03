@@ -9,6 +9,7 @@ enum {
     LEX_FLOAT,
     LEX_FLOAT_DOT,
     LEX_FLOAT_POSTDOT,
+    LEX_STRING,
     LEX_POS,
     LEX_NEG,
     LEX_FUNC,
@@ -51,7 +52,10 @@ int sporth_gettype(sporth_data *sporth, char *str, int mode)
                     }
                     break;
                 case LEX_FUNC:
-                    break;
+                    case '"':
+                        type = LEX_STRING;
+                        mode = QUOTE;
+                        break;
                 case LEX_FLOAT:
                     switch(str[0]) {
                         case '0':
@@ -138,18 +142,23 @@ int sporth_parse(sporth_data *sporth , const char *filename) {
     //while(!feof(fp)){
     while(c2 != EOF){
         c2 = fgetc(fp);
+
         if(c2 == '\n') {
             c2 = ' ';
         }
-        if(c1 == '"' && mode != QUOTE) {
-            mode = QUOTE;
-            c1 = c2;
-            c2 = fgetc(fp);
-        } 
-        while (c1 == ' ' && mode != QUOTE) {
+
+        while (c2 == ' ' && mode != QUOTE) {
             c1 = c2;
             c2 = fgetc(fp);
         }
+
+        if(c2 == '"' && mode != QUOTE) {
+            mode = QUOTE;
+            c1 = c2;
+            c2 = fgetc(fp);
+        }
+
+
         if(mode == SPACE) {
             switch(c2) {
                 case ' ':
@@ -165,20 +174,21 @@ int sporth_parse(sporth_data *sporth , const char *filename) {
                     pos %= 500;
                     break;
             }
-        } else if (mode == QUOTE) {
+        } else if (mode == QUOTE ) {
             switch(c2) {
                 case '"':
                     c2 = fgetc(fp);
                     if(c2 == ' ') {
+                        while(c1 == ' ') {
+                            c1 = fgetc(fp);
+                        }
                         str[pos++] = c1;
                         str[pos] = '\0';
-                        sporth_gettype(sporth, str, mode);
-                        c1 = fgetc(fp);
                         pos = 0;
-                        mode = SPACE;
                     } else {
                         str[pos++] = c1;
                     }
+                    sporth_gettype(sporth, str, mode);
                     break;
                 default:
                     str[pos++] = c1;
