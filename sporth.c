@@ -6,6 +6,11 @@
 plumber_data plumb_g;
 #include "flist.h"
 
+enum {
+    DRIVER_FILE,
+    DRIVER_RAW
+};
+
 void process(sp_data *sp, void *ud){
     plumber_data *pd = ud;
     plumber_compute(pd, PLUMBER_COMPUTE);
@@ -30,6 +35,7 @@ int main(int argc, char *argv[])
     int nchan = 1;
     *argv++; 
     argc--;
+    int driver = DRIVER_FILE;
     while(argc > 0 && argv[0][0] == '-') {
         switch(argv[0][1]){
             case 'l':
@@ -71,12 +77,27 @@ int main(int argc, char *argv[])
                     printf("There was a problem setting the samplerate..\n");
                     exit(1);
                 }
+            case 'd':
+                if(--argc) {
+                    *argv++;
+                    if (!strcmp(argv[0], "file")) {
+                        driver = DRIVER_FILE;
+                    } else if ((!strcmp(argv[0], "raw"))) {
+                        driver = DRIVER_RAW;
+                    } else {
+                        printf("Could not find driver \"%s\".\n", argv[0]);
+                        exit(1);
+                    }
+                } else {
+                    printf("There was a problem setting the driver..\n");
+                    exit(1);
+                }
                 break;
             default: 
                 printf("default.. \n");
+                exit(1);
                 break;
         } 
-        printf("argpos at %d\n", argc);
         *argv++;
         argc--;
     }
@@ -102,8 +123,20 @@ int main(int argc, char *argv[])
     if(plumber_parse(&plumb_g, argv[0]) == SPORTH_OK){
         plumber_compute(&plumb_g, PLUMBER_INIT);
         plumb_g.sporth.stack.pos = 0;
+#ifdef DEBUG_MODE
         plumber_show_pipes(&plumb_g);
-        sp_process(sp, &plumb_g, process);
+#endif
+        switch(driver) {
+            case DRIVER_FILE:
+                sp_process(sp, &plumb_g, process);
+                break;
+            case DRIVER_RAW:
+                sp_process_raw(sp, &plumb_g, process);
+                break;
+            default:
+                sp_process(sp, &plumb_g, process);
+                break;
+        }
     }
     if(plumb_g.sporth.stack.error > 0) {
         printf("Uh-oh! Sporth created %d error(s).\n", 

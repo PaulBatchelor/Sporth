@@ -30,9 +30,7 @@ int sporth_mix(sporth_stack *stack, void *ud)
                     sum += val;
                 }
                 sporth_stack_push_float(stack, sum);
-            } else {
-                //printf("not enough args!\n");
-            }
+            } 
 
             break;
         case PLUMBER_DESTROY:
@@ -180,7 +178,9 @@ int sporth_sine(sporth_stack *stack, void *ud)
     plumber_pipe *pipe;
     switch(pd->mode){
         case PLUMBER_CREATE:
+#ifdef DEBUG_MODE
             printf("creating sine function... \n");
+#endif
             data = malloc(sizeof(sporth_sine_d));
             sp_osc_create(&data->osc);
             sp_ftbl_create(pd->sp, &data->ft, 4096);

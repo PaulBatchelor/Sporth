@@ -7,7 +7,9 @@ int sporth_register_func(sporth_data *sporth, sporth_func *flist)
     sporth->flist = flist;
     uint32_t i = 0;
     while(sporth->flist[i].name != NULL) {
+#ifdef DEBUG_MODE
         printf("Registering function \"%s\" at position %d\n", sporth->flist[i].name, i);
+#endif
         sporth_htable_add(&sporth->dict, sporth->flist[i].name, i);
         i++;
     }
@@ -21,7 +23,9 @@ int sporth_exec(sporth_data *sporth, const char *keyword)
         printf("Could not find function called \"%s\".\n", keyword);
         return SPORTH_NOTOK;
     }
+#ifdef DEBUG_MODE
     printf("Executing function \"%s\"\n", keyword);
+#endif
     sporth->flist[id].func(&sporth->stack, sporth->flist[id].ud);
     return SPORTH_OK;
 }
