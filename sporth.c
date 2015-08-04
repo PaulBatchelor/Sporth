@@ -82,9 +82,10 @@ int main(int argc, char *argv[])
 #endif
                     nchan = atoi(argv[0]);
                 } else {
-                    printf("There was a problem setting the samplerate..\n");
+                    printf("There was a problem setting the channels..\n");
                     exit(1);
                 }
+                break;
             case 'b':
                 if(--argc) {
                     *argv++;

@@ -148,6 +148,7 @@ int sporth_constant(sporth_stack *stack, void *ud)
     if(sporth_check_args(stack, "f") != SPORTH_OK) {
         return SPORTH_NOTOK;
     }
+
     float val = sporth_stack_pop_float(stack);
     switch(pd->mode){
         case PLUMBER_CREATE:

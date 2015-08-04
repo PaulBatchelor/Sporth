@@ -45,10 +45,6 @@ int sporth_osc(sporth_stack *stack, void *ud)
 
         case PLUMBER_COMPUTE:
             osc = pd->last->ud;
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
 
             amp = sporth_stack_pop_float(stack);
             freq = sporth_stack_pop_float(stack);

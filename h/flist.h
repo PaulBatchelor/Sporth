@@ -20,5 +20,6 @@ static sporth_func flist[] = {
     {"gen_vals", sporth_gen_vals, &plumb_g},
     {"tseq", sporth_tseq, &plumb_g},
     {"in", sporth_in, &plumb_g},
+    {"port", sporth_port, &plumb_g},
     {NULL, NULL, NULL}
 };

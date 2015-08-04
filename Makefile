@@ -2,11 +2,13 @@
 #default: func
 default: sporth
 
+CFLAGS += -O3
+
 ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE
 endif
 
-UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in
+UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
@@ -17,6 +19,9 @@ OBJ += func.o plumber.o stack.o parse.o hash.o
 
 ugens/%.o: ugens/%.c 
 	gcc $(CFLAGS) -g -Ih -c $< -o $@
+
+jack_wrapper: jack_wrapper.c
+	gcc $< -lsoundpipe -lsndfile -ljack -o jack_wrapper -lm
 
 sporth: sporth.c $(OBJ) h/modules.h h/flist.h h/macros.h
 	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm

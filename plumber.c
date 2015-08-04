@@ -31,7 +31,6 @@ int plumber_compute(plumber_data *plumb, int mode)
     uint32_t n;
     float *fval;
     char *sval;
-    int rc;
     sporth_data *sporth = &plumb->sporth;
     if(sporth->stack.error > 0) return PLUMBER_NOTOK;
     for(n = 0; n < plumb->npipes; n++) {
