@@ -21,5 +21,6 @@ static sporth_func flist[] = {
     {"tseq", sporth_tseq, &plumb_g},
     {"in", sporth_in, &plumb_g},
     {"port", sporth_port, &plumb_g},
+    {"nsmp", sporth_nsmp, &plumb_g},
     {NULL, NULL, NULL}
 };

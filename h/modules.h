@@ -19,3 +19,4 @@ int sporth_gen_vals(sporth_stack *stack, void *ud);
 int sporth_tseq(sporth_stack *stack, void *ud);
 int sporth_in(sporth_stack *stack, void *ud);
 int sporth_port(sporth_stack *stack, void *ud);
+int sporth_nsmp(sporth_stack *stack, void *ud);

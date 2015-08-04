@@ -11,7 +11,7 @@ int sporth_stack_push_float(sporth_stack *stack, float val)
         stack->stack[stack->pos - 1].type = SPORTH_FLOAT;
         return SPORTH_OK;
     } else {
-        printf("Stack limit of %d reached, cannot push float value.\n", stack->pos);
+        fprintf(stderr, "Stack limit of %d reached, cannot push float value.\n", stack->pos);
         stack->error++;
         return SPORTH_NOTOK; 
     }
@@ -30,7 +30,7 @@ int sporth_stack_push_string(sporth_stack *stack, const char *str)
         pstack->type = SPORTH_STRING;
         return SPORTH_OK;
     } else {
-        printf("Stack limit of %d reached, cannot push float value.\n", stack->pos);
+        fprintf(stderr, "Stack limit of %d reached, cannot push float value.\n", stack->pos);
         stack->error++;
         return SPORTH_NOTOK;
     }
@@ -44,14 +44,14 @@ float sporth_stack_pop_float(sporth_stack *stack)
     sporth_stack_val *pstack;
 
     if(stack->pos == 0) {
-       printf("Stack is empty.\n");
+       fprintf(stderr, "Stack is empty.\n");
        stack->error++;
        return SPORTH_NOTOK;
     }
     pstack = &stack->stack[stack->pos - 1];
 
     if(pstack->type != SPORTH_FLOAT) {
-        printf("Value is not a float.\n");
+        fprintf(stderr, "Value is not a float.\n");
         stack->error++;
         return SPORTH_NOTOK;
     }
@@ -68,14 +68,14 @@ char * sporth_stack_pop_string(sporth_stack *stack)
     sporth_stack_val *pstack;
 
     if(stack->pos == 0) {
-       printf("Stack is empty.\n");
+       fprintf(stderr, "Stack is empty.\n");
        stack->error++;
        return NULL;
     }
     pstack = &stack->stack[stack->pos - 1];
 
     if(pstack->type != SPORTH_STRING) {
-        printf("Value is not a string.\n");
+        fprintf(stderr, "Value is not a string.\n");
         stack->error++;
         return NULL;
     }
@@ -92,26 +92,3 @@ int sporth_stack_init(sporth_stack *stack)
     stack->error = 0;
     return SPORTH_OK;
 }
-
-
-/*
-int main()
-{
-    sporth_stack stack;
-    sporth_stack_init(&stack);
-    sporth_stack_pop_float(&stack);
-    sporth_stack_push_float(&stack, 123);
-    sporth_stack_push_float(&stack, 456);
-    sporth_stack_push_string(&stack, "HI GUYS");
-    sporth_stack_push_float(&stack, 789);
-
-    float val = sporth_stack_pop_float(&stack);
-    char *str = sporth_stack_pop_string(&stack);
-
-    printf("Float val is %g and string is %s\n", val, str);
-
-    if(str != NULL) free(str);
-
-    return 0;
-}
-*/

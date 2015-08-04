@@ -8,7 +8,7 @@ ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE
 endif
 
-UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port
+UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port nsmp
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
@@ -25,6 +25,9 @@ jack_wrapper: jack_wrapper.c
 
 sporth: sporth.c $(OBJ) h/modules.h h/flist.h h/macros.h
 	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
+
+install:
+	install sporth /usr/local/bin 
 
 clean: 
 	rm -rf sporth $(OBJ)
