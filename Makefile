@@ -30,7 +30,7 @@ install:
 	install sporth /usr/local/bin 
 
 clean: 
-	rm -rf sporth $(OBJ)
+	rm -rf sporth $(OBJ) jack_wrapper
 
 #stacks: stacks.c sporth.h
 #	gcc $< -o $@
