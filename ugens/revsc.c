@@ -1,5 +1,4 @@
 #include "plumber.h"
-#include "macros.h"
 
 int sporth_revsc(sporth_stack *stack, void *ud) 
 {

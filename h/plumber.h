@@ -1,6 +1,15 @@
 #include <soundpipe.h>
 #include "sporth.h"
 
+/* implement macros */
+#define SPORTH_UGEN(key, func, macro)  macro,
+enum {
+SP_DUMMY = SPORTH_FOFFSET,
+#include "ugens.h"
+SPORTH_LAST
+};
+#undef SPORTH_UGEN
+
 enum {
 PLUMBER_CREATE,
 PLUMBER_INIT,

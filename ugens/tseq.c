@@ -1,5 +1,4 @@
 #include "plumber.h"
-#include "macros.h"
 
 int sporth_tseq(sporth_stack *stack, void *ud) 
 {

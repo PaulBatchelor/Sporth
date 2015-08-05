@@ -1,10 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "plumber.h"
-#include "macros.h"
-#include "modules.h"
+
+#define SPORTH_UGEN(key, func, macro) int func(sporth_stack *stack, void *ud);
+#include "ugens.h"
+#undef SPORTH_UGEN
+
+#define SPORTH_UGEN(key, func, macro) {key, func, &plumb_g}, 
 plumber_data plumb_g;
-#include "flist.h"
+static sporth_func flist[] = {
+#include "ugens.h"
+{NULL, NULL, NULL}
+};
+#undef SPORTH_UGEN
 
 enum {
     DRIVER_FILE,
