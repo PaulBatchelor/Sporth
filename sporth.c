@@ -32,10 +32,6 @@ void process(sp_data *sp, void *ud){
 
 int main(int argc, char *argv[])
 {
-    if(argc == 1) {
-       printf("Usage: sporth input.sp\n"); 
-       return 1;
-    }
     char filename[60];
     sprintf(filename, "test.wav");
     unsigned long len = 5 * 44100;
@@ -110,6 +106,10 @@ int main(int argc, char *argv[])
                     exit(1);
                 }
                 break;
+            case 'h':
+                printf("Usage: sporth input.sp\n"); 
+                exit(1);
+                break;
             default: 
                 printf("default.. \n");
                 exit(1);
@@ -119,9 +119,17 @@ int main(int argc, char *argv[])
         argc--;
     }
 
-    if(argc <= 0) {
-        printf("You must specify a file!\n");
-        exit(1);
+    FILE *fp;
+
+    if(argc <= 1) {
+        fp = stdin;
+    } else {
+        fp = fopen(argv[0], "r");
+        if(fp == NULL) {
+            fprintf(stderr, 
+                    "There was an issue opening the file %s.\n", argv[0]);
+            exit(1);
+        }
     }
 
     sporth_htable_init(&plumb_g.sporth.dict);
@@ -137,7 +145,7 @@ int main(int argc, char *argv[])
     sp->len = len;
     sp->sr = sr;
 
-    if(plumber_parse(&plumb_g, argv[0]) == SPORTH_OK){
+    if(plumber_parse(&plumb_g, fp) == PLUMBER_OK){
         plumber_compute(&plumb_g, PLUMBER_INIT);
         plumb_g.sporth.stack.pos = 0;
 #ifdef DEBUG_MODE
@@ -160,6 +168,7 @@ int main(int argc, char *argv[])
                 plumb_g.sporth.stack.error);
     }
     plumber_clean(&plumb_g);
+    fclose(fp);
     sp_destroy(&sp);
     return 0;
 }

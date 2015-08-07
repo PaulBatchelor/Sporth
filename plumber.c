@@ -166,195 +166,52 @@ int plumber_add_module(plumber_data *plumb,
     return PLUMBER_OK;
 }
 
-int plumber_parse(plumber_data *plumb, const char *filename)
+int plumber_parse(plumber_data *plumb, FILE *fp)
 {
-    FILE *fp = fopen(filename, "r");
+    char *line = NULL;
+    size_t length = 0;
+    ssize_t read;
+    char *out, *tmp; 
+    uint32_t prev = 0, pos = 0, offset = 0, len = 0;
+    while((read = getline(&line, &length, fp)) != -1) {
+        pos = 0;
+        offset = 0;
+        len = 0;
+        prev = 0;
+        while(pos < read - 1) {
+            printf("%s", line);
+            out = sporth_tokenizer(&plumb->sporth, line, read - 1, &pos);
+            len = strlen(out);
 
-    if(fp == NULL) {
-        printf("There was an error reading the file \"%s\"\n", filename);
-        return SPORTH_NOTOK;
-    }
-    char c1 = 0, c2 = 0;
-    char str[500];
-    uint32_t pos = 0;
-    int mode = SPACE;
-    int pmode = mode;
-    c1 = fgetc(fp);
-    while(c2 != EOF){
-        c2 = fgetc(fp);
-        if(c2 == '\n') c2 = ' ';
-        if(c1 == '\n') c1 = ' ';
-        while (c1 == ' ' && mode != QUOTE) {
-            c1 = c2;
-            c2 = fgetc(fp);
-            /*TODO: Make things more whitespace friendly. */
-            if(c2 == '\n') c2 = ' ';
-        }
-        if(c1 == '"' && mode != QUOTE) {
-            mode = QUOTE;
-            c1 = c2;
-            c2 = fgetc(fp);
-        } 
-        if(mode == SPACE) {
-            switch(c2) {
-                case ' ':
-                    str[pos++] = c1;
-                    c1 = fgetc(fp);
-                    str[pos] = '\0';
-                    plumber_gettype(plumb, str, mode);
-                    pos = 0;
+            switch(sporth_lexer(&plumb->sporth, out, len)) {
+                case SPORTH_FLOAT:
+                    printf("%s is a float!\n", out);
+                    plumber_add_float(plumb, atof(out));
+                    break;
+                case SPORTH_STRING:
+                    tmp = out;
+                    tmp[len - 1] = '\0';
+                    tmp++;
+                    
+                    printf("'%s' is a string!\n", tmp);
+                    plumber_add_string(plumb, tmp);
+                    break;
+                case SPORTH_FUNC:
+                    printf("%s is a function!\n", out);
+                    if(sporth_exec(&plumb->sporth, out) == SPORTH_NOTOK) {
+                        plumb->sporth.stack.error++;
+                    } 
+                    break;
+                case SPORTH_IGNORE:
                     break;
                 default:
-                    str[pos++] = c1;
-                    c1 = c2;
-                    pos %= 500;
+                    printf("No idea what '%s' is.\n", out);
                     break;
             }
-        } else if (mode == QUOTE) {
-            switch(c2) {
-                case '"':
-                    c2 = fgetc(fp);
-                    if(c2 == ' ') {
-                        str[pos++] = c1;
-                        str[pos] = '\0';
-                        plumber_gettype(plumb, str, mode);
-                        c1 = fgetc(fp);
-                        while(c1 == ' ') { 
-                            c1 = fgetc(fp);
-                        }
-                        pos = 0;
-                        mode = SPACE;
-                    } else {
-                        str[pos++] = c1;
-                    }
-                    break;
-                default:
-                    str[pos++] = c1;
-                    c1 = c2;
-                    pos %= 500;
-                    break;
-            }
+            free(out);
         }
     }
-    pos--;
-    str[pos] = '\0';
-    if(pos > 0) plumber_gettype(plumb, str, mode);
-    
-    fflush(stdout);
-    fclose(fp);
-    return SPORTH_OK;
-}
-
-int plumber_gettype(plumber_data *plumb, char *str, int mode)
-{
-    int type = LEX_START;
-    int sign = LEX_POS;
-    char val[101];
-    uint32_t module_id;
-    strncpy(val, str, 100); 
-    if(mode == SPACE) {
-        while(*str) {
-            switch(type) {
-                case LEX_START:
-                    switch(str[0]) {
-                        case '-':
-                            sign = LEX_NEG;
-                            type = LEX_FLOAT;
-                            break;
-                        case '0':
-                        case '1':
-                        case '2':
-                        case '3':
-                        case '4':
-                        case '5':
-                        case '6':
-                        case '7':
-                        case '8':
-                        case '9':
-                            type = LEX_FLOAT;
-                            break;
-                        case ' ':
-                            type = LEX_START;
-                            break;
-                        default: 
-                            type = LEX_FUNC;
-                            break;
-                    }
-                    break;
-                case LEX_FUNC:
-                    break;
-                case LEX_FLOAT:
-                    switch(str[0]) {
-                        case '0':
-                        case '1':
-                        case '2':
-                        case '3':
-                        case '4':
-                        case '5':
-                        case '6':
-                        case '7':
-                        case '8':
-                        case '9':
-                            type = LEX_FLOAT;
-                            break;
-                        case '.':
-                            type = LEX_FLOAT_DOT;
-                            break;
-                        default:
-                            printf("Syntax error!\n");
-                            return -1;
-                    }
-                    break; 
-                  case LEX_FLOAT_DOT:
-                  case LEX_FLOAT_POSTDOT:
-                    switch(str[0]) {
-                        case '0':
-                        case '1':
-                        case '2':
-                        case '3':
-                        case '4':
-                        case '5':
-                        case '6':
-                        case '7':
-                        case '8':
-                        case '9':
-                            type = LEX_FLOAT_POSTDOT;
-                            break;
-                        default:
-                            printf("Syntax error!\n");
-                            return -1;
-                    }
-                    break; 
-
-                default:
-                    break;
-            }
-            *str++;
-        }
-        char signstr[9];
-        if(sign == LEX_POS) {
-            sprintf(signstr, "positive");
-        } else {
-            sprintf(signstr, "negative");
-        }
-        switch(type) {
-            case LEX_FLOAT:
-            case LEX_FLOAT_DOT:
-            case LEX_FLOAT_POSTDOT:
-                plumber_add_float(plumb, atof(val));
-                break;
-            case LEX_FUNC:
-                if(sporth_exec(&plumb->sporth, val) == SPORTH_NOTOK) {
-                    plumb->sporth.stack.error++;
-                } 
-                break;
-            default:
-                break;
-        }
-    } else if (mode == QUOTE) {
-       plumber_add_string(plumb, val);
-    }
-    return 0;
+    return PLUMBER_OK;
 }
 
 int plumber_error(plumber_data *plumb, const char *str)

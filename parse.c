@@ -401,10 +401,3 @@ int sporth_lexer(sporth_data *sporth, char *str, int32_t size)
     }
     return SPORTH_NOTOK;
 }
-
-/*
-int main() {
-    sporth_parse("test.txt");
-    return 0;
-}
-*/
