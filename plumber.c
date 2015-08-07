@@ -131,7 +131,7 @@ int plumber_add_string(plumber_data *plumb, const char *str)
     }
 
     new->type = SPORTH_STRING;
-    new->size = sizeof(char) * strlen(str);
+    new->size = sizeof(char) * strlen(str) + 1;
     new->ud = malloc(new->size);
     char *sval = new->ud;
     strncpy(sval, str, new->size);
@@ -192,7 +192,6 @@ int plumber_parse(plumber_data *plumb, FILE *fp)
                     tmp = out;
                     tmp[len - 1] = '\0';
                     tmp++;
-                    
                     printf("'%s' is a string!\n", tmp);
                     plumber_add_string(plumb, tmp);
                     break;
@@ -208,9 +207,11 @@ int plumber_parse(plumber_data *plumb, FILE *fp)
                     printf("No idea what '%s' is.\n", out);
                     break;
             }
+            printf("free\n");
             free(out);
         }
     }
+    free(line);
     return PLUMBER_OK;
 }
 

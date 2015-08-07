@@ -121,9 +121,10 @@ int main(int argc, char *argv[])
 
     FILE *fp;
 
-    if(argc <= 1) {
+    if(argc == 0) {
         fp = stdin;
     } else {
+        printf("reading...\n");
         fp = fopen(argv[0], "r");
         if(fp == NULL) {
             fprintf(stderr, 
