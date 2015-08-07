@@ -4,7 +4,7 @@
 /* implement macros */
 #define SPORTH_UGEN(key, func, macro)  macro,
 enum {
-SP_DUMMY = SPORTH_FOFFSET,
+SP_DUMMY = SPORTH_FOFFSET - 1,
 #include "ugens.h"
 SPORTH_LAST
 };
