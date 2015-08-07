@@ -6,6 +6,8 @@
 enum {
 SPORTH_FLOAT,
 SPORTH_STRING,
+SPORTH_IGNORE,
+SPORTH_FUNC,
 SPORTH_NOTOK,
 SPORTH_OK
 };
@@ -71,4 +73,6 @@ int sporth_exec(sporth_data *sporth, const char *keyword);
 
 int sporth_gettype(sporth_data *sporth, char *str, int mode);
 int sporth_parse(sporth_data *sporth, const char *filename);
+char * sporth_tokenizer(sporth_data *sporth, char *str, 
+        uint32_t size, uint32_t *pos);
 

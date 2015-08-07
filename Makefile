@@ -2,7 +2,7 @@
 #default: func
 default: sporth
 
-CFLAGS += -O3
+#CFLAGS += -O3
 
 ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE
