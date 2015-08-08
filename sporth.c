@@ -6,7 +6,7 @@
 #include "ugens.h"
 #undef SPORTH_UGEN
 
-#define SPORTH_UGEN(key, func, macro) {key, func, &plumb_g}, 
+#define SPORTH_UGEN(key, func, macro) {key, func, &plumb_g},
 plumber_data plumb_g;
 static sporth_func flist[] = {
 #include "ugens.h"
@@ -30,6 +30,21 @@ void process(sp_data *sp, void *ud){
     }
 }
 
+uint32_t str2time(plumber_data *pd, char *str)
+{
+    int len = strlen(str);
+    char last = str[len - 1];
+    switch(last) {
+        case 's':
+            str[len - 1] = '\0';
+            return atof(str) * pd->sp->sr;
+            break;
+        default:
+            return atoi(str);
+            break;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     char filename[60];
@@ -37,7 +52,8 @@ int main(int argc, char *argv[])
     unsigned long len = 5 * 44100;
     int sr = 44100;
     int nchan = 1;
-    *argv++; 
+    char *time = NULL;
+    *argv++;
     argc--;
     int driver = DRIVER_FILE;
     while(argc > 0 && argv[0][0] == '-') {
@@ -48,7 +64,8 @@ int main(int argc, char *argv[])
 #ifdef DEBUG_MODE
                     printf("setting length to %s\n", argv[0]);
 #endif
-                    len = atol(argv[0]);
+                    //len = atol(argv[0]);
+                    time = argv[0];
                 } else {
                     printf("There was a problem setting the length..\n");
                     exit(1);
@@ -107,14 +124,14 @@ int main(int argc, char *argv[])
                 }
                 break;
             case 'h':
-                printf("Usage: sporth input.sp\n"); 
+                printf("Usage: sporth input.sp\n");
                 exit(1);
                 break;
-            default: 
+            default:
                 printf("default.. \n");
                 exit(1);
                 break;
-        } 
+        }
         *argv++;
         argc--;
     }
@@ -124,17 +141,16 @@ int main(int argc, char *argv[])
     if(argc == 0) {
         fp = stdin;
     } else {
-        printf("reading...\n");
         fp = fopen(argv[0], "r");
         if(fp == NULL) {
-            fprintf(stderr, 
+            fprintf(stderr,
                     "There was an issue opening the file %s.\n", argv[0]);
             exit(1);
         }
     }
 
     sporth_htable_init(&plumb_g.sporth.dict);
-    sporth_register_func(&plumb_g.sporth, flist); 
+    sporth_register_func(&plumb_g.sporth, flist);
 
     plumber_init(&plumb_g);
     plumb_g.nchan = nchan;
@@ -143,7 +159,7 @@ int main(int argc, char *argv[])
     sp_createn(&sp, plumb_g.nchan);
     plumb_g.sp = sp;
     sprintf(sp->filename, "%s", filename);
-    sp->len = len;
+    if(time != NULL) sp->len = str2time(&plumb_g, time);
     sp->sr = sr;
 
     if(plumber_parse(&plumb_g, fp) == PLUMBER_OK){
@@ -165,7 +181,7 @@ int main(int argc, char *argv[])
         }
     }
     if(plumb_g.sporth.stack.error > 0) {
-        printf("Uh-oh! Sporth created %d error(s).\n", 
+        printf("Uh-oh! Sporth created %d error(s).\n",
                 plumb_g.sporth.stack.error);
     }
     plumber_clean(&plumb_g);
