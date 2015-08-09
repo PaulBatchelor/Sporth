@@ -159,8 +159,8 @@ int main(int argc, char *argv[])
     sp_createn(&sp, plumb_g.nchan);
     plumb_g.sp = sp;
     sprintf(sp->filename, "%s", filename);
-    if(time != NULL) sp->len = str2time(&plumb_g, time);
     sp->sr = sr;
+    if(time != NULL) sp->len = str2time(&plumb_g, time);
 
     if(plumber_parse(&plumb_g, fp) == PLUMBER_OK){
         plumber_compute(&plumb_g, PLUMBER_INIT);
