@@ -8,7 +8,7 @@ ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE
 endif
 
-UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port nsmp prop noise
+UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port nsmp prop noise dcblock
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
