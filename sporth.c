@@ -58,11 +58,11 @@ int main(int argc, char *argv[])
     int driver = DRIVER_FILE;
     while(argc > 0 && argv[0][0] == '-') {
         switch(argv[0][1]){
-            case 'l':
+            case 'd':
                 if(--argc) {
                     *argv++;
 #ifdef DEBUG_MODE
-                    printf("setting length to %s\n", argv[0]);
+                    printf("setting duration to %s\n", argv[0]);
 #endif
                     //len = atol(argv[0]);
                     time = argv[0];

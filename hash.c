@@ -80,23 +80,3 @@ int sporth_htable_destroy(sporth_htable *ht)
 
     return SPORTH_OK;
 }
-/*
-int main()
-{
-    sporth_htable ht;
-    uint32_t val = 0;
-    sporth_htable_init(&ht);
-    const char *key = "Helloworld";
-    sporth_htable_add(&ht, "PaulBatchelor", 123456);
-    sporth_htable_add(&ht, "Helloworld", 3321);
-
-    if(sporth_search(&ht, key, &val) == SPORTH_OK) {
-        printf("The val for %s is %d\n", key, val);
-    } else {
-        printf("Could not find a value for key %s\n", key);
-    }
-
-    sporth_htable_destroy(&ht);
-    return 0;
-}
-*/

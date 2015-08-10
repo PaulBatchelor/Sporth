@@ -1,0 +1,23 @@
+#!/bin/sh
+if [ ! -f "sp_dict.lua" ]
+then
+    echo "sp_dict.lua not found."
+    echo "Please place sp_dict.lua in the current working directory"
+    exit 1
+fi
+
+if [ ! -f "sporth_gen.lua" ]
+then
+    echo "sporth_gen.lua not found."
+    echo "Please place sporth_gen.lua in the current working directory"
+    exit 1
+fi
+
+if [ "$#" -ne 3 ]
+then
+    echo "Usage: ./sporth_gen name macro args"
+    echo "Example: ./sporth_gen butlp SPORTH_BUTLP ff > butlp.c"
+    exit 1
+fi
+
+lua sporth_gen.lua $1 $2 $3
