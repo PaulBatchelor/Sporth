@@ -57,7 +57,7 @@ function UGen.pop(self, sp)
     indent = spaces .. "    "
     if(sp.params.mandatory ~= nil) then
         for _,v in pairs(sp.params.mandatory) do
-            io.write(string.format("%s%s = sporth_stack_pop_float(stack);\n", spaces, v.name))
+            io.write(string.format("%s%s = sporth_stack_pop_float(stack);\n", indent, v.name))
         end
     end
 
@@ -66,12 +66,16 @@ function UGen.pop(self, sp)
         size = 0
         for _,v in pairs(sp.params.optional) do
             table.insert(tbl, v)
-            --io.write(string.format("%s%s = sporth_stack_pop_float(stack);\n", indent, v.name))
             size = size + 1
         end
-        --for _,v in pairs(tbl) do
         for i = size, 1, -1 do
-            io.write(string.format("%s%s = sporth_stack_pop_float(stack);\n", indent, tbl[i].name))
+            if(string.match(tbl[i].type, "SPFLOAT")) then
+                io.write(string.format("%s%s = sporth_stack_pop_float(stack);\n",
+                    indent, tbl[i].name))
+            else
+                io.write(string.format("%s%s = (%s)sporth_stack_pop_float(stack);\n",
+                    indent, tbl[i].name, tbl[i].type))
+            end
         end
 
     end
@@ -101,7 +105,7 @@ function UGen.init(self, sp, args)
 
     if(sp.params.mandatory ~= nil) then
         for _,v in pairs(sp.params.mandatory) do
-            io.write(string.format(",%s ", v.name))
+            io.write(string.format(", %s", v.name))
         end
     end
     io.write(");\n")
