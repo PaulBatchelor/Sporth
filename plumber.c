@@ -1,3 +1,4 @@
+#include <time.h>
 #include "plumber.h"
 
 enum {
@@ -21,6 +22,7 @@ int plumber_init(plumber_data *plumb)
     plumb->nchan = 1;
     sporth_stack_init(&plumb->sporth.stack);
     plumber_ftmap_init(plumb);
+    plumb->seed = time(NULL);
     return PLUMBER_OK;
 }
 

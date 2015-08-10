@@ -42,6 +42,7 @@ typedef struct plumber_pipe {
 typedef struct plumber_data {
     int nchan;
     int mode;
+    int seed;
     sp_data *sp;
     sporth_data sporth;
     sp_ftbl tbl_stack[32];
@@ -56,7 +57,7 @@ int plumber_init(plumber_data *plumb);
 int plumber_clean(plumber_data *plumb);
 int plumber_add_float(plumber_data *plumb, float num);
 int plumber_add_string(plumber_data *plumb, const char *str);
-int plumber_add_module(plumber_data *plumb, 
+int plumber_add_module(plumber_data *plumb,
         uint32_t id, size_t size, void *ud);
 int plumber_compute(plumber_data *plumb, int mode);
 int plumber_parse(plumber_data *plumb, FILE *fp);
