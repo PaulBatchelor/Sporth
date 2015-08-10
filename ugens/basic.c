@@ -101,9 +101,9 @@ int sporth_rot(sporth_stack *stack, void *ud)
             v2 = sporth_stack_pop_float(stack);
             v3 = sporth_stack_pop_float(stack);
 
+            sporth_stack_push_float(stack, v2);
             sporth_stack_push_float(stack, v1);
             sporth_stack_push_float(stack, v3);
-            sporth_stack_push_float(stack, v2);
 
             break;
         case PLUMBER_DESTROY:
