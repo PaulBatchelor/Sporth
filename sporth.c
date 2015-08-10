@@ -154,6 +154,7 @@ int main(int argc, char *argv[])
 
     plumber_init(&plumb_g);
     plumb_g.nchan = nchan;
+    srand(plumb_g.seed);
     sp_data *sp;
 
     sp_createn(&sp, plumb_g.nchan);

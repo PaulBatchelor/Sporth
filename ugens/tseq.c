@@ -1,11 +1,11 @@
 #include "plumber.h"
 
-int sporth_tseq(sporth_stack *stack, void *ud) 
+int sporth_tseq(sporth_stack *stack, void *ud)
 {
     if(stack->error > 0) return PLUMBER_NOTOK;
 
     plumber_data *pd = ud;
-    SPFLOAT out = 0, trig = 0;
+    SPFLOAT out = 0, trig = 0, shuf = 0;
     char *ftname;
     sp_ftbl *ft;
     sp_tseq *tseq;
@@ -18,7 +18,7 @@ int sporth_tseq(sporth_stack *stack, void *ud)
             plumber_add_module(pd, SPORTH_TSEQ, sizeof(sp_tseq), tseq);
             break;
         case PLUMBER_INIT:
-            if(sporth_check_args(stack, "fs") != SPORTH_OK) {
+            if(sporth_check_args(stack, "ffs") != SPORTH_OK) {
                 stack->error++;
                 printf("Invalid arguments for tseq.\n");
                 return PLUMBER_NOTOK;
@@ -26,6 +26,7 @@ int sporth_tseq(sporth_stack *stack, void *ud)
             tseq = pd->last->ud;
 
             ftname = sporth_stack_pop_string(stack);
+            shuf = sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
 
             if(plumber_ftmap_search(pd, ftname, &ft) == PLUMBER_NOTOK) {
@@ -40,13 +41,15 @@ int sporth_tseq(sporth_stack *stack, void *ud)
 
         case PLUMBER_COMPUTE:
             tseq = pd->last->ud;
-            if(sporth_check_args(stack, "f") != SPORTH_OK) {
+            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
 
+            shuf = sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
 
+            tseq->shuf = shuf;
             sp_tseq_compute(pd->sp, tseq, &trig, &out);
             sporth_stack_push_float(stack, out);
             break;
@@ -55,10 +58,10 @@ int sporth_tseq(sporth_stack *stack, void *ud)
             sp_tseq_destroy(&tseq);
             break;
         default:
-            printf("Error: Unknown mode!"); 
+            printf("Error: Unknown mode!");
             stack->error++;
             return PLUMBER_NOTOK;
             break;
-    }   
+    }
     return PLUMBER_OK;
 }
