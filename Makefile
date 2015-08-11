@@ -9,7 +9,8 @@ CFLAGS += -DDEBUG_MODE
 endif
 
 UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
-	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse
+	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
+	samphold delay
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
