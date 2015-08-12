@@ -95,6 +95,7 @@ int plumber_clean(plumber_data *plumb)
     }
     sporth_htable_destroy(&plumb->sporth.dict);
     plumber_ftmap_destroy(plumb);
+    free(plumb->sporth.flist);
     return PLUMBER_OK;
 }
 
@@ -165,6 +166,57 @@ int plumber_add_module(plumber_data *plumb,
     plumb->last->next = new;
     plumb->last = new;
     plumb->npipes++;
+    return PLUMBER_OK;
+}
+int plumber_parse_string(plumber_data *plumb, char *str)
+{
+    char *out, *tmp;
+    uint32_t prev = 0, pos = 0, offset = 0, len = 0;
+    uint32_t size = strlen(str);
+
+    pos = 0;
+    offset = 0;
+    len = 0;
+    prev = 0;
+    while(pos < size) {
+        out = sporth_tokenizer(&plumb->sporth, str, size, &pos);
+        len = strlen(out);
+
+        switch(sporth_lexer(&plumb->sporth, out, len)) {
+            case SPORTH_FLOAT:
+#ifdef DEBUG_MODE
+                fprintf(stderr, "%s is a float!\n", out);
+#endif
+                plumber_add_float(plumb, atof(out));
+                break;
+            case SPORTH_STRING:
+                tmp = out;
+                tmp[len - 1] = '\0';
+                tmp++;
+#ifdef DEBUG_MODE
+                fprintf(stderr, "%s is a string!\n", out);
+#endif
+                plumber_add_string(plumb, tmp);
+                break;
+            case SPORTH_FUNC:
+#ifdef DEBUG_MODE
+                fprintf(stderr, "%s is a function!\n", out);
+#endif
+                if(sporth_exec(&plumb->sporth, out) == SPORTH_NOTOK) {
+                    plumb->sporth.stack.error++;
+                }
+                break;
+            case SPORTH_IGNORE:
+                break;
+            default:
+#ifdef DEBUG_MODE
+                fprintf(stderr,"No idea what %s is!\n", out);
+#endif
+                break;
+        }
+        free(out);
+    }
+
     return PLUMBER_OK;
 }
 

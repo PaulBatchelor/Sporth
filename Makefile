@@ -14,7 +14,7 @@ UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
-OBJ += func.o plumber.o stack.o parse.o hash.o
+OBJ += func.o plumber.o stack.o parse.o hash.o pfunc.o
 
 %.o: %.c
 	gcc $(CFLAGS) -g -c -Ih $< -o $@
@@ -30,6 +30,9 @@ util/val: val.c
 
 sporth: sporth.c $(OBJ) h/ugens.h
 	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
+
+examples/parse: examples/parse.c $(OBJ) h/ugens.h
+	gcc $< $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
 
 install:
 	install sporth /usr/local/bin
