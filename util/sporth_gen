@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Generates some template code from a soundpipe module
+# Be warned: this not a fully automatic process. Code should be checked.
+# Run from the home directory: ./util/sporth_gen
+
+if [ ! -f "util/sp_dict.lua" ]
+then
+    echo "sp_dict.lua not found."
+    echo "Please place sp_dict.lua in the util folder"
+    exit 1
+fi
+
+if [ ! -f "util/sporth_gen.lua" ]
+then
+    echo "sporth_gen.lua not found."
+    echo "Please place sporth_gen.lua in the util folder"
+    exit 1
+fi
+
+if [ "$#" -ne 3 ]
+then
+    echo "Usage: ./sporth_gen name macro args"
+    echo "Example: ./sporth_gen butlp SPORTH_BUTLP ff > butlp.c"
+    exit 1
+fi
+
+lua sporth_gen.lua $1 $2 $3

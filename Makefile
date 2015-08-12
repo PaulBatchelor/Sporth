@@ -22,10 +22,10 @@ OBJ += func.o plumber.o stack.o parse.o hash.o
 ugens/%.o: ugens/%.c
 	gcc $(CFLAGS) -g -Ih -c $< -o $@
 
-jack_wrapper: jack_wrapper.c
+util/jack_wrapper: jack_wrapper.c
 	gcc $< -lsoundpipe -lsndfile -ljack -o jack_wrapper -lm
 
-val: val.c
+util/val: val.c
 	gcc $< -o $@
 
 sporth: sporth.c $(OBJ) h/ugens.h
@@ -35,5 +35,5 @@ install:
 	install sporth /usr/local/bin
 
 clean:
-	rm -rf sporth $(OBJ) jack_wrapper val
+	rm -rf sporth $(OBJ) util/jack_wrapper util/val
 
