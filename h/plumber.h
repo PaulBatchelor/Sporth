@@ -54,6 +54,7 @@ typedef struct plumber_data {
 } plumber_data;
 
 int plumber_init(plumber_data *plumb);
+int plumber_register(plumber_data *plumb);
 int plumber_clean(plumber_data *plumb);
 int plumber_add_float(plumber_data *plumb, float num);
 int plumber_add_string(plumber_data *plumb, const char *str);

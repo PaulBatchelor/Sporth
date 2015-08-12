@@ -4,7 +4,8 @@
 
 int sporth_register_func(sporth_data *sporth, sporth_func *flist)
 {
-    sporth->flist = flist;
+    sporth->flist = malloc(sizeof(*flist));
+    memcpy(sporth->flist, flist, sizeof(*flist));
     uint32_t i = 0;
     while(sporth->flist[i].name != NULL) {
 #ifdef DEBUG_MODE
@@ -55,7 +56,7 @@ int sporth_check_args(sporth_stack *stack, const char *args)
                 break;
             case 's':
                 if(stack->stack[pos].type != SPORTH_STRING) {
-                    printf("Argument %d was expecting a string, got value %g instead\n", 
+                    printf("Argument %d was expecting a string, got value %g instead\n",
                             i, stack->stack[pos].fval);
                     stack->error++;
                     return SPORTH_NOTOK;
