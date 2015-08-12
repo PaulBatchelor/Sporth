@@ -10,7 +10,7 @@ int sporth_dcblock(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
 #ifdef DEBUG_MODE
-            fprintf("Creating module dcblk\n");
+            fprintf(stderr, "Creating module dcblk\n");
 #endif
             sp_dcblock_create(&data);
             plumber_add_module(pd, SPORTH_DCBLK, sizeof(sp_dcblock), data);

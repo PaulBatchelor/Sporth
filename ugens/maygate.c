@@ -13,7 +13,7 @@ int sporth_maygate(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "maygate: Creating\n")
+            fprintf(stderr, "maygate: Creating\n");
 #endif
 
             sp_maygate_create(&maygate);
@@ -22,7 +22,7 @@ int sporth_maygate(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "maygate: Initialising\n")
+            fprintf(stderr, "maygate: Initialising\n");
 #endif
 
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {
