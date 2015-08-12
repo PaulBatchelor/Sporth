@@ -10,7 +10,7 @@ endif
 
 UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
-	samphold delay
+	samphold delay switch
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
