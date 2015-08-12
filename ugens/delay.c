@@ -13,7 +13,7 @@ int sporth_delay(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "delay: Creating\n")
+            fprintf(stderr, "delay: Creating\n");
 #endif
 
             sp_delay_create(&delay);
@@ -22,7 +22,7 @@ int sporth_delay(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "delay: Initialising\n")
+            fprintf(stderr, "delay: Initialising\n");
 #endif
 
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {

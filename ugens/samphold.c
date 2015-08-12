@@ -12,7 +12,7 @@ int sporth_samphold(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "samphold: Creating\n")
+            fprintf(stderr, "samphold: Creating\n");
 #endif
 
             sp_samphold_create(&samphold);
@@ -21,7 +21,7 @@ int sporth_samphold(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "samphold: Initialising\n")
+            fprintf(stderr, "samphold: Initialising\n");
 #endif
 
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {

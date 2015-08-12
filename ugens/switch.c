@@ -13,7 +13,7 @@ int sporth_switch(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "switch: creating\n")
+            fprintf(stderr, "switch: creating\n");
 #endif
 
             sp_switch_create(&sw);
@@ -22,7 +22,7 @@ int sporth_switch(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "switch: initialising\n")
+            fprintf(stderr, "switch: initialising\n");
 #endif
 
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {

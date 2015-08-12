@@ -16,7 +16,7 @@ int sporth_rpt(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "rpt: Creating\n")
+            fprintf(stderr, "rpt: Creating\n");
 #endif
 
             sp_rpt_create(&rpt);
@@ -25,7 +25,7 @@ int sporth_rpt(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "rpt: Initialising\n")
+            fprintf(stderr, "rpt: Initialising\n");
 #endif
 
             if(sporth_check_args(stack, "ffffff") != SPORTH_OK) {

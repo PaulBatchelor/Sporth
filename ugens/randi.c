@@ -15,7 +15,7 @@ int sporth_randi(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "randi: Creating\n")
+            fprintf(stderr, "randi: Creating\n");
 #endif
 
             sp_randi_create(&randi);
@@ -24,7 +24,7 @@ int sporth_randi(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "randi: Initialising\n")
+            fprintf(stderr, "randi: Initialising\n");
 #endif
 
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {

@@ -12,7 +12,7 @@ int sporth_reverse(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "reverse: Creating\n")
+            fprintf(stderr, "reverse: Creating\n");
 #endif
 
             sp_reverse_create(&reverse);
@@ -21,7 +21,7 @@ int sporth_reverse(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "reverse: Initialising\n")
+            fprintf(stderr, "reverse: Initialising\n");
 #endif
 
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
