@@ -25,6 +25,9 @@ ugens/%.o: ugens/%.c
 jack_wrapper: jack_wrapper.c
 	gcc $< -lsoundpipe -lsndfile -ljack -o jack_wrapper -lm
 
+val: val.c
+	gcc $< -o $@
+
 sporth: sporth.c $(OBJ) h/ugens.h
 	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
 
@@ -32,9 +35,5 @@ install:
 	install sporth /usr/local/bin
 
 clean:
-	rm -rf sporth $(OBJ) jack_wrapper
+	rm -rf sporth $(OBJ) jack_wrapper val
 
-#stacks: stacks.c sporth.h
-#	gcc $< -o $@
-#hash: hash.c
-#	gcc hash.c -o hash
