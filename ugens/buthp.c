@@ -12,7 +12,7 @@ int sporth_buthp(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "buthp: Creating\n")
+            fprintf(stderr, "buthp: Creating\n");
 #endif
 
             sp_buthp_create(&buthp);
@@ -21,7 +21,7 @@ int sporth_buthp(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "buthp: Initialising\n")
+            fprintf(stderr, "buthp: Initialising\n");
 #endif
 
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {

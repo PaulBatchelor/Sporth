@@ -6,7 +6,7 @@ UGen = { name = module }
 
 function UGen.debug(self, str, spaces)
     io.write("\n#ifdef DEBUG_MODE\n")
-    io.write(string.format("%sfprintf(stderr, \"%s\")\n", spaces, str))
+    io.write(string.format("%sfprintf(stderr, \"%s\");\n", spaces, str))
     io.write("#endif\n\n")
 end
 
