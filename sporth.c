@@ -6,13 +6,6 @@
 #include "ugens.h"
 #undef SPORTH_UGEN
 
-#define SPORTH_UGEN(key, func, macro) {key, func, &plumb_g},
-plumber_data plumb_g;
-static sporth_func flist[] = {
-#include "ugens.h"
-{NULL, NULL, NULL}
-};
-#undef SPORTH_UGEN
 
 enum {
     DRIVER_FILE,
@@ -47,6 +40,14 @@ uint32_t str2time(plumber_data *pd, char *str)
 
 int main(int argc, char *argv[])
 {
+    static plumber_data plumb_g;
+    #define SPORTH_UGEN(key, func, macro) {key, func, &plumb_g},
+    static sporth_func flist[] = {
+    #include "ugens.h"
+    {NULL, NULL, NULL}
+    };
+    #undef SPORTH_UGEN
+
     char filename[60];
     sprintf(filename, "test.wav");
     unsigned long len = 5 * 44100;
