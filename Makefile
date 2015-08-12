@@ -14,7 +14,7 @@ UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
-OBJ += func.o plumber.o stack.o parse.o hash.o pfunc.o
+OBJ += func.o plumber.o stack.o parse.o hash.o
 
 %.o: %.c
 	gcc $(CFLAGS) -g -c -Ih $< -o $@

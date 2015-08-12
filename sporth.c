@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "plumber.h"
 
+#define SPORTH_UGEN(key, func, macro) int func(sporth_stack *stack, void *ud);
+#include "ugens.h"
+#undef SPORTH_UGEN
 
 
 enum {
@@ -38,6 +41,13 @@ uint32_t str2time(plumber_data *pd, char *str)
 int main(int argc, char *argv[])
 {
     static plumber_data plumb_g;
+    #define SPORTH_UGEN(key, func, macro) {key, func, &plumb_g},
+    static sporth_func flist[] = {
+    #include "ugens.h"
+    {NULL, NULL, NULL}
+    };
+    #undef SPORTH_UGEN
+
     char filename[60];
     sprintf(filename, "test.wav");
     unsigned long len = 5 * 44100;
@@ -140,7 +150,9 @@ int main(int argc, char *argv[])
         }
     }
 
-    plumber_register(&plumb_g);
+    sporth_htable_init(&plumb_g.sporth.dict);
+    sporth_register_func(&plumb_g.sporth, flist);
+
     plumber_init(&plumb_g);
     plumb_g.nchan = nchan;
     srand(plumb_g.seed);
