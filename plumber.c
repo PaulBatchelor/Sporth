@@ -290,6 +290,8 @@ int plumber_ftmap_init(plumber_data *plumb)
         plumb->ftmap[pos].last= &plumb->ftmap[pos].root;
     }
 
+    for(pos = 0; pos < 16; pos++) plumb->p[pos] = 0;
+
     return PLUMBER_OK;
 }
 

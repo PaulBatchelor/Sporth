@@ -1,6 +1,6 @@
 sptbl = {}
 
-dofile("sp_dict.lua")
+dofile("util/sp_dict.lua")
 
 UGen = { name = module }
 

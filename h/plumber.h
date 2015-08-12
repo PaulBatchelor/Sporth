@@ -51,6 +51,8 @@ typedef struct plumber_data {
     plumber_pipe *last;
 
     plumber_ftentry ftmap[256];
+
+    SPFLOAT p[16];
 } plumber_data;
 
 int plumber_init(plumber_data *plumb);

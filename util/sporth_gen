@@ -25,4 +25,4 @@ then
     exit 1
 fi
 
-lua sporth_gen.lua $1 $2 $3
+lua util/sporth_gen.lua $1 $2 $3
