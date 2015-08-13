@@ -20,6 +20,11 @@ PLUMBER_NOTOK,
 PLUMBER_PANIC
 };
 
+enum {
+DRIVER_FILE,
+DRIVER_RAW
+};
+
 typedef struct plumber_ftbl {
     sp_ftbl *ft;
     char *name;
@@ -72,3 +77,5 @@ int plumber_ftmap_init(plumber_data *plumb);
 int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft);
 int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft);
 int plumber_ftmap_destroy(plumber_data *plumb);
+void sporth_run(plumber_data *pd, int argc, char *argv[],
+    void *ud, void (*process)(sp_data *, void *));

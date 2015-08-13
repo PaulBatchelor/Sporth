@@ -1,6 +1,10 @@
 #include <time.h>
 #include "plumber.h"
 
+#define SPORTH_UGEN(key, func, macro) int func(sporth_stack *stack, void *ud);
+#include "ugens.h"
+#undef SPORTH_UGEN
+
 enum {
     SPACE,
     QUOTE,
@@ -345,4 +349,180 @@ int plumber_ftmap_destroy(plumber_data *plumb)
     }
 
     return PLUMBER_OK;
+}
+
+int plumber_register(plumber_data *plumb)
+{
+    #define SPORTH_UGEN(key, func, macro) {key, func, plumb},
+    sporth_func flist[] = {
+    #include "ugens.h"
+    {NULL, NULL, NULL}
+    };
+    #undef SPORTH_UGEN
+
+    sporth_htable_init(&plumb->sporth.dict);
+    sporth_register_func(&plumb->sporth, flist);
+
+    sporth_func *flist2 = malloc(sizeof(sporth_func) * plumb->sporth.nfunc);
+    flist2 = memcpy(flist2, flist, sizeof(sporth_func) * plumb->sporth.nfunc);
+    plumb->sporth.flist = flist2;
+}
+
+static uint32_t str2time(plumber_data *pd, char *str)
+{
+    int len = strlen(str);
+    char last = str[len - 1];
+    switch(last) {
+        case 's':
+            str[len - 1] = '\0';
+            return atof(str) * pd->sp->sr;
+            break;
+        default:
+            return atoi(str);
+            break;
+    }
+}
+
+void sporth_run(plumber_data *pd, int argc, char *argv[],
+    void *ud, void (*process)(sp_data *, void *))
+{
+    char filename[60];
+    sprintf(filename, "test.wav");
+    unsigned long len = 5 * 44100;
+    int sr = 44100;
+    int nchan = 1;
+    char *time = NULL;
+    *argv++;
+    argc--;
+    int driver = DRIVER_FILE;
+    while(argc > 0 && argv[0][0] == '-') {
+        switch(argv[0][1]){
+            case 'd':
+                if(--argc) {
+                    *argv++;
+#ifdef DEBUG_MODE
+                    printf("setting duration to %s\n", argv[0]);
+#endif
+                    //len = atol(argv[0]);
+                    time = argv[0];
+                } else {
+                    printf("There was a problem setting the length..\n");
+                    exit(1);
+                }
+                break;
+            case 'o':
+                if(--argc) {
+                    *argv++;
+#ifdef DEBUG_MODE
+                    printf("setting filename to %s\n", argv[0]);
+#endif
+                    strncpy(filename, argv[0], 60);
+                } else {
+                    printf("There was a problem setting the length..\n");
+                    exit(1);
+                }
+                break;
+            case 'r':
+                if(--argc) {
+                    *argv++;
+#ifdef DEBUG_MODE
+                    printf("setting samplerate to %s\n", argv[0]);
+#endif
+                    sr = atoi(argv[0]);
+                } else {
+                    printf("There was a problem setting the samplerate..\n");
+                    exit(1);
+                }
+                break;
+            case 'c':
+                if(--argc) {
+                    *argv++;
+#ifdef DEBUG_MODE
+                    printf("setting nchannels to %s\n", argv[0]);
+#endif
+                    nchan = atoi(argv[0]);
+                } else {
+                    printf("There was a problem setting the channels..\n");
+                    exit(1);
+                }
+                break;
+            case 'b':
+                if(--argc) {
+                    *argv++;
+                    if (!strcmp(argv[0], "file")) {
+                        driver = DRIVER_FILE;
+                    } else if ((!strcmp(argv[0], "raw"))) {
+                        driver = DRIVER_RAW;
+                    } else {
+                        printf("Could not find driver \"%s\".\n", argv[0]);
+                        exit(1);
+                    }
+                } else {
+                    printf("There was a problem setting the driver..\n");
+                    exit(1);
+                }
+                break;
+            case 'h':
+                printf("Usage: sporth input.sp\n");
+                exit(1);
+                break;
+            default:
+                printf("default.. \n");
+                exit(1);
+                break;
+        }
+        *argv++;
+        argc--;
+    }
+
+    FILE *fp;
+
+    if(argc == 0) {
+        fp = stdin;
+    } else {
+        fp = fopen(argv[0], "r");
+        if(fp == NULL) {
+            fprintf(stderr,
+                    "There was an issue opening the file %s.\n", argv[0]);
+            exit(1);
+        }
+    }
+
+    plumber_register(pd);
+    plumber_init(pd);
+    pd->nchan = nchan;
+    srand(pd->seed);
+    sp_data *sp;
+
+    sp_createn(&sp, pd->nchan);
+    pd->sp = sp;
+    sprintf(sp->filename, "%s", filename);
+    sp->sr = sr;
+    if(time != NULL) sp->len = str2time(pd, time);
+
+    if(plumber_parse(pd, fp) == PLUMBER_OK){
+        plumber_compute(pd, PLUMBER_INIT);
+        pd->sporth.stack.pos = 0;
+#ifdef DEBUG_MODE
+        plumber_show_pipes(pd);
+#endif
+        switch(driver) {
+            case DRIVER_FILE:
+                sp_process(sp, pd, process);
+                break;
+            case DRIVER_RAW:
+                sp_process_raw(sp, pd, process);
+                break;
+            default:
+                sp_process(sp, pd, process);
+                break;
+        }
+    }
+    if(pd->sporth.stack.error > 0) {
+        printf("Uh-oh! Sporth created %d error(s).\n",
+                pd->sporth.stack.error);
+    }
+    plumber_clean(pd);
+    fclose(fp);
+    sp_destroy(&sp);
 }
