@@ -633,3 +633,50 @@ int sporth_ne(sporth_stack *stack, void *ud)
     }
     return PLUMBER_OK;
 }
+
+int sporth_branch(sporth_stack *stack, void *ud)
+{
+    if(stack->error > 0) return PLUMBER_NOTOK;
+
+    plumber_data *pd = ud;
+    SPFLOAT v1, v2, cond;
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "branch: Creating\n");
+#endif
+            plumber_add_module(pd, SPORTH_BRANCH, 0, NULL);
+            break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "branch: Initializing\n");
+#endif
+            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
+                fprintf(stderr, "Not enough args for branch\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            v1 = sporth_stack_pop_float(stack);
+            v2 = sporth_stack_pop_float(stack);
+            cond = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0.0);
+            break;
+        case PLUMBER_COMPUTE:
+            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
+                return PLUMBER_NOTOK;
+            }
+            v1 = sporth_stack_pop_float(stack);
+            v2 = sporth_stack_pop_float(stack);
+            cond = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, (cond != 0 ? v2 : v1));
+            break;
+        case PLUMBER_DESTROY:
+            break;
+        defaubranch:
+           printf("branch: unknown mode!");
+           stack->error++;
+           return PLUMBER_NOTOK;
+           break;
+    }
+    return PLUMBER_OK;
+}
