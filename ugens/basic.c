@@ -580,7 +580,7 @@ int sporth_gt(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_DESTROY:
             break;
-        defaugt:
+        default:
            printf("gt: unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
@@ -625,7 +625,7 @@ int sporth_ne(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_DESTROY:
             break;
-        defaune:
+        default:
            printf("ne: unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
@@ -672,8 +672,41 @@ int sporth_branch(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_DESTROY:
             break;
-        defaubranch:
+        default:
            printf("branch: unknown mode!");
+           stack->error++;
+           return PLUMBER_NOTOK;
+           break;
+    }
+    return PLUMBER_OK;
+}
+
+int sporth_pos(sporth_stack *stack, void *ud)
+{
+    if(stack->error > 0) return PLUMBER_NOTOK;
+
+    plumber_data *pd = ud;
+    SPFLOAT pos;
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "pos: Creating\n");
+#endif
+            plumber_add_module(pd, SPORTH_POS, 0, NULL);
+            break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "pos: Initializing\n");
+#endif
+            sporth_stack_push_float(stack, 0.0);
+            break;
+        case PLUMBER_COMPUTE:
+            sporth_stack_push_float(stack, (SPFLOAT) pd->sp->pos / pd->sp->sr);
+            break;
+        case PLUMBER_DESTROY:
+            break;
+        default:
+           printf("pos: unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;

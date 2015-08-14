@@ -10,7 +10,7 @@ endif
 
 UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
-	samphold delay switch mode clip p
+	samphold delay switch mode clip p count
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
@@ -25,7 +25,9 @@ ugens/%.o: ugens/%.c
 util/jack_wrapper: jack_wrapper.c
 	gcc $< -lsoundpipe -lsndfile -ljack -o jack_wrapper -lm
 
-util/val: val.c
+val: util/val
+
+util/val: util/val.c
 	gcc $< -o $@
 
 sporth: sporth.c $(OBJ) h/ugens.h

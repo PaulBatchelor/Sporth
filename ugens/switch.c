@@ -43,9 +43,9 @@ int sporth_switch(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            trig = sporth_stack_pop_float(stack);
             input_2 = sporth_stack_pop_float(stack);
             input_1 = sporth_stack_pop_float(stack);
+            trig = sporth_stack_pop_float(stack);
             sw = pd->last->ud;
             sp_switch_compute(pd->sp, sw, &trig, &input_1, &input_2, &out);
             sporth_stack_push_float(stack, out);
