@@ -18,6 +18,40 @@ enum {
     LEX_ERROR
 };
 
+int sporth_f_default(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = ud;
+    switch(pd->mode) {
+        case PLUMBER_CREATE:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "Default user function in create mode.\n");
+#endif
+
+            break;
+        case PLUMBER_INIT:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "Default user function in init mode.\n");
+#endif
+            break;
+
+        case PLUMBER_COMPUTE:
+            break;
+
+        case PLUMBER_DESTROY:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "Default user function in destroy mode.\n");
+#endif
+            break;
+
+        default:
+            fprintf(stderr, "aux (f)unction: unknown mode!\n");
+            break;
+    }
+    return PLUMBER_OK;
+}
+
 int plumber_init(plumber_data *plumb)
 {
     plumb->mode = PLUMBER_CREATE;
@@ -27,6 +61,9 @@ int plumber_init(plumber_data *plumb)
     sporth_stack_init(&plumb->sporth.stack);
     plumber_ftmap_init(plumb);
     plumb->seed = time(NULL);
+    int pos;
+    for(pos = 0; pos < 16; pos++) plumb->p[pos] = 0;
+    for(pos = 0; pos < 16; pos++) plumb->f[pos] = sporth_f_default;
     return PLUMBER_OK;
 }
 
@@ -294,7 +331,6 @@ int plumber_ftmap_init(plumber_data *plumb)
         plumb->ftmap[pos].last= &plumb->ftmap[pos].root;
     }
 
-    for(pos = 0; pos < 16; pos++) plumb->p[pos] = 0;
 
     return PLUMBER_OK;
 }
@@ -489,7 +525,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     }
 
     plumber_register(pd);
-    plumber_init(pd);
+    //plumber_init(pd);
     pd->nchan = nchan;
     srand(pd->seed);
     sp_data *sp;

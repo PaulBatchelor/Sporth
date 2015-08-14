@@ -21,6 +21,7 @@ static void process(sp_data *sp, void *udata){
 int main(int argc, char *argv[])
 {
     UserData ud;
+    plumber_init(&ud.pd);
     sporth_run(&ud.pd, argc, argv, &ud, process);
     return 0;
 }

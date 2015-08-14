@@ -10,7 +10,7 @@ endif
 
 UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
-	samphold delay switch mode clip p count
+	samphold delay switch mode clip p count f
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
@@ -37,6 +37,9 @@ libsporth.a: $(OBJ)
 	ar rcs libsporth.a $(OBJ)
 
 examples/parse: examples/parse.c libsporth.a h/ugens.h
+	gcc $< $(CFLAGS) -g -Ih -o $@ libsporth.a -lsoundpipe -lsndfile -lm
+
+examples/user_function: examples/user_function.c libsporth.a h/ugens.h
 	gcc $< $(CFLAGS) -g -Ih -o $@ libsporth.a -lsoundpipe -lsndfile -lm
 
 install:

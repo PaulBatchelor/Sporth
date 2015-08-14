@@ -44,6 +44,12 @@ typedef struct plumber_pipe {
     struct plumber_pipe *next;
 } plumber_pipe;
 
+typedef struct {
+    int (*fun)(sporth_stack *, void *);
+    void *ud;
+} sporth_func_d;
+
+
 typedef struct plumber_data {
     int nchan;
     int mode;
@@ -58,6 +64,7 @@ typedef struct plumber_data {
     plumber_ftentry ftmap[256];
 
     SPFLOAT p[16];
+    int (*f[16])(sporth_stack *, void *);
 } plumber_data;
 
 int plumber_init(plumber_data *plumb);
