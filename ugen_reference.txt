@@ -1,0 +1,240 @@
+Name: sine
+Args: frequency (f), amplitude (f)
+Output: f
+Description: A simple sine generator.
+---
+Name: add
+Args:
+Output:
+Description:
+---
+Name: sub
+Args:
+Output:
+Description:
+---
+Name: mul
+Args:
+Output:
+Description:
+---
+Name: div
+Args:
+Output:
+Description:
+---
+Name: sine
+Args:
+Output:
+Description:
+---
+Name: c
+Args:
+Output:
+Description:
+---
+Name: mix
+Args:
+Output:
+Description:
+---
+Name: metro
+Args:
+Output:
+Description:
+---
+Name: tenv
+Args:
+Output:
+Description:
+---
+Name: fm
+Args:
+Output:
+Description:
+---
+Name: mtof
+Args:
+Output:
+Description:
+---
+Name: dup
+Args:
+Output:
+Description:
+---
+Name: swap
+Args:
+Output:
+Description:
+---
+Name: drop
+Args:
+Output:
+Description:
+---
+Name: revsc
+Args:
+Output:
+Description:
+---
+Name: gen_sine
+Args:
+Output:
+Description:
+---
+Name: osc
+Args:
+Output:
+Description:
+---
+Name: gen_vals
+Args:
+Output:
+Description:
+---
+Name: tseq
+Args:
+Output:
+Description:
+---
+Name: in
+Args:
+Output:
+Description:
+---
+Name: port
+Args:
+Output:
+Description:
+---
+Name: nsmp
+Args:
+Output:
+Description:
+---
+Name: prop
+Args:
+Output:
+Description:
+---
+Name: noise
+Args:
+Output:
+Description:
+---
+Name: dcblk
+Args:
+Output:
+Description:
+---
+Name: butlp
+Args:
+Output:
+Description:
+---
+Name: buthp
+Args:
+Output:
+Description:
+---
+Name: maygate
+Args:
+Output:
+Description:
+---
+Name: randi
+Args:
+Output:
+Description:
+---
+Name: rot
+Args:
+Output:
+Description:
+---
+Name: rpt
+Args:
+Output:
+Description:
+---
+Name: reverse
+Args:
+Output:
+Description:
+---
+Name: samphold
+Args:
+Output:
+Description:
+---
+Name: delay
+Args:
+Output:
+Description:
+---
+Name: switch
+Args:
+Output:
+Description:
+---
+Name: mode
+Args:
+Output:
+Description:
+---
+Name: clip
+Args:
+Output:
+Description:
+---
+Name: p
+Args:
+Output:
+Description:
+---
+Name: pset
+Args:
+Output:
+Description:
+---
+Name: eq
+Args:
+Output:
+Description:
+---
+Name: lt
+Args:
+Output:
+Description:
+---
+Name: gt
+Args:
+Output:
+Description:
+---
+Name: ne
+Args:
+Output:
+Description:
+---
+Name: branch
+Args:
+Output:
+Description:
+---
+Name: pos
+Args:
+Output:
+Description:
+---
+Name: count
+Args:
+Output:
+Description:
+---
+Name: f
+Args:
+Output:
+Description:
+---
