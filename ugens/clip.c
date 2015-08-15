@@ -26,31 +26,27 @@ int sporth_clip(sporth_stack *stack, void *ud)
             fprintf(stderr, "clip: Initialising\n");
 #endif
 
-            if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
+            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for clip\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            meth = sporth_stack_pop_float(stack);
             lim = sporth_stack_pop_float(stack);
-            arg = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
             clip = pd->last->ud;
-            sp_clip_init(pd->sp, clip, meth, lim);
+            sp_clip_init(pd->sp, clip, 2, lim);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
+            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for clip\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            meth = sporth_stack_pop_float(stack);
             lim = sporth_stack_pop_float(stack);
-            arg = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
             clip = pd->last->ud;
-            clip->arg = arg;
+            clip->lim = lim;
             sp_clip_compute(pd->sp, clip, &in, &out);
             sporth_stack_push_float(stack, out);
             break;

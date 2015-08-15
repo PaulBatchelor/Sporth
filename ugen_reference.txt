@@ -1,27 +1,22 @@
-Name: sine
-Args: frequency (f), amplitude (f)
-Output: f
-Description: A simple sine generator.
----
 Name: add
-Args:
-Output:
-Description:
+Args: v1 (f), v2 (f)
+Output: f
+Description: Performs addition
 ---
 Name: sub
-Args:
-Output:
-Description:
+Args: v1 (f), v2 (f)
+Output: f
+Description: Performs subtraction.
 ---
 Name: mul
-Args:
-Output:
-Description:
+Args: v1 (f), v2 (f)
+Output: f
+Description: Performs multiplication.
 ---
 Name: div
-Args:
-Output:
-Description:
+Args: v1 (f), v2 (f)
+Output: f
+Description: Performs division.
 ---
 Name: sine
 Args:
@@ -29,84 +24,84 @@ Output:
 Description:
 ---
 Name: c
-Args:
-Output:
-Description:
+Args: f
+Output: f
+Description: Constant. Do not use.
 ---
 Name: mix
-Args:
-Output:
-Description:
+Args: f..f
+Output: f
+Description: Sums up remaining items on stack.
 ---
 Name: metro
-Args:
-Output:
-Description:
+Args: frequency (f)
+Output: f
+Description: Creates clock signal.
 ---
 Name: tenv
-Args:
-Output:
-Description:
+Args: trig (f), attack (f), sustain (f), release (f)
+Output: f
+Description: Triggerable linear envelope generator.
 ---
 Name: fm
-Args:
-Output:
-Description:
+Args: frequency (f), amplitutude (f), carrier (f), modulator (f), index (f)
+Output: f
+Description: A simple FM oscillator.
 ---
 Name: mtof
-Args:
-Output:
-Description:
+Args: Note number (f)
+Output: f
+Description: Converts MIDI note number to Hz.
 ---
 Name: dup
-Args:
-Output:
-Description:
+Args: f
+Output: f f
+Description: Duplicates last item on the stack.
 ---
 Name: swap
-Args:
-Output:
-Description:
+Args: f f
+Output: f f
+Description: Swaps last two items on the stack.
 ---
 Name: drop
-Args:
-Output:
-Description:
+Args: f
+Output: (none)
+Description: Removes the last item on the stack.
 ---
 Name: revsc
-Args:
-Output:
-Description:
+Args: in1 (f), in2 (f), feedback (f), cutoff (f)
+Output: f f
+Description: Stereo reverb module from reverbsc Csound opcode.
 ---
 Name: gen_sine
-Args:
-Output:
-Description:
+Args: ftable name (s), size (f)
+Output: ftable
+Description: Generates a sine wave ftable.
 ---
 Name: osc
-Args:
-Output:
-Description:
+Args: freq (f), amp (f), ft name (s)
+Output: f
+Description: Wavetable lookup oscillator
 ---
 Name: gen_vals
-Args:
-Output:
-Description:
+Args: name (s), args (s)
+Output: ftable
+Description: Generates an ftable from a space delimited set of values.
 ---
 Name: tseq
-Args:
-Output:
-Description:
+Args: trig (f), mode (f), ft name (s)
+Output: f
+Description: Triggered sequencer. modes: 0 = normal, 1 = shuffle.
 ---
 Name: in
-Args:
-Output:
-Description:
+Args: (none)
+Output: f
+Description: Read a float from STDIN.
 ---
 Name: port
-Args:
-Output:
-Description:
+Args: htime (f)
+Output: f
+Description: Applies portamento to a signal.
 ---
 Name: nsmp
 Args:
@@ -114,127 +109,127 @@ Output:
 Description:
 ---
 Name: prop
-Args:
-Output:
-Description:
+Args: bpm (f), prop string (s)
+Output: f
+Description: Parses prop code to produce a set of triggers
 ---
 Name: noise
-Args:
-Output:
-Description:
+Args: gain (f)
+Output: f
+Description: White noise generator.
 ---
 Name: dcblk
-Args:
-Output:
-Description:
+Args: f
+Output: f
+Description: dc block filter.
 ---
 Name: butlp
-Args:
-Output:
-Description:
+Args: in (f), cutoff (f)
+Output: f
+Description: Butterworth lowpass filter
 ---
 Name: buthp
-Args:
-Output:
-Description:
+Args: in (f), cutoff (f)
+Output: f
+Description: Butterworth highpass filter
 ---
 Name: maygate
-Args:
-Output:
-Description:
+Args: trig (f), probability (f), mode
+Output: f
+Description: Random selection of gate or no gate. output mode: 0 = gate 1 = trigger
 ---
 Name: randi
-Args:
-Output:
-Description:
+Args: min (f), max (f), freq (f)
+Output: f
+Description: Randomized line segment with interpolation
 ---
 Name: rot
-Args:
-Output:
-Description:
+Args: f f f
+Output: f f f
+Description: Stack rotate. s: 1 2 3 -> 2 3 1
 ---
 Name: rpt
-Args:
-Output:
-Description:
+Args: trig (f), bpm (f), div (f), rep (f), bufsize (f)
+Output: f
+Description: Stutterer / repeater
 ---
 Name: reverse
-Args:
-Output:
-Description:
+Args: in (f), delay (f)
+Output: f
+Description: reverse delay
 ---
 Name: samphold
-Args:
-Output:
-Description:
+Args: in (f), trig (f)
+Output: f
+Description: sample and hold
 ---
 Name: delay
-Args:
-Output:
-Description:
+Args: in (f), feedback (f), deltime (f)
+Output: f
+Description: feedback delay
 ---
 Name: switch
-Args:
-Output:
-Description:
+Args: trig (f), sig1 (f), sig2 (f)
+Output: f
+Description: toggle between two signals
 ---
 Name: mode
-Args:
-Output:
-Description:
+Args: in (f), freq (f), Q (f)
+Output: f
+Description: modal filter
 ---
 Name: clip
-Args:
-Output:
-Description:
+Args: in (f), limit (f)
+Output: f
+Description: clip limiter / distortion
 ---
 Name: p
-Args:
-Output:
-Description:
+Args: num (f)
+Output: f
+Description: p register get
 ---
 Name: pset
-Args:
-Output:
-Description:
+Args: val (f), num (f)
+Output: f
+Description: p register set
 ---
 Name: eq
-Args:
-Output:
-Description:
+Args: v1 (f), v2 (f)
+Output: f
+Description: conditional equals
 ---
 Name: lt
-Args:
-Output:
-Description:
+Args: v1 (f), v2 (f)
+Output: f
+Description: conditional lt
 ---
 Name: gt
-Args:
-Output:
-Description:
+Args: v1 (f), v2 (f)
+Output: f
+Description: conditional greater than
 ---
 Name: ne
-Args:
-Output:
-Description:
+Args: v1 (f), v2 (f)
+Output: f
+Description: conditional not-equal to
 ---
 Name: branch
-Args:
-Output:
-Description:
+Args: gate (f), sig1 (f), sig2 (f)
+Output: f
+Description: returns signal based on state of gate
 ---
 Name: pos
-Args:
-Output:
-Description:
+Args: (none)
+Output: f
+Description: returns playing time, in seconds
 ---
 Name: count
-Args:
-Output:
-Description:
+Args: trig (f), max (f), mode (f)
+Output: f
+Description: clock counter. mode: 0 = loop, 1 = one-shot
 ---
 Name: f
-Args:
-Output:
-Description:
+Args: num (f)
+Output: (none by default)
+Description: Call a user defined function
 ---
