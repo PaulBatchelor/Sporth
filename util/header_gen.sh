@@ -1,4 +1,4 @@
-HEADER=sporth.h
+HEADER=tmp.h
 echo "/* This is a generated header file */" > $HEADER
 cat h/sporth.h >> $HEADER
 csplit h/plumber.h '/* ---- */'

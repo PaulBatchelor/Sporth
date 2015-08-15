@@ -247,7 +247,7 @@ int sporth_sine(sporth_stack *stack, void *ud)
             freq = sporth_stack_pop_float(stack);
             data = pd->last->ud;
             sp_gen_sine(pd->sp, data->ft);
-            sp_osc_init(pd->sp, data->osc, data->ft);
+            sp_osc_init(pd->sp, data->osc, data->ft, 0);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:

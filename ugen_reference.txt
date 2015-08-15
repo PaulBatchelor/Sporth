@@ -79,7 +79,7 @@ Output: ftable
 Description: Generates a sine wave ftable.
 ---
 Name: osc
-Args: freq (f), amp (f), ft name (s)
+Args: freq (f), amp (f), phase (f), ft name (s)
 Output: f
 Description: Wavetable lookup oscillator
 ---
@@ -232,4 +232,14 @@ Name: f
 Args: num (f)
 Output: (none by default)
 Description: Call a user defined function
+---
+Name: gen_sinesum
+Args: name (s), size (f), args (s)
+Output: ftable
+Description: Summation of harmonically related sines. based on GEN10.
+---
+Name: gen_line
+Args: name (s), size (f), args (s)
+Output: ftable
+Description: Generates a line from ordered list of breakpoints.
 ---

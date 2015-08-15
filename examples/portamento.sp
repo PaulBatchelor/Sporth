@@ -2,7 +2,8 @@
 
 "seq" "60 63 65" gen_vals
 
-5 metro dup
+5 metro
+dup
 0 "seq" tseq
 
 swap 1 1 count

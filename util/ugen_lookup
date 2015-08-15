@@ -1,0 +1,15 @@
+#!/bin/sh
+if [ "$#" -eq  0 ]
+then
+echo "Usage ./ugen_lookup NAME"
+exit 1
+fi
+
+NAME=$1
+
+REF=ugen_reference.txt
+
+LINE=$(grep -r -n "^Name:.*$NAME$" $REF | cut -d ':' -f 1)
+END=$(echo "$LINE + 3" | bc)
+
+sed -n "$LINE,$END P" $REF

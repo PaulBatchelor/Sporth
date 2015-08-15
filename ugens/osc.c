@@ -13,18 +13,20 @@ int sporth_osc(sporth_stack *stack, void *ud)
     if(stack->error > 0) return PLUMBER_NOTOK;
 
     plumber_data *pd = ud;
-    SPFLOAT out = 0, amp, freq;
+    SPFLOAT out = 0, amp, freq, phs;
     char *ftname;
     sp_ftbl *ft;
     sp_osc *osc;
     switch(pd->mode){
         case PLUMBER_CREATE:
-            printf("Creating osc function... \n");
+#ifdef DEBUGMODE
+            fprintf(stderr, "Creating osc function... \n");
+#endif
             sp_osc_create(&osc);
             plumber_add_module(pd, SPORTH_OSC, sizeof(sp_osc), osc);
             break;
         case PLUMBER_INIT:
-            if(sporth_check_args(stack, "ffs") != SPORTH_OK) {
+            if(sporth_check_args(stack, "fffs") != SPORTH_OK) {
                 stack->error++;
                 printf("Invalid arguments for osc.\n");
                 return PLUMBER_NOTOK;
@@ -32,6 +34,7 @@ int sporth_osc(sporth_stack *stack, void *ud)
             osc = pd->last->ud;
 
             ftname = sporth_stack_pop_string(stack);
+            phs = sporth_stack_pop_float(stack);
             amp = sporth_stack_pop_float(stack);
             freq = sporth_stack_pop_float(stack);
 
@@ -40,7 +43,7 @@ int sporth_osc(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
 
-            sp_osc_init(pd->sp, osc, ft);
+            sp_osc_init(pd->sp, osc, ft, phs);
             sporth_stack_push_float(stack, 0.0);
             free(ftname);
             break;
@@ -48,6 +51,7 @@ int sporth_osc(sporth_stack *stack, void *ud)
         case PLUMBER_COMPUTE:
             osc = pd->last->ud;
 
+            phs = sporth_stack_pop_float(stack);
             amp = sporth_stack_pop_float(stack);
             freq = sporth_stack_pop_float(stack);
 

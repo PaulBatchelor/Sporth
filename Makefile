@@ -10,7 +10,7 @@ endif
 
 UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
-	samphold delay switch mode clip p count f
+	samphold delay switch mode clip p count f gen_sinesum gen_line
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
@@ -33,10 +33,10 @@ util/val: util/val.c
 sporth: sporth.c $(OBJ) h/ugens.h
 	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
 
-libsporth.a: $(OBJ) sporth.h
+libsporth.a: $(OBJ) tmp.h
 	ar rcs libsporth.a $(OBJ)
 
-sporth.h: $(OBJ)
+tmp.h: $(OBJ)
 	sh util/header_gen.sh
 
 examples/parse: examples/parse.c libsporth.a h/ugens.h
@@ -45,13 +45,13 @@ examples/parse: examples/parse.c libsporth.a h/ugens.h
 examples/user_function: examples/user_function.c libsporth.a h/ugens.h
 	gcc $< $(CFLAGS) -g -Ih -o $@ libsporth.a -lsoundpipe -lsndfile -lm
 
-install: libsporth.a sporth sporth.h
+install: libsporth.a sporth tmp.h
 	install sporth /usr/local/bin
-	install sporth.h /usr/local/include
+	install tmp.h /usr/local/include/sporth.h
 	install libsporth.a /usr/local/lib
 
 clean:
 	rm -rf sporth $(OBJ) util/jack_wrapper util/val examples/parse
-	rm -rf sporth.h
+	rm -rf tmp.h
 	rm -rf libsporth.a
 
