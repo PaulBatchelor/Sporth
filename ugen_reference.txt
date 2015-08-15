@@ -19,9 +19,9 @@ Output: f
 Description: Performs division.
 ---
 Name: sine
-Args:
-Output:
-Description:
+Args: freq (f), amp (f)
+Output: f
+Description: Simple sine oscillator
 ---
 Name: c
 Args: f
@@ -104,9 +104,9 @@ Output: f
 Description: Applies portamento to a signal.
 ---
 Name: nsmp
-Args:
-Output:
-Description:
+Args: trig (f), index (f), ini (s), wav (s)
+Output: f
+Description: Nanosamp sampler. See soundpipe docs.
 ---
 Name: prop
 Args: bpm (f), prop string (s)

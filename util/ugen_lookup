@@ -7,9 +7,25 @@ fi
 
 NAME=$1
 
-REF=ugen_reference.txt
+REF=/usr/local/share/sporth/ugen_reference.txt
 
-LINE=$(grep -r -n "^Name:.*$NAME$" $REF | cut -d ':' -f 1)
-END=$(echo "$LINE + 3" | bc)
+if [ ! -f ]
+then
+echo "$REF does not exist!"
+exit 1
+fi
 
-sed -n "$LINE,$END P" $REF
+LINES=$(grep -r -n "^Name:" $REF | egrep "$NAME" | cut -d ':' -f 1 | sed "s/\n/ /g")
+
+if [ -z "$LINES" ]
+then
+echo "Could not find entry $NAME"
+exit 1
+fi
+
+for START in $LINES
+do
+END=$(echo "$START + 3" | bc)
+sed -n "$START,$END P" $REF
+echo
+done

@@ -49,6 +49,9 @@ install: libsporth.a sporth tmp.h
 	install sporth /usr/local/bin
 	install tmp.h /usr/local/include/sporth.h
 	install libsporth.a /usr/local/lib
+	mkdir -p /usr/local/share/sporth
+	install ugen_reference.txt /usr/local/share/sporth
+	install util/ugen_lookup /usr/local/bin
 
 clean:
 	rm -rf sporth $(OBJ) util/jack_wrapper util/val examples/parse
