@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include "sporth.h"
 
 enum {
@@ -17,7 +18,7 @@ enum {
     LEX_IGNORE
 };
 
-char * sporth_tokenizer(sporth_data *sporth, char *str, 
+char * sporth_tokenizer(sporth_data *sporth, char *str,
         uint32_t size, uint32_t *pos)
 {
     char c;
@@ -29,7 +30,7 @@ char * sporth_tokenizer(sporth_data *sporth, char *str,
     while(*pos < size && running) {
         c = str[*pos];
         switch(mode) {
-            case SEEK: 
+            case SEEK:
                 switch(c) {
                     case ' ':
                         mode = SPACE;

@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+
 #include "sporth.h"
 
 int sporth_stack_push_float(sporth_stack *stack, float val)
@@ -13,7 +18,7 @@ int sporth_stack_push_float(sporth_stack *stack, float val)
     } else {
         fprintf(stderr, "Stack limit of %d reached, cannot push float value.\n", stack->pos);
         stack->error++;
-        return SPORTH_NOTOK; 
+        return SPORTH_NOTOK;
     }
 }
 

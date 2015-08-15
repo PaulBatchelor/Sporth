@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "sporth.h"
 
 uint32_t sporth_hash(const char *str)

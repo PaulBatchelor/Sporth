@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
-
 enum {
 SPORTH_FLOAT,
 SPORTH_STRING,
@@ -73,6 +68,6 @@ int sporth_exec(sporth_data *sporth, const char *keyword);
 
 int sporth_gettype(sporth_data *sporth, char *str, int mode);
 int sporth_parse(sporth_data *sporth, const char *filename);
-char * sporth_tokenizer(sporth_data *sporth, char *str, 
+char * sporth_tokenizer(sporth_data *sporth, char *str,
         uint32_t size, uint32_t *pos);
 

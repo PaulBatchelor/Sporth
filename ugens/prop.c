@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "plumber.h"
 
 int sporth_prop(sporth_stack *stack, void *ud)

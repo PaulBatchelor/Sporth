@@ -1,4 +1,9 @@
 #include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+
 #include "plumber.h"
 
 #define SPORTH_UGEN(key, func, macro) int func(sporth_stack *stack, void *ud);

@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include "plumber.h"
 
 int sporth_f(sporth_stack *stack, void *ud)

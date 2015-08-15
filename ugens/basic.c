@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "plumber.h"
 
 int sporth_mix(sporth_stack *stack, void *ud)

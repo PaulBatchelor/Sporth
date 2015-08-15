@@ -1,3 +1,8 @@
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "sporth.h"
 
 #define LENGTH(x) ((int)(sizeof(x) / sizeof *(x)))
@@ -55,7 +60,7 @@ int sporth_check_args(sporth_stack *stack, const char *args)
                 break;
             case 's':
                 if(stack->stack[pos].type != SPORTH_STRING) {
-                    printf("Argument %d was expecting a string, got value %g instead\n", 
+                    printf("Argument %d was expecting a string, got value %g instead\n",
                             i, stack->stack[pos].fval);
                     stack->error++;
                     return SPORTH_NOTOK;

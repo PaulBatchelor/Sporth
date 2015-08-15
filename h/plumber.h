@@ -10,6 +10,8 @@ SPORTH_LAST
 };
 #undef SPORTH_UGEN
 
+/* ---- */
+
 enum {
 PLUMBER_CREATE,
 PLUMBER_INIT,

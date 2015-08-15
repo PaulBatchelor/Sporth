@@ -1,6 +1,7 @@
 *.wav
 *.o
 *.swp
+*.a
 sporth
 playground
 sp_dict.lua

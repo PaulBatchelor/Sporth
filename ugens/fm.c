@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "plumber.h"
 
 typedef struct {
@@ -5,7 +9,7 @@ typedef struct {
     sp_ftbl *ft;
 } sporth_fm_d;
 
-int sporth_fm(sporth_stack *stack, void *ud) 
+int sporth_fm(sporth_stack *stack, void *ud)
 {
     if(stack->error > 0) return PLUMBER_NOTOK;
 
@@ -68,10 +72,10 @@ int sporth_fm(sporth_stack *stack, void *ud)
             free(fm);
             break;
         default:
-            printf("Error: Unknown mode!"); 
+            printf("Error: Unknown mode!");
             stack->error++;
             return PLUMBER_NOTOK;
             break;
-    }   
+    }
     return PLUMBER_OK;
 }

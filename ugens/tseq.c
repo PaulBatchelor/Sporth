@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "plumber.h"
 
 int sporth_tseq(sporth_stack *stack, void *ud)

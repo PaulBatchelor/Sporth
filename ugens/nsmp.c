@@ -1,6 +1,8 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "plumber.h"
 
-int sporth_nsmp(sporth_stack *stack, void *ud) 
+int sporth_nsmp(sporth_stack *stack, void *ud)
 {
     if(stack->error > 0) return PLUMBER_NOTOK;
 
@@ -31,7 +33,7 @@ int sporth_nsmp(sporth_stack *stack, void *ud)
 
             if(sp_nsmp_init(pd->sp, nsmp, wav, ini) == SP_NOT_OK) {
                 fprintf(stderr, "nsmp: there was an error opening the files\n");
-                stack->error++;    
+                stack->error++;
             };
             sporth_stack_push_float(stack, 0.0);
             free(wav);
@@ -57,10 +59,10 @@ int sporth_nsmp(sporth_stack *stack, void *ud)
             sp_nsmp_destroy(&nsmp);
             break;
         default:
-            printf("Error: Unknown mode!"); 
+            printf("Error: Unknown mode!");
             stack->error++;
             return PLUMBER_NOTOK;
             break;
-    }   
+    }
     return PLUMBER_OK;
 }

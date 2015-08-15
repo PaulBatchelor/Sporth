@@ -1,6 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "plumber.h"
 
-int sporth_gen_sine(sporth_stack *stack, void *ud) 
+int sporth_gen_sine(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
 
@@ -33,11 +36,11 @@ int sporth_gen_sine(sporth_stack *stack, void *ud)
             break;
 
         case PLUMBER_DESTROY:
-            break; 
+            break;
 
         default:
-           printf("Error: Unknown mode!"); 
+           printf("Error: Unknown mode!");
            break;
-    }   
+    }
     return PLUMBER_OK;
 }
