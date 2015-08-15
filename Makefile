@@ -55,6 +55,7 @@ install: libsporth.a sporth tmp.h
 
 clean:
 	rm -rf sporth $(OBJ) util/jack_wrapper util/val examples/parse
+	rm -rf examples/user_function
 	rm -rf tmp.h
 	rm -rf libsporth.a
 
