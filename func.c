@@ -73,41 +73,15 @@ int sporth_check_args(sporth_stack *stack, const char *args)
     return SPORTH_OK;
 }
 
-//int main()
-//{
-//    sporth_data sporth;
-//
-//    sporth_htable_init(&sporth.dict);
-//
-//    static sporth_func flist[] = {
-//        {"add", add, &GlobalData},
-//        {"sub", sub, NULL},
-//        {"mul", mul, NULL},
-//        {"div", divide, NULL},
-//        {NULL, NULL, NULL}
-//    };
-//
-//
-//    sporth_register_func(&sporth, flist);
-///* 0.5 1.5 add 3.0 mul 2.0 mul 4 sub*/
-//
-//    sporth_stack_push_float(&sporth.stack, 0.5);
-//    sporth_stack_push_float(&sporth.stack, 1.5);
-//    sporth_exec(&sporth, "add");
-//    sporth_stack_push_float(&sporth.stack, 3.0);
-//    sporth_exec(&sporth, "mul");
-//    sporth_stack_push_float(&sporth.stack, 2.0);
-//    sporth_exec(&sporth, "mul");
-//    sporth_stack_push_float(&sporth.stack, 4.0);
-//    sporth_exec(&sporth, "div");
-//    sporth_stack_push_float(&sporth.stack, 1);
-//    sporth_exec(&sporth, "sub");
-//
-//
-//    printf("The value is %g!, and the userdata is %g\n",
-//        sporth_stack_pop_float(&sporth.stack), GlobalData.val);
-//
-//    sporth_htable_destroy(&sporth.dict);
-//
-//    return 0;
-//}
+int sporth_init(sporth_data *sporth)
+{
+    sporth_stack_init(&sporth->stack);
+    sporth_htable_init(&sporth->dict);
+    return SPORTH_OK;
+}
+
+int sporth_destroy(sporth_data *sporth)
+{
+    sporth_htable_destroy(&sporth->dict);
+}
+

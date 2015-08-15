@@ -1,3 +1,7 @@
+#ifdef MINIMAL
+#include <stdlib.h>
+#endif
+
 enum {
 SPORTH_FLOAT,
 SPORTH_STRING,
@@ -65,9 +69,12 @@ char * sporth_stack_pop_string(sporth_stack *stack);
 int sporth_check_args(sporth_stack *stack, const char *args);
 int sporth_register_func(sporth_data *sporth, sporth_func *flist);
 int sporth_exec(sporth_data *sporth, const char *keyword);
+int sporth_init(sporth_data *sporth);
+int sporth_destroy(sporth_data *sporth);
 
 int sporth_gettype(sporth_data *sporth, char *str, int mode);
 int sporth_parse(sporth_data *sporth, const char *filename);
 char * sporth_tokenizer(sporth_data *sporth, char *str,
         uint32_t size, uint32_t *pos);
+int sporth_lexer(sporth_data *sporth, char *str, int32_t size);
 

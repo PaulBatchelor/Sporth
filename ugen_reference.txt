@@ -149,7 +149,7 @@ Output: f f f
 Description: Stack rotate. s: 1 2 3 -> 2 3 1
 ---
 Name: rpt
-Args: trig (f), bpm (f), div (f), rep (f), bufsize (f)
+Args: in (f), trig (f), bpm (f), div (f), rep (f), bufsize (f)
 Output: f
 Description: Stutterer / repeater
 ---
