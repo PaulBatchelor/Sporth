@@ -15,7 +15,8 @@ enum {
     LEX_STRING,
     LEX_FUNC,
     LEX_ERROR,
-    LEX_IGNORE
+    LEX_IGNORE,
+    LEX_DASH
 };
 
 char * sporth_tokenizer(sporth_data *sporth, char *str,
@@ -98,6 +99,8 @@ int sporth_lexer(sporth_data *sporth, char *str, int32_t size)
             case LEX_START:
                 switch(c) {
                     case '-':
+                        mode = LEX_DASH;
+                        break;
                     case '0':
                     case '1':
                     case '2':
@@ -121,6 +124,7 @@ int sporth_lexer(sporth_data *sporth, char *str, int32_t size)
                         break;
                 }
                 break;
+            case LEX_DASH:
             case LEX_FLOAT:
                 switch(c) {
                     case '0':
@@ -196,6 +200,7 @@ int sporth_lexer(sporth_data *sporth, char *str, int32_t size)
             return SPORTH_STRING;
         case LEX_IGNORE:
             return SPORTH_IGNORE;
+        case LEX_DASH:
         case LEX_FUNC:
             return SPORTH_FUNC;
         case LEX_START:
