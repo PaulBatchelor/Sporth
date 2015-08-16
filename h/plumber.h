@@ -67,6 +67,7 @@ typedef struct plumber_data {
 
     SPFLOAT p[16];
     int (*f[16])(sporth_stack *, void *);
+    void *ud;
 } plumber_data;
 
 int plumber_init(plumber_data *plumb);

@@ -540,7 +540,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     sprintf(sp->filename, "%s", filename);
     sp->sr = sr;
     if(time != NULL) sp->len = str2time(pd, time);
-
+    pd->ud = ud;
     if(plumber_parse(pd, fp) == PLUMBER_OK){
         plumber_compute(pd, PLUMBER_INIT);
         pd->sporth.stack.pos = 0;
@@ -549,13 +549,13 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
 #endif
         switch(driver) {
             case DRIVER_FILE:
-                sp_process(sp, pd, process);
+                sp_process(sp, ud, process);
                 break;
             case DRIVER_RAW:
-                sp_process_raw(sp, pd, process);
+                sp_process_raw(sp, ud, process);
                 break;
             default:
-                sp_process(sp, pd, process);
+                sp_process(sp, ud, process);
                 break;
         }
     }
