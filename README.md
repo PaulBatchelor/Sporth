@@ -36,5 +36,5 @@ sporth -d 5s -o dialtone.wav examples/dialtone.sp
 
 This will generate a 5 second audio clip of sound.
 
-More information can on Sporth can be found 
+More information on Sporth can be found 
 [here](http://paulbatchelor.github.io/proj/sporth.html).
