@@ -2,6 +2,8 @@
 #default: func
 default: sporth
 
+MASTER_MAKEFILE=1
+
 CFLAGS += -O3
 
 ifdef DEBUG_MODE
@@ -10,7 +12,11 @@ endif
 
 UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
-	samphold delay switch mode clip p count f gen_sinesum gen_line
+	samphold delay switch mode clip p count f gen_sinesum gen_line \
+	dmetro
+
+BIN = sporth examples/parse examples/user_function util/jack_wrapper util/val
+
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
@@ -45,6 +51,8 @@ examples/parse: examples/parse.c libsporth.a h/ugens.h
 examples/user_function: examples/user_function.c libsporth.a h/ugens.h
 	gcc $< $(CFLAGS) -g -Ih -o $@ libsporth.a -lsoundpipe -lsndfile -lm
 
+include util/luasporth/Makefile
+
 install: libsporth.a sporth tmp.h
 	install sporth /usr/local/bin
 	install tmp.h /usr/local/include/sporth.h
@@ -54,8 +62,8 @@ install: libsporth.a sporth tmp.h
 	install util/ugen_lookup /usr/local/bin
 
 clean:
-	rm -rf sporth $(OBJ) util/jack_wrapper util/val examples/parse
-	rm -rf examples/user_function
+	rm -rf $(OBJ) 
+	rm -rf $(BIN)
 	rm -rf tmp.h
 	rm -rf libsporth.a
 

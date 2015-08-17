@@ -24,9 +24,9 @@ Output: f
 Description: Simple sine oscillator
 ---
 Name: c
-Args: f
+Args: init value (f)
 Output: f
-Description: Constant. Do not use.
+Description: Constant generator, used for feedback loops.
 ---
 Name: mix
 Args: f..f
@@ -242,4 +242,9 @@ Name: gen_line
 Args: name (s), size (f), args (s)
 Output: ftable
 Description: Generates a line from ordered list of breakpoints.
+---
+Name: dmetro
+Args: time (f)
+Output: f
+Description: Trigger envelope, using time instead of frequency
 ---

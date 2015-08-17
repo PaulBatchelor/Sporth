@@ -126,8 +126,7 @@ int sporth_dup(sporth_stack *stack, void *ud)
     int n;
     switch(pd->mode){
         case PLUMBER_CREATE:
-            plumber_add_module(pd, SPORTH_DUP, 0,
-                    NULL);
+            plumber_add_module(pd, SPORTH_DUP, 0, NULL);
             break;
         case PLUMBER_INIT:
             val = sporth_stack_pop_float(stack);
@@ -196,16 +195,28 @@ int sporth_constant(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
 
-    if(sporth_check_args(stack, "f") != SPORTH_OK) {
-        return SPORTH_NOTOK;
-    }
+    float val;
 
-    float val = sporth_stack_pop_float(stack);
     switch(pd->mode){
         case PLUMBER_CREATE:
-            plumber_add_float(pd, val);
+            plumber_add_module(pd, SPORTH_CONSTANT, 0, NULL);
+            break;
+        case PLUMBER_INIT:
+            if(sporth_check_args(stack, "f") != SPORTH_OK) {
+                stack->error++;
+                return SPORTH_NOTOK;
+            }
+            val = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, val);
             break;
         case PLUMBER_COMPUTE:
+            if(pd->sp->pos == 0) {
+                val = sporth_stack_pop_float(stack);
+            } else {
+                val = sporth_stack_pop_float(stack);
+                sporth_stack_pop_float(stack);
+            }
+            sporth_stack_push_float(stack, val);
             break;
         case PLUMBER_DESTROY:
             break;
