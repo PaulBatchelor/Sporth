@@ -444,7 +444,6 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
 #ifdef DEBUG_MODE
                     printf("setting duration to %s\n", argv[0]);
 #endif
-                    //len = atol(argv[0]);
                     time = argv[0];
                 } else {
                     printf("There was a problem setting the length..\n");
@@ -454,12 +453,16 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
             case 'o':
                 if(--argc) {
                     *argv++;
+                    if(!strcmp(argv[0], "raw")) {
+                        driver = DRIVER_RAW;
+                    } else {
 #ifdef DEBUG_MODE
-                    printf("setting filename to %s\n", argv[0]);
+                        printf("setting filename to %s\n", argv[0]);
 #endif
-                    strncpy(filename, argv[0], 60);
+                        strncpy(filename, argv[0], 60);
+                    }
                 } else {
-                    printf("There was a problem setting the length..\n");
+                    printf("There was a problem setting the output file..\n");
                     exit(1);
                 }
                 break;
@@ -530,7 +533,6 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     }
 
     plumber_register(pd);
-    //plumber_init(pd);
     pd->nchan = nchan;
     srand(pd->seed);
     sp_data *sp;
