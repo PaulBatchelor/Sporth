@@ -126,10 +126,9 @@ int plumber_show_pipes(plumber_data *plumb)
     return PLUMBER_OK;
 }
 
-int plumber_clean(plumber_data *plumb)
+int plumber_pipes_destroy(plumber_data *plumb)
 {
     uint32_t n;
-    plumber_compute(plumb, PLUMBER_DESTROY);
     plumber_pipe *pipe, *next;
     pipe = plumb->root.next;
     for(n = 0; n < plumb->npipes; n++) {
@@ -139,7 +138,14 @@ int plumber_clean(plumber_data *plumb)
         free(pipe);
         pipe = next;
     }
+    return PLUMBER_OK;
+}
+
+int plumber_clean(plumber_data *plumb)
+{
+    plumber_compute(plumb, PLUMBER_DESTROY);
     sporth_htable_destroy(&plumb->sporth.dict);
+    plumber_pipes_destroy(plumb);
     plumber_ftmap_destroy(plumb);
     free(plumb->sporth.flist);
     return PLUMBER_OK;
