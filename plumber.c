@@ -272,8 +272,9 @@ int plumber_parse_string(plumber_data *plumb, char *str)
     return PLUMBER_OK;
 }
 
-int plumber_parse(plumber_data *plumb, FILE *fp)
+int plumber_parse(plumber_data *plumb)
 {
+    FILE *fp = plumb->fp;
     char *line = NULL;
     size_t length = 0;
     ssize_t read;
@@ -525,13 +526,12 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
         argc--;
     }
 
-    FILE *fp;
-
     if(argc == 0) {
-        fp = stdin;
+        pd->fp = stdin;
     } else {
-        fp = fopen(argv[0], "r");
-        if(fp == NULL) {
+        pd->fp = fopen(argv[0], "r");
+        pd->filename = argv[0];
+        if(pd->fp == NULL) {
             fprintf(stderr,
                     "There was an issue opening the file %s.\n", argv[0]);
             exit(1);
@@ -549,7 +549,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     sp->sr = sr;
     if(time != NULL) sp->len = str2time(pd, time);
     pd->ud = ud;
-    if(plumber_parse(pd, fp) == PLUMBER_OK){
+    if(plumber_parse(pd) == PLUMBER_OK){
         plumber_compute(pd, PLUMBER_INIT);
         pd->sporth.stack.pos = 0;
 #ifdef DEBUG_MODE
@@ -572,6 +572,5 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 pd->sporth.stack.error);
     }
     plumber_clean(pd);
-    fclose(fp);
     sp_destroy(&sp);
 }

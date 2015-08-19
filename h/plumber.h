@@ -57,6 +57,8 @@ typedef struct plumber_data {
     int mode;
     int seed;
     sp_data *sp;
+    FILE *fp;
+    char *filename;
     sporth_data sporth;
     sp_ftbl tbl_stack[32];
     uint32_t npipes;
@@ -78,8 +80,9 @@ int plumber_add_string(plumber_data *plumb, const char *str);
 int plumber_add_module(plumber_data *plumb,
         uint32_t id, size_t size, void *ud);
 int plumber_compute(plumber_data *plumb, int mode);
-int plumber_parse(plumber_data *plumb, FILE *fp);
+int plumber_parse(plumber_data *plumb);
 int plumber_parse_string(plumber_data *plumb, char *str);
+int plumber_recompile(plumber_data *plumb, FILE *fp);
 int plumber_gettype(plumber_data *plumb, char *str, int mode);
 int plumber_show_pipes(plumber_data *plumb);
 int plumber_pipes_destroy(plumber_data *plumb);
