@@ -28,7 +28,7 @@ int sporth_osc(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
             if(sporth_check_args(stack, "fffs") != SPORTH_OK) {
                 stack->error++;
-                printf("Invalid arguments for osc.\n");
+               fprintf(stderr,"Invalid arguments for osc.\n");
                 return PLUMBER_NOTOK;
             }
             osc = pd->last->ud;
@@ -66,7 +66,7 @@ int sporth_osc(sporth_stack *stack, void *ud)
             sp_osc_destroy(&osc);
             break;
         default:
-            printf("Error: Unknown mode!");
+           fprintf(stderr,"Error: Unknown mode!");
             stack->error++;
             return PLUMBER_NOTOK;
             break;

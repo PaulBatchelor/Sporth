@@ -82,7 +82,7 @@ int plumber_add_module(plumber_data *plumb,
 int plumber_compute(plumber_data *plumb, int mode);
 int plumber_parse(plumber_data *plumb);
 int plumber_parse_string(plumber_data *plumb, char *str);
-int plumber_recompile(plumber_data *plumb, FILE *fp);
+int plumber_recompile(plumber_data *plumb);
 int plumber_gettype(plumber_data *plumb, char *str, int mode);
 int plumber_show_pipes(plumber_data *plumb);
 int plumber_pipes_destroy(plumber_data *plumb);

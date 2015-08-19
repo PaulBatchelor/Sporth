@@ -114,12 +114,12 @@ int plumber_show_pipes(plumber_data *plumb)
     sporth_data *sporth = &plumb->sporth;
     for(n = 0; n < plumb->npipes; n++) {
         next = pipe->next;
-        printf("type = %d size = %d", pipe->type, pipe->size);
+       fprintf(stderr,"type = %d size = %d", pipe->type, pipe->size);
         if(pipe->type == SPORTH_FLOAT) {
             fval = pipe->ud;
-            printf(" val = %g\n", *fval);
+           fprintf(stderr," val = %g\n", *fval);
         } else {
-            printf("\n");
+           fprintf(stderr,"\n");
         }
         pipe = next;
     }
@@ -156,7 +156,7 @@ int plumber_add_float(plumber_data *plumb, float num)
     plumber_pipe *new = malloc(sizeof(plumber_pipe));
 
     if(new == NULL) {
-        printf("Memory error\n");
+       fprintf(stderr,"Memory error\n");
         return PLUMBER_NOTOK;
     }
 
@@ -166,7 +166,7 @@ int plumber_add_float(plumber_data *plumb, float num)
     float *val = new->ud;
     *val = num;
     if(new->ud == NULL) {
-        printf("Memory error\n");
+       fprintf(stderr,"Memory error\n");
         return PLUMBER_NOTOK;
     }
 
@@ -181,7 +181,7 @@ int plumber_add_string(plumber_data *plumb, const char *str)
     plumber_pipe *new = malloc(sizeof(plumber_pipe));
 
     if(new == NULL) {
-        printf("Memory error\n");
+       fprintf(stderr,"Memory error\n");
         return PLUMBER_NOTOK;
     }
 
@@ -191,7 +191,7 @@ int plumber_add_string(plumber_data *plumb, const char *str)
     char *sval = new->ud;
     strncpy(sval, str, new->size);
     if(new->ud == NULL) {
-        printf("Memory error\n");
+       fprintf(stderr,"Memory error\n");
         return PLUMBER_NOTOK;
     }
 
@@ -207,7 +207,7 @@ int plumber_add_module(plumber_data *plumb,
     plumber_pipe *new = malloc(sizeof(plumber_pipe));
 
     if(new == NULL) {
-        printf("Memory error\n");
+       fprintf(stderr,"Memory error\n");
         return PLUMBER_NOTOK;
     }
 
@@ -280,6 +280,7 @@ int plumber_parse(plumber_data *plumb)
     ssize_t read;
     char *out, *tmp;
     uint32_t prev = 0, pos = 0, offset = 0, len = 0;
+    plumb->mode = PLUMBER_CREATE;
     while((read = getline(&line, &length, fp)) != -1) {
         pos = 0;
         offset = 0;
@@ -311,6 +312,7 @@ int plumber_parse(plumber_data *plumb)
 #endif
                     if(sporth_exec(&plumb->sporth, out) == SPORTH_NOTOK) {
                         plumb->sporth.stack.error++;
+                        return PLUMBER_NOTOK;
                     }
                     break;
                 case SPORTH_IGNORE:
@@ -327,10 +329,51 @@ int plumber_parse(plumber_data *plumb)
     free(line);
     return PLUMBER_OK;
 }
+int plumber_recompile(plumber_data *plumb)
+{
+    fprintf(stderr, "Recompiling...\n");
+    plumber_pipe *tmp1 = plumb->root.next;
+    plumb->last = &plumb->root;
+    plumber_pipe *tmp2;
+    plumb->mode = PLUMBER_CREATE;
+    uint32_t oldnpipes = plumb->npipes;
+    uint32_t newnpipes; 
+    int error = 0;
+    plumb->npipes = 0;
+    fseek(plumb->fp, 0L, SEEK_SET);
+    sporth_stack_init(&plumb->sporth.stack);
+    if(plumber_parse(plumb) == PLUMBER_OK) {
+        fprintf(stderr, "Successful parse...\n");
+        plumber_compute(plumb, PLUMBER_INIT);
+        error = plumb->sporth.stack.error;
+    } 
+
+
+    if(error) {
+        fprintf(stderr, "Did not recompile...\n");
+        plumber_pipes_destroy(plumb);
+        plumb->npipes = oldnpipes;
+        plumb->root.next = tmp1;
+        sporth_stack_init(&plumb->sporth.stack);
+        plumb->sp->pos = 0;
+    } else {
+        fprintf(stderr, "Recompiling...\n");
+        tmp2 = plumb->root.next;
+        plumb->root.next = tmp1;
+        newnpipes = plumb->npipes;
+        plumb->npipes = oldnpipes;
+        plumber_pipes_destroy(plumb);
+        plumb->npipes = newnpipes;
+        plumb->root.next = tmp2;
+        plumb->sp->pos = 0;
+    }
+
+    return PLUMBER_OK;
+}
 
 int plumber_error(plumber_data *plumb, const char *str)
 {
-    printf("%s\n", str);
+   fprintf(stderr,"%s\n", str);
     exit(1);
 }
 
@@ -376,7 +419,7 @@ int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
         }
         ftbl = next;
     }
-    printf("Could not find an ftable match for %s.\n", str);
+   fprintf(stderr,"Could not find an ftable match for %s.\n", str);
     return PLUMBER_NOTOK;
 }
 
@@ -435,7 +478,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     void *ud, void (*process)(sp_data *, void *))
 {
     char filename[60];
-    sprintf(filename, "test.wav");
+    fprintf(stderr,filename, "test.wav");
     unsigned long len = 5 * 44100;
     int sr = 44100;
     int nchan = 1;
@@ -449,11 +492,11 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 if(--argc) {
                     *argv++;
 #ifdef DEBUG_MODE
-                    printf("setting duration to %s\n", argv[0]);
+                   fprintf(stderr,"setting duration to %s\n", argv[0]);
 #endif
                     time = argv[0];
                 } else {
-                    printf("There was a problem setting the length..\n");
+                   fprintf(stderr,"There was a problem setting the length..\n");
                     exit(1);
                 }
                 break;
@@ -464,12 +507,12 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                         driver = DRIVER_RAW;
                     } else {
 #ifdef DEBUG_MODE
-                        printf("setting filename to %s\n", argv[0]);
+                       fprintf(stderr,"setting filename to %s\n", argv[0]);
 #endif
                         strncpy(filename, argv[0], 60);
                     }
                 } else {
-                    printf("There was a problem setting the output file..\n");
+                   fprintf(stderr,"There was a problem setting the output file..\n");
                     exit(1);
                 }
                 break;
@@ -477,11 +520,11 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 if(--argc) {
                     *argv++;
 #ifdef DEBUG_MODE
-                    printf("setting samplerate to %s\n", argv[0]);
+                   fprintf(stderr,"setting samplerate to %s\n", argv[0]);
 #endif
                     sr = atoi(argv[0]);
                 } else {
-                    printf("There was a problem setting the samplerate..\n");
+                   fprintf(stderr,"There was a problem setting the samplerate..\n");
                     exit(1);
                 }
                 break;
@@ -489,11 +532,11 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 if(--argc) {
                     *argv++;
 #ifdef DEBUG_MODE
-                    printf("setting nchannels to %s\n", argv[0]);
+                   fprintf(stderr,"setting nchannels to %s\n", argv[0]);
 #endif
                     nchan = atoi(argv[0]);
                 } else {
-                    printf("There was a problem setting the channels..\n");
+                   fprintf(stderr,"There was a problem setting the channels..\n");
                     exit(1);
                 }
                 break;
@@ -505,20 +548,20 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                     } else if ((!strcmp(argv[0], "raw"))) {
                         driver = DRIVER_RAW;
                     } else {
-                        printf("Could not find driver \"%s\".\n", argv[0]);
+                       fprintf(stderr,"Could not find driver \"%s\".\n", argv[0]);
                         exit(1);
                     }
                 } else {
-                    printf("There was a problem setting the driver..\n");
+                   fprintf(stderr,"There was a problem setting the driver..\n");
                     exit(1);
                 }
                 break;
             case 'h':
-                printf("Usage: sporth input.sp\n");
+               fprintf(stderr,"Usage: sporth input.sp\n");
                 exit(1);
                 break;
             default:
-                printf("default.. \n");
+               fprintf(stderr,"default.. \n");
                 exit(1);
                 break;
         }
@@ -545,7 +588,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
 
     sp_createn(&sp, pd->nchan);
     pd->sp = sp;
-    sprintf(sp->filename, "%s", filename);
+    fprintf(stderr,sp->filename, "%s", filename);
     sp->sr = sr;
     if(time != NULL) sp->len = str2time(pd, time);
     pd->ud = ud;
@@ -568,7 +611,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
         }
     }
     if(pd->sporth.stack.error > 0) {
-        printf("Uh-oh! Sporth created %d error(s).\n",
+       fprintf(stderr,"Uh-oh! Sporth created %d error(s).\n",
                 pd->sporth.stack.error);
     }
     plumber_clean(pd);

@@ -20,6 +20,7 @@ int sporth_stack_push_float(sporth_stack *stack, float val)
         stack->error++;
         return SPORTH_NOTOK;
     }
+    return SPORTH_OK;
 }
 
 int sporth_stack_push_string(sporth_stack *stack, const char *str)

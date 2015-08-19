@@ -19,13 +19,13 @@ int sporth_gen_vals(sporth_stack *stack, void *ud)
 
         case PLUMBER_INIT:
             if(sporth_check_args(stack, "ss") != SPORTH_OK) {
-                printf("Init: not enough arguments for gen_vals\n");
+               fprintf(stderr,"Init: not enough arguments for gen_vals\n");
                 return PLUMBER_NOTOK;
             }
             args = sporth_stack_pop_string(stack);
             str = sporth_stack_pop_string(stack);
 #ifdef DEBUG_MODE
-            printf("Creating value table %s\n", str);
+           fprintf(stderr,"Creating value table %s\n", str);
 #endif
             sp_ftbl_create(pd->sp, &ft, 1);
             sp_gen_vals(pd->sp, ft, args);
@@ -41,7 +41,7 @@ int sporth_gen_vals(sporth_stack *stack, void *ud)
             break;
 
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            break;
     }
     return PLUMBER_OK;

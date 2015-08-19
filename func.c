@@ -13,7 +13,7 @@ int sporth_register_func(sporth_data *sporth, sporth_func *flist)
     uint32_t i = 0;
     while(sporth->flist[i].name != NULL) {
 #ifdef DEBUG_MODE
-        printf("Registering function \"%s\" at position %d\n", sporth->flist[i].name, i);
+       fprintf(stderr,"Registering function \"%s\" at position %d\n", sporth->flist[i].name, i);
 #endif
         sporth_htable_add(&sporth->dict, sporth->flist[i].name, i);
         i++;
@@ -25,11 +25,11 @@ int sporth_exec(sporth_data *sporth, const char *keyword)
 {
     uint32_t id;
     if(sporth_search(&sporth->dict, keyword, &id) != SPORTH_OK) {
-        printf("Could not find function called '%s'.\n", keyword);
+       fprintf(stderr,"Could not find function called '%s'.\n", keyword);
         return SPORTH_NOTOK;
     }
 #ifdef DEBUG_MODE
-    printf("Executing function \"%s\"\n", keyword);
+   fprintf(stderr,"Executing function \"%s\"\n", keyword);
 #endif
     sporth->flist[id].func(&sporth->stack, sporth->flist[id].ud);
     return SPORTH_OK;
@@ -43,7 +43,7 @@ int sporth_check_args(sporth_stack *stack, const char *args)
     int len = strlen(args);
     int i;
     if(len > stack->pos) {
-        printf("Expected %d arguments on the stack, but there are only %d!\n",
+       fprintf(stderr,"Expected %d arguments on the stack, but there are only %d!\n",
                 len, stack->pos);
         stack->error++;
         return SPORTH_NOTOK;
@@ -53,14 +53,14 @@ int sporth_check_args(sporth_stack *stack, const char *args)
         switch(args[i]) {
             case 'f':
                 if(stack->stack[pos].type != SPORTH_FLOAT) {
-                    printf("Argument %d was expecting a float\n", i);
+                   fprintf(stderr,"Argument %d was expecting a float\n", i);
                     stack->error++;
                     return SPORTH_NOTOK;
                 }
                 break;
             case 's':
                 if(stack->stack[pos].type != SPORTH_STRING) {
-                    printf("Argument %d was expecting a string, got value %g instead\n",
+                   fprintf(stderr,"Argument %d was expecting a string, got value %g instead\n",
                             i, stack->stack[pos].fval);
                     stack->error++;
                     return SPORTH_NOTOK;

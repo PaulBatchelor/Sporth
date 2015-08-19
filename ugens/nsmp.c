@@ -13,7 +13,7 @@ int sporth_nsmp(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
 #ifdef DEBUG_MODE
-            printf("Creating nsmp function... \n");
+           fprintf(stderr,"Creating nsmp function... \n");
 #endif
             sp_nsmp_create(&nsmp);
             plumber_add_module(pd, SPORTH_NSMP, sizeof(sp_nsmp), nsmp);
@@ -59,7 +59,7 @@ int sporth_nsmp(sporth_stack *stack, void *ud)
             sp_nsmp_destroy(&nsmp);
             break;
         default:
-            printf("Error: Unknown mode!");
+           fprintf(stderr,"Error: Unknown mode!");
             stack->error++;
             return PLUMBER_NOTOK;
             break;

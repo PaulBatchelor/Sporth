@@ -14,7 +14,7 @@ int sporth_port(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_INIT:
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                printf("Not enough arguments for port\n");
+               fprintf(stderr,"Not enough arguments for port\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -28,7 +28,7 @@ int sporth_port(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_COMPUTE:
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                printf("Not enough arguments for port\n");
+               fprintf(stderr,"Not enough arguments for port\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -47,7 +47,7 @@ int sporth_port(sporth_stack *stack, void *ud)
             sp_port_destroy(&data);
             break;
         default:
-           printf("Error: Unknown mode!"); 
+          fprintf(stderr,"Error: Unknown mode!"); 
            break;
     }   
     return PLUMBER_NOTOK;

@@ -17,7 +17,7 @@ int sporth_revsc(sporth_stack *stack, void *ud)
 
         case PLUMBER_INIT:
             if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
-                printf("Init: not enough arguments for revsc!\n");
+               fprintf(stderr,"Init: not enough arguments for revsc!\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -36,7 +36,7 @@ int sporth_revsc(sporth_stack *stack, void *ud)
 
         case PLUMBER_COMPUTE:
             if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
-                printf("Compute: Not enough arguments for revsc!\n");
+               fprintf(stderr,"Compute: Not enough arguments for revsc!\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -65,7 +65,7 @@ int sporth_revsc(sporth_stack *stack, void *ud)
             break; 
 
         default:
-           printf("Error: Unknown mode!"); 
+          fprintf(stderr,"Error: Unknown mode!"); 
            break;
     }   
     return PLUMBER_NOTOK;

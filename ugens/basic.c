@@ -39,7 +39,7 @@ int sporth_mix(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            break;
     }
     return SPORTH_OK;
@@ -65,7 +65,7 @@ int sporth_drop(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            break;
     }
     return SPORTH_OK;
@@ -113,7 +113,7 @@ int sporth_rot(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            break;
     }
     return SPORTH_OK;
@@ -135,7 +135,7 @@ int sporth_dup(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_COMPUTE:
             if(stack->pos == 0) {
-                printf("Nothing to duplicate\n");
+               fprintf(stderr,"Nothing to duplicate\n");
             } else {
 
                 val = sporth_stack_pop_float(stack);
@@ -146,7 +146,7 @@ int sporth_dup(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            break;
     }
     return SPORTH_OK;
@@ -185,7 +185,7 @@ int sporth_swap(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            break;
     }
     return SPORTH_OK;
@@ -221,7 +221,7 @@ int sporth_constant(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            break;
     }
     return SPORTH_OK;
@@ -242,7 +242,7 @@ int sporth_sine(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
 #ifdef DEBUG_MODE
-            printf("creating sine function... \n");
+           fprintf(stderr,"creating sine function... \n");
 #endif
             data = malloc(sizeof(sporth_sine_d));
             sp_osc_create(&data->osc);
@@ -281,7 +281,7 @@ int sporth_sine(sporth_stack *stack, void *ud)
             free(data);
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            break;
     }
     return SPORTH_OK;
@@ -311,7 +311,7 @@ int sporth_add(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;
@@ -349,7 +349,7 @@ int sporth_mul(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;
@@ -387,7 +387,7 @@ int sporth_sub(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;
@@ -425,7 +425,7 @@ int sporth_divide(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;
@@ -461,7 +461,7 @@ int sporth_mtof(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("Error: Unknown mode!");
+          fprintf(stderr,"Error: Unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;
@@ -506,7 +506,7 @@ int sporth_eq(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("eq: unknown mode!");
+          fprintf(stderr,"eq: unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;
@@ -551,7 +551,7 @@ int sporth_lt(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("lt: unknown mode!");
+          fprintf(stderr,"lt: unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;
@@ -596,7 +596,7 @@ int sporth_gt(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("gt: unknown mode!");
+          fprintf(stderr,"gt: unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;
@@ -641,7 +641,7 @@ int sporth_ne(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("ne: unknown mode!");
+          fprintf(stderr,"ne: unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;
@@ -688,7 +688,7 @@ int sporth_branch(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("branch: unknown mode!");
+          fprintf(stderr,"branch: unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;
@@ -721,7 +721,7 @@ int sporth_pos(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-           printf("pos: unknown mode!");
+          fprintf(stderr,"pos: unknown mode!");
            stack->error++;
            return PLUMBER_NOTOK;
            break;

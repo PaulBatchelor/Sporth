@@ -14,7 +14,7 @@ int sporth_metro(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_INIT:
             if(sporth_check_args(stack, "f") != SPORTH_OK) {
-                printf("Not enough arguments for metro\n");
+               fprintf(stderr,"Not enough arguments for metro\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -25,7 +25,7 @@ int sporth_metro(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_COMPUTE:
             if(sporth_check_args(stack, "f") != SPORTH_OK) {
-                printf("Not enough arguments for metro\n");
+               fprintf(stderr,"Not enough arguments for metro\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -40,7 +40,7 @@ int sporth_metro(sporth_stack *stack, void *ud)
             sp_metro_destroy(&data);
             break;
         default:
-           printf("Error: Unknown mode!"); 
+          fprintf(stderr,"Error: Unknown mode!"); 
            break;
     }   
     return PLUMBER_NOTOK;

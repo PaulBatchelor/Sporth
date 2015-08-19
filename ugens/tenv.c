@@ -17,7 +17,7 @@ int sporth_tenv(sporth_stack *stack, void *ud)
 
         case PLUMBER_INIT:
             if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
-                printf("Init: not enough arguments for tenv\n");
+                fprintf(stderr, "Init: not enough arguments for tenv\n");
                 return PLUMBER_NOTOK;
             }
             data = pd->last->ud;
@@ -31,7 +31,7 @@ int sporth_tenv(sporth_stack *stack, void *ud)
 
         case PLUMBER_COMPUTE:
             if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
-                printf("Compute: Not enough arguments for tenv\n");
+                fprintf(stderr, "Compute: Not enough arguments for tenv\n");
                 return PLUMBER_NOTOK;
             }
             release = sporth_stack_pop_float(stack);
@@ -53,7 +53,7 @@ int sporth_tenv(sporth_stack *stack, void *ud)
             break; 
 
         default:
-           printf("Error: Unknown mode!"); 
+           fprintf(stderr, "Error: Unknown mode!"); 
            break;
     }   
     return PLUMBER_NOTOK;
