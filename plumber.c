@@ -479,7 +479,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     void *ud, void (*process)(sp_data *, void *))
 {
     char filename[60];
-    fprintf(stderr,filename, "test.wav");
+    sprintf(filename, "test.wav");
     unsigned long len = 5 * 44100;
     int sr = 44100;
     int nchan = 1;
