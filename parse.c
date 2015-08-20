@@ -125,6 +125,7 @@ int sporth_lexer(sporth_data *sporth, char *str, int32_t size)
                 }
                 break;
             case LEX_DASH:
+                mode = LEX_FLOAT;
             case LEX_FLOAT:
                 switch(c) {
                     case '0':
