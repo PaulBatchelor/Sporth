@@ -588,7 +588,6 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
 
     sp_createn(&sp, pd->nchan);
     pd->sp = sp;
-    fprintf(stderr,sp->filename, "%s", filename);
     sp->sr = sr;
     if(time != NULL) sp->len = str2time(pd, time);
     pd->ud = ud;
