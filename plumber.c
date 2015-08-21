@@ -517,7 +517,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
 #ifdef DEBUG_MODE
                        fprintf(stderr,"setting filename to %s\n", argv[0]);
 #endif
-                        strncpy(filename, argv[0], 60);
+                       strncpy(filename, argv[0], 60);
                     }
                 } else {
                    fprintf(stderr,"There was a problem setting the output file..\n");
@@ -593,8 +593,9 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     pd->nchan = nchan;
     srand(pd->seed);
     sp_data *sp;
-
+    
     sp_createn(&sp, pd->nchan);
+    strncpy(sp->filename, filename, 60);
     pd->sp = sp;
     sp->sr = sr;
     if(time != NULL) sp->len = str2time(pd, time);
