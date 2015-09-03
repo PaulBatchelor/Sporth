@@ -37,7 +37,7 @@ util/val: util/val.c
 	gcc $< -o $@
 
 sporth: sporth.c $(OBJ) h/ugens.h
-	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -logg -lm
+	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
 
 libsporth.a: $(OBJ) tmp.h
 	ar rcs libsporth.a $(OBJ)
