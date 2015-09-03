@@ -13,7 +13,7 @@ endif
 UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
 	samphold delay switch mode clip p count f gen_sinesum gen_line \
-	dmetro
+	dmetro tin
 
 BIN = sporth examples/parse examples/user_function util/jack_wrapper util/val
 
@@ -28,7 +28,7 @@ OBJ += func.o plumber.o stack.o parse.o hash.o
 ugens/%.o: ugens/%.c
 	gcc $(CFLAGS) -g -Ih -c $< -o $@
 
-util/jack_wrapper: jack_wrapper.c
+util/jack_wrapper: util/jack_wrapper.c
 	gcc $< -lsoundpipe -lsndfile -ljack -o jack_wrapper -lm
 
 val: util/val
@@ -37,7 +37,7 @@ util/val: util/val.c
 	gcc $< -o $@
 
 sporth: sporth.c $(OBJ) h/ugens.h
-	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
+	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -logg -lm
 
 libsporth.a: $(OBJ) tmp.h
 	ar rcs libsporth.a $(OBJ)
