@@ -19,7 +19,7 @@ inspired by stack languages like Forth and PostScript.
 ## Installation
 
 In order to compile Sporth, [SoundPipe](http://www.github.com/PaulBatchelor/soundpipe.git) 
-to be installed. 
+to be installed. **Be sure to use the 'dev' branch of soundpipe with 'git checkout dev'.**
 
 Then:
 
