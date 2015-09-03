@@ -248,3 +248,8 @@ Args: time (f)
 Output: f
 Description: Trigger envelope, using time instead of frequency
 ---
+Name: pluck
+Args: trigger (f), pick (f), freq (f), amp (f), pick (f), reflect (f), ifreq (f)
+Output: f
+Description: plucked instrument
+---

@@ -313,7 +313,6 @@ int plumber_parse(plumber_data *plumb)
 #endif
                     if(sporth_exec(&plumb->sporth, out) == SPORTH_NOTOK) {
                         plumb->sporth.stack.error++;
-                        return PLUMBER_NOTOK;
                     }
                     break;
                 case SPORTH_IGNORE:
@@ -347,13 +346,21 @@ int plumber_recompile(plumber_data *plumb)
         fprintf(stderr, "Successful parse...\n");
         plumber_compute(plumb, PLUMBER_INIT);
         error = plumb->sporth.stack.error;
-    } 
+        fprintf(stderr, "at stack position %d\n", 
+                plumb->sporth.stack.pos);
+        fprintf(stderr, "%d errors\n", 
+                plumb->sporth.stack.error);
+    } else {
+        error++;
+    }
 
 
     if(error) {
         fprintf(stderr, "Did not recompile...\n");
+        fprintf(stderr, "%d pipes\n", plumb->npipes);
         plumber_pipes_destroy(plumb);
         plumb->npipes = oldnpipes;
+        fprintf(stderr, "%d old pipes\n", plumb->npipes);
         plumb->root.next = tmp1;
         sporth_stack_init(&plumb->sporth.stack);
         plumb->sp->pos = 0;
@@ -510,7 +517,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
 #ifdef DEBUG_MODE
                        fprintf(stderr,"setting filename to %s\n", argv[0]);
 #endif
-                        strncpy(filename, argv[0], 60);
+                       strncpy(filename, argv[0], 60);
                     }
                 } else {
                    fprintf(stderr,"There was a problem setting the output file..\n");
@@ -586,8 +593,9 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     pd->nchan = nchan;
     srand(pd->seed);
     sp_data *sp;
-
+    
     sp_createn(&sp, pd->nchan);
+    strncpy(sp->filename, filename, 60);
     pd->sp = sp;
     sp->sr = sr;
     if(time != NULL) sp->len = str2time(pd, time);
