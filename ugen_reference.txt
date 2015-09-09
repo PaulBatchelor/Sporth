@@ -253,3 +253,8 @@ Args: trigger (f), pick (f), freq (f), amp (f), pick (f), reflect (f), ifreq (f)
 Output: f
 Description: plucked instrument
 ---
+Name: jcrev
+Args: input f)
+Output: f
+Description: Chowning reverb
+---
