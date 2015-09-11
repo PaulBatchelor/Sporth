@@ -48,7 +48,7 @@ int sporth_gbuzz(sporth_stack *stack, void *ud)
 
             gbuzz = pd->last->ud;
             sp_gen_sine(pd->sp, gbuzz->ft);
-            sp_gbuzz_init(pd->sp, gbuzz->gbuzz, gbuzz->ft);
+            sp_gbuzz_init(pd->sp, gbuzz->gbuzz, gbuzz->ft, 0);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
