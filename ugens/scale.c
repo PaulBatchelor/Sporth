@@ -47,8 +47,8 @@ int sporth_scale(sporth_stack *stack, void *ud)
             min = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
             scale = pd->last->ud;
-            scale->min = min;
-            scale->max = max;
+            scale->outmin = min;
+            scale->outmax = max;
             sp_scale_compute(pd->sp, scale, &in, &out);
             sporth_stack_push_float(stack, out);
             break;
