@@ -20,7 +20,7 @@ int sporth_metro(sporth_stack *stack, void *ud)
             }
             data = pd->last->ud;
             freq = sporth_stack_pop_float(stack);
-            sp_metro_init(pd->sp, data, 2);
+            sp_metro_init(pd->sp, data);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:

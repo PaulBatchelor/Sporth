@@ -4,7 +4,7 @@ int sporth_noise(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
 
-    SPFLOAT gain;
+    SPFLOAT amp;
     SPFLOAT out;
     sp_noise *data;
     switch(pd->mode){
@@ -19,7 +19,7 @@ int sporth_noise(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             data = pd->last->ud;
-            gain = sporth_stack_pop_float(stack);
+            amp = sporth_stack_pop_float(stack);
             if(sp_noise_init(pd->sp, data) == SP_NOT_OK) {
                 stack->error++;
                 return PLUMBER_NOTOK;
@@ -32,9 +32,9 @@ int sporth_noise(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            gain = sporth_stack_pop_float(stack);
+            amp = sporth_stack_pop_float(stack);
             data = pd->last->ud;
-            data->gain = gain;
+            data->amp = amp;
             sp_noise_compute(pd->sp, data, NULL, &out);
             sporth_stack_push_float(stack, out);
             break;

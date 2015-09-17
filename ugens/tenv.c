@@ -25,7 +25,7 @@ int sporth_tenv(sporth_stack *stack, void *ud)
             hold = sporth_stack_pop_float(stack);
             attack = sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
-            sp_tenv_init(pd->sp, data, attack, hold, release);
+            sp_tenv_init(pd->sp, data);
             sporth_stack_push_float(stack, 0);
             break;
 
