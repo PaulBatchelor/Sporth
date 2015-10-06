@@ -12,8 +12,8 @@ extern "C"{
 CK_DLL_CTOR(sporth_ctor);
 CK_DLL_DTOR(sporth_dtor);
 
-CK_DLL_MFUN(sporth_setVar);
-CK_DLL_MFUN(sporth_getVar);
+CK_DLL_MFUN(sporth_pset);
+CK_DLL_MFUN(sporth_pget);
 
 CK_DLL_MFUN(sporth_parseString);
 
@@ -38,10 +38,12 @@ CK_DLL_QUERY(Sporth)
     
     QUERY->add_ugen_func(QUERY, sporth_tick, NULL, 1, 1);
     
-    QUERY->add_mfun(QUERY, sporth_setVar, "float", "var");
-    QUERY->add_arg(QUERY, "float", "arg");
+    QUERY->add_mfun(QUERY, sporth_pset, "float", "pset");
+    QUERY->add_arg(QUERY, "int", "index");
+    QUERY->add_arg(QUERY, "float", "val");
     
-    QUERY->add_mfun(QUERY, sporth_getVar, "float", "var");
+    QUERY->add_mfun(QUERY, sporth_pget, "float", "pget");
+    QUERY->add_arg(QUERY, "int", "index");
     
     QUERY->add_mfun(QUERY, sporth_parseString, "string", "parse");
     QUERY->add_arg(QUERY, "string", "arg");
@@ -75,7 +77,7 @@ CK_DLL_DTOR(sporth_dtor)
     sporthData * data = (sporthData *) OBJ_MEMBER_INT(SELF, sporth_data_offset);
     if(data)
     {
-        plumber_clean(&data->pd);
+        //plumber_clean(&data->pd);
         sp_destroy(&data->sp);
 
         delete data;
@@ -92,17 +94,20 @@ CK_DLL_TICK(sporth_tick)
     return TRUE;
 }
 
-CK_DLL_MFUN(sporth_setVar)
+CK_DLL_MFUN(sporth_pset)
 {
     sporthData * data = (sporthData *) OBJ_MEMBER_INT(SELF, sporth_data_offset);
-    data->var = GET_NEXT_FLOAT(ARGS);
-    RETURN->v_float = data->var;
+    int i = GET_NEXT_INT(ARGS);
+    float val = GET_NEXT_FLOAT(ARGS);
+    data->pd.p[i] = val;
+    RETURN->v_float = val;
 }
 
-CK_DLL_MFUN(sporth_getVar)
+CK_DLL_MFUN(sporth_pget)
 {
     sporthData * data = (sporthData *) OBJ_MEMBER_INT(SELF, sporth_data_offset);
-    RETURN->v_float = data->var;
+    int i = GET_NEXT_INT(ARGS);
+    RETURN->v_float = data->pd.p[i];
 }
 
 CK_DLL_MFUN(sporth_parseString)
