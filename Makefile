@@ -4,7 +4,7 @@ default: sporth
 
 MASTER_MAKEFILE=1
 
-CFLAGS += -O3
+CFLAGS += -O3 -fPIC
 
 ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE
@@ -44,6 +44,9 @@ util/float2bin: util/float2bin.c
 
 sporth: sporth.c $(OBJ) h/ugens.h
 	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
+
+sporth.o: $(OBJ)
+	ld -shared -fPIC -o $@ $(OBJ)
 
 libsporth.a: $(OBJ) tmp.h
 	ar rcs libsporth.a $(OBJ)

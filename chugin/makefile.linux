@@ -1,0 +1,8 @@
+CHUGIN_PATH=/usr/lib/chuck
+
+FLAGS=-D__LINUX_ALSA__ -D__PLATFORM_LINUX__ -I$(CK_SRC_PATH) -fPIC -DNO_LIBSNDFILE
+LDFLAGS=-shared -lstdc++ -fPIC
+LD=gcc 
+CXX=g++
+
+C_OBJECTS += ../soundpipe.o
