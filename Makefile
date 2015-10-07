@@ -45,8 +45,9 @@ util/float2bin: util/float2bin.c
 sporth: sporth.c $(OBJ) h/ugens.h
 	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
 
-sporth.o: $(OBJ)
+libsporth.so: $(OBJ)
 	ld -shared -fPIC -o $@ $(OBJ)
+	#ld -r -o $@ $(OBJ)
 
 libsporth.a: $(OBJ) tmp.h
 	ar rcs libsporth.a $(OBJ)
@@ -62,10 +63,11 @@ examples/user_function: examples/user_function.c libsporth.a h/ugens.h
 
 include util/luasporth/Makefile
 
-install: libsporth.a sporth tmp.h
+install: libsporth.a sporth tmp.h libsporth.so
 	install sporth /usr/local/bin
 	install tmp.h /usr/local/include/sporth.h
 	install libsporth.a /usr/local/lib
+	install libsporth.so /usr/local/lib
 	mkdir -p /usr/local/share/sporth
 	install ugen_reference.txt /usr/local/share/sporth
 	install util/ugen_lookup /usr/local/bin
@@ -74,5 +76,5 @@ clean:
 	rm -rf $(OBJ) 
 	rm -rf $(BIN)
 	rm -rf tmp.h
-	rm -rf libsporth.a
+	rm -rf libsporth.a libsporth.so
 

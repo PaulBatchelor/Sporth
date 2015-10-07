@@ -5,7 +5,7 @@ SPPATH = ../../soundpipe/modules
 CHUGIN_NAME=Sporth
 
 # all of the c/cpp files that compose this chugin
-C_MODULES=
+C_MODULES= 
 CXX_MODULES=sporth.cpp 
 
 # where the chuck headers are
@@ -91,7 +91,7 @@ all: $(CHUG)
 
 $(CHUG): $(C_OBJECTS) $(CXX_OBJECTS) 
 ifeq ($(CK_CHUGIN_STATIC),0)
-	$(LD) $(LDFLAGS) -o $@ $^ ../soundpipe.o  ../sporth.o
+	$(LD) $(LDFLAGS) -o $@ $^ 
 else
 	ar rv $@ $^
 	ranlib $@
@@ -101,7 +101,7 @@ $(C_OBJECTS): %.o: %.c
 	$(CC) $(FLAGS) -c -o $@ $< 
 
 $(CXX_OBJECTS): %.o: %.cpp $(CK_SRC_PATH)/chuck_dl.h
-	$(CXX) $(FLAGS) -c -o $@ $<  
+	$(CXX) $(FLAGS) -c -o $@ $< 
 
 install: $(CHUG)
 	mkdir -p $(CHUGIN_PATH)

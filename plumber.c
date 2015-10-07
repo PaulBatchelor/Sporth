@@ -66,6 +66,7 @@ int plumber_init(plumber_data *plumb)
     sporth_stack_init(&plumb->sporth.stack);
     plumber_ftmap_init(plumb);
     plumb->seed = time(NULL);
+    plumb->fp = NULL;
     int pos;
     for(pos = 0; pos < 16; pos++) plumb->p[pos] = 0;
     for(pos = 0; pos < 16; pos++) plumb->f[pos] = sporth_f_default;
@@ -147,7 +148,7 @@ int plumber_clean(plumber_data *plumb)
     sporth_htable_destroy(&plumb->sporth.dict);
     plumber_pipes_destroy(plumb);
     plumber_ftmap_destroy(plumb);
-    fclose(plumb->fp);
+    if(plumb->fp != NULL) fclose(plumb->fp);
     free(plumb->sporth.flist);
     return PLUMBER_OK;
 }

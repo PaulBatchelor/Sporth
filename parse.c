@@ -33,10 +33,12 @@ char * sporth_tokenizer(sporth_data *sporth, char *str,
         switch(mode) {
             case SEEK:
                 switch(c) {
+                    case '\n':
                     case ' ':
                         mode = SPACE;
                         *pos = *pos + 1;
                         break;
+                    case '\'':
                     case '"':
                         mode = STRING;
                         *pos = *pos + 1;
@@ -63,6 +65,7 @@ char * sporth_tokenizer(sporth_data *sporth, char *str,
                 break;
             case STRING:
                 switch(c) {
+                    case '\'':
                     case '"':
                         mode = SPACE;
                         *pos = *pos + 1;
@@ -114,6 +117,7 @@ int sporth_lexer(sporth_data *sporth, char *str, int32_t size)
                         mode = LEX_FLOAT;
                         break;
                     case '"':
+                    case '\'':
                         mode = LEX_STRING;
                         break;
                     case '#':
