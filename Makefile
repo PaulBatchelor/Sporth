@@ -23,6 +23,13 @@ OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
 OBJ += func.o plumber.o stack.o parse.o hash.o
 
+SPORTHLIBS = libsporth.a
+
+ifdef BUILD_DYNAMIC
+SPORTHLIBS += libsporth.so
+endif
+
+
 %.o: %.c h/ugens.h
 	gcc $(CFLAGS) -g -c -Ih $< -o $@
 
@@ -47,7 +54,6 @@ sporth: sporth.c $(OBJ) h/ugens.h
 
 libsporth.so: $(OBJ)
 	ld -shared -fPIC -o $@ $(OBJ)
-	#ld -r -o $@ $(OBJ)
 
 libsporth.a: $(OBJ) tmp.h
 	ar rcs libsporth.a $(OBJ)
@@ -63,11 +69,10 @@ examples/user_function: examples/user_function.c libsporth.a h/ugens.h
 
 include util/luasporth/Makefile
 
-install: libsporth.a sporth tmp.h libsporth.so
+install: $(SPORTHLIBS) sporth tmp.h 
 	install sporth /usr/local/bin
 	install tmp.h /usr/local/include/sporth.h
-	install libsporth.a /usr/local/lib
-	install libsporth.so /usr/local/lib
+	install $(SPORTHLIBS) /usr/local/lib
 	mkdir -p /usr/local/share/sporth
 	install ugen_reference.txt /usr/local/share/sporth
 	install util/ugen_lookup /usr/local/bin

@@ -36,7 +36,7 @@ int sporth_randi(sporth_stack *stack, void *ud)
             max = sporth_stack_pop_float(stack);
             min = sporth_stack_pop_float(stack);
             randi = pd->last->ud;
-            sp_randi_init(pd->sp, randi, pd->seed);
+            sp_randi_init(pd->sp, randi);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
