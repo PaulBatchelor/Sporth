@@ -254,7 +254,12 @@ Output: f
 Description: plucked instrument
 ---
 Name: jcrev
-Args: input f)
+Args: input (f)
 Output: f
 Description: Chowning reverb
+---
+Name: moogladder
+Args: input (f) cutoff(f) (res)
+Output: f
+Description: Moog ladder lowpass filter
 ---

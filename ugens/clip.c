@@ -34,7 +34,7 @@ int sporth_clip(sporth_stack *stack, void *ud)
             lim = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
             clip = pd->last->ud;
-            sp_clip_init(pd->sp, clip, 2, lim);
+            sp_clip_init(pd->sp, clip);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:

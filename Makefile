@@ -13,7 +13,7 @@ endif
 UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
 	samphold delay switch mode clip p count f gen_sinesum gen_line \
-	dmetro gbuzz jitter diskin pluck tin jcrev scale tenv2
+	dmetro gbuzz jitter diskin pluck tin jcrev scale tenv2 moogladder vdelay
 
 BIN = sporth examples/parse examples/user_function util/jack_wrapper util/val \
 	  util/float2bin
