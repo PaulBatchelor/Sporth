@@ -263,3 +263,13 @@ Args: input (f) cutoff(f) (res)
 Output: f
 Description: Moog ladder lowpass filter
 ---
+Name: tget
+Args: index (f) table (s)
+Output: f
+Description: Get value from table
+---
+Name: tset
+Args: index (f) value (f) table (s)
+Output: (none)
+Description: Set value of table 
+---

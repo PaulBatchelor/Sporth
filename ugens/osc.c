@@ -66,7 +66,7 @@ int sporth_osc(sporth_stack *stack, void *ud)
             sp_osc_destroy(&osc);
             break;
         default:
-           fprintf(stderr,"Error: Unknown mode!");
+            fprintf(stderr,"Error: Unknown mode!");
             stack->error++;
             return PLUMBER_NOTOK;
             break;
