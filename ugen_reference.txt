@@ -43,6 +43,11 @@ Args: trig (f), attack (f), sustain (f), release (f)
 Output: f
 Description: Triggerable linear envelope generator.
 ---
+Name: tenv2
+Args: trig (f), attack (f), release (f)
+Output: f
+Description: Two-step triggerable linear envelope generator.
+---
 Name: fm
 Args: frequency (f), amplitutude (f), carrier (f), modulator (f), index (f)
 Output: f
