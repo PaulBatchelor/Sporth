@@ -51,7 +51,6 @@ typedef struct {
     void *ud;
 } sporth_func_d;
 
-
 typedef struct plumber_data {
     int nchan;
     int mode;

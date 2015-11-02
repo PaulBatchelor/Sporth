@@ -735,3 +735,43 @@ int sporth_pos(sporth_stack *stack, void *ud)
     }
     return PLUMBER_OK;
 }
+
+int sporth_dur(sporth_stack *stack, void *ud)
+{
+    if(stack->error > 0) return PLUMBER_NOTOK;
+
+    plumber_data *pd = ud;
+    SPFLOAT pos;
+    SPFLOAT *dur; 
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "pos: Creating\n");
+#endif
+            dur = malloc(sizeof(SPFLOAT));
+            plumber_add_module(pd, SPORTH_DUR, sizeof(SPFLOAT), dur);
+            break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "pos: Initializing\n");
+#endif
+            dur = pd->last->ud;
+            *dur = (SPFLOAT) pd->sp->len / pd->sp->sr;
+            sporth_stack_push_float(stack, *dur);
+            break;
+        case PLUMBER_COMPUTE:
+            dur = pd->last->ud;
+            sporth_stack_push_float(stack, *dur);
+            break;
+        case PLUMBER_DESTROY:
+            dur = pd->last->ud;
+            free(dur);
+            break;
+        default:
+            fprintf(stderr,"pos: unknown mode!");
+            stack->error++;
+            return PLUMBER_NOTOK;
+            break;
+    }
+    return PLUMBER_OK;
+}
