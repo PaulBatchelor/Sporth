@@ -278,3 +278,18 @@ Args: index (f) value (f) table (s)
 Output: (none)
 Description: Set value of table 
 ---
+Name: line
+Args: ia (f) idur (f) ib (f)
+Output: f
+Description: line segment
+---
+Name: expon
+Args: ia (f) idur (f) ib (f)
+Output: f
+Description: exponential line segment
+---
+Name: dur
+Args: (none)
+Output: f
+Description: returns duration of sporth patch (in seconds)
+---
