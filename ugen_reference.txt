@@ -293,3 +293,8 @@ Args: (none)
 Output: f
 Description: returns duration of sporth patch (in seconds)
 ---
+Name: ling
+Args: trig (f) N (f) mode (f) code (s)
+Output: f
+Description: Evaluates a string of ling code. (0 = int mode, 1 = binary mode)
+---
