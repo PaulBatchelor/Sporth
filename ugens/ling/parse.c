@@ -174,7 +174,7 @@ int ling_lexer(ling_data *ld, char *str, int32_t size)
         case LEX_FLOAT:
         case LEX_FLOAT_DOT:
         case LEX_FLOAT_POSTDOT:
-            return LING_FLOAT;
+            return LING_INT;
         case LEX_IGNORE:
             return LING_IGNORE;
         case LEX_DASH:

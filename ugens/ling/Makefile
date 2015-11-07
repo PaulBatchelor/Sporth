@@ -10,7 +10,7 @@ CFLAGS = -I ../../h
 endif
 
 
-LING_OBJ += $(addprefix $(LINGPATH), parse.o func.o stack.o ling.o)
+LING_OBJ += $(addprefix $(LINGPATH), parse.o func.o stack.o ling.o seq.o)
 
 OBJ += $(LING_OBJ)
 

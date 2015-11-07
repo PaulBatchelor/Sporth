@@ -14,7 +14,9 @@ UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
 	samphold delay switch mode clip p count f gen_sinesum gen_line \
 	dmetro gbuzz jitter diskin pluck tin jcrev scale tenv2 moogladder \
-   	vdelay t line expon
+   	vdelay t line expon ling
+
+include ugens/ling/Makefile
 
 BIN = sporth examples/parse examples/user_function util/jack_wrapper util/val \
 	  util/float2bin
@@ -38,7 +40,7 @@ ugens/%.o: ugens/%.c
 	gcc $(CFLAGS) -g -Ih -c $< -o $@
 
 util/jack_wrapper: util/jack_wrapper.c
-	gcc $< -lsoundpipe -lsndfile -ljack -o jack_wrapper -lm
+	gcc $< -ljack -lsoundpipe -lsndfile -o jack_wrapper -lm
 
 val: util/val
 
@@ -49,6 +51,7 @@ float2bin: util/float2bin
 
 util/float2bin: util/float2bin.c
 	gcc $< -o $@
+
 
 sporth: sporth.c $(OBJ) h/ugens.h
 	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm

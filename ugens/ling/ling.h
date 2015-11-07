@@ -2,21 +2,24 @@
 #include <stdint.h>
 
 enum {
-LING_FLOAT,
+LING_INT,
 LING_IGNORE,
 LING_FUNC,
 LING_NOTOK,
 LING_OK
 };
 
-#define SPORTH_FOFFSET 2
-#define SPORTH_MAXCHAR 200
+typedef struct ling_entry {
+    int type;
+    uint32_t val;
+    struct ling_entry *next;
+} ling_entry;
 
-//typedef struct {
-//    uint32_t fval;
-//    char sval[SPORTH_MAXCHAR];
-//    int type;
-//} ling_stack_val;
+typedef struct {
+    uint32_t num;
+    ling_entry root;
+    ling_entry *last;
+} ling_seq;
 
 typedef struct {
     int pos;
@@ -36,6 +39,7 @@ typedef struct ling_data{
     ling_func *flist;
     ling_stack stack;
     uint32_t t;
+    ling_seq seq;
 } ling_data;
 
 int ling_stack_init(ling_stack *stack);
@@ -47,6 +51,12 @@ int ling_register_func(ling_data *ld, ling_func *flist);
 int ling_exec(ling_data *ld, const char *keyword);
 int ling_init(ling_data *ld);
 int ling_destroy(ling_data *ld);
+
+/* Onced parsed, a Ling program is stored as a sequence */
+int ling_seq_init(ling_seq *seq);
+int ling_seq_add_entry(ling_seq *seq, int type, uint32_t val);
+int ling_seq_destroy(ling_seq *seq);
+int ling_seq_run(ling_data *ld);
 
 int ling_parse(ling_data *ld, const char *filename);
 char * ling_tokenizer(ling_data *ld, char *str,

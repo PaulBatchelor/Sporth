@@ -72,12 +72,14 @@ int ling_init(ling_data *ld)
     ling_stack_init(&ld->stack);
     ld->t = 0;
     sporth_htable_init(&ld->dict);
+    ling_seq_init(&ld->seq);
     return LING_OK;
 }
 
 int ling_destroy(ling_data *ld)
 {
     sporth_htable_destroy(&ld->dict);
+    ling_seq_destroy(&ld->seq);
     free(ld->flist);
     return LING_OK;
 }

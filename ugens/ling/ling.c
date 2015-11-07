@@ -332,6 +332,7 @@ static int get_t(ling_stack *stack, void *ud)
 int ling_parse_line(ling_data *ld, char *str) {
     uint32_t pos, len;
     char *out;
+    uint32_t id = 0;
     uint32_t size;
     pos = 0;
     len = 0;
@@ -341,11 +342,18 @@ int ling_parse_line(ling_data *ld, char *str) {
         out = ling_tokenizer(ld, str, size, &pos);
         len = strlen(out);
         switch(ling_lexer(ld, out, len)) {
-            case LING_FLOAT:
-                ling_stack_push(&ld->stack, atof(out));
+            case LING_INT:
+                //ling_stack_push(&ld->stack, atof(out));
+                ling_seq_add_entry(&ld->seq, LING_INT, atoi(out));
                 break;
             case LING_FUNC:
-                ling_exec(ld, out);
+                if(sporth_search(&ld->dict, out, &id) != SPORTH_OK) {
+                    fprintf(stderr,"Could not find function called '%s'.\n", out);
+                    /*TODO: make more of a fuss here */
+                } else {
+                    ling_seq_add_entry(&ld->seq, LING_FUNC, id);
+                }
+                //ling_exec(ld, out);
                 break;
             case LING_IGNORE:
                 break;
@@ -355,35 +363,6 @@ int ling_parse_line(ling_data *ld, char *str) {
         }
         free(out);
     }
-    return LING_OK;
-}
-
-int ling_register_ugens(ling_data *ld) 
-{
-    ling_func flist[] = {
-        {"+", add, NULL},
-        {"-", sub, NULL},
-        {"*", mul, NULL},
-        {"/", divi, NULL},
-        {"<<", bw_left, NULL},
-        {">>", bw_right, NULL},
-        {"&", bw_and, NULL},
-        {"~", bw_not, NULL},
-        {"^", bw_xor, NULL},
-        {"|", bw_or, NULL},
-        {"==", equal, NULL},
-        {"!=", notequal, NULL},
-        {">", gt, NULL},
-        {"<", lt, NULL},
-        {"<=", ltet, NULL},
-        {">=", gtet, NULL},
-        {"%", mod, NULL},
-        {"&&", and, NULL},
-        {"||", or, NULL},
-        {NULL, NULL, NULL}
-    };
-    ling_register_func(ld, flist);
-
     return LING_OK;
 }
 

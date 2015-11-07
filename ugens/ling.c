@@ -46,18 +46,22 @@ int sporth_ling(sporth_stack *stack, void *ud)
             ling->val = 0;
             strncpy(ling->str, str, 500);
             sporth_stack_push_float(stack, 0);
-            printf("the string is %s\n", ling->str);
+#ifdef DEBUG_MODE
+            printf("ling: the string is %s\n", ling->str);
+#endif
+            ling_parse_line(&ling->ling, ling->str);
             free(str);
             break;
         case PLUMBER_COMPUTE:
             ling = pd->last->ud;
             tick = sporth_stack_pop_float(stack);
             if(tick != 0) {
-                ling_parse_line(&ling->ling, ling->str);
+                //ling_parse_line(&ling->ling, ling->str);
+                ling_seq_run(&ling->ling);
                 ling->val = ling_stack_pop(&ling->ling.stack);
                 ling->ling.t++;
             } 
-            sporth_stack_push_float(stack, ling->val);
+            sporth_stack_push_float(stack, (SPFLOAT)ling->val);
             break;
         case PLUMBER_DESTROY:
             ling = pd->last->ud;
