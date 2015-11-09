@@ -5,7 +5,7 @@ ling: $(LINGPATH)ling
 LING_HASHPATH=hash.o
 else
 LING_HASHPATH=../../hash.o
-CFLAGS = -I ../../h
+CFLAGS = -I ../../h -I../../
 endif
 
 LING_OBJ += $(addprefix $(LINGPATH), parse.o func.o stack.o ling.o seq.o)
