@@ -4,10 +4,10 @@ default: sporth
 
 MASTER_MAKEFILE=1
 
-CFLAGS += -O3 -fPIC -L./
+CFLAGS += -O3 -fPIC -L./ -I ./
 
 ifdef DEBUG_MODE
-CFLAGS += -DDEBUG_MODE
+CFLAGS += -DDEBUG_MODE 
 endif
 
 UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
@@ -18,7 +18,7 @@ UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 
 include ugens/ling/Makefile
 
-BIN = sporth examples/parse examples/user_function util/jack_wrapper util/val \
+BIN += sporth examples/parse examples/user_function util/jack_wrapper util/val \
 	  util/float2bin
 
 

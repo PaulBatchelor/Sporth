@@ -58,6 +58,7 @@ int ling_seq_add_entry(ling_seq *seq, int type, uint32_t val);
 int ling_seq_destroy(ling_seq *seq);
 int ling_seq_run(ling_data *ld);
 
+int ling_parse_line(ling_data *ld, char *str);
 int ling_parse(ling_data *ld, const char *filename);
 char * ling_tokenizer(ling_data *ld, char *str,
         uint32_t size, uint32_t *pos);

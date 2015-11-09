@@ -298,3 +298,8 @@ Args: trig (f) N (f) mode (f) code (s)
 Output: f
 Description: Evaluates a string of ling code. (0 = int mode, 1 = binary mode)
 ---
+Name: mincer
+Args: time (f), amp (f), pitch (f), ftable (s) 
+Output: f
+Description: Phase-locked vocoder
+---
