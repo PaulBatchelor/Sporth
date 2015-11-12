@@ -19,7 +19,7 @@ int sporth_osc(sporth_stack *stack, void *ud)
     sp_osc *osc;
     switch(pd->mode){
         case PLUMBER_CREATE:
-#ifdef DEBUGMODE
+#ifdef DEBUG_MODE
             fprintf(stderr, "Creating osc function... \n");
 #endif
             sp_osc_create(&osc);
