@@ -39,7 +39,7 @@ int main() {
 
     num_to_bin(val, out, 32);
 
-    printf("%d\n", val);
+    //printf("%d\n", val);
     for(n = 0; n < 32; n++) 
     printf("%d", out[31 - n]);
 
