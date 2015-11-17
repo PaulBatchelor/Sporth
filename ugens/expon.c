@@ -5,9 +5,9 @@
 typedef struct {
     SPFLOAT ia, idur, ib;
     SPFLOAT val, incr; 
-} sp_expon;
+} sporth_expon_d;
 
-static void expon_init(plumber_data *pd, sp_expon *expon)
+static void expon_init(plumber_data *pd, sporth_expon_d *expon)
 {
     SPFLOAT onedsr = 1.0 / pd->sp->sr;
     if((expon->ia * expon->ib) > 0.0) {
@@ -18,7 +18,7 @@ static void expon_init(plumber_data *pd, sp_expon *expon)
     expon->val = expon->ia;
 }
 
-SPFLOAT expon_compute(sp_expon *expon) 
+SPFLOAT expon_compute(sporth_expon_d *expon) 
 {
     SPFLOAT val = expon->val;
     expon->val *= expon->incr;
@@ -29,7 +29,7 @@ int sporth_expon(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
     
-    sp_expon *expon;
+    sporth_expon_d *expon;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
@@ -37,8 +37,8 @@ int sporth_expon(sporth_stack *stack, void *ud)
 #ifdef DEBUG_MODE
             fprintf(stderr, "expon: Creating\n");
 #endif
-            expon = malloc(sizeof(sp_expon));
-            plumber_add_module(pd, SPORTH_EXPON, sizeof(sp_expon), expon);
+            expon = malloc(sizeof(sporth_expon_d));
+            plumber_add_module(pd, SPORTH_EXPON, sizeof(sporth_expon_d), expon);
             break;
         case PLUMBER_INIT:
 
