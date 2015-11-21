@@ -109,3 +109,99 @@ int sporth_tset(sporth_stack *stack, void *ud)
     }
     return PLUMBER_OK;
 }
+
+int sporth_tblen(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = ud;
+
+    char *ftname;
+    sp_ftbl *ft;
+    uint32_t *tsize;
+
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+            tsize = malloc(sizeof(uint32_t));
+            plumber_add_module(pd, SPORTH_TBLEN, sizeof(uint32_t), tsize);
+            break;
+
+        case PLUMBER_INIT:
+            if(sporth_check_args(stack, "s") != SPORTH_OK) {
+               fprintf(stderr,"Init: not enough arguments for tget\n");
+                return PLUMBER_NOTOK;
+            }
+            tsize = pd->last->ud;
+            ftname = sporth_stack_pop_string(stack);
+            if(plumber_ftmap_search(pd, ftname, &ft) == PLUMBER_NOTOK) {
+                fprintf(stderr, "tblen: could not find table '%s'\n", ftname);
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            *tsize = ft->size;
+            free(ftname);
+            sporth_stack_push_float(stack, *tsize);
+            break;
+
+        case PLUMBER_COMPUTE:
+            tsize = pd->last->ud;
+            sporth_stack_push_float(stack, (SPFLOAT) *tsize);
+            break;
+
+        case PLUMBER_DESTROY:
+            tsize = pd->last->ud;
+            free(tsize);
+            break;
+
+        default:
+            fprintf(stderr,"Error: Unknown mode!");
+            break;
+    }
+    return PLUMBER_OK;
+}
+
+int sporth_tblens(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = ud;
+
+    char *ftname;
+    sp_ftbl *ft;
+    SPFLOAT *tlen;
+
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+            tlen = malloc(sizeof(SPFLOAT));
+            plumber_add_module(pd, SPORTH_TBLENS, sizeof(SPFLOAT), tlen);
+            break;
+
+        case PLUMBER_INIT:
+            if(sporth_check_args(stack, "s") != SPORTH_OK) {
+               fprintf(stderr,"Init: not enough arguments for tget\n");
+                return PLUMBER_NOTOK;
+            }
+            tlen = pd->last->ud;
+            ftname = sporth_stack_pop_string(stack);
+            if(plumber_ftmap_search(pd, ftname, &ft) == PLUMBER_NOTOK) {
+                fprintf(stderr, "tblen: could not find table '%s'\n", ftname);
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            *tlen = (SPFLOAT) ft->size / pd->sp->sr;
+            free(ftname);
+            sporth_stack_push_float(stack, (SPFLOAT) *tlen);
+            break;
+
+        case PLUMBER_COMPUTE:
+            tlen = pd->last->ud;
+            sporth_stack_push_float(stack, (SPFLOAT) *tlen);
+            break;
+
+        case PLUMBER_DESTROY:
+            tlen = pd->last->ud;
+            free(tlen);
+            break;
+
+        default:
+            fprintf(stderr,"Error: Unknown mode!");
+            break;
+    }
+    return PLUMBER_OK;
+}
