@@ -28,7 +28,9 @@ OBJ += func.o plumber.o stack.o parse.o hash.o
 
 SPORTHLIBS = libsporth.a
 
-ifdef BUILD_DYNAMIC
+
+
+ifndef NO_DYNAMIC
 SPORTHLIBS += libsporth_dyn.so
 endif
 
