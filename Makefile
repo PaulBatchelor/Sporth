@@ -29,7 +29,7 @@ OBJ += func.o plumber.o stack.o parse.o hash.o
 SPORTHLIBS = libsporth.a
 
 ifdef BUILD_DYNAMIC
-SPORTHLIBS += libsporth.so
+SPORTHLIBS += libsporth_dyn.so
 endif
 
 
@@ -56,7 +56,7 @@ util/float2bin: util/float2bin.c
 sporth: sporth.c $(OBJ) h/ugens.h
 	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
 
-libsporth.so: $(OBJ)
+libsporth_dyn.so: $(OBJ)
 	ld -shared -fPIC -o $@ $(OBJ)
 
 libsporth.a: $(OBJ) tmp.h

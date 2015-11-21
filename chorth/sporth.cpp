@@ -4,7 +4,7 @@
 #include <limits.h>
 
 extern "C"{
-#include "../soundpipe.h"
+#include "soundpipe.h"
 #include "../tmp.h"
 }
 

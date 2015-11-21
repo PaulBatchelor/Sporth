@@ -1,6 +1,0 @@
-CHUGIN_PATH=/usr/lib/chuck
-
-FLAGS=-D__LINUX_ALSA__ -D__PLATFORM_LINUX__ -I$(CK_SRC_PATH) -fPIC -lsoundpipe
-LDFLAGS=-shared -lstdc++ -fPIC -lsoundpipe -lsporth
-LD=gcc 
-CXX=g++
