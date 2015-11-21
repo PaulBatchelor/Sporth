@@ -303,3 +303,13 @@ Args: time (f), amp (f), pitch (f), ftable (s)
 Output: f
 Description: Phase-locked vocoder
 ---
+Name: tblsize
+Args: ftable (s)
+Output: f
+Description: Get size of table (in samples)
+---
+Name: tbldur
+Args: ftable (s)
+Output: f
+Description: Get duration of table (in seconds)
+---
