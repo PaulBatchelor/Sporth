@@ -43,7 +43,7 @@ int sporth_mincer(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-
+            free(ftname);
             sp_mincer_init(pd->sp, mincer, ft);
             sporth_stack_push_float(stack, 0);
             break;
