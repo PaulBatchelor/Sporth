@@ -313,3 +313,13 @@ Args: ftable (s)
 Output: f
 Description: Get duration of table (in seconds)
 ---
+Name: poly
+Args: max voices (f) max params (f) polyfile (s) ftable (s)
+Output: (none)
+Description: Parse a poly file and write to table ftable
+---
+Name: polyget
+Args: voice number (f) param number (f) tbl (s)
+Output: f
+Description: get a value from a poly table. p0 = tick p1 = dur p2,3,etc: other
+---
