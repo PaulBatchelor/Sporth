@@ -126,13 +126,13 @@ int sporth_tblsize(sporth_stack *stack, void *ud)
 
         case PLUMBER_INIT:
             if(sporth_check_args(stack, "s") != SPORTH_OK) {
-               fprintf(stderr,"Init: not enough arguments for tget\n");
+               fprintf(stderr,"Init: not enough arguments for tblsize\n");
                 return PLUMBER_NOTOK;
             }
             tsize = pd->last->ud;
             ftname = sporth_stack_pop_string(stack);
             if(plumber_ftmap_search(pd, ftname, &ft) == PLUMBER_NOTOK) {
-                fprintf(stderr, "tblen: could not find table '%s'\n", ftname);
+                fprintf(stderr, "tblsize: could not find table '%s'\n", ftname);
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
