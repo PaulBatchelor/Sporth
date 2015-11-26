@@ -328,3 +328,8 @@ Args: freq (f) amp (f)
 Output: f
 Description: Sawtooth oscillator
 ---
+Name: square
+Args: freq (f) amp (f) width (f)
+Output: f
+Description: Square oscillator
+---
