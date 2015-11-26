@@ -333,3 +333,13 @@ Args: freq (f) amp (f) width (f)
 Output: f
 Description: Square oscillator
 ---
+Name: bitcrush
+Args: bitdepth (f) samplerate (f)
+Output: f
+Description: bitcrusher
+---
+Name: dist
+Args: pregain (f) gain (f) shape1 (f) shape2 (f) 
+Output: f
+Description: Distortion
+---
