@@ -323,3 +323,8 @@ Args: voice number (f) param number (f) tbl (s)
 Output: f
 Description: get a value from a poly table. p0 = tick p1 = dur p2,3,etc: other
 ---
+Name: saw
+Args: freq (f) amp (f)
+Output: f
+Description: Sawtooth oscillator
+---
