@@ -343,3 +343,8 @@ Args: pregain (f) gain (f) shape1 (f) shape2 (f)
 Output: f
 Description: Distortion
 ---
+Name: tenvx
+Args: trig (f) atk (f) hold (f) rel (f) 
+Output: f
+Description: Exponential Envelope Generator
+---
