@@ -348,3 +348,8 @@ Args: trig (f) atk (f) hold (f) rel (f)
 Output: f
 Description: Exponential Envelope Generator
 ---
+Name: pan
+Args: in (f) pan (f)
+Output: ff
+Description: Equal power panning. -1 = hardL 1 = hardR
+---
