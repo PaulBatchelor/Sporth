@@ -113,7 +113,7 @@ int plumber_show_pipes(plumber_data *plumb)
     float *fval;
     for(n = 0; n < plumb->npipes; n++) {
         next = pipe->next;
-       fprintf(stderr,"type = %ld size = %d", pipe->type, (long)pipe->size);
+       fprintf(stderr,"type = %d size = %ld", pipe->type, (long)pipe->size);
         if(pipe->type == SPORTH_FLOAT) {
             fval = pipe->ud;
            fprintf(stderr," val = %g\n", *fval);
