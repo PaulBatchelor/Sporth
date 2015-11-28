@@ -127,7 +127,7 @@ int sporth_polyget(sporth_stack *stack, void *ud)
     plumber_data *pd = ud;
     sporth_poly_d *poly; 
     char *ftname;
-    uint32_t voice;
+    int voice;
     uint32_t param;
     uint32_t max_p;
     switch(pd->mode) {
@@ -151,7 +151,7 @@ int sporth_polyget(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             ftname = sporth_stack_pop_string(stack);
-            voice = (uint32_t)sporth_stack_pop_float(stack);
+            voice = (int)sporth_stack_pop_float(stack);
             param = (uint32_t)sporth_stack_pop_float(stack);
 
             if(plumber_ftmap_search(pd, ftname, &poly->ft) == PLUMBER_NOTOK) {

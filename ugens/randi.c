@@ -4,11 +4,9 @@ int sporth_randi(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
     SPFLOAT out;
-    int seed;
     SPFLOAT min;
     SPFLOAT max;
     SPFLOAT cps;
-    SPFLOAT mode;
     sp_randi *randi;
 
     switch(pd->mode) {

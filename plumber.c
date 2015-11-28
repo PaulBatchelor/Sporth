@@ -111,11 +111,9 @@ int plumber_show_pipes(plumber_data *plumb)
     plumber_pipe *pipe = plumb->root.next, *next;
     uint32_t n;
     float *fval;
-    int rc;
-    sporth_data *sporth = &plumb->sporth;
     for(n = 0; n < plumb->npipes; n++) {
         next = pipe->next;
-       fprintf(stderr,"type = %d size = %d", pipe->type, pipe->size);
+       fprintf(stderr,"type = %ld size = %d", pipe->type, (long)pipe->size);
         if(pipe->type == SPORTH_FLOAT) {
             fval = pipe->ud;
            fprintf(stderr," val = %g\n", *fval);
@@ -225,13 +223,11 @@ int plumber_add_module(plumber_data *plumb,
 int plumber_parse_string(plumber_data *plumb, char *str)
 {
     char *out, *tmp;
-    uint32_t prev = 0, pos = 0, offset = 0, len = 0;
+    uint32_t pos = 0, len = 0;
     uint32_t size = strlen(str);
 
     pos = 0;
-    offset = 0;
     len = 0;
-    prev = 0;
     while(pos < size) {
         out = sporth_tokenizer(&plumb->sporth, str, size, &pos);
         len = strlen(out);
@@ -281,13 +277,11 @@ int plumber_parse(plumber_data *plumb)
     size_t length = 0;
     ssize_t read;
     char *out, *tmp;
-    uint32_t prev = 0, pos = 0, offset = 0, len = 0;
+    uint32_t pos = 0, len = 0;
     plumb->mode = PLUMBER_CREATE;
     while((read = getline(&line, &length, fp)) != -1) {
         pos = 0;
-        offset = 0;
         len = 0;
-        prev = 0;
         while(pos < read - 1) {
             out = sporth_tokenizer(&plumb->sporth, line, read - 1, &pos);
             len = strlen(out);
@@ -466,6 +460,7 @@ int plumber_register(plumber_data *plumb)
     sporth_func *flist2 = malloc(sizeof(sporth_func) * plumb->sporth.nfunc);
     flist2 = memcpy(flist2, flist, sizeof(sporth_func) * plumb->sporth.nfunc);
     plumb->sporth.flist = flist2;
+    return PLUMBER_OK;
 }
 
 static uint32_t str2time(plumber_data *pd, char *str)
@@ -488,7 +483,6 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
 {
     char filename[60];
     sprintf(filename, "test.wav");
-    unsigned long len = 5 * 44100;
     int sr = 44100;
     int nchan = 1;
     char *time = NULL;

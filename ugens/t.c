@@ -15,7 +15,6 @@ int sporth_tget(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
 
-    SPFLOAT out = 0;
     sporth_tbl_d *td;
     char *ftname;
 
@@ -64,7 +63,6 @@ int sporth_tset(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
 
-    SPFLOAT out = 0;
     sporth_tbl_d *td;
     char *ftname;
 

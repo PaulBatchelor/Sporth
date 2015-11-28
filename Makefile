@@ -4,7 +4,7 @@ default: sporth
 
 MASTER_MAKEFILE=1
 
-CFLAGS += -O3 -fPIC -L./ -I ./
+CFLAGS += -O3 -fPIC -L./ -I ./ -Wall
 
 ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE 
