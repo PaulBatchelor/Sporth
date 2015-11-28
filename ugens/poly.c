@@ -22,7 +22,7 @@ int sporth_poly(sporth_stack *stack, void *ud)
     char *ftname;
     char *file;
     uint32_t n, p;
-    uint32_t id;
+    int id;
     switch(pd->mode) {
         case PLUMBER_CREATE:
 
