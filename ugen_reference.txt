@@ -323,3 +323,33 @@ Args: voice number (f) param number (f) tbl (s)
 Output: f
 Description: get a value from a poly table. p0 = tick p1 = dur p2,3,etc: other
 ---
+Name: saw
+Args: freq (f) amp (f)
+Output: f
+Description: Sawtooth oscillator
+---
+Name: square
+Args: freq (f) amp (f) width (f)
+Output: f
+Description: Square oscillator
+---
+Name: bitcrush
+Args: bitdepth (f) samplerate (f)
+Output: f
+Description: bitcrusher
+---
+Name: dist
+Args: pregain (f) gain (f) shape1 (f) shape2 (f) 
+Output: f
+Description: Distortion
+---
+Name: tenvx
+Args: trig (f) atk (f) hold (f) rel (f) 
+Output: f
+Description: Exponential Envelope Generator
+---
+Name: pan
+Args: in (f) pan (f)
+Output: ff
+Description: Equal power panning. -1 = hardL 1 = hardR
+---
