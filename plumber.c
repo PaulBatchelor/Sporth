@@ -486,14 +486,14 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     int sr = 44100;
     int nchan = 1;
     char *time = NULL;
-    *argv++;
+    argv++;
     argc--;
     int driver = DRIVER_FILE;
     while(argc > 0 && argv[0][0] == '-') {
         switch(argv[0][1]){
             case 'd':
                 if(--argc) {
-                    *argv++;
+                    argv++;
 #ifdef DEBUG_MODE
                    fprintf(stderr,"setting duration to %s\n", argv[0]);
 #endif
@@ -505,7 +505,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 break;
             case 'o':
                 if(--argc) {
-                    *argv++;
+                    argv++;
                     if(!strcmp(argv[0], "raw")) {
                         driver = DRIVER_RAW;
                     } else {
@@ -521,7 +521,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 break;
             case 'r':
                 if(--argc) {
-                    *argv++;
+                    argv++;
 #ifdef DEBUG_MODE
                    fprintf(stderr,"setting samplerate to %s\n", argv[0]);
 #endif
@@ -533,7 +533,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 break;
             case 'c':
                 if(--argc) {
-                    *argv++;
+                    argv++;
 #ifdef DEBUG_MODE
                    fprintf(stderr,"setting nchannels to %s\n", argv[0]);
 #endif
@@ -545,7 +545,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 break;
             case 'b':
                 if(--argc) {
-                    *argv++;
+                    argv++;
                     if (!strcmp(argv[0], "file")) {
                         driver = DRIVER_FILE;
                     } else if ((!strcmp(argv[0], "raw"))) {
@@ -568,7 +568,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 exit(1);
                 break;
         }
-        *argv++;
+        argv++;
         argc--;
     }
 
