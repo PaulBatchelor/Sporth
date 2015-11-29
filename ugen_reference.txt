@@ -358,3 +358,8 @@ Args: amp (f) cpsMin (f) cpsMax(f)
 Output: f
 Description: Jitter control signal
 ---
+Name: tpoly 
+Args: trig (f) max voices (f) max params (f) arg_ft (s) poly_ft (s)
+Output: n/a
+Description: triggered polyphony 
+---
