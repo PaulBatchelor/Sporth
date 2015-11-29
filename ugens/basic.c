@@ -158,7 +158,6 @@ int sporth_swap(sporth_stack *stack, void *ud)
                     NULL);
             break;
         case PLUMBER_INIT:
-            break;
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 stack->error++;
                 return SPORTH_NOTOK;
@@ -167,6 +166,7 @@ int sporth_swap(sporth_stack *stack, void *ud)
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, 0);
             sporth_stack_push_float(stack, 0);
+            break;
         case PLUMBER_COMPUTE:
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 stack->error++;

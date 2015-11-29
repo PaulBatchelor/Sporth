@@ -24,7 +24,7 @@ int sporth_gen_sine(sporth_stack *stack, void *ud)
             size = (int)sporth_stack_pop_float(stack);
             str = sporth_stack_pop_string(stack);
 #ifdef DEBUG_MODE
-            fprintf("Creating sine table %s of size %d\n", str, size);
+            fprintf(stderr, "Creating sine table %s of size %d\n", str, size);
 #endif
             sp_ftbl_create(pd->sp, &ft, size);
             sp_gen_sine(pd->sp, ft);

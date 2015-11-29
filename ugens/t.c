@@ -114,7 +114,7 @@ int sporth_tblsize(sporth_stack *stack, void *ud)
 
     char *ftname;
     sp_ftbl *ft;
-    uint32_t *tsize;
+    size_t *tsize;
 
     switch(pd->mode){
         case PLUMBER_CREATE:
