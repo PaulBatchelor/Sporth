@@ -353,3 +353,8 @@ Args: in (f) pan (f)
 Output: ff
 Description: Equal power panning. -1 = hardL 1 = hardR
 ---
+Name: jitter
+Args: amp (f) cpsMin (f) cpsMax(f)
+Output: f
+Description: Jitter control signal
+---
