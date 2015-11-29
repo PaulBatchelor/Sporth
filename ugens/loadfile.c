@@ -24,9 +24,6 @@ int sporth_loadfile(sporth_stack *stack, void *ud)
 
             filename = sporth_stack_pop_string(stack);
             str = sporth_stack_pop_string(stack);
-#ifdef DEBUG_MODE
-            fprintf(stderr, "Creating line table %s of size %d\n", str, size);
-#endif
             if(sp_ftbl_loadfile(pd->sp, &ft, filename) == SP_NOT_OK) {
                 fprintf(stderr, "There was an issue creating the ftable \"%s\".\n", str);
                 stack->error++;

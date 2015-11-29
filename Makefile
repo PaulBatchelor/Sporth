@@ -7,7 +7,7 @@ MASTER_MAKEFILE=1
 CFLAGS += -O3 -fPIC -L./ -I ./ -Wall
 
 ifdef DEBUG_MODE
-CFLAGS += -DDEBUG_MODE 
+CFLAGS += -DDEBUG_MODE -DPOLY_DEBUG
 endif
 
 UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
@@ -37,27 +37,27 @@ SPORTHLIBS += libsporth_dyn.so
 endif
 
 %.o: %.c h/ugens.h
-	gcc $(CFLAGS) -g -c -Ih $< -o $@
+	$(CC) $(CFLAGS) -g -c -Ih $< -o $@
 
 ugens/%.o: ugens/%.c
-	gcc $(CFLAGS) -g -Ih -c $< -o $@
+	$(CC) $(CFLAGS) -g -Ih -c $< -o $@
 
 util/jack_wrapper: util/jack_wrapper.c
-	gcc $< -ljack -lsoundpipe -lsndfile -o jack_wrapper -lm
+	$(CC) $< -ljack -lsoundpipe -lsndfile -o jack_wrapper -lm
 
 val: util/val
 
 util/val: util/val.c
-	gcc $< -o $@
+	$(CC) $< -o $@
 
 float2bin: util/float2bin
 
 util/float2bin: util/float2bin.c
-	gcc $< -o $@
+	$(CC) $< -o $@
 
 
 sporth: sporth.c $(OBJ) h/ugens.h
-	gcc sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
+	$(CC) sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
 
 libsporth_dyn.so: $(OBJ)
 	ld -shared -fPIC -o $@ $(OBJ)

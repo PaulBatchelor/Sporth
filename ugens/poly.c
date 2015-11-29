@@ -7,6 +7,7 @@ typedef struct {
     poly_data poly;
     poly_cluster clust;
     sp_ftbl *ft;
+    sp_ftbl *arg_ft;
     uint32_t max_params;
     uint32_t max_voices;
     uint32_t *dur;
@@ -65,7 +66,6 @@ int sporth_poly(sporth_stack *stack, void *ud)
             memset(poly->ft->tbl, 0, poly->ft->size * sizeof(SPFLOAT));
             poly->ft->tbl[0] = poly->max_params;
             plumber_ftmap_add(pd, ftname, poly->ft);
-            sporth_stack_push_float(stack, 0);
             free(ftname);
             free(file);
             break;
@@ -117,6 +117,116 @@ int sporth_poly(sporth_stack *stack, void *ud)
             break;
         default:
             fprintf(stderr, "poly: Uknown mode!\n");
+            break;
+    }
+    return PLUMBER_OK;
+}
+
+int sporth_tpoly(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = ud;
+    sporth_poly_d *poly;
+    poly_voice *voice;
+    SPFLOAT trig = 0;
+    uint32_t nvoices;
+    char *poly_ft;
+    char *arg_ft;
+    uint32_t n, p;
+    int id;
+    switch(pd->mode) {
+        case PLUMBER_CREATE:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "poly: Creating\n");
+#endif
+            poly = malloc(sizeof(sporth_poly_d));
+            plumber_add_module(pd, SPORTH_TPOLY, sizeof(sporth_poly_d), poly);
+            break;
+        case PLUMBER_INIT:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "poly: Initialising\n");
+#endif
+
+            if(sporth_check_args(stack, "fffss") != SPORTH_OK) {
+                fprintf(stderr,"Invalid arguments for tpoly\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            poly = pd->last->ud;
+
+            poly_ft = sporth_stack_pop_string(stack);
+            arg_ft = sporth_stack_pop_string(stack);
+            poly->max_params = (uint32_t)sporth_stack_pop_float(stack);
+            poly->max_voices = (uint32_t)sporth_stack_pop_float(stack);
+            trig = sporth_stack_pop_float(stack);
+
+            if(plumber_ftmap_search(pd, arg_ft, &poly->arg_ft) == PLUMBER_NOTOK) {
+                fprintf(stderr, "Could not find table %s\n", arg_ft);
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+
+            poly->dur = malloc(sizeof(uint32_t) * poly->max_voices);
+            
+            poly_cluster_init(&poly->clust, poly->max_voices);
+
+            sp_ftbl_create(pd->sp, &poly->ft, 
+                    1 + poly->max_voices * (2 + poly->max_params));
+            memset(poly->ft->tbl, 0, poly->ft->size * sizeof(SPFLOAT));
+            poly->ft->tbl[0] = poly->max_params;
+
+            plumber_ftmap_add(pd, poly_ft, poly->ft);
+            
+            free(poly_ft);
+            free(arg_ft);
+            break;
+        case PLUMBER_COMPUTE:
+            sporth_stack_pop_float(stack);
+            sporth_stack_pop_float(stack);
+            trig = sporth_stack_pop_float(stack);
+            poly = pd->last->ud;
+
+            for(n = 0; n < poly->max_voices; n++) {
+                poly->ft->tbl[1 + n * (poly->max_params + 2)] = 0.0;
+            }
+
+            if(trig != 0) {
+                if(!poly_cluster_add(&poly->clust, &id)) {
+                    poly->dur[id] = poly->arg_ft->tbl[0] * pd->sp->sr;
+                    poly->ft->tbl[1 + id * (poly->max_params + 2)] = 1.0;
+                    poly->ft->tbl[2 + id * (poly->max_params + 2)] = poly->arg_ft->tbl[0];
+                    for(p = 1; p < poly->arg_ft->size; p++) {
+                        poly->ft->tbl[2 + id * (poly->max_params + 2) + p] = poly->arg_ft->tbl[p];
+                    }
+                }
+            }
+
+            poly_cluster_reset(&poly->clust);
+            nvoices = poly_cluster_nvoices(&poly->clust);
+
+            for(n = 0; n < nvoices; n++) {
+                voice = poly_next_voice(&poly->clust);
+                poly->dur[voice->val] -= 1;
+            }
+           
+            poly_cluster_reset(&poly->clust);
+            for(n = 0; n < nvoices; n++) {
+                voice = poly_next_voice(&poly->clust);
+                if(poly->dur[voice->val] <= 0) {
+                    poly_cluster_remove(&poly->clust, voice->val);
+                }
+            }
+
+            break;
+        case PLUMBER_DESTROY:
+            poly = pd->last->ud;
+            poly_cluster_destroy(&poly->clust);
+            free(poly->dur);
+            free(poly);
+            break;
+        default:
+            fprintf(stderr, "tpoly: Uknown mode!\n");
             break;
     }
     return PLUMBER_OK;
