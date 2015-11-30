@@ -63,6 +63,7 @@ CK_DLL_CTOR(sporth_ctor)
     sporthData * data = new sporthData;
     data->parsed = 0;
     sp_create(&data->sp);
+    sp_srand(data->sp, time(NULL));
     data->sp->sr = API->vm->get_srate();
     plumber_register(&data->pd);
     plumber_init(&data->pd);

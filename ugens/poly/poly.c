@@ -146,17 +146,23 @@ int poly_cluster_add(poly_cluster *clust, int *id)
     }
     *id = clust->stack[clust->pos - 1];
 #ifdef POLY_DEBUG
-    printf("Popping free voice number %d from voicestack\n", *id);
+    printf("Popping voice id %d from voicestack\n", *id);
 #endif
     clust->pos--;
     clust->nvoices++;
 
-    poly_voice *voice = &clust->voice[clust->nvoices - 1];
+    //poly_voice *voice = &clust->voice[clust->nvoices - 1];
+    poly_voice *voice = &clust->voice[*id];
     voice->val = *id;
     voice->next = NULL;
 
     clust->last->next = voice;
     clust->last = voice;
+
+#ifdef POLY_DEBUG
+    printf("There are now %d active voices\n", clust->nvoices);
+#endif
+
     return 0; 
 }
 

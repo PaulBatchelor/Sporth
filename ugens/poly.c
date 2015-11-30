@@ -192,7 +192,7 @@ int sporth_tpoly(sporth_stack *stack, void *ud)
             }
 
             if(trig != 0) {
-                if(!poly_cluster_add(&poly->clust, &id)) {
+                if(poly_cluster_add(&poly->clust, &id) == 0) {
                     poly->dur[id] = poly->arg_ft->tbl[0] * pd->sp->sr;
                     poly->ft->tbl[1 + id * (poly->max_params + 2)] = 1.0;
                     poly->ft->tbl[2 + id * (poly->max_params + 2)] = poly->arg_ft->tbl[0];
@@ -211,6 +211,7 @@ int sporth_tpoly(sporth_stack *stack, void *ud)
             }
            
             poly_cluster_reset(&poly->clust);
+            nvoices = poly_cluster_nvoices(&poly->clust);
             for(n = 0; n < nvoices; n++) {
                 voice = poly_next_voice(&poly->clust);
                 if(poly->dur[voice->val] <= 0) {
