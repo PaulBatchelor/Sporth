@@ -363,3 +363,13 @@ Args: trig (f) max voices (f) max params (f) arg_ft (s) poly_ft (s)
 Output: n/a
 Description: triggered polyphony 
 ---
+Name: vdelay
+Args: in (f), feedback (f), deltime (f) maxdelay(f)
+Output: f
+Description: variable delay with feedback
+---
+Name: zitarev
+Args: in2,in1,delay,lf_x,rtlo,rthi,hfdmp,eq1f,eq1l,eq2f,eq1l,mix,lvl
+Output: f
+Description: zitareverb module
+---
