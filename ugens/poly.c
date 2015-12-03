@@ -31,7 +31,7 @@ int sporth_poly(sporth_stack *stack, void *ud)
             fprintf(stderr, "poly: Creating\n");
 #endif
             poly = malloc(sizeof(sporth_poly_d));
-            plumber_add_module(pd, SPORTH_POLY, sizeof(sporth_poly_d), poly);
+            plumber_add_module(pd, SPORTH_POLY, poly);
             break;
         case PLUMBER_INIT:
 
@@ -61,7 +61,7 @@ int sporth_poly(sporth_stack *stack, void *ud)
             }
             poly_end(&poly->poly);
             poly_cluster_init(&poly->clust, poly->max_voices);
-            sp_ftbl_create(pd->sp, &poly->ft, 
+            sp_ftbl_create(pd->sp, &poly->ft,
                     1 + poly->max_voices * (2 + poly->max_params));
             memset(poly->ft->tbl, 0, poly->ft->size * sizeof(SPFLOAT));
             poly->ft->tbl[0] = poly->max_params;
@@ -82,7 +82,7 @@ int sporth_poly(sporth_stack *stack, void *ud)
 
             poly_itr_reset(&poly->poly);
             for(n = 0; n < poly_nevents(&poly->poly); n++) {
-                evt = poly_itr_next(&poly->poly);    
+                evt = poly_itr_next(&poly->poly);
                 if(!poly_cluster_add(&poly->clust, &id)) {
                     poly->dur[id] = evt->p[0] * pd->sp->sr;
                     poly->ft->tbl[1 + id * (poly->max_params + 2)] = 1.0;
@@ -99,7 +99,7 @@ int sporth_poly(sporth_stack *stack, void *ud)
                 voice = poly_next_voice(&poly->clust);
                 poly->dur[voice->val] -= 1;
             }
-           
+
             poly_cluster_reset(&poly->clust);
             for(n = 0; n < nvoices; n++) {
                 voice = poly_next_voice(&poly->clust);
@@ -140,7 +140,7 @@ int sporth_tpoly(sporth_stack *stack, void *ud)
             fprintf(stderr, "poly: Creating\n");
 #endif
             poly = malloc(sizeof(sporth_poly_d));
-            plumber_add_module(pd, SPORTH_TPOLY, sizeof(sporth_poly_d), poly);
+            plumber_add_module(pd, SPORTH_TPOLY, poly);
             break;
         case PLUMBER_INIT:
 
@@ -168,16 +168,16 @@ int sporth_tpoly(sporth_stack *stack, void *ud)
             }
 
             poly->dur = malloc(sizeof(uint32_t) * poly->max_voices);
-            
+
             poly_cluster_init(&poly->clust, poly->max_voices);
 
-            sp_ftbl_create(pd->sp, &poly->ft, 
+            sp_ftbl_create(pd->sp, &poly->ft,
                     1 + poly->max_voices * (2 + poly->max_params));
             memset(poly->ft->tbl, 0, poly->ft->size * sizeof(SPFLOAT));
             poly->ft->tbl[0] = poly->max_params;
 
             plumber_ftmap_add(pd, poly_ft, poly->ft);
-            
+
             free(poly_ft);
             free(arg_ft);
             break;
@@ -209,7 +209,7 @@ int sporth_tpoly(sporth_stack *stack, void *ud)
                 voice = poly_next_voice(&poly->clust);
                 poly->dur[voice->val] -= 1;
             }
-           
+
             poly_cluster_reset(&poly->clust);
             nvoices = poly_cluster_nvoices(&poly->clust);
             for(n = 0; n < nvoices; n++) {
@@ -236,7 +236,7 @@ int sporth_tpoly(sporth_stack *stack, void *ud)
 int sporth_polyget(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
-    sporth_poly_d *poly; 
+    sporth_poly_d *poly;
     char *ftname;
     int voice;
     uint32_t param;
@@ -248,7 +248,7 @@ int sporth_polyget(sporth_stack *stack, void *ud)
             fprintf(stderr, "polyget: Creating\n");
 #endif
             poly = malloc(sizeof(sporth_poly_d));
-            plumber_add_module(pd, SPORTH_POLYGET, 0, poly);
+            plumber_add_module(pd, SPORTH_POLYGET, poly);
             break;
         case PLUMBER_INIT:
 
@@ -268,7 +268,7 @@ int sporth_polyget(sporth_stack *stack, void *ud)
             if(plumber_ftmap_search(pd, ftname, &poly->ft) == PLUMBER_NOTOK) {
                 stack->error++;
                 return PLUMBER_NOTOK;
-            } 
+            }
             free(ftname);
             sporth_stack_push_float(stack, 0);
             break;

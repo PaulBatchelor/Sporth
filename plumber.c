@@ -201,8 +201,7 @@ int plumber_add_string(plumber_data *plumb, const char *str)
     return PLUMBER_OK;
 }
 
-int plumber_add_module(plumber_data *plumb,
-        uint32_t id, size_t size, void *ud)
+int plumber_add_module(plumber_data *plumb, uint32_t id, void *ud)
 {
     plumber_pipe *new = malloc(sizeof(plumber_pipe));
 
@@ -212,7 +211,6 @@ int plumber_add_module(plumber_data *plumb,
     }
 
     new->type = id;
-    new->size = size;
     new->ud = ud;
 
     plumb->last->next = new;
@@ -332,7 +330,7 @@ int plumber_recompile(plumber_data *plumb)
     plumber_pipe *tmp2;
     plumb->mode = PLUMBER_CREATE;
     uint32_t oldnpipes = plumb->npipes;
-    uint32_t newnpipes; 
+    uint32_t newnpipes;
     int error = 0;
     plumb->npipes = 0;
     fseek(plumb->fp, 0L, SEEK_SET);
@@ -341,9 +339,9 @@ int plumber_recompile(plumber_data *plumb)
         fprintf(stderr, "Successful parse...\n");
         plumber_compute(plumb, PLUMBER_INIT);
         error = plumb->sporth.stack.error;
-        fprintf(stderr, "at stack position %d\n", 
+        fprintf(stderr, "at stack position %d\n",
                 plumb->sporth.stack.pos);
-        fprintf(stderr, "%d errors\n", 
+        fprintf(stderr, "%d errors\n",
                 plumb->sporth.stack.error);
     } else {
         error++;
@@ -588,7 +586,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     pd->nchan = nchan;
     srand(pd->seed);
     sp_data *sp;
-    
+
     sp_createn(&sp, pd->nchan);
     strncpy(sp->filename, filename, 60);
     pd->sp = sp;

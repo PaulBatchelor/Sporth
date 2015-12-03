@@ -12,7 +12,7 @@ typedef struct {
     uint32_t N;
 } sp_ling;
 
-static void num_to_bin(uint32_t val, char *out, int size) 
+static void num_to_bin(uint32_t val, char *out, int size)
 {
     uint32_t n;
     for(n = 1; n <= size; n++) {
@@ -23,9 +23,9 @@ static void num_to_bin(uint32_t val, char *out, int size)
 int sporth_ling(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
-    SPFLOAT tick = 0; 
-    sp_ling *ling; 
-    ling_func *fl = NULL; 
+    SPFLOAT tick = 0;
+    sp_ling *ling;
+    ling_func *fl = NULL;
     char *str;
     switch(pd->mode) {
         case PLUMBER_CREATE:
@@ -34,7 +34,7 @@ int sporth_ling(sporth_stack *stack, void *ud)
             fprintf(stderr, "ling: Creating\n");
 #endif
             ling = malloc(sizeof(sp_ling));
-            plumber_add_module(pd, SPORTH_LING, sizeof(sp_ling), ling);
+            plumber_add_module(pd, SPORTH_LING, ling);
             break;
         case PLUMBER_INIT:
 
@@ -76,7 +76,7 @@ int sporth_ling(sporth_stack *stack, void *ud)
                         ling_seq_run(&ling->ling);
                         ling->val = ling_stack_pop(&ling->ling.stack);
                         ling->ling.t++;
-                    } 
+                    }
                     break;
                 case 1:
                     if(tick != 0 ) {
@@ -95,7 +95,7 @@ int sporth_ling(sporth_stack *stack, void *ud)
                         ling->val = 0;
                     }
                     break;
-                default: 
+                default:
                     break;
             }
             sporth_stack_push_float(stack, (SPFLOAT)ling->val);
