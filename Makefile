@@ -15,7 +15,7 @@ UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	samphold delay switch mode clip p count f gen_sinesum gen_line \
 	dmetro gbuzz jitter diskin pluck tin jcrev scale tenv2 moogladder \
    	vdelay t line expon ling mincer loadfile poly saw square bitcrush \
-	dist tenvx pan randh trand zitarev
+	dist tenvx pan randh trand zitarev scale2
 
 include ugens/ling/Makefile
 include ugens/poly/Makefile
@@ -76,7 +76,7 @@ examples/user_function: examples/user_function.c libsporth.a h/ugens.h
 
 include util/luasporth/Makefile
 
-install: $(SPORTHLIBS) sporth tmp.h 
+install: $(SPORTHLIBS) sporth tmp.h
 	install sporth /usr/local/bin
 	install tmp.h /usr/local/include/sporth.h
 	install $(SPORTHLIBS) /usr/local/lib
@@ -85,7 +85,7 @@ install: $(SPORTHLIBS) sporth tmp.h
 	install util/ugen_lookup /usr/local/bin
 
 clean:
-	rm -rf $(OBJ) 
+	rm -rf $(OBJ)
 	rm -rf $(BIN)
 	rm -rf tmp.h
 	rm -rf libsporth.a libsporth.so
