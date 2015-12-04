@@ -65,7 +65,7 @@ int plumber_init(plumber_data *plumb)
     plumb->nchan = 1;
     sporth_stack_init(&plumb->sporth.stack);
     plumber_ftmap_init(plumb);
-    plumb->seed = time(NULL);
+    plumb->seed = (int) time(NULL);
     plumb->fp = NULL;
     int pos;
     for(pos = 0; pos < 16; pos++) plumb->p[pos] = 0;
@@ -88,20 +88,20 @@ int plumber_compute(plumber_data *plumb, int mode)
             case SPORTH_FLOAT:
                 fval = pipe->ud;
                 if(mode != PLUMBER_DESTROY)
-                sporth_stack_push_float(&sporth->stack, *fval);
+                    sporth_stack_push_float(&sporth->stack, *fval);
                 break;
             case SPORTH_STRING:
                 sval = pipe->ud;
                 if(mode == PLUMBER_INIT)
-                sporth_stack_push_string(&sporth->stack, sval);
+                    sporth_stack_push_string(&sporth->stack, sval);
                 break;
             default:
                 plumb->last = pipe;
                 sporth->flist[pipe->type - SPORTH_FOFFSET].func(&sporth->stack,
-                        sporth->flist[pipe->type - SPORTH_FOFFSET].ud);
+                                                                sporth->flist[pipe->type - SPORTH_FOFFSET].ud);
                 break;
         }
-       pipe = next;
+        pipe = next;
     }
     return PLUMBER_OK;
 }
@@ -113,12 +113,12 @@ int plumber_show_pipes(plumber_data *plumb)
     float *fval;
     for(n = 0; n < plumb->npipes; n++) {
         next = pipe->next;
-       fprintf(stderr,"type = %d size = %ld", pipe->type, (long)pipe->size);
+        fprintf(stderr,"type = %d size = %ld", pipe->type, (long)pipe->size);
         if(pipe->type == SPORTH_FLOAT) {
             fval = pipe->ud;
-           fprintf(stderr," val = %g\n", *fval);
+            fprintf(stderr," val = %g\n", *fval);
         } else {
-           fprintf(stderr,"\n");
+            fprintf(stderr,"\n");
         }
         pipe = next;
     }
@@ -156,7 +156,7 @@ int plumber_add_float(plumber_data *plumb, float num)
     plumber_pipe *new = malloc(sizeof(plumber_pipe));
 
     if(new == NULL) {
-       fprintf(stderr,"Memory error\n");
+        fprintf(stderr,"Memory error\n");
         return PLUMBER_NOTOK;
     }
 
@@ -166,7 +166,7 @@ int plumber_add_float(plumber_data *plumb, float num)
     float *val = new->ud;
     *val = num;
     if(new->ud == NULL) {
-       fprintf(stderr,"Memory error\n");
+        fprintf(stderr,"Memory error\n");
         return PLUMBER_NOTOK;
     }
 
@@ -181,7 +181,7 @@ int plumber_add_string(plumber_data *plumb, const char *str)
     plumber_pipe *new = malloc(sizeof(plumber_pipe));
 
     if(new == NULL) {
-       fprintf(stderr,"Memory error\n");
+        fprintf(stderr,"Memory error\n");
         return PLUMBER_NOTOK;
     }
 
@@ -191,7 +191,7 @@ int plumber_add_string(plumber_data *plumb, const char *str)
     char *sval = new->ud;
     strncpy(sval, str, new->size);
     if(new->ud == NULL) {
-       fprintf(stderr,"Memory error\n");
+        fprintf(stderr,"Memory error\n");
         return PLUMBER_NOTOK;
     }
 
@@ -206,7 +206,7 @@ int plumber_add_module(plumber_data *plumb, uint32_t id, void *ud)
     plumber_pipe *new = malloc(sizeof(plumber_pipe));
 
     if(new == NULL) {
-       fprintf(stderr,"Memory error\n");
+        fprintf(stderr,"Memory error\n");
         return PLUMBER_NOTOK;
     }
 
@@ -222,13 +222,13 @@ int plumber_parse_string(plumber_data *plumb, char *str)
 {
     char *out, *tmp;
     uint32_t pos = 0, len = 0;
-    uint32_t size = strlen(str);
+    uint32_t size = (unsigned int)strlen(str);
 
     pos = 0;
     len = 0;
     while(pos < size) {
         out = sporth_tokenizer(&plumb->sporth, str, size, &pos);
-        len = strlen(out);
+        len = (unsigned int)strlen(out);
 
         switch(sporth_lexer(&plumb->sporth, out, len)) {
             case SPORTH_FLOAT:
@@ -281,8 +281,8 @@ int plumber_parse(plumber_data *plumb)
         pos = 0;
         len = 0;
         while(pos < read - 1) {
-            out = sporth_tokenizer(&plumb->sporth, line, read - 1, &pos);
-            len = strlen(out);
+            out = sporth_tokenizer(&plumb->sporth, line, (unsigned int)read - 1, &pos);
+            len = (unsigned int)strlen(out);
 
             switch(sporth_lexer(&plumb->sporth, out, len)) {
                 case SPORTH_FLOAT:
@@ -374,7 +374,7 @@ int plumber_recompile(plumber_data *plumb)
 
 int plumber_error(plumber_data *plumb, const char *str)
 {
-   fprintf(stderr,"%s\n", str);
+    fprintf(stderr,"%s\n", str);
     exit(1);
 }
 
@@ -420,7 +420,7 @@ int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
         }
         ftbl = next;
     }
-   fprintf(stderr,"Could not find an ftable match for %s.\n", str);
+    fprintf(stderr,"Could not find an ftable match for %s.\n", str);
     return PLUMBER_NOTOK;
 }
 
@@ -445,12 +445,12 @@ int plumber_ftmap_destroy(plumber_data *plumb)
 
 int plumber_register(plumber_data *plumb)
 {
-    #define SPORTH_UGEN(key, func, macro) {key, func, plumb},
+#define SPORTH_UGEN(key, func, macro) {key, func, plumb},
     sporth_func flist[] = {
-    #include "ugens.h"
-    {NULL, NULL, NULL}
+#include "ugens.h"
+        {NULL, NULL, NULL}
     };
-    #undef SPORTH_UGEN
+#undef SPORTH_UGEN
 
     sporth_htable_init(&plumb->sporth.dict);
     sporth_register_func(&plumb->sporth, flist);
