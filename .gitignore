@@ -2,6 +2,7 @@
 *.o
 *.swp
 *.a
+*.dSYM
 sporth
 playground
 sp_dict.lua

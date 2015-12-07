@@ -16,7 +16,7 @@ int sporth_nsmp(sporth_stack *stack, void *ud)
            fprintf(stderr,"Creating nsmp function... \n");
 #endif
             sp_nsmp_create(&nsmp);
-            plumber_add_module(pd, SPORTH_NSMP, sizeof(sp_nsmp), nsmp);
+            plumber_add_module(pd, SPORTH_NSMP, nsmp);
             break;
         case PLUMBER_INIT:
             if(sporth_check_args(stack, "ffss") != SPORTH_OK) {

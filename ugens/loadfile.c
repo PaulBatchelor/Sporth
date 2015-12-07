@@ -13,7 +13,7 @@ int sporth_loadfile(sporth_stack *stack, void *ud)
 
     switch(pd->mode){
         case PLUMBER_CREATE:
-            plumber_add_module(pd, SPORTH_LOADFILE, 0, NULL);
+            plumber_add_module(pd, SPORTH_LOADFILE, NULL);
             break;
 
         case PLUMBER_INIT:
