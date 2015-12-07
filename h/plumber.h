@@ -30,6 +30,7 @@ DRIVER_RAW
 typedef struct plumber_ftbl {
     sp_ftbl *ft;
     char *name;
+    char to_delete;
     struct plumber_ftbl *next;
 } plumber_ftbl;
 
@@ -55,7 +56,7 @@ typedef struct {
     uint32_t npipes;
     plumber_pipe root;
     plumber_pipe *last;
-} plumber_plumbing;
+} plumbing;
 
 typedef struct plumber_data {
     int nchan;
@@ -65,13 +66,20 @@ typedef struct plumber_data {
     FILE *fp;
     char *filename;
     sporth_data sporth;
-    sp_ftbl tbl_stack[32];
     //uint32_t npipes;
     //plumber_pipe root;
     //plumber_pipe *last;
-    plumber_plumbing plumbing;
+    plumbing *pipes;
+    /* for add_module function */
+    plumbing *tmp;
+    int current_pipe;
+    plumbing main, alt;
 
-    plumber_ftentry ftmap[256];
+    plumber_ftentry *ftmap;
+    plumber_ftentry *ftnew, *ftold;
+    plumber_ftentry ft1[256];
+    plumber_ftentry ft2[256];
+    char delete_ft;
 
     SPFLOAT p[16];
     int (*f[16])(sporth_stack *, void *);
@@ -82,8 +90,8 @@ typedef struct plumber_data {
 int plumber_init(plumber_data *plumb);
 int plumber_register(plumber_data *plumb);
 int plumber_clean(plumber_data *plumb);
-int plumber_add_float(plumber_data *plumb, float num);
-int plumber_add_string(plumber_data *plumb, const char *str);
+int plumber_add_float(plumber_data *plumb, plumbing *pipes, float num);
+int plumber_add_string(plumber_data *plumb, plumbing *pipes, const char *str);
 int plumber_add_module(plumber_data *plumb, uint32_t id, void *ud);
 int plumber_compute(plumber_data *plumb, int mode);
 int plumber_parse(plumber_data *plumb);
@@ -97,9 +105,17 @@ int plumber_ftmap_init(plumber_data *plumb);
 int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft);
 int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft);
 int plumber_ftmap_destroy(plumber_data *plumb);
+int plumber_ftmap_delete(plumber_data *plumb, char mode);
 void sporth_run(plumber_data *pd, int argc, char *argv[],
     void *ud, void (*process)(sp_data *, void *));
+int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len);
 
-int plumbing_init(plumber_plumbing *plumbing);
-int plumbing_destroy(plumber_plumbing *plumbing);
-int plumbing_add_pipe(plumber_plumbing *plumbing, plumber_pipe *pipe);
+int plumbing_init(plumbing *pipes);
+int plumbing_destroy(plumbing *pipes);
+int plumbing_add_pipe(plumbing *pipes, plumber_pipe *pipe);
+int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode);
+int plumbing_parse(plumber_data *plumb, plumbing *pipes);
+
+int plumber_reinit(plumber_data *plumb);
+int plumber_reparse(plumber_data *plumb);
+int plumber_swap(plumber_data *plumb, int error);
