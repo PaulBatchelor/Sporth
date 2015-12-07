@@ -51,6 +51,12 @@ typedef struct {
     void *ud;
 } sporth_func_d;
 
+typedef struct {
+    uint32_t npipes;
+    plumber_pipe root;
+    plumber_pipe *last;
+} plumber_plumbing;
+
 typedef struct plumber_data {
     int nchan;
     int mode;
@@ -60,15 +66,17 @@ typedef struct plumber_data {
     char *filename;
     sporth_data sporth;
     sp_ftbl tbl_stack[32];
-    uint32_t npipes;
-    plumber_pipe root;
-    plumber_pipe *last;
+    //uint32_t npipes;
+    //plumber_pipe root;
+    //plumber_pipe *last;
+    plumber_plumbing plumbing;
 
     plumber_ftentry ftmap[256];
 
     SPFLOAT p[16];
     int (*f[16])(sporth_stack *, void *);
     void *ud;
+    plumber_pipe *last;
 } plumber_data;
 
 int plumber_init(plumber_data *plumb);
@@ -83,7 +91,7 @@ int plumber_parse_string(plumber_data *plumb, char *str);
 int plumber_recompile(plumber_data *plumb);
 int plumber_gettype(plumber_data *plumb, char *str, int mode);
 int plumber_show_pipes(plumber_data *plumb);
-int plumber_pipes_destroy(plumber_data *plumb);
+//int plumber_pipes_destroy(plumber_data *plumb);
 int plumber_error(plumber_data *plumb, const char *str);
 int plumber_ftmap_init(plumber_data *plumb);
 int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft);
@@ -91,3 +99,7 @@ int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft);
 int plumber_ftmap_destroy(plumber_data *plumb);
 void sporth_run(plumber_data *pd, int argc, char *argv[],
     void *ud, void (*process)(sp_data *, void *));
+
+int plumbing_init(plumber_plumbing *plumbing);
+int plumbing_destroy(plumber_plumbing *plumbing);
+int plumbing_add_pipe(plumber_plumbing *plumbing, plumber_pipe *pipe);

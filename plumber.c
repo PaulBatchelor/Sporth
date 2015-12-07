@@ -57,11 +57,19 @@ int sporth_f_default(sporth_stack *stack, void *ud)
     return PLUMBER_OK;
 }
 
+int plumbing_init(plumber_plumbing *plumbing)
+{
+    plumbing->last = &plumbing->root;
+    plumbing->npipes = 0;
+    return PLUMBER_OK;
+}
+
 int plumber_init(plumber_data *plumb)
 {
     plumb->mode = PLUMBER_CREATE;
-    plumb->last = &plumb->root;
-    plumb->npipes = 0;
+    //plumb->last = &plumb->root;
+    //plumb->npipes = 0;
+    plumbing_init(&plumb->plumbing);
     plumb->nchan = 1;
     sporth_stack_init(&plumb->sporth.stack);
     plumber_ftmap_init(plumb);
@@ -76,13 +84,14 @@ int plumber_init(plumber_data *plumb)
 int plumber_compute(plumber_data *plumb, int mode)
 {
     plumb->mode = mode;
-    plumber_pipe *pipe = plumb->root.next, *next;
+    plumber_plumbing *pl = &plumb->plumbing;
+    plumber_pipe *pipe = pl->root.next, *next;
     uint32_t n;
     float *fval;
     char *sval;
     sporth_data *sporth = &plumb->sporth;
     if(sporth->stack.error > 0) return PLUMBER_NOTOK;
-    for(n = 0; n < plumb->npipes; n++) {
+    for(n = 0; n < pl->npipes; n++) {
         next = pipe->next;
         switch(pipe->type) {
             case SPORTH_FLOAT:
@@ -108,6 +117,7 @@ int plumber_compute(plumber_data *plumb, int mode)
 
 int plumber_show_pipes(plumber_data *plumb)
 {
+/* DEPRECATED 
     plumber_pipe *pipe = plumb->root.next, *next;
     uint32_t n;
     float *fval;
@@ -122,15 +132,16 @@ int plumber_show_pipes(plumber_data *plumb)
         }
         pipe = next;
     }
+*/
     return PLUMBER_OK;
 }
 
-int plumber_pipes_destroy(plumber_data *plumb)
+int plumbing_destroy(plumber_plumbing *plumbing)
 {
     uint32_t n;
     plumber_pipe *pipe, *next;
-    pipe = plumb->root.next;
-    for(n = 0; n < plumb->npipes; n++) {
+    pipe = plumbing->root.next;
+    for(n = 0; n < plumbing->npipes; n++) {
         next = pipe->next;
         if(pipe->type == SPORTH_FLOAT || pipe->type == SPORTH_STRING)
             free(pipe->ud);
@@ -140,14 +151,38 @@ int plumber_pipes_destroy(plumber_data *plumb)
     return PLUMBER_OK;
 }
 
+//int plumber_pipes_destroy(plumber_data *plumb)
+//{
+//    uint32_t n;
+//    plumber_pipe *pipe, *next;
+//    pipe = plumb->root.next;
+//    for(n = 0; n < plumb->npipes; n++) {
+//        next = pipe->next;
+//        if(pipe->type == SPORTH_FLOAT || pipe->type == SPORTH_STRING)
+//            free(pipe->ud);
+//        free(pipe);
+//        pipe = next;
+//    }
+//    return PLUMBER_OK;
+//}
+
 int plumber_clean(plumber_data *plumb)
 {
     plumber_compute(plumb, PLUMBER_DESTROY);
     sporth_htable_destroy(&plumb->sporth.dict);
-    plumber_pipes_destroy(plumb);
+    //plumber_pipes_destroy(plumb);
+    plumbing_destroy(&plumb->plumbing);
     plumber_ftmap_destroy(plumb);
     if(plumb->fp != NULL) fclose(plumb->fp);
     free(plumb->sporth.flist);
+    return PLUMBER_OK;
+}
+
+int plumbing_add_pipe(plumber_plumbing *plumbing, plumber_pipe *pipe)
+{
+    plumbing->last->next = pipe;
+    plumbing->last = pipe;
+    plumbing->npipes++;
     return PLUMBER_OK;
 }
 
@@ -170,9 +205,7 @@ int plumber_add_float(plumber_data *plumb, float num)
         return PLUMBER_NOTOK;
     }
 
-    plumb->last->next = new;
-    plumb->last = new;
-    plumb->npipes++;
+    plumbing_add_pipe(&plumb->plumbing, new);
     return PLUMBER_OK;
 }
 
@@ -195,9 +228,10 @@ int plumber_add_string(plumber_data *plumb, const char *str)
         return PLUMBER_NOTOK;
     }
 
-    plumb->last->next = new;
-    plumb->last = new;
-    plumb->npipes++;
+    //plumb->last->next = new;
+    //plumb->last = new;
+    //plumb->npipes++;
+    plumbing_add_pipe(&plumb->plumbing, new);
     return PLUMBER_OK;
 }
 
@@ -213,9 +247,10 @@ int plumber_add_module(plumber_data *plumb, uint32_t id, void *ud)
     new->type = id;
     new->ud = ud;
 
-    plumb->last->next = new;
-    plumb->last = new;
-    plumb->npipes++;
+    //plumb->last->next = new;
+    //plumb->last = new;
+    //plumb->npipes++;
+    plumbing_add_pipe(&plumb->plumbing, new);
     return PLUMBER_OK;
 }
 int plumber_parse_string(plumber_data *plumb, char *str)
@@ -322,55 +357,56 @@ int plumber_parse(plumber_data *plumb)
     free(line);
     return PLUMBER_OK;
 }
-int plumber_recompile(plumber_data *plumb)
-{
-    fprintf(stderr, "Recompiling...\n");
-    plumber_pipe *tmp1 = plumb->root.next;
-    plumb->last = &plumb->root;
-    plumber_pipe *tmp2;
-    plumb->mode = PLUMBER_CREATE;
-    uint32_t oldnpipes = plumb->npipes;
-    uint32_t newnpipes;
-    int error = 0;
-    plumb->npipes = 0;
-    fseek(plumb->fp, 0L, SEEK_SET);
-    sporth_stack_init(&plumb->sporth.stack);
-    if(plumber_parse(plumb) == PLUMBER_OK) {
-        fprintf(stderr, "Successful parse...\n");
-        plumber_compute(plumb, PLUMBER_INIT);
-        error = plumb->sporth.stack.error;
-        fprintf(stderr, "at stack position %d\n",
-                plumb->sporth.stack.pos);
-        fprintf(stderr, "%d errors\n",
-                plumb->sporth.stack.error);
-    } else {
-        error++;
-    }
 
-
-    if(error) {
-        fprintf(stderr, "Did not recompile...\n");
-        fprintf(stderr, "%d pipes\n", plumb->npipes);
-        plumber_pipes_destroy(plumb);
-        plumb->npipes = oldnpipes;
-        fprintf(stderr, "%d old pipes\n", plumb->npipes);
-        plumb->root.next = tmp1;
-        sporth_stack_init(&plumb->sporth.stack);
-        plumb->sp->pos = 0;
-    } else {
-        fprintf(stderr, "Recompiling...\n");
-        tmp2 = plumb->root.next;
-        plumb->root.next = tmp1;
-        newnpipes = plumb->npipes;
-        plumb->npipes = oldnpipes;
-        plumber_pipes_destroy(plumb);
-        plumb->npipes = newnpipes;
-        plumb->root.next = tmp2;
-        plumb->sp->pos = 0;
-    }
-
-    return PLUMBER_OK;
-}
+//int plumber_recompile(plumber_data *plumb)
+//{
+//    fprintf(stderr, "Recompiling...\n");
+//    plumber_pipe *tmp1 = plumb->root.next;
+//    plumb->last = &plumb->root;
+//    plumber_pipe *tmp2;
+//    plumb->mode = PLUMBER_CREATE;
+//    uint32_t oldnpipes = plumb->npipes;
+//    uint32_t newnpipes;
+//    int error = 0;
+//    plumb->npipes = 0;
+//    fseek(plumb->fp, 0L, SEEK_SET);
+//    sporth_stack_init(&plumb->sporth.stack);
+//    if(plumber_parse(plumb) == PLUMBER_OK) {
+//        fprintf(stderr, "Successful parse...\n");
+//        plumber_compute(plumb, PLUMBER_INIT);
+//        error = plumb->sporth.stack.error;
+//        fprintf(stderr, "at stack position %d\n",
+//                plumb->sporth.stack.pos);
+//        fprintf(stderr, "%d errors\n",
+//                plumb->sporth.stack.error);
+//    } else {
+//        error++;
+//    }
+//
+//
+//    if(error) {
+//        fprintf(stderr, "Did not recompile...\n");
+//        fprintf(stderr, "%d pipes\n", plumb->npipes);
+//        plumber_pipes_destroy(plumb);
+//        plumb->npipes = oldnpipes;
+//        fprintf(stderr, "%d old pipes\n", plumb->npipes);
+//        plumb->root.next = tmp1;
+//        sporth_stack_init(&plumb->sporth.stack);
+//        plumb->sp->pos = 0;
+//    } else {
+//        fprintf(stderr, "Recompiling...\n");
+//        tmp2 = plumb->root.next;
+//        plumb->root.next = tmp1;
+//        newnpipes = plumb->npipes;
+//        plumb->npipes = oldnpipes;
+//        plumber_pipes_destroy(plumb);
+//        plumb->npipes = newnpipes;
+//        plumb->root.next = tmp2;
+//        plumb->sp->pos = 0;
+//    }
+//
+//    return PLUMBER_OK;
+//}
 
 int plumber_error(plumber_data *plumb, const char *str)
 {
