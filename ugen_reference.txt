@@ -59,12 +59,12 @@ Output: f
 Description: Constant generator, used for feedback loops.
 ---
 Name: max
-Args: f..f
+Args: ff
 Output: f
 Description: Returns the greater of two items on the stack.
 ---
 Name: min
-Args: f..f
+Args: ff
 Output: f
 Description: Returns the lesser of two items on the stack.
 ---
