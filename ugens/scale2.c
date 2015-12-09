@@ -19,7 +19,7 @@ int sporth_scale2(sporth_stack *stack, void *ud)
 #endif
 
             sp_scale_create(&scale);
-            plumber_add_module(pd, SPORTH_SCALE2, scale);
+            plumber_add_ugen(pd, SPORTH_SCALE2, scale);
             break;
         case PLUMBER_INIT:
 

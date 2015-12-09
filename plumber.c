@@ -201,7 +201,7 @@ int plumber_add_string(plumber_data *plumb, const char *str)
     return PLUMBER_OK;
 }
 
-int plumber_add_module(plumber_data *plumb, uint32_t id, void *ud)
+int plumber_add_ugen(plumber_data *plumb, uint32_t id, void *ud)
 {
     plumber_pipe *new = malloc(sizeof(plumber_pipe));
 
