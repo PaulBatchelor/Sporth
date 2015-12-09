@@ -31,7 +31,7 @@ int sporth_poly(sporth_stack *stack, void *ud)
             fprintf(stderr, "poly: Creating\n");
 #endif
             poly = malloc(sizeof(sporth_poly_d));
-            plumber_add_module(pd, SPORTH_POLY, poly);
+            plumber_add_ugen(pd, SPORTH_POLY, poly);
             break;
         case PLUMBER_INIT:
 
@@ -140,7 +140,7 @@ int sporth_tpoly(sporth_stack *stack, void *ud)
             fprintf(stderr, "poly: Creating\n");
 #endif
             poly = malloc(sizeof(sporth_poly_d));
-            plumber_add_module(pd, SPORTH_TPOLY, poly);
+            plumber_add_ugen(pd, SPORTH_TPOLY, poly);
             break;
         case PLUMBER_INIT:
 
@@ -248,7 +248,7 @@ int sporth_polyget(sporth_stack *stack, void *ud)
             fprintf(stderr, "polyget: Creating\n");
 #endif
             poly = malloc(sizeof(sporth_poly_d));
-            plumber_add_module(pd, SPORTH_POLYGET, poly);
+            plumber_add_ugen(pd, SPORTH_POLYGET, poly);
             break;
         case PLUMBER_INIT:
 
