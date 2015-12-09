@@ -1,7 +1,12 @@
+Name: abs
+Args: v1 (f)
+Output: f
+Description: Performs absolute value.
+---
 Name: add
 Args: v1 (f), v2 (f)
 Output: f
-Description: Performs addition
+Description: Performs addition.
 ---
 Name: sub
 Args: v1 (f), v2 (f)
@@ -18,15 +23,50 @@ Args: v1 (f), v2 (f)
 Output: f
 Description: Performs division.
 ---
+Name: floor
+Args: v1 (f)
+Output: f
+Description: Performs flooring, returning the integer part.
+---
+Name: frac
+Args: v1 (f)
+Output: f
+Description: Returns the fractional part of item on the stack.
+---
+Name: log
+Args: v1 (f)
+Output: f
+Description: Performs natural logarithm.
+---
+Name: log10
+Args: v1 (f)
+Output: f
+Description: Performs base 10 logarithm.
+---
+Name: round
+Args: v1 (f)
+Output: f
+Description: Performs rounding to nearest integer.
+---
 Name: sine
 Args: freq (f), amp (f)
 Output: f
-Description: Simple sine oscillator
+Description: Simple sine oscillator.
 ---
 Name: c
 Args: init value (f)
 Output: f
 Description: Constant generator, used for feedback loops.
+---
+Name: max
+Args: f..f
+Output: f
+Description: Returns the greater of two items on the stack.
+---
+Name: min
+Args: f..f
+Output: f
+Description: Returns the lesser of two items on the stack.
 ---
 Name: mix
 Args: f..f
@@ -276,7 +316,7 @@ Description: Get value from table
 Name: tset
 Args: index (f) value (f) table (s)
 Output: (none)
-Description: Set value of table 
+Description: Set value of table
 ---
 Name: line
 Args: ia (f) idur (f) ib (f)
@@ -299,7 +339,7 @@ Output: f
 Description: Evaluates a string of ling code. (0 = int mode, 1 = binary mode)
 ---
 Name: mincer
-Args: time (f), amp (f), pitch (f), ftable (s) 
+Args: time (f), amp (f), pitch (f), ftable (s)
 Output: f
 Description: Phase-locked vocoder
 ---
@@ -339,12 +379,12 @@ Output: f
 Description: bitcrusher
 ---
 Name: dist
-Args: pregain (f) gain (f) shape1 (f) shape2 (f) 
+Args: pregain (f) gain (f) shape1 (f) shape2 (f)
 Output: f
 Description: Distortion
 ---
 Name: tenvx
-Args: trig (f) atk (f) hold (f) rel (f) 
+Args: trig (f) atk (f) hold (f) rel (f)
 Output: f
 Description: Exponential Envelope Generator
 ---
@@ -358,10 +398,10 @@ Args: amp (f) cpsMin (f) cpsMax(f)
 Output: f
 Description: Jitter control signal
 ---
-Name: tpoly 
+Name: tpoly
 Args: trig (f) max voices (f) max params (f) arg_ft (s) poly_ft (s)
 Output: n/a
-Description: triggered polyphony 
+Description: triggered polyphony
 ---
 Name: vdelay
 Args: in (f), feedback (f), deltime (f) maxdelay(f)
