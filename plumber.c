@@ -212,7 +212,6 @@ int plumber_clean(plumber_data *plumb)
 {
     plumber_compute(plumb, PLUMBER_DESTROY);
     sporth_htable_destroy(&plumb->sporth.dict);
-    //plumber_pipes_destroy(plumb);
     plumbing_destroy(plumb->pipes);
     plumber_ftmap_destroy(plumb);
     if(plumb->fp != NULL) fclose(plumb->fp);
