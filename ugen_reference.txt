@@ -8,6 +8,11 @@ Args: v1 (f), v2 (f)
 Output: f
 Description: Performs addition.
 ---
+Name: biscale
+Args: v1 (f), min (f), max (f)
+Output: f
+Description: Scales from bipolar [-1, 1] to [min, max].
+---
 Name: sub
 Args: v1 (f), v2 (f)
 Output: f
@@ -47,6 +52,11 @@ Name: round
 Args: v1 (f)
 Output: f
 Description: Performs rounding to nearest integer.
+---
+Name: scale
+Args: v1 (f), min (f), max (f)
+Output: f
+Description: Scales from unipolar [0, 1] to [min, max].
 ---
 Name: sine
 Args: freq (f), amp (f)

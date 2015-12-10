@@ -10,12 +10,67 @@ ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE -DPOLY_DEBUG
 endif
 
-UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
-	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
-	samphold delay switch mode clip p count f gen_sinesum gen_line \
-	dmetro gbuzz jitter diskin pluck tin jcrev scale tenv2 moogladder \
-   	vdelay t line expon ling mincer loadfile poly saw square bitcrush \
-	dist tenvx pan randh trand zitarev
+UGENS = \
+basic \
+biscale \
+bitcrush \
+buthp \
+butlp \
+clip \
+count \
+dcblock \
+delay \
+diskin \
+dist \
+dmetro \
+expon \
+f \
+fm \
+gbuzz \
+gen_line \
+gen_sine \
+gen_sinesum \
+gen_vals \
+in \
+jcrev \
+jitter \
+line \
+ling \
+loadfile \
+maygate \
+metro \
+mincer \
+mode \
+moogladder \
+noise \
+nsmp \
+osc \
+p \
+pan \
+pluck \
+poly \
+port \
+prop \
+randh \
+randi \
+reverse \
+revsc \
+rpt \
+samphold \
+saw \
+scale \
+scale2 \
+square \
+switch \
+t \
+tenv \
+tenv2 \
+tenvx \
+tin \
+trand \
+tseq \
+vdelay \
+zitarev
 
 include ugens/ling/Makefile
 include ugens/poly/Makefile
