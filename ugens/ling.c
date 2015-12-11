@@ -34,7 +34,7 @@ int sporth_ling(sporth_stack *stack, void *ud)
             fprintf(stderr, "ling: Creating\n");
 #endif
             ling = malloc(sizeof(sp_ling));
-            plumber_add_module(pd, SPORTH_LING, ling);
+            plumber_add_ugen(pd, SPORTH_LING, ling);
             break;
         case PLUMBER_INIT:
 

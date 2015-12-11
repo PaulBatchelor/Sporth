@@ -16,7 +16,7 @@ int sporth_diskin(sporth_stack *stack, void *ud)
 #endif
 
             sp_diskin_create(&diskin);
-            plumber_add_module(pd, SPORTH_DISKIN, diskin);
+            plumber_add_ugen(pd, SPORTH_DISKIN, diskin);
             break;
         case PLUMBER_INIT:
 

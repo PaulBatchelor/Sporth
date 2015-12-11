@@ -15,7 +15,7 @@ int sporth_delay1(sporth_stack *stack, void *ud)
 #endif
 
             sp_delay1_create(&delay1);
-            plumber_add_module(pd, SPORTH_DELAY1, delay1);
+            plumber_add_ugen(pd, SPORTH_DELAY1, delay1);
             break;
         case PLUMBER_INIT:
 

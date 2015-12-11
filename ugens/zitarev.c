@@ -28,7 +28,7 @@ int sporth_zitarev(sporth_stack *stack, void *ud)
 #endif
 
             sp_zitarev_create(&zitarev);
-            plumber_add_module(pd, SPORTH_ZITAREV, zitarev);
+            plumber_add_ugen(pd, SPORTH_ZITAREV, zitarev);
             break;
         case PLUMBER_INIT:
 
@@ -81,8 +81,8 @@ int sporth_zitarev(sporth_stack *stack, void *ud)
             zitarev = pd->last->ud;
             *zitarev->in_delay = in_delay;
             *zitarev->lf_x = lf_x;
-            *zitarev->low_rt60 = rt60_low;
-            *zitarev->mid_rt60 = rt60_mid;
+            *zitarev->rt60_low = rt60_low;
+            *zitarev->rt60_mid = rt60_mid;
             *zitarev->hf_damping = hf_damping;
             *zitarev->eq1_freq = eq1_freq;
             *zitarev->eq1_level = eq1_level;

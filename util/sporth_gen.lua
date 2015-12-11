@@ -47,7 +47,7 @@ function UGen.create(self, sp, macro)
     io.write(string.format("%scase PLUMBER_CREATE:\n", spaces))
     self:debug(string.format("%s: Creating\\n", self.name), indent)
     io.write(string.format("%ssp_%s_create(&%s);\n", indent, self.name, self.name, self.name))
-    io.write(string.format("%splumber_add_module(pd, %s, %s);\n",
+    io.write(string.format("%splumber_add_ugen(pd, %s, %s);\n",
         indent, macro, self.name, self.name, self.name))
     io.write(string.format("%sbreak;\n", indent));
 end
