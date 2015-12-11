@@ -96,4 +96,3 @@ SPORTH_UGEN("tseq", sporth_tseq, SPORTH_TSEQ)
 SPORTH_UGEN("tset", sporth_tset, SPORTH_TSET)
 SPORTH_UGEN("vdelay", sporth_vdelay, SPORTH_VDELAY)
 SPORTH_UGEN("zitarev", sporth_zitarev, SPORTH_ZITAREV)
-
