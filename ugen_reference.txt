@@ -423,3 +423,13 @@ Args: revtime (f) looptime(f)
 Output: f
 Description: allpass filter
 ---
+Name: atone
+Args: cutoff (f)
+Output: f
+Description: atone filter (hipass)
+---
+Name: autowah
+Args: level (f) wah (f) mix (f)
+Output: f
+Description: autowah 
+---
