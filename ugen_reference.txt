@@ -418,3 +418,8 @@ Args: amp(f)
 Output: f
 Description: pink noise generator
 ---
+Name: allpass
+Args: revtime (f) looptime(f)
+Output: f
+Description: allpass filter
+---

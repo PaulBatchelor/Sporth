@@ -15,7 +15,8 @@ UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	samphold delay switch mode clip p count f gen_sinesum gen_line \
 	dmetro gbuzz jitter diskin pluck tin jcrev scale tenv2 moogladder \
    	vdelay t line expon ling mincer loadfile poly saw square bitcrush \
-	dist tenvx pan randh trand zitarev delay1 phasor tabread pinknoise
+	dist tenvx pan randh trand zitarev delay1 phasor tabread pinknoise \
+	allpass
 
 include ugens/ling/Makefile
 include ugens/poly/Makefile
