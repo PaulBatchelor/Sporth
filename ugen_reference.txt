@@ -433,3 +433,23 @@ Args: level (f) wah (f) mix (f)
 Output: f
 Description: autowah 
 ---
+Name: phasor
+Args: freq (f) phase (f)
+Output: f
+Description: Normalized sawtooth wave.
+---
+Name: zeros
+Args: name (s) size (f)
+Output: n/a
+Description: Generate table of zeros
+---
+Name: tabread
+Args: (f) index, scaled, offset, wrap
+Output: f
+Description: read from table with interpolation
+---
+Name: randh
+Args: min (f), max (f), freq (f)
+Output: f
+Description: Random hold
+---
