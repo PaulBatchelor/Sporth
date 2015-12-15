@@ -200,6 +200,11 @@ int sporth_tpoly(sporth_stack *stack, void *ud)
                         poly->ft->tbl[2 + id * (poly->max_params + 2) + p] = poly->arg_ft->tbl[p];
                     }
                 }
+                for(n = 0; n < poly->ft->size; n++) {
+                    fprintf(stderr, "%g ", poly->ft->tbl[n]);
+                }
+
+                fprintf(stderr, "\n");
             }
 
             poly_cluster_reset(&poly->clust);

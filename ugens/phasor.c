@@ -1,50 +1,45 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include "plumber.h"
-
-typedef struct {
-    sp_phasor *phasor;
-} sporth_fm_d;
 
 int sporth_phasor(sporth_stack *stack, void *ud)
 {
-    if(stack->error > 0) return PLUMBER_NOTOK;
-
     plumber_data *pd = ud;
-    SPFLOAT out = 0, freq, phs;
+    SPFLOAT out;
+    SPFLOAT iphs;
+    SPFLOAT freq;
     sp_phasor *phasor;
-    switch(pd->mode){
+
+    switch(pd->mode) {
         case PLUMBER_CREATE:
+
 #ifdef DEBUG_MODE
-            fprintf(stderr, "Creating phasor function... \n");
+            fprintf(stderr, "phasor: Creating\n");
 #endif
+
             sp_phasor_create(&phasor);
             plumber_add_ugen(pd, SPORTH_PHASOR, phasor);
             break;
         case PLUMBER_INIT:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "phasor: Initialising\n");
+#endif
+
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
+                fprintf(stderr,"Not enough arguments for phasor\n");
                 stack->error++;
-               fprintf(stderr,"Invalid arguments for phasor.\n");
                 return PLUMBER_NOTOK;
             }
-            phasor = pd->last->ud;
-
-            phs = sporth_stack_pop_float(stack);
+            iphs = sporth_stack_pop_float(stack);
             freq = sporth_stack_pop_float(stack);
-
-            sp_phasor_init(pd->sp, phasor, phs);
-            sporth_stack_push_float(stack, 0.0);
+            phasor = pd->last->ud;
+            sp_phasor_init(pd->sp, phasor, iphs);
+            sporth_stack_push_float(stack, 0);
             break;
-
         case PLUMBER_COMPUTE:
-            phasor = pd->last->ud;
-
-            phs = sporth_stack_pop_float(stack);
+            iphs = sporth_stack_pop_float(stack);
             freq = sporth_stack_pop_float(stack);
-
+            phasor = pd->last->ud;
             phasor->freq = freq;
-
             sp_phasor_compute(pd->sp, phasor, NULL, &out);
             sporth_stack_push_float(stack, out);
             break;
@@ -53,9 +48,7 @@ int sporth_phasor(sporth_stack *stack, void *ud)
             sp_phasor_destroy(&phasor);
             break;
         default:
-            fprintf(stderr,"Error: Unknown mode!");
-            stack->error++;
-            return PLUMBER_NOTOK;
+            fprintf(stderr, "phasor: Uknown mode!\n");
             break;
     }
     return PLUMBER_OK;

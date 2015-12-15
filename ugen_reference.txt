@@ -428,3 +428,23 @@ Args: in2,in1,delay,lf_x,rtlo,rthi,hfdmp,eq1f,eq1l,eq2f,eq1l,mix,lvl
 Output: f
 Description: zitareverb module
 ---
+Name: pinknoise
+Args: amp(f)
+Output: f
+Description: pink noise generator
+---
+Name: allpass
+Args: revtime (f) looptime(f)
+Output: f
+Description: allpass filter
+---
+Name: atone
+Args: cutoff (f)
+Output: f
+Description: atone filter (hipass)
+---
+Name: autowah
+Args: level (f) wah (f) mix (f)
+Output: f
+Description: autowah 
+---
