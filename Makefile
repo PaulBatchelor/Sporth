@@ -16,7 +16,7 @@ UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
 	dmetro gbuzz jitter diskin pluck tin jcrev scale tenv2 moogladder \
    	vdelay t line expon ling mincer loadfile poly saw square bitcrush \
 	dist tenvx pan randh trand zitarev delay1 phasor tabread pinknoise \
-	allpass atone autowah bal zeros tblrec
+	allpass atone autowah bal zeros tblrec biscale
 
 include ugens/ling/Makefile
 include ugens/poly/Makefile
