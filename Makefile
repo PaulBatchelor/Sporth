@@ -47,6 +47,7 @@ nsmp \
 osc \
 p \
 pan \
+phasor \
 pluck \
 poly \
 port \
@@ -59,7 +60,6 @@ rpt \
 samphold \
 saw \
 scale \
-scale2 \
 square \
 switch \
 t \
