@@ -10,13 +10,78 @@ ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE -DPOLY_DEBUG
 endif
 
-UGENS = basic metro tenv fm revsc gen_sine osc gen_vals tseq in port \
-	nsmp prop noise dcblock butlp buthp maygate randi rpt reverse \
-	samphold delay switch mode clip p count f gen_sinesum gen_line \
-	dmetro gbuzz jitter diskin pluck tin jcrev scale tenv2 moogladder \
-   	vdelay t line expon ling mincer loadfile poly saw square bitcrush \
-	dist tenvx pan randh trand zitarev delay1 phasor tabread pinknoise \
-	allpass atone autowah bal zeros tblrec biscale
+UGENS = \
+allpass \
+atone \
+autowah \
+bal \
+basic \
+biscale \
+biscale \
+bitcrush \
+buthp \
+butlp \
+clip \
+count \
+dcblock \
+delay \
+delay1 \
+diskin \
+dist \
+dmetro \
+expon \
+f \
+fm \
+gbuzz \
+gen_line \
+gen_sine \
+gen_sinesum \
+gen_vals \
+in \
+jcrev \
+jitter \
+line \
+ling \
+loadfile \
+maygate \
+metro \
+mincer \
+mode \
+moogladder \
+noise \
+nsmp \
+osc \
+p \
+pan \
+phasor \
+pinknoise \
+pluck \
+poly \
+port \
+prop \
+randh \
+randi \
+reverse \
+revsc \
+rpt \
+samphold \
+saw \
+scale \
+square \
+switch \
+t \
+tabread \
+tblrec \
+tenv \
+tenv2 \
+tenvx \
+tin \
+tone \
+trand \
+tseq \
+vdelay \
+zeros \
+zitarev
 
 include ugens/ling/Makefile
 include ugens/poly/Makefile
