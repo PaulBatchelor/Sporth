@@ -76,6 +76,7 @@ tenv \
 tenv2 \
 tenvx \
 tin \
+tog \
 tone \
 tphasor \
 trand \

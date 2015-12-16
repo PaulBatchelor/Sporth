@@ -478,3 +478,8 @@ Args: in (f) trig (f) tbl name (s)
 Output: n/a
 Description: records values to table 
 ---
+Name: tog
+Args: trig (f)
+Output: f
+Description: toggle switch that can be triggered on/off
+---
