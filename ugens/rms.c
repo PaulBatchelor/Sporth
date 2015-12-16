@@ -15,7 +15,7 @@ int sporth_rms(sporth_stack *stack, void *ud)
 #endif
 
             sp_rms_create(&rms);
-            plumber_add_ugen(pd, SPORTH_BUTLP, rms);
+            plumber_add_ugen(pd, SPORTH_RMS, rms);
             break;
         case PLUMBER_INIT:
 
