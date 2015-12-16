@@ -453,6 +453,11 @@ Args: freq (f) phase (f)
 Output: f
 Description: Normalized sawtooth wave.
 ---
+Name: tphasor
+Args: trig (f) freq (f) phase (f)
+Output: f
+Description: Triggerable normalized sawtooth wave.
+---
 Name: zeros
 Args: name (s) size (f)
 Output: n/a

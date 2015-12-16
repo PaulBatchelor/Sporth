@@ -17,7 +17,6 @@ autowah \
 bal \
 basic \
 biscale \
-biscale \
 bitcrush \
 buthp \
 butlp \
@@ -64,6 +63,7 @@ randi \
 reverse \
 revsc \
 rpt \
+rms \
 samphold \
 saw \
 scale \
@@ -77,6 +77,7 @@ tenv2 \
 tenvx \
 tin \
 tone \
+tphasor \
 trand \
 tseq \
 vdelay \
