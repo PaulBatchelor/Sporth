@@ -79,6 +79,7 @@ tin \
 tone \
 tphasor \
 trand \
+triangle \
 tseq \
 vdelay \
 zeros \
