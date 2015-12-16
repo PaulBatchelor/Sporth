@@ -25,7 +25,7 @@ int sporth_scale(sporth_stack *stack, void *ud)
             fprintf(stderr, "scale: Initialising\n");
 #endif
 
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
+            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for scale\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
@@ -38,7 +38,7 @@ int sporth_scale(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
+            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for scale\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
