@@ -473,3 +473,8 @@ Args: min (f), max (f), freq (f)
 Output: f
 Description: Random hold
 ---
+Name: tblrec
+Args: in (f) trig (f) tbl name (s)
+Output: n/a
+Description: records values to table 
+---
