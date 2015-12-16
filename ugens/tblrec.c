@@ -48,9 +48,17 @@ int sporth_tblrec(sporth_stack *stack, void *ud)
             td = pd->last->ud;
             trig = sporth_stack_pop_float(stack);
             td->val = sporth_stack_pop_float(stack);
+
             if(trig != 0) {
-                td->record = (td->record == 1) ? 0 : 1;
+                if(td->record == 1) {
+                    td->record = 0;
+                } else {
+                    td->record = 1;
+                    td->index = 0;
+                    memset(td->ft->tbl, 0, sizeof(SPFLOAT) * td->ft->size);
+                }
             }
+
             if(td->record) {
                 td->ft->tbl[td->index] = td->val;
                 td->index = (td->index + 1) % td->ft->size;
