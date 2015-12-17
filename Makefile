@@ -80,6 +80,7 @@ tog \
 tone \
 tphasor \
 trand \
+triangle \
 tseq \
 vdelay \
 zeros \
