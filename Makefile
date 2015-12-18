@@ -101,7 +101,7 @@ SPORTHLIBS = libsporth.a
 
 
 
-ifndef NO_DYNAMIC
+ifdef BUILD_DYNAMIC
 SPORTHLIBS += libsporth_dyn.so
 endif
 
@@ -157,5 +157,5 @@ clean:
 	rm -rf $(OBJ)
 	rm -rf $(BIN)
 	rm -rf tmp.h
-	rm -rf libsporth.a libsporth.so
+	rm -rf libsporth.a libsporth_dyn.so
 

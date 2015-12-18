@@ -616,7 +616,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     argc--;
     int driver = DRIVER_FILE;
     while(argc > 0 && argv[0][0] == '-') {
-        switch(argv[0][1]){
+        switch(argv[0][1]) {
             case 'd':
                 if(--argc) {
                     argv++;
