@@ -17,7 +17,7 @@ mul
 
 0.5 metro
 dup 0.003 0.001 0.1 tenv
-swap "notes" 0 tseq
+swap "notes" tseq
 mtof 0.5 1 1 0.8 fm
 mul
 
