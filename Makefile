@@ -24,7 +24,6 @@ clip \
 count \
 dcblock \
 delay \
-delay1 \
 diskin \
 dist \
 dmetro \
