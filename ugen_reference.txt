@@ -378,12 +378,22 @@ Args: voice number (f) param number (f) tbl (s)
 Output: f
 Description: get a value from a poly table. p0 = tick p1 = dur p2,3,etc: other
 ---
-Name: saw
+Name: blsaw
 Args: freq (f) amp (f)
 Output: f
-Description: Sawtooth oscillator
+Description: Band-limited sawtooth oscillator
 ---
-Name: square
+Name: blsquare
+Args: freq (f) width (f) amp (f)
+Output: f
+Description: Band-limited square oscillator with pulse-width
+---
+Name: bltriangle
+Args: freq (f) amp (f)
+Output: f
+Description: Band-limited triangle oscillator
+---
+Name: blsquare
 Args: freq (f) amp (f) width (f)
 Output: f
 Description: Square oscillator

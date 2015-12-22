@@ -18,6 +18,9 @@ bal \
 basic \
 biscale \
 bitcrush \
+blsaw \
+blsquare \
+bltriangle \
 buthp \
 butlp \
 clip \
@@ -64,9 +67,7 @@ revsc \
 rpt \
 rms \
 samphold \
-saw \
 scale \
-square \
 switch \
 t \
 tabread \
@@ -80,7 +81,6 @@ tog \
 tone \
 tphasor \
 trand \
-triangle \
 tseq \
 vdelay \
 zeros \
