@@ -66,9 +66,6 @@ typedef struct plumber_data {
     FILE *fp;
     char *filename;
     sporth_data sporth;
-    //uint32_t npipes;
-    //plumber_pipe root;
-    //plumber_pipe *last;
     plumbing *pipes;
     /* for add_module function */
     plumbing *tmp;
@@ -99,7 +96,6 @@ int plumber_parse_string(plumber_data *plumb, char *str);
 int plumber_recompile(plumber_data *plumb);
 int plumber_gettype(plumber_data *plumb, char *str, int mode);
 int plumber_show_pipes(plumber_data *plumb);
-//int plumber_pipes_destroy(plumber_data *plumb);
 int plumber_error(plumber_data *plumb, const char *str);
 int plumber_ftmap_init(plumber_data *plumb);
 int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft);
