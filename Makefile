@@ -76,6 +76,7 @@ tenv \
 tenv2 \
 tenvx \
 tin \
+tick \
 tog \
 tone \
 tphasor \

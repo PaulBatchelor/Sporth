@@ -483,3 +483,8 @@ Args: trig (f)
 Output: f
 Description: toggle switch that can be triggered on/off
 ---
+Name: tick
+Args: n/a
+Output: f
+Description: create a single tick at the beginning of the file
+---
