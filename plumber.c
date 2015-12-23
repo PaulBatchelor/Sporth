@@ -69,8 +69,6 @@ int plumber_init(plumber_data *plumb)
     plumb->mode = PLUMBER_CREATE;
     plumb->current_pipe = 0;
     plumb->ftmap = plumb->ft1;
-    //plumb->last = &plumb->root;
-    //plumb->npipes = 0;
     plumb->pipes= &plumb->main;
     plumb->tmp = &plumb->main;
     plumbing_init(plumb->pipes);
@@ -94,6 +92,7 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
     float *fval;
     char *sval;
     sporth_data *sporth = &plumb->sporth;
+/*TODO: figure out of plumb->pipes is needed here. It would be nice to refactor */
     plumbing *prev = plumb->pipes;
     plumb->pipes = pipes;
     if(sporth->stack.error > 0) return PLUMBER_NOTOK;
@@ -125,35 +124,6 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
 int plumber_compute(plumber_data *plumb, int mode)
 {
     plumbing_compute(plumb, plumb->pipes, mode);
-    //plumb->mode = mode;
-    //plumbing *pl = plumb->plumbing;
-    //plumber_pipe *pipe = pl->root.next, *next;
-    //uint32_t n;
-    //float *fval;
-    //char *sval;
-    //sporth_data *sporth = &plumb->sporth;
-    //if(sporth->stack.error > 0) return PLUMBER_NOTOK;
-    //for(n = 0; n < pl->npipes; n++) {
-    //    next = pipe->next;
-    //    switch(pipe->type) {
-    //        case SPORTH_FLOAT:
-    //            fval = pipe->ud;
-    //            if(mode != PLUMBER_DESTROY)
-    //                sporth_stack_push_float(&sporth->stack, *fval);
-    //            break;
-    //        case SPORTH_STRING:
-    //            sval = pipe->ud;
-    //            if(mode == PLUMBER_INIT)
-    //                sporth_stack_push_string(&sporth->stack, sval);
-    //            break;
-    //        default:
-    //            plumb->last = pipe;
-    //            sporth->flist[pipe->type - SPORTH_FOFFSET].func(&sporth->stack,
-    //                                                            sporth->flist[pipe->type - SPORTH_FOFFSET].ud);
-    //            break;
-    //    }
-    //    pipe = next;
-    //}
     return PLUMBER_OK;
 }
 
@@ -192,21 +162,6 @@ int plumbing_destroy(plumbing *pipes)
     }
     return PLUMBER_OK;
 }
-
-//int plumber_pipes_destroy(plumber_data *plumb)
-//{
-//    uint32_t n;
-//    plumber_pipe *pipe, *next;
-//    pipe = plumb->root.next;
-//    for(n = 0; n < plumb->npipes; n++) {
-//        next = pipe->next;
-//        if(pipe->type == SPORTH_FLOAT || pipe->type == SPORTH_STRING)
-//            free(pipe->ud);
-//        free(pipe);
-//        pipe = next;
-//    }
-//    return PLUMBER_OK;
-//}
 
 int plumber_clean(plumber_data *plumb)
 {
@@ -269,9 +224,6 @@ int plumber_add_string(plumber_data *plumb, plumbing *pipes, const char *str)
         return PLUMBER_NOTOK;
     }
 
-    //plumb->last->next = new;
-    //plumb->last = new;
-    //plumb->npipes++;
     plumbing_add_pipe(pipes, new);
     return PLUMBER_OK;
 }
@@ -288,9 +240,6 @@ int plumber_add_ugen(plumber_data *plumb, uint32_t id, void *ud)
     new->type = id;
     new->ud = ud;
 
-    //plumb->last->next = new;
-    //plumb->last = new;
-    //plumb->npipes++;
     plumbing_add_pipe(plumb->tmp, new);
     return PLUMBER_OK;
 }
@@ -389,7 +338,6 @@ int plumbing_parse(plumber_data *plumb, plumbing *pipes)
     char *line = NULL;
     size_t length = 0;
     ssize_t read;
-    //char *out, *tmp;
     char *out;
     uint32_t pos = 0, len = 0;
     plumb->mode = PLUMBER_CREATE;
@@ -417,7 +365,6 @@ int plumber_parse(plumber_data *plumb)
 int plumber_reinit(plumber_data *plumb)
 {
     plumbing *newpipes;
-    //plumber_ftentry *ftnew, *ftold;
     if(plumb->current_pipe == 0) {
         fprintf(stderr, "compiling to alt\n");
         newpipes = &plumb->alt;
@@ -461,7 +408,6 @@ int plumber_reparse(plumber_data *plumb)
 
 int plumber_swap(plumber_data *plumb, int error)
 {
-    
     if(error) {
         fprintf(stderr, "Did not recompile...\n");
         plumbing_destroy(plumb->tmp);
