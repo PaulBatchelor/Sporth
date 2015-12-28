@@ -7,23 +7,23 @@ int sporth_bltriangle(sporth_stack *stack, void *ud)
     SPFLOAT freq;
     SPFLOAT amp;
     sp_bltriangle *bltriangle;
-
+    
     switch(pd->mode) {
         case PLUMBER_CREATE:
-
+            
 #ifdef DEBUG_MODE
             fprintf(stderr, "bltriangle: Creating\n");
 #endif
-
+            
             sp_bltriangle_create(&bltriangle);
             plumber_add_ugen(pd, SPORTH_TRIANGlE, bltriangle);
             break;
         case PLUMBER_INIT:
-
+            
 #ifdef DEBUG_MODE
             fprintf(stderr, "bltriangle: Initialising\n");
 #endif
-
+            
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for bltriangle\n");
                 stack->error++;
