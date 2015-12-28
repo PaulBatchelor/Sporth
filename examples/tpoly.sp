@@ -74,7 +74,7 @@ fm
 0.2 -
 # release
 0.1 
-tenv
+tenv 
 
 # Get note
 0 2 'poly' polyget mtof
@@ -84,7 +84,7 @@ tenv
 1 1 1 
 fm
 # multiply tenv and fm together
-*
+* +
 
 # -- Voice 2 --
 # Get tick 
@@ -97,7 +97,7 @@ fm
 0.2 -
 # release
 0.1 
-tenv
+tenv 
 
 # Get note
 0 2 'poly' polyget mtof
@@ -107,7 +107,7 @@ tenv
 1 1 1 
 fm
 # multiply tenv and fm together
-*
+* +
 
 # -- Voice 3 --
 # Get tick 
@@ -120,7 +120,7 @@ fm
 0.2 -
 # release
 0.1 
-tenv
+tenv 
 
 # Get note
 0 2 'poly' polyget mtof
@@ -130,4 +130,4 @@ tenv
 1 1 1 
 fm
 # multiply tenv and fm together
-*
+* +
