@@ -65,11 +65,11 @@ fm
 
 # -- Voice 1 --
 # Get tick 
-0 0 'poly' polyget 
+1 0 'poly' polyget 
 # attack
 0.1
 # hold time: get note duration 
-0 1 'poly' polyget 
+1 1 'poly' polyget 
 # subtract attack and release times
 0.2 -
 # release
@@ -77,9 +77,9 @@ fm
 tenv 
 
 # Get note
-0 2 'poly' polyget mtof
+1 2 'poly' polyget mtof
 # get amplitude
-0 3 'poly' polyget 
+1 3 'poly' polyget 
 # car, mod, index
 1 1 1 
 fm
@@ -88,11 +88,11 @@ fm
 
 # -- Voice 2 --
 # Get tick 
-0 0 'poly' polyget 
+2 0 'poly' polyget 
 # attack
 0.1
 # hold time: get note duration 
-0 1 'poly' polyget 
+2 1 'poly' polyget 
 # subtract attack and release times
 0.2 -
 # release
@@ -100,9 +100,9 @@ fm
 tenv 
 
 # Get note
-0 2 'poly' polyget mtof
+2 2 'poly' polyget mtof
 # get amplitude
-0 3 'poly' polyget 
+2 3 'poly' polyget 
 # car, mod, index
 1 1 1 
 fm
@@ -111,11 +111,11 @@ fm
 
 # -- Voice 3 --
 # Get tick 
-0 0 'poly' polyget 
+3 0 'poly' polyget 
 # attack
 0.1
 # hold time: get note duration 
-0 1 'poly' polyget 
+3 1 'poly' polyget 
 # subtract attack and release times
 0.2 -
 # release
@@ -123,9 +123,9 @@ fm
 tenv 
 
 # Get note
-0 2 'poly' polyget mtof
+3 2 'poly' polyget mtof
 # get amplitude
-0 3 'poly' polyget 
+3 3 'poly' polyget 
 # car, mod, index
 1 1 1 
 fm
