@@ -508,3 +508,13 @@ Args: in (f), delay (f), ftbl impulse response (s)
 Output: f
 Description: partitioned convolution
 ---
+Name: comb
+Args: in (f), rev time (f), loop time (f)
+Output: f
+Description: comb filter
+---
+Name: streson
+Args: in (f), frequency (f), gain (f)
+Output: f
+Description: streson filter
+---
