@@ -7,16 +7,10 @@
 
 # trigger
 60 0 p / 0.5 * dmetro 0.6 1 maygate dup
-# pick
-0.9
 # freq
-rot 0 "seq" tseq mtof  
+0 "seq" tseq mtof  
 # amp
 0.3 
-# pick
-0.2 
-# reflection
-0.4
 # lowest expected frequency
 110
 pluck dcblk  
@@ -24,16 +18,10 @@ pluck dcblk
 
 # trigger
 0 p "+-2(+--+)----" prop dup
-# pick
-0.1
 # freq
-rot 0 "seq2" tseq mtof dup 1 pset
+0 "seq2" tseq mtof dup 1 pset
 # amp
 0.3 
-# pick
-0.3 
-# reflection
-0.3
 # lowest expected frequency
 86.0
 pluck dcblk 

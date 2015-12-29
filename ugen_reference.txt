@@ -309,7 +309,7 @@ Output: f
 Description: Trigger envelope, using time instead of frequency
 ---
 Name: pluck
-Args: trigger (f), pick (f), freq (f), amp (f), pick (f), reflect (f), ifreq (f)
+Args: trigger (f), freq (f), amp (f), ifreq (f)
 Output: f
 Description: plucked instrument
 ---
@@ -474,7 +474,7 @@ Output: n/a
 Description: Generate table of zeros
 ---
 Name: tabread
-Args: (f) index, scaled, offset, wrap
+Args: (f) index, scaled, offset, wrap, (s) ftname
 Output: f
 Description: read from table with interpolation
 ---
@@ -497,4 +497,9 @@ Name: tick
 Args: n/a
 Output: f
 Description: create a single tick at the beginning of the file
+---
+Name: gen_padsynth
+Args: ftname (s), size (f), base freq (f), bandwidth (f), amp table (s)
+Output: n/a
+Description: padsynth algorithm by Paul Nasca Octavian
 ---

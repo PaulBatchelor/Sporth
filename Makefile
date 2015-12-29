@@ -35,6 +35,7 @@ f \
 fm \
 gbuzz \
 gen_line \
+gen_padsynth \
 gen_sine \
 gen_sinesum \
 gen_vals \
