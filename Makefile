@@ -24,6 +24,7 @@ bltriangle \
 buthp \
 butlp \
 clip \
+comb \
 conv \
 count \
 dcblock \
