@@ -71,6 +71,7 @@ rpt \
 rms \
 samphold \
 scale \
+streson \
 switch \
 t \
 tabread \
