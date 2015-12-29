@@ -378,15 +378,20 @@ Args: voice number (f) param number (f) tbl (s)
 Output: f
 Description: get a value from a poly table. p0 = tick p1 = dur p2,3,etc: other
 ---
-Name: saw
+Name: blsaw
 Args: freq (f) amp (f)
 Output: f
-Description: Sawtooth oscillator
+Description: Band-limited sawtooth oscillator
 ---
-Name: square
-Args: freq (f) amp (f) width (f)
+Name: blsquare
+Args: freq (f) width (f) amp (f)
 Output: f
-Description: Square oscillator
+Description: Band-limited square oscillator with pulse-width
+---
+Name: bltriangle
+Args: freq (f) amp (f)
+Output: f
+Description: Band-limited triangle oscillator
 ---
 Name: bitcrush
 Args: bitdepth (f) samplerate (f)
@@ -446,7 +451,7 @@ Description: atone filter (hipass)
 Name: autowah
 Args: level (f) wah (f) mix (f)
 Output: f
-Description: autowah 
+Description: autowah
 ---
 Name: phasor
 Args: freq (f) phase (f)
@@ -476,7 +481,7 @@ Description: Random hold
 Name: tblrec
 Args: in (f) trig (f) tbl name (s)
 Output: n/a
-Description: records values to table 
+Description: records values to table
 ---
 Name: tog
 Args: trig (f)
