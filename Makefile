@@ -24,6 +24,7 @@ bltriangle \
 buthp \
 butlp \
 clip \
+conv \
 count \
 dcblock \
 delay \

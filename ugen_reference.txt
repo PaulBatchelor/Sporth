@@ -503,3 +503,8 @@ Args: in2,in1,rtlo,rthi,hfdmp
 Output: ff
 Description: zitareverb module (simplified)
 ---
+Name: conv
+Args: in (f), delay (f), ftbl impulse response (s)
+Output: f
+Description: partitioned convolution
+---
