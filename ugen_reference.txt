@@ -393,11 +393,6 @@ Args: freq (f) amp (f)
 Output: f
 Description: Band-limited triangle oscillator
 ---
-Name: blsquare
-Args: freq (f) amp (f) width (f)
-Output: f
-Description: Square oscillator
----
 Name: bitcrush
 Args: bitdepth (f) samplerate (f)
 Output: f
@@ -456,7 +451,7 @@ Description: atone filter (hipass)
 Name: autowah
 Args: level (f) wah (f) mix (f)
 Output: f
-Description: autowah 
+Description: autowah
 ---
 Name: phasor
 Args: freq (f) phase (f)
@@ -486,7 +481,7 @@ Description: Random hold
 Name: tblrec
 Args: in (f) trig (f) tbl name (s)
 Output: n/a
-Description: records values to table 
+Description: records values to table
 ---
 Name: tog
 Args: trig (f)
