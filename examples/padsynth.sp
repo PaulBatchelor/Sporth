@@ -8,15 +8,15 @@
 36 mtof 0 p / 'padsynth' tbldur / 0 phasor
 0 0 0 'padsynth' tabread  0 0.1 3 randi * 
 
-# 60 mtof 0 p / 'padsynth' tbldur / 0 phasor
-# 0 0 0 'padsynth' tabread  0 0.1 2 randi * 
-# 
-# 65 mtof 0 p / 'padsynth' tbldur / 0 phasor
-# 0 0 0 'padsynth' tabread  0 0.15 1 randi *
-# 
-# 70 mtof 0 p / 'padsynth' tbldur / 0 phasor
-# 0 0 0 'padsynth' tabread 0 0.2 0.5 randi * 
+60 mtof 0 p / 'padsynth' tbldur / 0 phasor
+0 0 0 'padsynth' tabread  0 0.1 2 randi * 
 
-# + + +
+65 mtof 0 p / 'padsynth' tbldur / 0 phasor
+0 0 0 'padsynth' tabread  0 0.15 1 randi *
 
-# dup jcrev 4 * swap 0.2 * +
+70 mtof 0 p / 'padsynth' tbldur / 0 phasor
+0 0 0 'padsynth' tabread 0 0.2 0.5 randi * 
+
++ + +
+
+dup jcrev 4 * swap 0.2 * +
