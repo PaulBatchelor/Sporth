@@ -47,7 +47,7 @@ int sporth_gen_padsynth(sporth_stack *stack, void *ud)
 
             plumber_ftmap_add(pd, ftname, ft);
             free(ftname);
-            free(amps);
+            free(ampname);
             break;
 
         case PLUMBER_COMPUTE:
