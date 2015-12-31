@@ -87,17 +87,17 @@ int plumber_init(plumber_data *plumb)
 int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
 {
     plumb->mode = mode;
-    plumber_pipe *pipe = pipes->root.next, *next;
+    plumber_pipe *pipe = pipes->root.next;
     uint32_t n;
     float *fval;
     char *sval;
     sporth_data *sporth = &plumb->sporth;
-/*TODO: figure out of plumb->pipes is needed here. It would be nice to refactor */
+    /* swap out the current plumbing */
     plumbing *prev = plumb->pipes;
     plumb->pipes = pipes;
     if(sporth->stack.error > 0) return PLUMBER_NOTOK;
     for(n = 0; n < pipes->npipes; n++) {
-        next = pipe->next;
+        plumb->next = pipe->next;
         switch(pipe->type) {
             case SPORTH_FLOAT:
                 fval = pipe->ud;
@@ -115,8 +115,9 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
                                                                 sporth->flist[pipe->type - SPORTH_FOFFSET].ud);
                 break;
         }
-        pipe = next;
+        pipe = plumb->next;
     }
+    /* re-swap the main pipes */
     plumb->pipes = prev;
     return PLUMBER_OK;
 }
