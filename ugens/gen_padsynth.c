@@ -35,9 +35,6 @@ int sporth_gen_padsynth(sporth_stack *stack, void *ud)
             }
             
 
-#ifdef DEBUG_MODE
-            fprintf(stderr,"Creating value table %s\n", str);
-#endif
             sp_ftbl_create(pd->sp, &ft, size);
 
 #ifdef DEBUG_MODE
