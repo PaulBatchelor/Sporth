@@ -246,7 +246,7 @@ int plumber_add_ugen(plumber_data *plumb, uint32_t id, void *ud)
 
 int plumber_parse_string(plumber_data *plumb, char *str)
 {
-    char *out, *tmp;
+    char *out;
     uint32_t pos = 0, len = 0;
     uint32_t size = (unsigned int)strlen(str);
 
@@ -255,39 +255,7 @@ int plumber_parse_string(plumber_data *plumb, char *str)
     while(pos < size) {
         out = sporth_tokenizer(&plumb->sporth, str, size, &pos);
         len = (unsigned int)strlen(out);
-
-        switch(sporth_lexer(&plumb->sporth, out, len)) {
-            case SPORTH_FLOAT:
-#ifdef DEBUG_MODE
-                fprintf(stderr, "%s is a float!\n", out);
-#endif
-                plumber_add_float(plumb, plumb->pipes, atof(out));
-                break;
-            case SPORTH_STRING:
-                tmp = out;
-                tmp[len - 1] = '\0';
-                tmp++;
-#ifdef DEBUG_MODE
-                fprintf(stderr, "%s is a string!\n", out);
-#endif
-                plumber_add_string(plumb, plumb->pipes, tmp);
-                break;
-            case SPORTH_FUNC:
-#ifdef DEBUG_MODE
-                fprintf(stderr, "%s is a function!\n", out);
-#endif
-                if(sporth_exec(&plumb->sporth, out) == SPORTH_NOTOK) {
-                    plumb->sporth.stack.error++;
-                }
-                break;
-            case SPORTH_IGNORE:
-                break;
-            default:
-#ifdef DEBUG_MODE
-                fprintf(stderr,"No idea what %s is!\n", out);
-#endif
-                break;
-        }
+        plumber_lexer(plumb, plumb->pipes, out, len);
         free(out);
     }
 
