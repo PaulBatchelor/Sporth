@@ -95,7 +95,7 @@ include ugens/ling/Makefile
 include ugens/poly/Makefile
 
 BIN += sporth examples/parse examples/user_function util/jack_wrapper util/val \
-	  util/float2bin
+	  util/float2bin util/jacksporth
 
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
@@ -129,6 +129,9 @@ float2bin: util/float2bin
 util/float2bin: util/float2bin.c
 	$(CC) $< -o $@
 
+jacksporth: util/jacksporth
+util/jacksporth: util/jacksporth.c libsporth.a
+	$(CC) $< -L. -lsporth -lsoundpipe -ljack -lsndfile -lm -o $@
 
 sporth: sporth.c $(OBJ) h/ugens.h
 	$(CC) sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
