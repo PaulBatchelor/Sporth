@@ -75,6 +75,7 @@ streson \
 switch \
 t \
 tabread \
+tadsr \
 tblrec \
 tenv \
 tenv2 \
