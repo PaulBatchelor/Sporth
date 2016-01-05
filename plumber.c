@@ -434,7 +434,8 @@ int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
     plumber_ftentry *entry = &plumb->ftmap[pos];
     entry->nftbl++;
     plumber_ftbl *new = malloc(sizeof(plumber_ftbl));
-    new->ft = ft;
+    new->ud = (void *)ft;
+    new->type = 1;
     new->to_delete = plumb->delete_ft;
     new->name = malloc(sizeof(char) * strlen(str) + 1);
     strcpy(new->name, str);
@@ -453,7 +454,7 @@ int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
     for(n = 0; n < entry->nftbl; n++) {
         next = ftbl->next;
         if(!strcmp(str, ftbl->name)){
-            *ft = ftbl->ft;
+            *ft = (sp_ftbl *)ftbl->ud;
             return PLUMBER_OK;
         }
         ftbl = next;
@@ -476,8 +477,10 @@ int plumber_ftmap_destroy(plumber_data *plumb)
         for(n = 0; n < plumb->ftmap[pos].nftbl; n++) {
             next = ftbl->next;
             free(ftbl->name);
-            if(ftbl->to_delete)
-            sp_ftbl_destroy(&ftbl->ft);
+            if(ftbl->to_delete) {
+                if(ftbl->type == 1) sp_ftbl_destroy((sp_ftbl **)&ftbl->ud);
+                else free(ftbl->ud);
+            }
             free(ftbl);
             ftbl = next;
         }

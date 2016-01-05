@@ -29,9 +29,10 @@ DRIVER_RAW
 };
 
 typedef struct plumber_ftbl {
-    sp_ftbl *ft;
+    void *ud;
     char *name;
     char to_delete;
+    char type;
     struct plumber_ftbl *next;
 } plumber_ftbl;
 
