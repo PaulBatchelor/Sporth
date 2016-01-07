@@ -48,6 +48,7 @@ line \
 ling \
 loadfile \
 maygate \
+maytrig \
 metro \
 mincer \
 mode \

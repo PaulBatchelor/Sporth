@@ -193,6 +193,11 @@ Args: trig (f), probability (f), mode
 Output: f
 Description: Random selection of gate or no gate. output mode: 0 = gate 1 = trigger
 ---
+Name: maytrig
+Args: trig (f), probability (f)
+Output: f
+Description: Random selection of trig or no trig.
+---
 Name: randh
 Args: min (f), max (f), freq (f)
 Output: f

@@ -1,6 +1,6 @@
 #include "plumber.h"
 
-int sporth_maygate(sporth_stack *stack, void *ud)
+int sporth_maytrig(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
     SPFLOAT trig;
@@ -12,16 +12,16 @@ int sporth_maygate(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "maygate: Creating\n");
+            fprintf(stderr, "maytrig: Creating\n");
 #endif
 
             sp_maygate_create(&maygate);
-            plumber_add_ugen(pd, SPORTH_MAYGATE, maygate);
+            plumber_add_ugen(pd, SPORTH_MAYTRIG, maygate);
             break;
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "maygate: Initialising\n");
+            fprintf(stderr, "maytrig: Initialising\n");
 #endif
 
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
@@ -33,7 +33,8 @@ int sporth_maygate(sporth_stack *stack, void *ud)
             trig = sporth_stack_pop_float(stack);
             maygate = pd->last->ud;
             sp_maygate_init(pd->sp, maygate);
-            maygate->mode = 0;
+            /* this line makes things a maytrig */
+            maygate->mode = 1;
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
