@@ -254,7 +254,7 @@ int plumber_parse_string(plumber_data *plumb, char *str)
     pos = 0;
     len = 0;
     while(pos < size) {
-        out = sporth_tokenizer(&plumb->sporth, str, size, &pos);
+        out = sporth_tokenizer(str, size, &pos);
         len = (unsigned int)strlen(out);
         plumber_lexer(plumb, plumb->pipes, out, len);
         free(out);
@@ -266,7 +266,7 @@ int plumber_parse_string(plumber_data *plumb, char *str)
 int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len)
 {
     char *tmp;
-    switch(sporth_lexer(&plumb->sporth, out, len)) {
+    switch(sporth_lexer(out, len)) {
         case SPORTH_FLOAT:
 #ifdef DEBUG_MODE
             fprintf(stderr, "%s is a float!\n", out);
@@ -314,7 +314,7 @@ int plumbing_parse(plumber_data *plumb, plumbing *pipes)
         pos = 0;
         len = 0;
         while(pos < read - 1) {
-            out = sporth_tokenizer(&plumb->sporth, line, (unsigned int)read - 1, &pos);
+            out = sporth_tokenizer(line, (unsigned int)read - 1, &pos);
             len = (unsigned int)strlen(out);
             plumber_lexer(plumb, pipes, out, len);
             free(out);

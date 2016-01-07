@@ -159,7 +159,7 @@ Output: f
 Description: Applies portamento to a signal.
 ---
 Name: nsmp
-Args: trig (f), index (f), ini (s), wav (s)
+Args: trig (f), index (f), sr (f), ini (s), wav (s)
 Output: f
 Description: Nanosamp sampler. See soundpipe docs.
 ---

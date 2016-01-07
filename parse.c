@@ -20,7 +20,7 @@ enum {
     LEX_DASH
 };
 
-char * sporth_tokenizer(sporth_data *sporth, char *str,
+char * sporth_tokenizer(char *str,
         uint32_t size, uint32_t *pos)
 {
     char c;
@@ -94,7 +94,7 @@ char * sporth_tokenizer(sporth_data *sporth, char *str,
     return out;
 }
 
-int sporth_lexer(sporth_data *sporth, char *str, int32_t size)
+int sporth_lexer(char *str, int32_t size)
 {
     char c;
     int mode = LEX_START;
