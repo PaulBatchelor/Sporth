@@ -6,7 +6,7 @@
 125 0 pset
 
 # trigger
-60 0 p / 0.5 * dmetro 0.6 1 maygate dup
+60 0 p / 0.5 * dmetro 0.6 maytrig dup
 # freq
 0 "seq" tseq mtof  
 # amp
