@@ -105,8 +105,7 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
                 break;
             case SPORTH_STRING:
                 sval = pipe->ud;
-                if(mode == PLUMBER_INIT)
-                    sporth_stack_push_string(&sporth->stack, sval);
+                //if(mode == PLUMBER_INIT) sporth_stack_push_string(&sporth->stack, sval);
                 break;
             default:
                 plumb->last = pipe;
@@ -277,14 +276,17 @@ int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len)
             fprintf(stderr, "%s is a string!\n", out);
 #endif
             plumber_add_string(plumb, pipes, tmp);
+            sporth_stack_push_string(&plumb->sporth.stack, out);
             break;
         case SPORTH_FUNC:
 #ifdef DEBUG_MODE
             fprintf(stderr, "%s is a function!\n", out);
 #endif
             if(sporth_exec(&plumb->sporth, out) == PLUMBER_NOTOK) {
+#ifdef DEBUG_MODE
+            fprintf(stderr, "plumber_lexer: error with function %s\n", out);
+#endif
                 plumb->sporth.stack.error++;
-                fprintf(stderr, "uh oh error. are we here?\n");
                 return PLUMBER_NOTOK;
             }
             break;
@@ -448,7 +450,7 @@ int plumber_swap(plumber_data *plumb, int error)
 
 int plumber_recompile(plumber_data *plumb)
 {
-    int error = 0;
+    int error;
     plumber_reinit(plumb);
     error = plumber_reparse(plumb);
     plumber_swap(plumb, error);
@@ -457,11 +459,12 @@ int plumber_recompile(plumber_data *plumb)
 
 int plumber_recompile_string(plumber_data *plumb, char *str)
 {
-    int error = 0;
-    /* file pointer needs to be NULL for reinit to work with strings */
+
+    int error;
 #ifdef DEBUG_MODE
     fprintf(stderr, "** Attempting to compile string '%s' **\n", str);
 #endif
+    /* file pointer needs to be NULL for reinit to work with strings */
     plumb->fp = NULL;
     plumber_reinit(plumb);
     error = plumber_reparse_string(plumb, str);

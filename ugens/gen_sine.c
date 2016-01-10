@@ -14,9 +14,7 @@ int sporth_gen_sine(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
             plumber_add_ugen(pd, SPORTH_GEN_SINE, NULL);
-            break;
 
-        case PLUMBER_INIT:
             if(sporth_check_args(stack, "sf") != SPORTH_OK) {
                 fprintf(stderr, "Init: not enough arguments for gen_sine\n");
                 return PLUMBER_NOTOK;
@@ -30,6 +28,10 @@ int sporth_gen_sine(sporth_stack *stack, void *ud)
             sp_gen_sine(pd->sp, ft);
             plumber_ftmap_add(pd, str, ft);
             free(str);
+            break;
+
+        case PLUMBER_INIT:
+            size = (int)sporth_stack_pop_float(stack);
             break;
 
         case PLUMBER_COMPUTE:

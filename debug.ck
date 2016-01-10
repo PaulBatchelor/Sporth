@@ -1,11 +1,9 @@
 Sporth s => dac;
 s.parse("
-'seq' '60 62 64 66 67 69 72' gen_vals
+'sine' 4096 gen_sine
+'seq' '60 62 64' gen_vals
 
-90 '3[3(+++)2(++)2[3(+++)]2(++)]' prop dup
-1 'seq' tseq mtof 
-0.4 48 mtof pluck 
-
+10 metro 0 'seq' tseq mtof 0.1 0 'sine' osc 
 ");
 while(1)
 30::second => now;
