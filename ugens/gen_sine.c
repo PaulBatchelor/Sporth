@@ -32,6 +32,8 @@ int sporth_gen_sine(sporth_stack *stack, void *ud)
 
         case PLUMBER_INIT:
             size = (int)sporth_stack_pop_float(stack);
+            str = sporth_stack_pop_string(stack);
+            free(str);
             break;
 
         case PLUMBER_COMPUTE:

@@ -105,7 +105,7 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
                 break;
             case SPORTH_STRING:
                 sval = pipe->ud;
-                //if(mode == PLUMBER_INIT) sporth_stack_push_string(&sporth->stack, sval);
+                if(mode == PLUMBER_INIT) sporth_stack_push_string(&sporth->stack, sval);
                 break;
             default:
                 plumb->last = pipe;
