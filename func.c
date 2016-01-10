@@ -13,7 +13,8 @@ int sporth_register_func(sporth_data *sporth, sporth_func *flist)
     uint32_t i = 0;
     while(sporth->flist[i].name != NULL) {
 #ifdef DEBUG_MODE
-       fprintf(stderr,"Registering function \"%s\" at position %d\n", sporth->flist[i].name, i);
+       fprintf(stderr,"Registering function \"%s\" at position %d\n", 
+               sporth->flist[i].name, i + SPORTH_FOFFSET);
 #endif
         sporth_htable_add(&sporth->dict, sporth->flist[i].name, i);
         i++;
