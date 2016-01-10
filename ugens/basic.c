@@ -334,12 +334,15 @@ int sporth_mul(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
             plumber_add_ugen(pd, SPORTH_MUL, NULL);
-            break;
-        case PLUMBER_INIT:
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
+            v1 = sporth_stack_pop_float(stack);
+            v2 = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, (SPFLOAT) v1 * v2);
+            break;
+        case PLUMBER_INIT:
             v1 = sporth_stack_pop_float(stack);
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, (SPFLOAT) v1 * v2);
@@ -741,12 +744,14 @@ int sporth_mtof(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
             plumber_add_ugen(pd, SPORTH_MTOF, NULL);
-            break;
-        case PLUMBER_INIT:
             if(sporth_check_args(stack, "f") != SPORTH_OK) {
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
+            nn = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, sp_midi2cps(nn));
+            break;
+        case PLUMBER_INIT:
             nn = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, sp_midi2cps(nn));
             break;

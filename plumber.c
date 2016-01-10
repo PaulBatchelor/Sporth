@@ -276,7 +276,7 @@ int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len)
             fprintf(stderr, "%s is a string!\n", out);
 #endif
             plumber_add_string(plumb, pipes, tmp);
-            sporth_stack_push_string(&plumb->sporth.stack, out);
+            sporth_stack_push_string(&plumb->sporth.stack, out + 1);
             break;
         case SPORTH_FUNC:
 #ifdef DEBUG_MODE
@@ -494,7 +494,7 @@ int plumber_ftmap_init(plumber_data *plumb)
 int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
 {
 #ifdef DEBUG_MODE
-    fprintf(stderr, "Adding new table %s\n", str);
+    fprintf(stderr, "Adding new table %s\n", str + 1);
 #endif
     uint32_t pos = sporth_hash(str);
     plumber_ftentry *entry = &plumb->ftmap[pos];
@@ -513,12 +513,17 @@ int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
 int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
 {
     uint32_t pos = sporth_hash(str);
+
     uint32_t n;
     plumber_ftentry *entry = &plumb->ftmap[pos];
     plumber_ftbl *ftbl = entry->root.next;
     plumber_ftbl *next;
+    fprintf(stderr, "ftmap_search: looking at %d ftbls\n", entry->nftbl);
     for(n = 0; n < entry->nftbl; n++) {
         next = ftbl->next;
+#ifdef DEBUG_MODE
+    fprintf(stderr, "ftmap_search: comparing %s with %s\n", str, ftbl->name);
+#endif
         if(!strcmp(str, ftbl->name)){
             *ft = (sp_ftbl *)ftbl->ud;
             return PLUMBER_OK;

@@ -14,24 +14,38 @@ int sporth_tseq(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
 #ifdef DEBUG_MODE
-            printf("Creating tseq function... \n");
+            fprintf(stderr, "Creating tseq function... \n");
 #endif
             sp_tseq_create(&tseq);
             plumber_add_ugen(pd, SPORTH_TSEQ, tseq);
-            break;
-        case PLUMBER_INIT:
+
             if(sporth_check_args(stack, "ffs") != SPORTH_OK) {
                 stack->error++;
-                printf("Invalid arguments for tseq.\n");
+                fprintf(stderr, "Invalid arguments for tseq.\n");
                 return PLUMBER_NOTOK;
             }
-            tseq = pd->last->ud;
 
             ftname = sporth_stack_pop_string(stack);
             shuf = sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
 
+            sporth_stack_push_float(stack, 0.0);
+            free(ftname);
+
+            break;
+        case PLUMBER_INIT:
+
+            ftname = sporth_stack_pop_string(stack);
+            shuf = sporth_stack_pop_float(stack);
+            trig = sporth_stack_pop_float(stack);
+
+            tseq = pd->last->ud;
+#ifdef DEBUG_MODE
+            fprintf(stderr, "tseq INIT: searching for ftable... \n");
+#endif
+
             if(plumber_ftmap_search(pd, ftname, &ft) == PLUMBER_NOTOK) {
+                free(ftname);
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -43,11 +57,6 @@ int sporth_tseq(sporth_stack *stack, void *ud)
 
         case PLUMBER_COMPUTE:
             tseq = pd->last->ud;
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
-
             shuf = sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
 
@@ -56,6 +65,9 @@ int sporth_tseq(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "Destroying tseq\n");
+#endif 
             tseq = pd->last->ud;
             sp_tseq_destroy(&tseq);
             break;
