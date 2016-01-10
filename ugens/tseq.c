@@ -11,13 +11,18 @@ int sporth_tseq(sporth_stack *stack, void *ud)
     char *ftname;
     sp_ftbl *ft;
     sp_tseq *tseq;
+
+    if(pd->mode == PLUMBER_DESTROY) {
+fprintf(stderr, "WE IZ DESTROYING TSEQ!!!!\n");
+    }
+
     switch(pd->mode){
         case PLUMBER_CREATE:
 #ifdef DEBUG_MODE
             fprintf(stderr, "Creating tseq function... \n");
 #endif
-            sp_tseq_create(&tseq);
             plumber_add_ugen(pd, SPORTH_TSEQ, tseq);
+            sp_tseq_create(&tseq);
 
             if(sporth_check_args(stack, "ffs") != SPORTH_OK) {
                 stack->error++;

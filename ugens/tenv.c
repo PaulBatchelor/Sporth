@@ -54,6 +54,9 @@ int sporth_tenv(sporth_stack *stack, void *ud)
             break;
 
         case PLUMBER_DESTROY:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "Destroying tenv\n");
+#endif
             data = pd->last->ud;
             sp_tenv_destroy(&data);
             break;
