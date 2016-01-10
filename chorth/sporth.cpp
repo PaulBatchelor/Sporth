@@ -121,6 +121,8 @@ CK_DLL_MFUN(sporth_parseString)
         data->parsed = 1;
         plumber_parse_string(&data->pd, str);
         plumber_compute(&data->pd, PLUMBER_INIT);
+    } else {
+        plumber_recompile_string(&data->pd, str);
     }
     free(str);
     RETURN->v_float = data->var;
