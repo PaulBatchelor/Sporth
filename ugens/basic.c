@@ -58,6 +58,7 @@ int sporth_drop(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
             plumber_add_ugen(pd, SPORTH_DROP, NULL);
+            sporth_stack_pop_float(stack);
             break;
         case PLUMBER_INIT:
             sporth_stack_pop_float(stack);
@@ -71,7 +72,7 @@ int sporth_drop(sporth_stack *stack, void *ud)
           fprintf(stderr,"Error: Unknown mode!");
            break;
     }
-    return SPORTH_OK;
+    return PLUMBER_OK;
 }
 
 int sporth_rot(sporth_stack *stack, void *ud)
@@ -81,13 +82,10 @@ int sporth_rot(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
             plumber_add_ugen(pd, SPORTH_ROT, NULL);
-            break;
-        case PLUMBER_INIT:
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {
                 stack->error++;
                 return SPORTH_NOTOK;
             }
-
             v1 = sporth_stack_pop_float(stack);
             v2 = sporth_stack_pop_float(stack);
             v3 = sporth_stack_pop_float(stack);
@@ -95,14 +93,19 @@ int sporth_rot(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, 0);
             sporth_stack_push_float(stack, 0);
             sporth_stack_push_float(stack, 0);
+            break;
+        case PLUMBER_INIT:
+
+            v1 = sporth_stack_pop_float(stack);
+            v2 = sporth_stack_pop_float(stack);
+            v3 = sporth_stack_pop_float(stack);
+
+            sporth_stack_push_float(stack, v2);
+            sporth_stack_push_float(stack, v1);
+            sporth_stack_push_float(stack, v3);
 
             break;
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
-                stack->error++;
-                return SPORTH_NOTOK;
-            }
-
             v1 = sporth_stack_pop_float(stack);
             v2 = sporth_stack_pop_float(stack);
             v3 = sporth_stack_pop_float(stack);
@@ -118,7 +121,7 @@ int sporth_rot(sporth_stack *stack, void *ud)
           fprintf(stderr,"Error: Unknown mode!");
            break;
     }
-    return SPORTH_OK;
+    return PLUMBER_OK;
 }
 
 int sporth_dup(sporth_stack *stack, void *ud)
