@@ -15,6 +15,13 @@ int sporth_mix(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
             plumber_add_ugen(pd, SPORTH_MIX, NULL);
+            count = stack->pos;
+            if(count > 1) {
+                for(n = 1; n <= count; n++){
+                    val = sporth_stack_pop_float(stack);
+                }
+                sporth_stack_push_float(stack, val);
+            }
             break;
         case PLUMBER_INIT:
             count = stack->pos;
@@ -42,7 +49,7 @@ int sporth_mix(sporth_stack *stack, void *ud)
           fprintf(stderr,"Error: Unknown mode!");
            break;
     }
-    return SPORTH_OK;
+    return PLUMBER_OK;
 }
 
 int sporth_drop(sporth_stack *stack, void *ud)
