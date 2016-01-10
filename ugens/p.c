@@ -11,16 +11,19 @@ int sporth_p(sporth_stack *stack, void *ud)
 #ifdef DEBUG_MODE
             fprintf(stderr, "p: creating\n");
 #endif
-
             plumber_add_ugen(pd, SPORTH_P, NULL);
-            break;
-        case PLUMBER_INIT:
-        case PLUMBER_COMPUTE:
+
             if(sporth_check_args(stack, "f") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for P\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
+
+            n = (int)sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0);
+            break;
+        case PLUMBER_INIT:
+        case PLUMBER_COMPUTE:
             n = (int)sporth_stack_pop_float(stack);
             if(n < 16)
                 sporth_stack_push_float(stack, pd->p[n]);

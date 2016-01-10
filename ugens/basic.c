@@ -240,11 +240,17 @@ int sporth_sine(sporth_stack *stack, void *ud)
             sp_osc_create(&data->osc);
             sp_ftbl_create(pd->sp, &data->ft, 4096);
             plumber_add_ugen(pd, SPORTH_SINE, data);
+            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
+                fprintf(stderr, "returning error SPORTH_NOTOK\n");
+                return PLUMBER_NOTOK;
+            }
+
+            amp = sporth_stack_pop_float(stack);
+            freq = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0);
+            
             break;
         case PLUMBER_INIT:
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                return SPORTH_NOTOK;
-            }
             amp = sporth_stack_pop_float(stack);
             freq = sporth_stack_pop_float(stack);
             data = pd->last->ud;
@@ -265,6 +271,9 @@ int sporth_sine(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "Destroying sine\n");
+#endif
             pipe = pd->last;
             data = pipe->ud;
             sp_ftbl_destroy(&data->ft);
@@ -275,7 +284,7 @@ int sporth_sine(sporth_stack *stack, void *ud)
           fprintf(stderr,"Error: Unknown mode!");
            break;
     }
-    return SPORTH_OK;
+    return PLUMBER_OK;
 }
 
 int sporth_add(sporth_stack *stack, void *ud)
@@ -287,21 +296,20 @@ int sporth_add(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
             plumber_add_ugen(pd, SPORTH_ADD, NULL);
-            break;
-        case PLUMBER_INIT:
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 stack->error++;
-                return SPORTH_NOTOK;
+                return PLUMBER_NOTOK;
             }
+            v1 = sporth_stack_pop_float(stack);
+            v2 = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0);
+            break;
+        case PLUMBER_INIT:
             v1 = sporth_stack_pop_float(stack);
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, v1 + v2);
             break;
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                stack->error++;
-                return SPORTH_NOTOK;
-            }
             v1 = sporth_stack_pop_float(stack);
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, v1 + v2);

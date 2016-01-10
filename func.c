@@ -32,8 +32,7 @@ int sporth_exec(sporth_data *sporth, const char *keyword)
 #ifdef DEBUG_MODE
    fprintf(stderr,"Executing function \"%s\"\n", keyword);
 #endif
-    sporth->flist[id].func(&sporth->stack, sporth->flist[id].ud);
-    return SPORTH_OK;
+   return sporth->flist[id].func(&sporth->stack, sporth->flist[id].ud);
 }
 
 
