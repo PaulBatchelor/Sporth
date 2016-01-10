@@ -131,11 +131,14 @@ int sporth_dup(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
             plumber_add_ugen(pd, SPORTH_DUP, NULL);
+            val = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, val);
+            sporth_stack_push_float(stack, val);
             break;
         case PLUMBER_INIT:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, 0);
-            sporth_stack_push_float(stack, 0);
+            sporth_stack_push_float(stack, val);
+            sporth_stack_push_float(stack, val);
             break;
         case PLUMBER_COMPUTE:
             if(stack->pos == 0) {
@@ -153,7 +156,7 @@ int sporth_dup(sporth_stack *stack, void *ud)
           fprintf(stderr,"Error: Unknown mode!");
            break;
     }
-    return SPORTH_OK;
+    return PLUMBER_OK;
 }
 
 int sporth_swap(sporth_stack *stack, void *ud)
