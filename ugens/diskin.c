@@ -17,6 +17,14 @@ int sporth_diskin(sporth_stack *stack, void *ud)
 
             sp_diskin_create(&diskin);
             plumber_add_ugen(pd, SPORTH_DISKIN, diskin);
+            if(sporth_check_args(stack, "s") != SPORTH_OK) {
+                fprintf(stderr,"Not enough arguments for diskin\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            filename = sporth_stack_pop_string(stack);
+            sporth_stack_push_float(stack, 0);
+            free(filename);
             break;
         case PLUMBER_INIT:
 
@@ -24,11 +32,6 @@ int sporth_diskin(sporth_stack *stack, void *ud)
             fprintf(stderr, "diskin: Initialising\n");
 #endif
 
-            if(sporth_check_args(stack, "s") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for diskin\n");
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
             filename = sporth_stack_pop_string(stack);
             diskin = pd->last->ud;
             sp_diskin_init(pd->sp, diskin, filename);
