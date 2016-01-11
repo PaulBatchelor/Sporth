@@ -259,7 +259,6 @@ int sporth_sine(sporth_stack *stack, void *ud)
             amp = sporth_stack_pop_float(stack);
             freq = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, 0);
-            
             break;
         case PLUMBER_INIT:
             amp = sporth_stack_pop_float(stack);
