@@ -21,8 +21,8 @@ fprintf(stderr, "WE IZ DESTROYING TSEQ!!!!\n");
 #ifdef DEBUG_MODE
             fprintf(stderr, "Creating tseq function... \n");
 #endif
-            plumber_add_ugen(pd, SPORTH_TSEQ, tseq);
             sp_tseq_create(&tseq);
+            plumber_add_ugen(pd, SPORTH_TSEQ, tseq);
 
             if(sporth_check_args(stack, "ffs") != SPORTH_OK) {
                 stack->error++;
@@ -44,7 +44,6 @@ fprintf(stderr, "WE IZ DESTROYING TSEQ!!!!\n");
             shuf = sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
 
-            tseq = pd->last->ud;
 #ifdef DEBUG_MODE
             fprintf(stderr, "tseq INIT: searching for ftable... \n");
 #endif
@@ -55,6 +54,7 @@ fprintf(stderr, "WE IZ DESTROYING TSEQ!!!!\n");
                 return PLUMBER_NOTOK;
             }
 
+            tseq = pd->last->ud;
             sp_tseq_init(pd->sp, tseq, ft);
             sporth_stack_push_float(stack, 0.0);
             free(ftname);

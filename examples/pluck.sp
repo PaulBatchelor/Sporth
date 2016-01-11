@@ -13,7 +13,7 @@
 0.3 
 # lowest expected frequency
 110
-pluck dcblk  
+pluck 
 
 
 # trigger
@@ -24,7 +24,7 @@ pluck dcblk
 0.3 
 # lowest expected frequency
 86.0
-pluck dcblk 
+pluck 
 
 # AM to pitch shift by one octave
 1 p 0.5 * 1 sine *
