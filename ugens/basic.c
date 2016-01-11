@@ -791,11 +791,6 @@ int sporth_eq(sporth_stack *stack, void *ud)
             fprintf(stderr, "eq: Creating\n");
 #endif
             plumber_add_ugen(pd, SPORTH_EQ, NULL);
-            break;
-        case PLUMBER_INIT:
-#ifdef DEBUG_MODE
-            fprintf(stderr, "eq: Initializing\n");
-#endif
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 fprintf(stderr, "Not enough args for eq\n");
                 stack->error++;
@@ -805,10 +800,15 @@ int sporth_eq(sporth_stack *stack, void *ud)
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, 0.0);
             break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "eq: Initializing\n");
+#endif
+            v1 = sporth_stack_pop_float(stack);
+            v2 = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0.0);
+            break;
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                return PLUMBER_NOTOK;
-            }
             v1 = sporth_stack_pop_float(stack);
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, (v2 == v1 ? 1 : 0));
@@ -817,9 +817,9 @@ int sporth_eq(sporth_stack *stack, void *ud)
             break;
         default:
           fprintf(stderr,"eq: unknown mode!");
-           stack->error++;
-           return PLUMBER_NOTOK;
-           break;
+          stack->error++;
+          return PLUMBER_NOTOK;
+          break;
     }
     return PLUMBER_OK;
 }
@@ -836,11 +836,6 @@ int sporth_lt(sporth_stack *stack, void *ud)
             fprintf(stderr, "lt: Creating\n");
 #endif
             plumber_add_ugen(pd, SPORTH_LT, NULL);
-            break;
-        case PLUMBER_INIT:
-#ifdef DEBUG_MODE
-            fprintf(stderr, "lt: Initializing\n");
-#endif
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 fprintf(stderr, "Not enough args for lt\n");
                 stack->error++;
@@ -850,10 +845,15 @@ int sporth_lt(sporth_stack *stack, void *ud)
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, 0.0);
             break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "lt: Initializing\n");
+#endif
+            v1 = sporth_stack_pop_float(stack);
+            v2 = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0.0);
+            break;
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                return PLUMBER_NOTOK;
-            }
             v1 = sporth_stack_pop_float(stack);
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, (v2 < v1 ? 1 : 0));
@@ -861,10 +861,10 @@ int sporth_lt(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-          fprintf(stderr,"lt: unknown mode!");
-           stack->error++;
-           return PLUMBER_NOTOK;
-           break;
+            fprintf(stderr,"lt: unknown mode!");
+            stack->error++;
+            return PLUMBER_NOTOK;
+            break;
     }
     return PLUMBER_OK;
 }
@@ -881,11 +881,6 @@ int sporth_gt(sporth_stack *stack, void *ud)
             fprintf(stderr, "gt: Creating\n");
 #endif
             plumber_add_ugen(pd, SPORTH_GT, NULL);
-            break;
-        case PLUMBER_INIT:
-#ifdef DEBUG_MODE
-            fprintf(stderr, "gt: Initializing\n");
-#endif
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 fprintf(stderr, "Not enough args for gt\n");
                 stack->error++;
@@ -895,10 +890,15 @@ int sporth_gt(sporth_stack *stack, void *ud)
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, 0.0);
             break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "gt: Initializing\n");
+#endif
+            v1 = sporth_stack_pop_float(stack);
+            v2 = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0.0);
+            break;
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                return PLUMBER_NOTOK;
-            }
             v1 = sporth_stack_pop_float(stack);
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, (v2 > v1 ? 1 : 0));
@@ -906,10 +906,10 @@ int sporth_gt(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-          fprintf(stderr,"gt: unknown mode!");
-           stack->error++;
-           return PLUMBER_NOTOK;
-           break;
+            fprintf(stderr,"gt: unknown mode!");
+            stack->error++;
+            return PLUMBER_NOTOK;
+            break;
     }
     return PLUMBER_OK;
 }
@@ -926,11 +926,6 @@ int sporth_ne(sporth_stack *stack, void *ud)
             fprintf(stderr, "ne: Creating\n");
 #endif
             plumber_add_ugen(pd, SPORTH_NE, NULL);
-            break;
-        case PLUMBER_INIT:
-#ifdef DEBUG_MODE
-            fprintf(stderr, "ne: Initializing\n");
-#endif
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 fprintf(stderr, "Not enough args for ne\n");
                 stack->error++;
@@ -940,10 +935,15 @@ int sporth_ne(sporth_stack *stack, void *ud)
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, 0.0);
             break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "ne: Initializing\n");
+#endif
+            v1 = sporth_stack_pop_float(stack);
+            v2 = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0.0);
+            break;
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                return PLUMBER_NOTOK;
-            }
             v1 = sporth_stack_pop_float(stack);
             v2 = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, (v2 != v1 ? 1 : 0));
@@ -971,11 +971,6 @@ int sporth_branch(sporth_stack *stack, void *ud)
             fprintf(stderr, "branch: Creating\n");
 #endif
             plumber_add_ugen(pd, SPORTH_BRANCH, NULL);
-            break;
-        case PLUMBER_INIT:
-#ifdef DEBUG_MODE
-            fprintf(stderr, "branch: Initializing\n");
-#endif
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {
                 fprintf(stderr, "Not enough args for branch\n");
                 stack->error++;
@@ -986,10 +981,16 @@ int sporth_branch(sporth_stack *stack, void *ud)
             cond = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, 0.0);
             break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "branch: Initializing\n");
+#endif
+            v1 = sporth_stack_pop_float(stack);
+            v2 = sporth_stack_pop_float(stack);
+            cond = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0.0);
+            break;
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
-                return PLUMBER_NOTOK;
-            }
             v1 = sporth_stack_pop_float(stack);
             v2 = sporth_stack_pop_float(stack);
             cond = sporth_stack_pop_float(stack);
@@ -998,10 +999,9 @@ int sporth_branch(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-          fprintf(stderr,"branch: unknown mode!");
-           stack->error++;
-           return PLUMBER_NOTOK;
-           break;
+            fprintf(stderr,"branch: unknown mode!");
+            stack->error++;
+            return PLUMBER_NOTOK;
     }
     return PLUMBER_OK;
 }
@@ -1047,14 +1047,14 @@ int sporth_dur(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
 #ifdef DEBUG_MODE
-            fprintf(stderr, "pos: Creating\n");
+            fprintf(stderr, "dur: Creating\n");
 #endif
             dur = malloc(sizeof(SPFLOAT));
             plumber_add_ugen(pd, SPORTH_DUR, dur);
             break;
         case PLUMBER_INIT:
 #ifdef DEBUG_MODE
-            fprintf(stderr, "pos: Initializing\n");
+            fprintf(stderr, "dur: Initializing\n");
 #endif
             dur = pd->last->ud;
             *dur = (SPFLOAT) pd->sp->len / pd->sp->sr;
