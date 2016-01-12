@@ -15,6 +15,7 @@ s.parse(
 s.pset(1, 0.5);
 0 => int nbars;
 60 => int base;
+
 while(1) 
 {
     if(stp == 0) { 
