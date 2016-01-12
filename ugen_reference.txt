@@ -523,3 +523,8 @@ Args: in (f), frequency (f), gain (f)
 Output: f
 Description: streson filter
 ---
+Name: gbuzz
+Args: freq (f), amp(f), nharm (f), lharm(f), mul (f)
+Output: f
+Description: streson filter
+---

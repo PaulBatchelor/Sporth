@@ -16,9 +16,6 @@ int sporth_gen_padsynth(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
             plumber_add_ugen(pd, SPORTH_GEN_PADSYNTH, NULL);
-            break;
-
-        case PLUMBER_INIT:
             if(sporth_check_args(stack, "sfffs") != SPORTH_OK) {
                 fprintf(stderr,"Padsynth: not enough arguments for gen_padsynth\n");
                 return PLUMBER_NOTOK;
@@ -43,6 +40,17 @@ int sporth_gen_padsynth(sporth_stack *stack, void *ud)
             sp_gen_padsynth(pd->sp, ft, amps, freq, bw);
 
             plumber_ftmap_add(pd, ftname, ft);
+            free(ftname);
+            free(ampname);
+            break;
+
+        case PLUMBER_INIT:
+            ampname = sporth_stack_pop_string(stack);
+            bw = sporth_stack_pop_float(stack);
+            freq = sporth_stack_pop_float(stack);
+            size = (uint32_t)sporth_stack_pop_float(stack);
+            ftname = sporth_stack_pop_string(stack);
+
             free(ftname);
             free(ampname);
             break;
