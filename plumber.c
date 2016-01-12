@@ -380,11 +380,9 @@ int plumber_reinit(plumber_data *plumb)
 
 int plumber_reparse(plumber_data *plumb) 
 {
-    int error = 0;
     if(plumbing_parse(plumb, plumb->tmp) == PLUMBER_OK) {
         fprintf(stderr, "Successful parse...\n");
         plumbing_compute(plumb, plumb->tmp, PLUMBER_INIT);
-        error = plumb->sporth.stack.error;
         fprintf(stderr, "at stack position %d\n",
                 plumb->sporth.stack.pos);
         fprintf(stderr, "%d errors\n",
@@ -397,11 +395,9 @@ int plumber_reparse(plumber_data *plumb)
 
 int plumber_reparse_string(plumber_data *plumb, char *str) 
 {
-    int error = 0;
     if(plumbing_parse_string(plumb, plumb->tmp, str) == PLUMBER_OK) {
         fprintf(stderr, "Successful parse...\n");
         plumbing_compute(plumb, plumb->tmp, PLUMBER_INIT);
-        error = plumb->sporth.stack.error;
         fprintf(stderr, "at stack position %d\n",
                 plumb->sporth.stack.pos);
         fprintf(stderr, "%d errors\n",
