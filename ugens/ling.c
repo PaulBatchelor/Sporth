@@ -35,6 +35,18 @@ int sporth_ling(sporth_stack *stack, void *ud)
 #endif
             ling = malloc(sizeof(sp_ling));
             plumber_add_ugen(pd, SPORTH_LING, ling);
+            if(sporth_check_args(stack, "fffs") != SPORTH_OK) {
+                fprintf(stderr,"Not enough arguments for ling\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+
+            str = sporth_stack_pop_string(stack);
+            sporth_stack_pop_float(stack);
+            sporth_stack_pop_float(stack);
+            sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0);
+            free(str);
             break;
         case PLUMBER_INIT:
 
@@ -42,13 +54,7 @@ int sporth_ling(sporth_stack *stack, void *ud)
             fprintf(stderr, "ling: Initialising\n");
 #endif
 
-            if(sporth_check_args(stack, "fffs") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for ling\n");
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
             ling = pd->last->ud;
-
             str = sporth_stack_pop_string(stack);
             ling->mode = sporth_stack_pop_float(stack);
             ling->N = (uint32_t) sporth_stack_pop_float(stack);

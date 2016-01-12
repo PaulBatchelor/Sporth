@@ -24,6 +24,15 @@ int sporth_line(sporth_stack *stack, void *ud)
 #endif
             sp_line_create(&line);
             plumber_add_ugen(pd, SPORTH_LINE, line);
+            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
+                fprintf(stderr,"Not enough arguments for line\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            ib = sporth_stack_pop_float(stack);
+            idur = sporth_stack_pop_float(stack);
+            ia = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
 
@@ -31,11 +40,6 @@ int sporth_line(sporth_stack *stack, void *ud)
             fprintf(stderr, "line: Initialising\n");
 #endif
 
-            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for line\n");
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
             line = pd->last->ud;
             ib = sporth_stack_pop_float(stack);
             idur = sporth_stack_pop_float(stack);
