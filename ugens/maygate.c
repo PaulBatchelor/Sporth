@@ -17,6 +17,14 @@ int sporth_maygate(sporth_stack *stack, void *ud)
 
             sp_maygate_create(&maygate);
             plumber_add_ugen(pd, SPORTH_MAYGATE, maygate);
+            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
+                fprintf(stderr,"Not enough arguments for maygate\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            prob = sporth_stack_pop_float(stack);
+            trig = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
 
@@ -24,11 +32,6 @@ int sporth_maygate(sporth_stack *stack, void *ud)
             fprintf(stderr, "maygate: Initialising\n");
 #endif
 
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for maygate\n");
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
             prob = sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
             maygate = pd->last->ud;
