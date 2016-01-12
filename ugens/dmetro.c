@@ -22,8 +22,6 @@ int sporth_dmetro(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             time = sporth_stack_pop_float(stack);
-            dmetro = pd->last->ud;
-            sp_dmetro_init(pd->sp, dmetro);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
