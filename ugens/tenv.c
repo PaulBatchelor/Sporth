@@ -36,10 +36,6 @@ int sporth_tenv(sporth_stack *stack, void *ud)
             break;
 
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
-                fprintf(stderr, "Compute: Not enough arguments for tenv\n");
-                return PLUMBER_NOTOK;
-            }
             release = sporth_stack_pop_float(stack);
             hold = sporth_stack_pop_float(stack);
             attack = sporth_stack_pop_float(stack);
