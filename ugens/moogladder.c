@@ -18,13 +18,21 @@ int sporth_moogladder(sporth_stack *stack, void *ud)
 
             sp_moogladder_create(&moogladder);
             plumber_add_ugen(pd, SPORTH_MOOGLADDER, moogladder);
+            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
+                fprintf(stderr,"Not enough arguments for moogladder\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            res = sporth_stack_pop_float(stack);
+            freq = sporth_stack_pop_float(stack);
+            input = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
             fprintf(stderr, "moogladder: Initialising\n");
 #endif
-
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for moogladder\n");
                 stack->error++;
