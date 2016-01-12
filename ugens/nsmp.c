@@ -18,14 +18,11 @@ int sporth_nsmp(sporth_stack *stack, void *ud)
 #endif
             sp_nsmp_create(&nsmp);
             plumber_add_ugen(pd, SPORTH_NSMP, nsmp);
-            break;
-        case PLUMBER_INIT:
             if(sporth_check_args(stack, "fffss") != SPORTH_OK) {
                 stack->error++;
                 fprintf(stderr, "Invalid arguments for nsmp.\n");
                 return PLUMBER_NOTOK;
             }
-            nsmp = pd->last->ud;
 
             wav = sporth_stack_pop_string(stack);
             ini = sporth_stack_pop_string(stack);
@@ -41,7 +38,21 @@ int sporth_nsmp(sporth_stack *stack, void *ud)
             if(sp_nsmp_init(pd->sp, nsmp, ft, sr, ini) == SP_NOT_OK) {
                 fprintf(stderr, "nsmp: there was an error opening the files\n");
                 stack->error++;
+                return PLUMBER_NOTOK;
             };
+            sporth_stack_push_float(stack, 0.0);
+            free(wav);
+            free(ini);
+            break;
+        case PLUMBER_INIT:
+            nsmp = pd->last->ud;
+
+            wav = sporth_stack_pop_string(stack);
+            ini = sporth_stack_pop_string(stack);
+            sr = sporth_stack_pop_float(stack);
+            index = sporth_stack_pop_float(stack);
+            trig = sporth_stack_pop_float(stack);
+
             sporth_stack_push_float(stack, 0.0);
             free(wav);
             free(ini);
