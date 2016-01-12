@@ -26,7 +26,6 @@ int sporth_tget(sporth_stack *stack, void *ud)
                fprintf(stderr,"Init: not enough arguments for tget\n");
                 return PLUMBER_NOTOK;
             }
-            td = pd->last->ud;
             ftname = sporth_stack_pop_string(stack);
             td->index = floor(sporth_stack_pop_float(stack));
             if(plumber_ftmap_search(pd, ftname, &td->ft) == PLUMBER_NOTOK) {
@@ -79,7 +78,6 @@ int sporth_tset(sporth_stack *stack, void *ud)
                fprintf(stderr,"Init: not enough arguments for tset\n");
                 return PLUMBER_NOTOK;
             }
-            td = pd->last->ud;
             ftname = sporth_stack_pop_string(stack);
             td->index = floor(sporth_stack_pop_float(stack));
             td->val = sporth_stack_pop_float(stack);
