@@ -44,11 +44,22 @@ end
 function UGen.create(self, sp, macro)
     spaces = "        "
     indent = spaces .. "    "
+    indent2 = indent .. "    "
     io.write(string.format("%scase PLUMBER_CREATE:\n", spaces))
+
     self:debug(string.format("%s: Creating\\n", self.name), indent)
     io.write(string.format("%ssp_%s_create(&%s);\n", indent, self.name, self.name, self.name))
     io.write(string.format("%splumber_add_ugen(pd, %s, %s);\n",
         indent, macro, self.name, self.name, self.name))
+
+    io.write(string.format("%sif(sporth_check_args(stack, \"%s\") != SPORTH_OK) {\n",
+        indent, args))
+    io.write(string.format("%sfprintf(stderr,\"Not enough arguments for %s\\n\");\n",
+        indent2, self.name))
+    io.write(string.format("%sstack->error++;\n", indent2))
+    io.write(string.format("%sreturn PLUMBER_NOTOK;\n", indent2))
+    io.write(string.format("%s}\n", indent))
+
     io.write(string.format("%sbreak;\n", indent));
 end
 
@@ -92,13 +103,6 @@ function UGen.init(self, sp, args)
 
     io.write(string.format("%scase PLUMBER_INIT:\n", spaces));
     self:debug(string.format("%s: Initialising\\n", self.name), indent)
-    io.write(string.format("%sif(sporth_check_args(stack, \"%s\") != SPORTH_OK) {\n",
-        indent, args))
-    io.write(string.format("%sfprintf(stderr,\"Not enough arguments for %s\\n\");\n",
-        indent2, self.name))
-    io.write(string.format("%sstack->error++;\n", indent2))
-    io.write(string.format("%sreturn PLUMBER_NOTOK;\n", indent2))
-    io.write(string.format("%s}\n", indent))
     self:pop(sp)
     io.write(string.format("%s%s = pd->last->ud;\n", indent, self.name))
     io.write(string.format("%ssp_%s_init(pd->sp, %s", indent, self.name, self.name))
@@ -121,13 +125,6 @@ function UGen.compute(self, sp, args)
     indent2 = indent .. "    "
 
     io.write(string.format("%scase PLUMBER_COMPUTE:\n", spaces));
-    io.write(string.format("%sif(sporth_check_args(stack, \"%s\") != SPORTH_OK) {\n",
-        indent, args))
-    io.write(string.format("%sfprintf(stderr,\"Not enough arguments for %s\\n\");\n",
-        indent2, self.name))
-    io.write(string.format("%sstack->error++;\n", indent2))
-    io.write(string.format("%sreturn PLUMBER_NOTOK;\n", indent2))
-    io.write(string.format("%s}\n", indent))
     self:pop(sp)
     io.write(string.format("%s%s = pd->last->ud;\n", indent, self.name))
 
