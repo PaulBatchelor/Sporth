@@ -19,6 +19,15 @@ int sporth_expon(sporth_stack *stack, void *ud)
 #endif
             sp_expon_create(&expon);
             plumber_add_ugen(pd, SPORTH_EXPON, expon);
+            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
+                fprintf(stderr,"Not enough arguments for expon\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            ib = sporth_stack_pop_float(stack);
+            idur = sporth_stack_pop_float(stack);
+            ia = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
 
@@ -26,11 +35,6 @@ int sporth_expon(sporth_stack *stack, void *ud)
             fprintf(stderr, "expon: Initialising\n");
 #endif
 
-            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for expon\n");
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
             expon = pd->last->ud;
             ib = sporth_stack_pop_float(stack);
             idur = sporth_stack_pop_float(stack);
