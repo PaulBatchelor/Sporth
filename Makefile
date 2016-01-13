@@ -36,6 +36,7 @@ expon \
 f \
 fm \
 gbuzz \
+gen_file \
 gen_line \
 gen_padsynth \
 gen_sine \
