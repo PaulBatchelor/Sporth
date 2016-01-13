@@ -30,7 +30,11 @@ struct sporthData {
     int parsed;
     sp_data *sp;
     plumber_data pd;
+    SPFLOAT in;
 };
+
+static int sporth_chuck_in(sporth_stack *stack, void *ud);
+
 CK_DLL_QUERY(Sporth)
 {
     QUERY->setname(QUERY, "Sporth");
@@ -75,12 +79,15 @@ CK_DLL_CTOR(sporth_ctor)
    
     sporthData * data = new sporthData;
     data->parsed = 0;
+    data->in = 0;
     sp_create(&data->sp);
     sp_srand(data->sp, rand());
     data->sp->sr = API->vm->get_srate();
     plumber_register(&data->pd);
+    data->pd.sporth.flist[SPORTH_IN - SPORTH_FOFFSET].func = sporth_chuck_in;
     plumber_init(&data->pd);
     data->pd.sp = data->sp;
+    data->pd.ud = data;
 
     OBJ_MEMBER_INT(SELF, sporth_data_offset) = (t_CKINT) data;
 }
@@ -102,6 +109,7 @@ CK_DLL_DTOR(sporth_dtor)
 CK_DLL_TICK(sporth_get_tick)
 {
     sporthData * data = (sporthData *) OBJ_MEMBER_INT(SELF, sporth_data_offset);
+    data->in = in;
     plumber_compute(&data->pd, PLUMBER_COMPUTE);
     *out = sporth_stack_pop_float(&data->pd.sporth.stack);
     return TRUE;
@@ -211,3 +219,48 @@ CK_DLL_MFUN(sporth_parse_string)
 }
 
 
+static int sporth_chuck_in(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = (plumber_data *) ud;
+
+    sporthData * data = (sporthData *) pd->ud;
+
+    switch(pd->mode) {
+        case PLUMBER_CREATE:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "CHUCK IN: creating\n");
+#endif
+            plumber_add_ugen(pd, SPORTH_IN, NULL);
+
+            sporth_stack_push_float(stack, 0);
+            break;
+        case PLUMBER_INIT:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "CHUCK IN: initialising.\n");
+#endif
+
+            sporth_stack_push_float(stack, 0);
+
+            break;
+
+        case PLUMBER_COMPUTE:
+
+            sporth_stack_push_float(stack, data->in);
+
+            break;
+
+        case PLUMBER_DESTROY:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "CHUCK IN: destroying.\n");
+#endif
+
+            break;
+
+        default:
+            fprintf(stderr, "Unknown mode!\n");
+            break;
+    }
+    return PLUMBER_OK;
+}
