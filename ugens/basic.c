@@ -1010,23 +1010,32 @@ int sporth_pos(sporth_stack *stack, void *ud)
     if(stack->error > 0) return PLUMBER_NOTOK;
 
     plumber_data *pd = ud;
+    uint32_t *pos;
     switch(pd->mode){
         case PLUMBER_CREATE:
 #ifdef DEBUG_MODE
             fprintf(stderr, "pos: Creating\n");
 #endif
-            plumber_add_ugen(pd, SPORTH_POS, NULL);
+            pos = malloc(sizeof(uint32_t));
+            plumber_add_ugen(pd, SPORTH_POS, pos);
+            sporth_stack_push_float(stack, 0.0);
             break;
         case PLUMBER_INIT:
 #ifdef DEBUG_MODE
             fprintf(stderr, "pos: Initializing\n");
 #endif
+            pos = pd->last->ud;
+            *pos = 0;
             sporth_stack_push_float(stack, 0.0);
             break;
         case PLUMBER_COMPUTE:
-            sporth_stack_push_float(stack, (SPFLOAT) pd->sp->pos / pd->sp->sr);
+            pos = pd->last->ud;
+            sporth_stack_push_float(stack, *pos / pd->sp->sr);
+            *pos = *pos + 1;
             break;
         case PLUMBER_DESTROY:
+            pos = pd->last->ud;
+            free(pos);
             break;
         default:
           fprintf(stderr,"pos: unknown mode!");
