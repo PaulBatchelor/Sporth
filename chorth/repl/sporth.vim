@@ -1,2 +1,2 @@
 let mapleader="\<Space>"
-nnoremap <leader>s (v)!sh send.sh
+nnoremap <leader>s vib!sh send.sh
