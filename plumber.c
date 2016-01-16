@@ -514,7 +514,9 @@ int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
     plumber_ftentry *entry = &plumb->ftmap[pos];
     plumber_ftbl *ftbl = entry->root.next;
     plumber_ftbl *next;
+#ifdef DEBUG_MODE
     fprintf(stderr, "ftmap_search: looking at %d ftbls\n", entry->nftbl);
+#endif
     for(n = 0; n < entry->nftbl; n++) {
         next = ftbl->next;
 #ifdef DEBUG_MODE
