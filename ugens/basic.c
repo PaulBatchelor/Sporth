@@ -132,8 +132,14 @@ int sporth_dup(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
             plumber_add_ugen(pd, SPORTH_DUP, NULL);
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, val);
-            sporth_stack_push_float(stack, val);
+            if(stack->pos == 0) {
+                fprintf(stderr,"Nothing to duplicate\n");
+                return PLUMBER_NOT_OK; 
+            } else {
+                val = sporth_stack_pop_float(stack);
+                sporth_stack_push_float(stack, val);
+                sporth_stack_push_float(stack, val);
+            }
             break;
         case PLUMBER_INIT:
             val = sporth_stack_pop_float(stack);
@@ -141,14 +147,9 @@ int sporth_dup(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, val);
             break;
         case PLUMBER_COMPUTE:
-            if(stack->pos == 0) {
-               fprintf(stderr,"Nothing to duplicate\n");
-            } else {
-
-                val = sporth_stack_pop_float(stack);
-                sporth_stack_push_float(stack, val);
-                sporth_stack_push_float(stack, val);
-            }
+            val = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, val);
+            sporth_stack_push_float(stack, val);
             break;
         case PLUMBER_DESTROY:
             break;
