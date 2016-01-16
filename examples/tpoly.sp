@@ -11,7 +11,9 @@
 'notes' '60 62 71 64 67 74' gen_vals
 
 # clock trigger, feeding into tpoly and tseq
-0 p dup
+#0 p 
+
+3 dmetro dup
 
 # cycle through the notes...
 0 'notes' tseq 
