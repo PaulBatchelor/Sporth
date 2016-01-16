@@ -134,7 +134,7 @@ int sporth_dup(sporth_stack *stack, void *ud)
             val = sporth_stack_pop_float(stack);
             if(stack->pos == 0) {
                 fprintf(stderr,"Nothing to duplicate\n");
-                return PLUMBER_NOT_OK; 
+                return PLUMBER_NOTOK; 
             } else {
                 val = sporth_stack_pop_float(stack);
                 sporth_stack_push_float(stack, val);
