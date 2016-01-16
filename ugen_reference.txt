@@ -528,3 +528,13 @@ Args: freq (f), amp(f), nharm (f), lharm(f), mul (f)
 Output: f
 Description: streson filter
 ---
+Name: oscmorph4
+Args: freq (f), amp (f), wtpos(f), phase (f) ft1 (s), ft2 (s), ft3 (s), ft4 (s)
+Output: f
+Description: 4-table morphing oscillator
+---
+Name: oscmorph2
+Args: freq (f), amp (f), wtpos(f), phase (f) ft1 (s), ft2 (s)
+Output: f
+Description: 2-table morphing oscillator
+---

@@ -57,6 +57,7 @@ moogladder \
 noise \
 nsmp \
 osc \
+oscmorph \
 p \
 pan \
 phasor \
