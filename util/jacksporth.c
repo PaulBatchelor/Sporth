@@ -165,15 +165,15 @@ int main(int argc, char *argv[])
 
     ud.pd.sp = ud.sp;
     ud.pd.fp = fp;
-    plumber_parse(&ud.pd);
-    plumber_compute(&ud.pd, PLUMBER_INIT);
-
-    if(ud.pd.sporth.stack.error) {
-        fprintf(stderr, "Errors. Bye\n");
-    } else {
+    if(plumber_parse(&ud.pd) == PLUMBER_OK) {
+        plumber_compute(&ud.pd, PLUMBER_INIT);
         sp_jack_process(ud.sp, &ud, process);
+    } else {
+        fprintf(stderr, "Errors. Bye\n");
     }
 
+
     sp_destroy(&ud.sp);
+    plumber_clean(&ud.pd);
     return 0;
 }

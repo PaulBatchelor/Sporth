@@ -543,3 +543,18 @@ Args: in (f) thresh (f) mode (f)
 Output: f
 Description: detect threshold crossings. mode: 0=from below, 1=above, 2=both
 ---
+Name: butbp
+Args: in (f) freq (f) bw (f)
+Output: f
+Description: butterworth bandpass filter
+---
+Name: butbr
+Args: in (f) freq (f) bw (f)
+Output: f
+Description: butterworth band reject filter
+---
+Name: drip 
+Args: trig num_tubes amp shake_max freq freq1 freq dettack 
+Output: f
+Description: dripwater physical model
+---

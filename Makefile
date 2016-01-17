@@ -35,6 +35,7 @@ diskin \
 dist \
 dmetro \
 drip \
+dtrig \
 expon \
 f \
 fm \

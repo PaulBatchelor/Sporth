@@ -311,7 +311,7 @@ int plumbing_parse(plumber_data *plumb, plumbing *pipes)
     uint32_t pos = 0, len = 0;
     int err = PLUMBER_OK;
     plumb->mode = PLUMBER_CREATE;
-    while((read = getline(&line, &length, fp)) != -1) {
+    while((read = getline(&line, &length, fp)) != -1 && err == PLUMBER_OK) {
         pos = 0;
         len = 0;
         while(pos < read - 1) {
