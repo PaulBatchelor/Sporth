@@ -21,6 +21,7 @@ bitcrush \
 blsaw \
 blsquare \
 bltriangle \
+butbp \
 buthp \
 butlp \
 clip \
