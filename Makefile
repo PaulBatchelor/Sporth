@@ -36,6 +36,7 @@ dist \
 dmetro \
 drip \
 dtrig \
+dust \
 expon \
 f \
 fm \

@@ -558,3 +558,13 @@ Args: trig num_tubes amp shake_max freq freq1 freq dettack
 Output: f
 Description: dripwater physical model
 ---
+Name: dust
+Args: amp (f) density (f) bipolar (f)
+Output: f
+Description: dust. bipolar = 1 unipolar = 0
+---
+Name: dtrig
+Args: trig (f) loop (f) delay (f) tbl (s)
+Output: f
+Description: delta trig. loop = 1 will loop the sequence
+---
