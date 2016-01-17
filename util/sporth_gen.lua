@@ -59,7 +59,10 @@ function UGen.create(self, sp, macro)
     io.write(string.format("%sstack->error++;\n", indent2))
     io.write(string.format("%sreturn PLUMBER_NOTOK;\n", indent2))
     io.write(string.format("%s}\n", indent))
-
+    --self:pop(sp);
+    for i = 1, sp.noutputs do
+    io.write(string.format("%ssporth_stack_push_float(stack, 0);\n", indent))
+    end
     io.write(string.format("%sbreak;\n", indent));
 end
 

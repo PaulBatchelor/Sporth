@@ -339,12 +339,12 @@ Output: (none)
 Description: Set value of table
 ---
 Name: line
-Args: ia (f) idur (f) ib (f)
+Args: trig (f) ia (f) idur (f) ib (f)
 Output: f
 Description: line segment
 ---
 Name: expon
-Args: ia (f) idur (f) ib (f)
+Args: trig (f) ia (f) idur (f) ib (f)
 Output: f
 Description: exponential line segment
 ---
