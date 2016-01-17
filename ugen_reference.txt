@@ -569,7 +569,12 @@ Output: f
 Description: delta trig. loop = 1 will loop the sequence
 ---
 Name: eqfil
-Args: freq (f) bw (f) gain (f)
+Args: in(f) freq (f) bw (f) gain (f)
 Output: f
 Description: eq filter
+---
+Name: lpf18
+Args: in (f) freq (f) res (f) dist (f)
+Output: f
+Description: low pass filter with tanh distortion
 ---

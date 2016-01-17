@@ -42,6 +42,7 @@ jitter \
 line \
 ling \
 loadfile \
+lpf18 \
 maygate \
 maytrig \
 metro \
