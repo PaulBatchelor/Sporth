@@ -83,6 +83,7 @@ tblrec \
 tenv \
 tenv2 \
 tenvx \
+thresh \
 tin \
 tick \
 tog \

@@ -538,3 +538,8 @@ Args: freq (f), amp (f), wtpos(f), phase (f) ft1 (s), ft2 (s)
 Output: f
 Description: 2-table morphing oscillator
 ---
+Name: thresh
+Args: in (f) thresh (f) mode (f)
+Output: f
+Description: detect threshold crossings. mode: 0=from below, 1=above, 2=both
+---
