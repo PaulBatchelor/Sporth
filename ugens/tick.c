@@ -14,6 +14,7 @@ int sporth_tick(sporth_stack *stack, void *ud)
 #endif
             tick = malloc(sizeof(int));    
             plumber_add_ugen(pd, SPORTH_TICK, tick);
+            sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
 

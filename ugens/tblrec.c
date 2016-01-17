@@ -23,14 +23,10 @@ int sporth_tblrec(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
             td = malloc(sizeof(sporth_tbl_d));
             plumber_add_ugen(pd, SPORTH_TBLREC, td);
-            break;
-
-        case PLUMBER_INIT:
             if(sporth_check_args(stack, "ffs") != SPORTH_OK) {
                fprintf(stderr,"Init: not enough arguments for tblrec\n");
                 return PLUMBER_NOTOK;
             }
-            td = pd->last->ud;
             ftname = sporth_stack_pop_string(stack);
             trig = sporth_stack_pop_float(stack);
             td->val = sporth_stack_pop_float(stack);
@@ -41,6 +37,16 @@ int sporth_tblrec(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
+            free(ftname);
+            break;
+
+        case PLUMBER_INIT:
+            td = pd->last->ud;
+            ftname = sporth_stack_pop_string(stack);
+            trig = sporth_stack_pop_float(stack);
+            td->val = sporth_stack_pop_float(stack);
+            td->index = 0;
+            td->record = 0;
             free(ftname);
             break;
 
