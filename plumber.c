@@ -537,6 +537,7 @@ int plumber_ftmap_delete(plumber_data *plumb, char mode)
     plumb->delete_ft = mode;
     return PLUMBER_OK;
 }
+
 int plumber_ftmap_destroy(plumber_data *plumb)
 {
     int pos, n;

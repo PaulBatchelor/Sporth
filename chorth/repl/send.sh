@@ -6,4 +6,5 @@ str="$str $line"
 echo "$line"
 done
 
-oscsend localhost 6449 /foo/sporth s "$str"
+echo "$str" > sporthpipe
+#oscsend localhost 6449 /foo/sporth s "$str"
