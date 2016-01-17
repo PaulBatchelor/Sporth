@@ -34,6 +34,7 @@ delay \
 diskin \
 dist \
 dmetro \
+drip \
 expon \
 f \
 fm \
