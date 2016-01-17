@@ -22,6 +22,7 @@ blsaw \
 blsquare \
 bltriangle \
 butbp \
+butbr \
 buthp \
 butlp \
 clip \
