@@ -568,3 +568,8 @@ Args: trig (f) loop (f) delay (f) tbl (s)
 Output: f
 Description: delta trig. loop = 1 will loop the sequence
 ---
+Name: eqfil
+Args: freq (f) bw (f) gain (f)
+Output: f
+Description: eq filter
+---
