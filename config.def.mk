@@ -90,3 +90,12 @@ vdelay \
 zeros \
 zitarev
 
+# Enable debug mode
+# DEBUG_MODE=1
+
+# Build dynamic library (needed for Chorth)
+# BUILD_DYNAMIC=1
+
+# Build Kona gen routine. Must have a folder called kona in the home directory
+# with libkona.a and kona.h
+# BUILD_KONA=1

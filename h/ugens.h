@@ -130,3 +130,7 @@ SPORTH_UGEN("vdelay", sporth_vdelay, SPORTH_VDELAY)
 SPORTH_UGEN("zeros", sporth_zeros, SPORTH_ZEROS)
 SPORTH_UGEN("zitarev", sporth_zitarev, SPORTH_ZITAREV)
 SPORTH_UGEN("zrev", sporth_zrev, SPORTH_ZREV)
+
+#ifdef BUILD_KONA
+SPORTH_UGEN("kona", sporth_kona, SPORTH_KONA)
+#endif

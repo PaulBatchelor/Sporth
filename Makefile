@@ -10,6 +10,12 @@ ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE -DPOLY_DEBUG
 endif
 
+ifdef BUILD_KONA
+LIBS += -lkona -Lkona -ldl -lpthread
+CFLAGS += -Ikona -DBUILD_KONA
+UGENS += kona
+endif
+
 include ugens/ling/Makefile
 include ugens/poly/Makefile
 
@@ -23,6 +29,7 @@ OBJ += func.o plumber.o stack.o parse.o hash.o
 
 SPORTHLIBS = libsporth.a
 
+LIBS += -lsoundpipe -lsndfile -lm 
 
 
 ifdef BUILD_DYNAMIC
@@ -39,7 +46,7 @@ ugens/%.o: ugens/%.c
 	$(CC) $(CFLAGS) -g -Ih -c $< -o $@
 
 util/jack_wrapper: util/jack_wrapper.c
-	$(CC) $< -ljack -lsoundpipe -lsndfile -o jack_wrapper -lm
+	$(CC) $< -ljack $(LIBS) -o jack_wrapper -lm
 
 val: util/val
 
@@ -53,10 +60,10 @@ util/float2bin: util/float2bin.c
 
 jacksporth: util/jacksporth
 util/jacksporth: util/jacksporth.c libsporth.a
-	$(CC) $< -L. -lsporth -lsoundpipe -ljack -lsndfile -lm -o $@
+	$(CC) $< -L. -lsporth $(LIBS) -lm -ljack -o $@
 
 sporth: sporth.c $(OBJ) h/ugens.h
-	$(CC) sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) -lsoundpipe -lsndfile -lm
+	$(CC) sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) $(LIBS)
 
 libsporth_dyn.so: $(OBJ)
 	ld -shared -fPIC -o $@ $(OBJ)
@@ -68,10 +75,10 @@ tmp.h: $(OBJ)
 	sh util/header_gen.sh
 
 examples/parse: examples/parse.c libsporth.a h/ugens.h
-	gcc $< $(CFLAGS) -g -Ih -o $@ libsporth.a -lsoundpipe -lsndfile -lm
+	gcc $< $(CFLAGS) -g -Ih -o $@ libsporth.a $(LIBS)
 
 examples/user_function: examples/user_function.c libsporth.a h/ugens.h
-	gcc $< $(CFLAGS) -g -Ih -o $@ libsporth.a -lsoundpipe -lsndfile -lm
+	gcc $< $(CFLAGS) -g -Ih -o $@ libsporth.a $(LIBS)
 
 include util/luasporth/Makefile
 
