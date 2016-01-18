@@ -5,11 +5,11 @@ MASTER_MAKEFILE=1
 
 CFLAGS += -O3 -fPIC -L./ -I ./ -Wall
 
+include config.mk
 ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE -DPOLY_DEBUG
 endif
 
-include config.mk
 include ugens/ling/Makefile
 include ugens/poly/Makefile
 

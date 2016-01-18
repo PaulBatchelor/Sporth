@@ -1,4 +1,5 @@
-#include "plumber.h"
+#include <soundpipe.h>
+#include <sporth.h>
 
 void process(sp_data *sp, void *ud)
 {
@@ -17,6 +18,7 @@ int main()
     plumber_init(&pd);
     pd.sp = sp;
     char *str =
+    "'tri' 4096 '0 1 4096 -1' gen_line "
     "0 p 0.2 sine "
     "1 p 0.2 sine "
     "add";

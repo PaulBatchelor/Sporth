@@ -490,7 +490,7 @@ int plumber_ftmap_init(plumber_data *plumb)
 int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
 {
 #ifdef DEBUG_MODE
-    fprintf(stderr, "Adding new table %s\n", str + 1);
+    fprintf(stderr, "ftmap_add: Adding new table %s\n", str);
 #endif
     uint32_t pos = sporth_hash(str);
     plumber_ftentry *entry = &plumb->ftmap[pos];

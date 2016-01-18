@@ -42,11 +42,6 @@ int sporth_blsquare(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
-            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for blsquare\n");
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
             width = sporth_stack_pop_float(stack);
             amp = sporth_stack_pop_float(stack);
             freq = sporth_stack_pop_float(stack);

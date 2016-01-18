@@ -33,7 +33,9 @@ struct sporthData {
     SPFLOAT in;
 };
 
+extern "C" {
 static int sporth_chuck_in(sporth_stack *stack, void *ud);
+}
 
 CK_DLL_QUERY(Sporth)
 {
@@ -218,7 +220,7 @@ CK_DLL_MFUN(sporth_parse_string)
     RETURN->v_float = data->var;
 }
 
-
+extern "C" {
 static int sporth_chuck_in(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = (plumber_data *) ud;
@@ -263,4 +265,5 @@ static int sporth_chuck_in(sporth_stack *stack, void *ud)
             break;
     }
     return PLUMBER_OK;
+}
 }

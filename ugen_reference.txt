@@ -578,3 +578,8 @@ Args: in (f) freq (f) res (f) dist (f)
 Output: f
 Description: low pass filter with tanh distortion
 ---
+Name: trand
+Args: trig (f) min (f) max (f)
+Output: f
+Description: triggerable RNG
+---
