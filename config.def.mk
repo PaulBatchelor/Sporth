@@ -39,6 +39,7 @@ gen_vals \
 in \
 jcrev \
 jitter \
+kona \
 line \
 ling \
 loadfile \

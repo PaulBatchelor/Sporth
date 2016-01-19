@@ -20,7 +20,11 @@ int sporth_p(sporth_stack *stack, void *ud)
             }
 
             n = (int)sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, 0);
+            if(n < 16)
+                sporth_stack_push_float(stack, pd->p[n]);
+            else
+                sporth_stack_push_float(stack, 0);
+
             break;
         case PLUMBER_INIT:
         case PLUMBER_COMPUTE:
@@ -59,8 +63,9 @@ int sporth_pset(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            sporth_stack_pop_float(stack);
-            sporth_stack_pop_float(stack);
+            n = (int)sporth_stack_pop_float(stack);
+            val = sporth_stack_pop_float(stack);
+            if(n < 16) pd->p[n] = val;
             break;
         case PLUMBER_INIT:
         case PLUMBER_COMPUTE:
