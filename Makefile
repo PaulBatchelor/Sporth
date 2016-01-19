@@ -59,7 +59,7 @@ util/float2bin: util/float2bin.c
 
 jacksporth: util/jacksporth
 util/jacksporth: util/jacksporth.c libsporth.a
-	$(CC) $< -L. -lsporth $(LIBS) -lm -ljack -o $@
+	$(CC) $< -L. -lsporth $(LIBS) -lm -ljack -llo -o $@
 
 sporth: sporth.c $(OBJ) h/ugens.h
 	$(CC) sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) $(LIBS)

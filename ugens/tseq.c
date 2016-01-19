@@ -52,7 +52,7 @@ int sporth_tseq(sporth_stack *stack, void *ud)
 
             tseq = pd->last->ud;
             sp_tseq_init(pd->sp, tseq, ft);
-            sporth_stack_push_float(stack, 0.0);
+            sporth_stack_push_float(stack, 3.0);
             free(ftname);
             break;
 

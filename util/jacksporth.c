@@ -1,15 +1,18 @@
-/* A sporth parser using libsporth                                      */
-/* To compile:                                                          */
-/* gcc api_example.c -lsporth -lsoundpipe -lsndfile -lm -o api_example  */
 #include <stdio.h>
+#include <unistd.h>
 #include <stdlib.h>
 #include <soundpipe.h>
 #include <sporth.h>
 #include <jack/jack.h>
+#include <time.h>
+#include <lo/lo.h>
+#include <string.h>
 
 typedef struct {
     plumber_data pd;
     sp_data *sp;
+    int recompile, error;
+    char *str;
 } UserData;
 
 typedef struct {
@@ -20,9 +23,53 @@ typedef struct {
     void (*callback)(sp_data *, void *);
 } sp_jack;
 
+static void error(int num, const char *m, const char *path)
+{
+    //printf("liblo server error %d in path %s: %s\n", num, path, msg);
+    printf("error\n");
+    fflush(stdout);
+}
+
+int quit_handler(const char *path, const char *types, lo_arg ** argv,
+                 int argc, void *data, void *user_data)
+{
+    //done = 1;
+    printf("quiting\n\n");
+    fflush(stdout);
+
+    return 0;
+}
+
+int sporth_handler(const char *path, const char *types, lo_arg ** argv,
+                int argc, void *data, void *user_data)
+{
+    /* example showing pulling the argument values out of the argv array */
+    //printf("%s <- f:%f, i:%d\n\n", path, argv[0]->f, argv[1]->i);
+    printf("Sporth string: %s\n", &argv[0]->s);
+    
+    UserData *ud = user_data;
+
+    if(!ud->recompile) {
+        //ud->str = malloc(sizeof(char) * strlen(&argv[0]->s) + 1);
+        ud->str = strdup(&argv[0]->s);
+        ud->recompile = 1;
+    }
+
+    fflush(stdout);
+
+    return 0;
+}
+
 static void process(sp_data *sp, void *udata){
     UserData *ud = udata;
     plumber_data *pd = &ud->pd;
+
+    if(ud->recompile) {
+        plumber_recompile_string(&ud->pd, ud->str);
+        ud->recompile = 0;
+        free(ud->str);
+    }
+
     plumber_compute(pd, PLUMBER_COMPUTE);
     SPFLOAT out = 0;
     int chan;
@@ -51,6 +98,7 @@ void sp_jack_shutdown (void *arg)
 {
     exit (1);
 }
+
 
 int sp_jack_process(sp_data *sp, void *ud, void (*callback)(sp_data *, void *))
 {
@@ -150,11 +198,12 @@ int main(int argc, char *argv[])
     }
 
     UserData ud;
-
+    ud.recompile = 0;
     plumber_init(&ud.pd);
     plumber_register(&ud.pd);
 
-
+    lo_server_thread st = lo_server_thread_new("6449", error);
+    lo_server_thread_add_method(st, "/sporth/", "s", sporth_handler, &ud);
 
     if(nchan == 2) {
         sp_createn(&ud.sp, 2);
@@ -162,9 +211,13 @@ int main(int argc, char *argv[])
     } else {
         sp_create(&ud.sp);
     }
-
+    
+    sp_srand(ud.sp, time(NULL));
     ud.pd.sp = ud.sp;
     ud.pd.fp = fp;
+
+    lo_server_thread_start(st);
+
     if(plumber_parse(&ud.pd) == PLUMBER_OK) {
         plumber_compute(&ud.pd, PLUMBER_INIT);
         sp_jack_process(ud.sp, &ud, process);
@@ -175,5 +228,7 @@ int main(int argc, char *argv[])
 
     sp_destroy(&ud.sp);
     plumber_clean(&ud.pd);
+
+    lo_server_thread_free(st);
     return 0;
 }
