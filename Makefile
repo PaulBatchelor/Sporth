@@ -13,7 +13,6 @@ endif
 ifdef BUILD_KONA
 LIBS += -lkona -Lkona -ldl -lpthread
 CFLAGS += -Ikona -DBUILD_KONA
-UGENS += kona
 endif
 
 include ugens/ling/Makefile

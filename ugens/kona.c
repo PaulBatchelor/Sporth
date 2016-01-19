@@ -3,16 +3,21 @@
 #include <string.h>
 #include <time.h>
 #include "plumber.h"
+
+#ifdef BUILD_KONA
 #include "kona.h"
+#endif
 
 int sporth_kona(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
 
+#ifdef BUILD_KONA
     int n; 
     sp_ftbl *ft;
     char *str;
     char *ftname;
+#endif
 
     switch(pd->mode){
         case PLUMBER_CREATE:
@@ -20,6 +25,8 @@ int sporth_kona(sporth_stack *stack, void *ud)
             fprintf(stderr, "Kona: create mode\n");
 #endif
             plumber_add_ugen(pd, SPORTH_KONA, NULL);
+
+#ifdef BUILD_KONA
             if(sporth_check_args(stack, "s") != SPORTH_OK) {
                 fprintf(stderr, "Kona: not enough arguments.\n");
                 return PLUMBER_NOTOK;
@@ -40,14 +47,17 @@ int sporth_kona(sporth_stack *stack, void *ud)
             plumber_ftmap_add(pd, ftname, ft);
             free(ftname);
             free(str);
+#endif
             break;
 
         case PLUMBER_INIT:
 
+#ifdef BUILD_KONA
             ftname = sporth_stack_pop_string(stack);
             str = sporth_stack_pop_string(stack);
             free(str);
             free(ftname);
+#endif
             break;
 
         case PLUMBER_COMPUTE:

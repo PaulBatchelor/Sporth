@@ -53,6 +53,7 @@ SPORTH_UGEN("gt", sporth_gt, SPORTH_GT)
 SPORTH_UGEN("in", sporth_in, SPORTH_IN)
 SPORTH_UGEN("jcrev", sporth_jcrev, SPORTH_JCREV)
 SPORTH_UGEN("jitter", sporth_jitter, SPORTH_JITTER)
+SPORTH_UGEN("kona", sporth_kona, SPORTH_KONA)
 SPORTH_UGEN("line", sporth_line, SPORTH_LINE)
 SPORTH_UGEN("ling", sporth_ling, SPORTH_LING)
 SPORTH_UGEN("loadfile", sporth_loadfile, SPORTH_LOADFILE)
@@ -130,7 +131,3 @@ SPORTH_UGEN("vdelay", sporth_vdelay, SPORTH_VDELAY)
 SPORTH_UGEN("zeros", sporth_zeros, SPORTH_ZEROS)
 SPORTH_UGEN("zitarev", sporth_zitarev, SPORTH_ZITAREV)
 SPORTH_UGEN("zrev", sporth_zrev, SPORTH_ZREV)
-
-#ifdef BUILD_KONA
-SPORTH_UGEN("kona", sporth_kona, SPORTH_KONA)
-#endif
