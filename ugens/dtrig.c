@@ -9,7 +9,7 @@ int sporth_dtrig(sporth_stack *stack, void *ud)
     sp_ftbl * ft;
     char *ftname;
     int loop;
-    SPFLOAT delay;
+    SPFLOAT delay, scale;
     sp_dtrig *dtrig;
 
     switch(pd->mode) {
@@ -21,12 +21,13 @@ int sporth_dtrig(sporth_stack *stack, void *ud)
 
             sp_dtrig_create(&dtrig);
             plumber_add_ugen(pd, SPORTH_DTRIG, dtrig);
-            if(sporth_check_args(stack, "fffs") != SPORTH_OK) {
+            if(sporth_check_args(stack, "ffffs") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for dtrig\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
             ftname = sporth_stack_pop_string(stack);
+            scale = sporth_stack_pop_float(stack);
             delay = sporth_stack_pop_float(stack);
             loop = (int)sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
@@ -47,6 +48,7 @@ int sporth_dtrig(sporth_stack *stack, void *ud)
 #endif
 
             ftname = sporth_stack_pop_string(stack);
+            scale = sporth_stack_pop_float(stack);
             delay = sporth_stack_pop_float(stack);
             loop = (int)sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
@@ -59,12 +61,14 @@ int sporth_dtrig(sporth_stack *stack, void *ud)
             free(ftname);
             break;
         case PLUMBER_COMPUTE:
+            scale = sporth_stack_pop_float(stack);
             delay = sporth_stack_pop_float(stack);
             loop = (int)sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
             dtrig = pd->last->ud;
             dtrig->loop = loop;
             dtrig->delay = delay;
+            dtrig->scale = scale;
             sp_dtrig_compute(pd->sp, dtrig, &trig, &out);
             sporth_stack_push_float(stack, out);
             break;
