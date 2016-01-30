@@ -6,6 +6,9 @@
 extern "C"{
 #include "soundpipe.h"
 #include "../tmp.h"
+#ifdef BUILD_KONA
+#include "../kona/kona.h"
+#endif
 }
 
 

@@ -101,7 +101,7 @@ $(C_OBJECTS): %.o: %.c
 	$(CC) $(FLAGS) -c -o $@ $< 
 
 $(CXX_OBJECTS): %.o: %.cpp $(CK_SRC_PATH)/chuck_dl.h
-	$(CXX) $(FLAGS) -c -o $@ $< 
+	$(CXX) $(FLAGS) -c -o $@ $<
 
 install: $(CHUG)
 	mkdir -p $(CHUGIN_PATH)
