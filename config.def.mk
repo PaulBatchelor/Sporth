@@ -97,6 +97,6 @@ zitarev
 # Build dynamic library (needed for Chorth)
 # BUILD_DYNAMIC=1
 
-# Build Kona gen routine. Must have a folder called kona in the home directory
-# with libkona.a and kona.h
+# Build Kona gen routine. Must have kona compiled and in the directory KONA_PATh
 # BUILD_KONA=1
+# KONA_PATH=~/playground/kona/kona

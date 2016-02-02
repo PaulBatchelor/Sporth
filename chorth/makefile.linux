@@ -18,7 +18,7 @@ CXX=g++
 # make linux BUILD_KONA=1
 
 ifdef BUILD_KONA
-LDFLAGS += -lkona_dyn -lpthread -ldl -lm
+LDFLAGS += -lpthread -ldl -lm
 FLAGS += -DBUILD_KONA 
 K_O=`find $(K_PATH) -name "*.o" | egrep -v "\.t\.o"`
 endif

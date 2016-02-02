@@ -11,8 +11,9 @@ CFLAGS += -DDEBUG_MODE -DPOLY_DEBUG
 endif
 
 ifdef BUILD_KONA
-LIBS += -lkona -Lkona -ldl -lpthread
-CFLAGS += -Ikona -DBUILD_KONA
+KOBJ=`find $(KONA_PATH) -name "*.o" | egrep -v "\.t\.o|main"`
+LIBS+=-ldl -lpthread $(KOBJ)
+CFLAGS += -Ikona -DBUILD_KONA 
 endif
 
 include ugens/ling/Makefile
@@ -68,7 +69,7 @@ libsporth_dyn.so: $(OBJ)
 	ld -shared -fPIC -o $@ $(OBJ)
 
 libsporth.a: $(OBJ) tmp.h
-	ar rcs libsporth.a $(OBJ)
+	ar rcs libsporth.a $(OBJ) $(KOBJ)
 
 tmp.h: $(OBJ)
 	sh util/header_gen.sh
