@@ -8,6 +8,6 @@ endif
 BIN += $(SPORTHPATH)luasporth
 
 $(SPORTHPATH)luasporth: $(SPORTHPATH)luasporth.c
-	gcc $< -ldl -lsporth -lsoundpipe -lsndfile -llua -lm -o $@
+	gcc -g -I/home/paul/playground/kona/kona/src/ $< -ldl -lsporth -lsoundpipe -lsndfile -lpthread -llua -lm -o $@
 
 SPORTHPATH= 

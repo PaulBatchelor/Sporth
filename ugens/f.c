@@ -13,12 +13,18 @@ int sporth_f(sporth_stack *stack, void *ud)
             fprintf(stderr, "aux (f)unction: creating\n");
 #endif
             fd = malloc(sizeof(sporth_func_d));
-            plumber_add_ugen(pd, SPORTH_F, fd);
            if(sporth_check_args(stack, "f") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for aux (f)unction\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
+            plumber_add_ugen(pd, SPORTH_F, fd);
+            break;
+        case PLUMBER_INIT:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "aux (f)unction: initialising\n");
+#endif
             fnum = (int)sporth_stack_pop_float(stack);
 
             if(fnum > 16) {
@@ -30,19 +36,10 @@ int sporth_f(sporth_stack *stack, void *ud)
             fd = pd->last->ud;
             fd->fun = pd->f[fnum];
 
+            pd->mode = PLUMBER_CREATE;
             fd->fun(stack, ud);
 
-            break;
-        case PLUMBER_INIT:
-
-#ifdef DEBUG_MODE
-            fprintf(stderr, "aux (f)unction: initialising\n");
-#endif
-            fnum = (int)sporth_stack_pop_float(stack);
-
-            fd = pd->last->ud;
-            fd->fun = pd->f[fnum];
-
+            pd->mode = PLUMBER_INIT;
             fd->fun(stack, ud);
 
             break;

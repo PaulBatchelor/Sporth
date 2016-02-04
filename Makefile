@@ -3,7 +3,7 @@ default: sporth
 
 MASTER_MAKEFILE=1
 
-CFLAGS += -O3 -fPIC -L./ -I ./ -Wall
+CFLAGS += -O3 -fPIC -I/usr/local/include -Wall
 
 include config.mk
 ifdef DEBUG_MODE
@@ -11,8 +11,8 @@ CFLAGS += -DDEBUG_MODE -DPOLY_DEBUG
 endif
 
 ifdef BUILD_KONA
-KOBJ=`find $(KONA_PATH) -name "*.o" | egrep -v "\.t\.o|main"`
-LIBS+=-ldl -lpthread $(KOBJ)
+KOBJ=$(shell find $(KONA_PATH) -name "*.o" | egrep -v "\.t\.o|main")
+LIBS+=-ldl -lpthread 
 CFLAGS += -Ikona -DBUILD_KONA 
 endif
 
@@ -33,7 +33,7 @@ LIBS += -lsoundpipe -lsndfile -lm
 
 
 ifdef BUILD_DYNAMIC
-SPORTHLIBS += libsporth_dyn.so
+#SPORTHLIBS += libsporth_dyn.so
 endif
 
 config.mk: config.def.mk
@@ -60,16 +60,13 @@ util/float2bin: util/float2bin.c
 
 jacksporth: util/jacksporth
 util/jacksporth: util/jacksporth.c libsporth.a
-	$(CC) $< -L. -lsporth $(LIBS) -lm -ljack -llo -o $@
+	$(CC) $< -L. -lsporth $(LIBS) -lm -ljack -llo -o $@ 
 
 sporth: sporth.c $(OBJ) h/ugens.h
-	$(CC) sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) $(LIBS)
-
-libsporth_dyn.so: $(OBJ)
-	ld -shared -fPIC -o $@ $(OBJ)
+	$(CC) sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 
 
 libsporth.a: $(OBJ) tmp.h
-	ar rcs libsporth.a $(OBJ) $(KOBJ)
+	ar rcs libsporth.a $(KOBJ) $(OBJ) 
 
 tmp.h: $(OBJ)
 	sh util/header_gen.sh
