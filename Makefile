@@ -63,7 +63,7 @@ util/jacksporth: util/jacksporth.c libsporth.a
 	$(CC) $< -L. -lsporth $(LIBS) -lm -ljack -llo -o $@ 
 
 sporth: sporth.c $(OBJ) h/ugens.h
-	$(CC) sporth.c $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 
+	$(CC) sporth.c -L/usr/local/lib $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 
 
 libsporth.a: $(OBJ) tmp.h
 	ar rcs libsporth.a $(KOBJ) $(OBJ) 
