@@ -30,6 +30,7 @@ eqfil \
 expon \
 f \
 fm \
+fof \
 gbuzz \
 gen_file \
 gen_line \

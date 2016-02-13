@@ -583,3 +583,8 @@ Args: trig (f) min (f) max (f)
 Output: f
 Description: triggerable RNG
 ---
+Name: fof
+Args: amp fund form oct band ris dec dur iphs iolaps win(s) sine(s)
+Output: f
+Description: fof 
+---
