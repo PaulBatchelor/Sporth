@@ -36,6 +36,7 @@ gen_file \
 gen_line \
 gen_padsynth \
 gen_sine \
+gen_sinecomp \
 gen_sinesum \
 gen_vals \
 in \

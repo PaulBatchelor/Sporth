@@ -1,0 +1,12 @@
+#N canvas 1282 47 636 1012 10;
+#X obj 116 330 sporth~;
+#X obj 105 488 dac~;
+#X msg 100 182 open test.sp;
+#X obj 336 107 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 8300 1;
+#X msg 336 243 pset 0 \$1;
+#X connect 0 0 1 0;
+#X connect 0 0 1 1;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;

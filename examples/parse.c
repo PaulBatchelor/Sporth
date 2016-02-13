@@ -17,12 +17,7 @@ int main()
     plumber_register(&pd);
     plumber_init(&pd);
     pd.sp = sp;
-    char *str =
-    "'tri' 4096 '0 1 4096 -1' gen_line "
-    "0 p 0.2 sine "
-    "1 p 0.2 sine "
-    "add";
-    plumber_parse_string(&pd, str);
+    plumber_parse_string(&pd, "0");
     plumber_compute(&pd, PLUMBER_INIT);
 
     /* Set the p values to constants */
