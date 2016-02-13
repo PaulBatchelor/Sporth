@@ -9,7 +9,7 @@ K_PATH=~/playground/kona/kona
 # Location of the soundpipe source code
 SP_PATH=~/proj/soundpipe 
 
-SPORTH_O=`find ../ -name "*.o" | grep -v sporth~`
+SPORTH_O=`find ../ -name "*.o" | grep -v sporth~ | grep -v chorth`
 SP_O=`find $(SP_PATH) -name "*.o" `
 
 # make linux BUILD_KONA=1
@@ -35,7 +35,7 @@ LINUXINCLUDE =  -I../../src
 .c.pd_linux:
 	cc $(LINUXCFLAGS) $(LINUXINCLUDE) -o $*.o -c $*.c
 	#ld -shared -o $*.pd_linux $*.o $(SP_O) $(SPORTH_O) $(K_) -lc -lm -lsndfile
-	ld -shared -o $*.pd_linux $*.o $(SP_O) $(SPORTH_O) $(K_O) -lc -lstdc++ -lm -lsndfile
+	ld -shared -o $*.pd_linux $*.o $(SP_O) $(SPORTH_O) $(K_O) -lc -lm -lsndfile
 	strip --strip-unneeded $*.pd_linux
 	rm $*.o
 
