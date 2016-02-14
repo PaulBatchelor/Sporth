@@ -588,3 +588,8 @@ Args: amp fund form oct band ris dec dur iphs iolaps win(s) sine(s)
 Output: f
 Description: fof 
 ---
+Name: fog
+Args: amp dense trans spd oct band ris dec dur iphs iolaps win(s) sine(s)
+Output: f
+Description: fog
+---
