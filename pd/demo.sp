@@ -13,13 +13,13 @@ dup
 0 'seq' tseq 
 # bias 61 (Db major) and convert to frequency for pluck
 61 + mtof 
-0.5 400 pluck 1000 butlp
+0.9 400 pluck 1000 butlp
 
 # delayz for dayz
 dup 0.6 0.75 delay 1000 buthp 0.7 * +
 
 # reverb 
-dup dup 10 10 8000 zrev 0.5 * drop +
+dup dup 10 10 8000 zrev 0.5 * drop + dcblk
 
 
 # duplicate our entire signal and record it in buffer
