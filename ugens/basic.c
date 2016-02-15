@@ -1082,3 +1082,50 @@ int sporth_dur(sporth_stack *stack, void *ud)
     }
     return PLUMBER_OK;
 }
+
+int sporth_ampdb(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = ud;
+    SPFLOAT *ampdb;
+    SPFLOAT val;
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "ampdb: Creating\n");
+#endif
+            ampdb = malloc(sizeof(SPFLOAT));
+            if(sporth_check_args(stack, "f") != SPORTH_OK) {
+                fprintf(stderr, "ampdb: not enough args\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            val = sporth_stack_pop_float(stack);
+            plumber_add_ugen(pd, SPORTH_AMPDB, ampdb);
+            sporth_stack_push_float(stack, 0);
+            break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "ampdb: Initializing\n");
+#endif
+            ampdb = pd->last->ud;
+            val = sporth_stack_pop_float(stack);
+            *ampdb = (SPFLOAT) log(10) / 20;
+            sporth_stack_push_float(stack, exp(*ampdb * val));
+            break;
+        case PLUMBER_COMPUTE:
+            ampdb = pd->last->ud;
+            val = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, exp(*ampdb * val));
+            break;
+        case PLUMBER_DESTROY:
+            ampdb = pd->last->ud;
+            free(ampdb);
+            break;
+        default:
+            fprintf(stderr,"ampdb: unknown mode!");
+            stack->error++;
+            return PLUMBER_NOTOK;
+            break;
+    }
+    return PLUMBER_OK;
+}
