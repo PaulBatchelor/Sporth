@@ -48,7 +48,6 @@ int sporth_fog(sporth_stack *stack, void *ud)
             trans = sporth_stack_pop_float(stack);
             dense = sporth_stack_pop_float(stack);
             amp = sporth_stack_pop_float(stack);
-            fog = pd->last->ud;
             free(wavstr);
             free(winstr);
             sporth_stack_push_float(stack, 0);
@@ -89,6 +88,8 @@ int sporth_fog(sporth_stack *stack, void *ud)
 
             sp_fog_init(pd->sp, fog, wav, win, iolaps, iphs);
 
+            free(wavstr);
+            free(winstr);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:

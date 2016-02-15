@@ -228,7 +228,7 @@ static int sporth_chuck_in(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = (plumber_data *) ud;
 
-    t_sporth * data = (t_sporth *) pd->ud;
+    sporthData * data = (sporthData *) pd->ud;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
