@@ -1,5 +1,5 @@
-#include <soundpipe.h>
-#include <sporth.h>
+#include "soundpipe.h"
+#include "../tmp.h"
 #include "m_pd.h"
 #ifdef NT
 #pragma warning( disable : 4244 )
@@ -10,6 +10,7 @@
 
 /* tilde object to take absolute value. */
 
+static int sporth_pd_in(sporth_stack *stack, void *ud);
 static t_class *sporth_class;
 
 typedef struct _sporth
@@ -19,6 +20,7 @@ typedef struct _sporth
     sp_data *sp;
     plumber_data pd;
     int please_parse;
+    SPFLOAT in;
 } t_sporth;
 
     /* this is the actual performance routine which acts on the samples.
@@ -38,11 +40,12 @@ static t_int *sporth_perform(t_int *w)
         x->please_parse = 0;
         plumber_recompile(&x->pd);
         fclose(x->pd.fp);
+        x->pd.fp = NULL;
     }
 
     while (n--)
     {
-    	float f = *(in++);
+    	x->in = *(in++);
         plumber_compute(&x->pd, PLUMBER_COMPUTE);
         *out++ = (t_float) sporth_stack_pop_float(&x->pd.sporth.stack);
     }
@@ -66,11 +69,13 @@ static void *sporth_new(void)
     x->x_f = 0;
     sp_create(&x->sp);
     plumber_register(&x->pd);
+    printf("Replacing IN (position %d)\n", SPORTH_IN - SPORTH_FOFFSET);
+    x->pd.sporth.flist[SPORTH_IN - SPORTH_FOFFSET].func = sporth_pd_in;
     plumber_init(&x->pd);
     x->pd.sp = x->sp;
+    x->pd.ud = x;
     char *str = "0";
     x->please_parse = 0;
-
     plumber_parse_string(&x->pd, str);
     plumber_compute(&x->pd, PLUMBER_INIT);
 
@@ -102,6 +107,13 @@ static void pset (t_sporth *x, t_symbol *selector, int argcount, t_atom *argvec)
     x->pd.p[pos] = val;
 }
 
+static void pprint (t_sporth *x, t_symbol *selector, int argcount, t_atom *argvec)
+{
+    int pos = (int)argvec[0].a_w.w_float % 16;
+    post("p %d: %g", pos, x->pd.p[pos]);
+}
+
+
 void sporth_tilde_setup(void)
 {
     sporth_class = class_new(
@@ -122,4 +134,53 @@ void sporth_tilde_setup(void)
 
     class_addmethod(sporth_class, (t_method)open_file, gensym("open"), A_GIMME, 0);
     class_addmethod(sporth_class, (t_method)pset, gensym("pset"), A_GIMME, 0);
+    class_addmethod(sporth_class, (t_method)pprint, gensym("pprint"), A_GIMME, 0);
+}
+
+static int sporth_pd_in(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = (plumber_data *) ud;
+
+    t_sporth *data = (t_sporth *) pd->ud;
+
+    switch(pd->mode) {
+        case PLUMBER_CREATE:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "PD IN: creating\n");
+#endif
+            fprintf(stderr, "PD IN: creating\n");
+            plumber_add_ugen(pd, SPORTH_IN, NULL);
+
+            sporth_stack_push_float(stack, 0);
+            break;
+        case PLUMBER_INIT:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "PD IN: initialising.\n");
+#endif
+            fprintf(stderr, "PD IN: initialising.\n");
+
+            sporth_stack_push_float(stack, 0);
+
+            break;
+
+        case PLUMBER_COMPUTE:
+
+            sporth_stack_push_float(stack, data->in);
+
+            break;
+
+        case PLUMBER_DESTROY:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "CHUCK IN: destroying.\n");
+#endif
+
+            break;
+
+        default:
+            fprintf(stderr, "Unknown mode!\n");
+            break;
+    }
+    return PLUMBER_OK;
 }

@@ -1,4 +1,4 @@
-current:
+current: 
 	echo make pd_linux
 
 clean: ; rm -f *.pd_linux *.o
@@ -7,7 +7,7 @@ clean: ; rm -f *.pd_linux *.o
 K_PATH=~/playground/kona/kona
 
 # Location of the soundpipe source code
-SP_PATH=~/proj/soundpipe 
+SP_PATH=~/proj/soundpipe
 
 SPORTH_O=`find ../ -name "*.o" | grep -v sporth~ | grep -v chorth`
 SP_O=`find $(SP_PATH) -name "*.o" `
@@ -30,7 +30,7 @@ LINUXCFLAGS = -DPD -O2 -funroll-loops -fomit-frame-pointer \
     -Wall -W -Wshadow -Wstrict-prototypes \
     -Wno-unused -Wno-parentheses -Wno-switch -fPIC
 
-LINUXINCLUDE =  -I../../src
+LINUXINCLUDE =  -I../../src -I $(SP_PATH)/h
 
 .c.pd_linux:
 	cc $(LINUXCFLAGS) $(LINUXINCLUDE) -o $*.o -c $*.c
