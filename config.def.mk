@@ -18,6 +18,7 @@ clip \
 comb \
 conv \
 count \
+crossfade \
 dcblock \
 delay \
 diskin \
@@ -85,6 +86,7 @@ tenvx \
 thresh \
 tin \
 tick \
+timer \
 tog \
 tone \
 tphasor \
