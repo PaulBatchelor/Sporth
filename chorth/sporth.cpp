@@ -82,6 +82,7 @@ CK_DLL_CTOR(sporth_ctor)
 {
     OBJ_MEMBER_INT(SELF, sporth_data_offset) = 0;
    
+    printf("Creating Sporth\n");
     sporthData * data = new sporthData;
     data->parsed = 0;
     data->in = 0;
@@ -102,6 +103,7 @@ CK_DLL_DTOR(sporth_dtor)
     sporthData * data = (sporthData *) OBJ_MEMBER_INT(SELF, sporth_data_offset);
     if(data)
     {
+        printf("Destroying Sporth\n");
         plumber_clean(&data->pd);
         sp_destroy(&data->sp);
 
