@@ -32,6 +32,7 @@ expon \
 f \
 fm \
 fof \
+fog \
 gbuzz \
 gen_file \
 gen_line \
