@@ -44,8 +44,15 @@ int main()
         "0 'seq' tseq "
         "0.01 port mtof "
         "0.5 1 1 1 fm";
+
+    /* Tell plumber that that we will take care of removing the following ftables */
+    /* This is needed for persistant ftables that don't get cleaned for 
+     * recompilation */
+    plumber_ftmap_delete(&ud.pd, 0);
     /* add ftable to plumber and call it "seq" */
     plumber_ftmap_add(&ud.pd, "seq", ud.seq);
+    /* Turn automatic deletion back "on" */
+    plumber_ftmap_delete(&ud.pd, 1);
 
     /* make plumber know about the soundpipe instance */
     ud.pd.sp = ud.sp;
@@ -61,6 +68,7 @@ int main()
     /* Plumber will handle freeing the memory of the ftable we added */
     /* no need to call sp_ftbl_destroy */
     plumber_clean(&ud.pd);
+    sp_ftbl_destroy(&ud.seq);
     sp_destroy(&ud.sp);
     return 0;
 }

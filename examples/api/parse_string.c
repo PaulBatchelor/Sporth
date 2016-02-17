@@ -17,13 +17,8 @@ int main()
     plumber_register(&pd);
     plumber_init(&pd);
     pd.sp = sp;
-    plumber_parse_string(&pd, "0");
+    plumber_parse_string(&pd, "440 0.1 sine");
     plumber_compute(&pd, PLUMBER_INIT);
-
-    /* Set the p values to constants */
-
-    pd.p[0] = 440;
-    pd.p[1] = 350;
 
     sp_process(sp, &pd, process);
 
