@@ -664,6 +664,8 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                         driver = DRIVER_FILE;
                     } else if ((!strcmp(argv[0], "raw"))) {
                         driver = DRIVER_RAW;
+                    } else if ((!strcmp(argv[0], "plot"))) {
+                        driver = DRIVER_PLOT;
                     } else {
                        fprintf(stderr,"Could not find driver \"%s\".\n", argv[0]);
                         exit(1);
@@ -721,6 +723,9 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 break;
             case DRIVER_RAW:
                 sp_process_raw(sp, ud, process);
+                break;
+            case DRIVER_PLOT:
+                sp_process_plot(sp, ud, process);
                 break;
             default:
                 sp_process(sp, ud, process);

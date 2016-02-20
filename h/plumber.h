@@ -25,7 +25,8 @@ PLUMBER_PANIC
 
 enum {
 DRIVER_FILE,
-DRIVER_RAW
+DRIVER_RAW,
+DRIVER_PLOT
 };
 
 typedef struct plumber_ftbl {
