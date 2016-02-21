@@ -94,6 +94,7 @@ tphasor \
 trand \
 tseq \
 vdelay \
+vocoder \
 zeros \
 zitarev
 

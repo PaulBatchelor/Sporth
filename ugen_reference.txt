@@ -598,3 +598,8 @@ Args: sig1 sig2 pos
 Output: f
 Description: crossfade two signals
 ---
+Name: vocoder
+Args: atk rel bwq sig exc
+Output: f
+Description: 32-band channel vocoder
+---
