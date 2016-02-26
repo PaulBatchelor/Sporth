@@ -468,6 +468,23 @@ int plumber_recompile_string(plumber_data *plumb, char *str)
     return PLUMBER_OK;
 }
 
+int plumber_open_file(plumber_data *plumb, const char *filename)
+{
+    plumb->fp = fopen(filename, "r");
+    if(plumb->fp == NULL) {
+        fprintf(stderr, "There was a problem opening the file %s\n", filename);
+        return PLUMBER_NOTOK;
+    }
+    return PLUMBER_OK;
+}
+
+int plumber_close_file(plumber_data *plumb)
+{
+    fclose(plumb->fp);
+    plumb->fp = NULL;
+    return PLUMBER_OK;
+}
+
 int plumber_error(plumber_data *plumb, const char *str)
 {
     fprintf(stderr,"%s\n", str);

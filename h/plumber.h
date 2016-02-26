@@ -108,6 +108,8 @@ int plumber_reparse(plumber_data *plumb);
 int plumber_reparse_string(plumber_data *plumb, char *str);
 int plumber_recompile_string(plumber_data *plumb, char *str);
 int plumber_swap(plumber_data *plumb, int error);
+int plumber_open_file(plumber_data *plumb, const char *filename);
+int plumber_close_file(plumber_data *plumb);
 
 int plumber_gettype(plumber_data *plumb, char *str, int mode);
 int plumber_show_pipes(plumber_data *plumb);
