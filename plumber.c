@@ -468,7 +468,7 @@ int plumber_recompile_string(plumber_data *plumb, char *str)
     return PLUMBER_OK;
 }
 
-int plumber_open_file(plumber_data *plumb, const char *filename)
+int plumber_open_file(plumber_data *plumb, char *filename)
 {
     plumb->fp = fopen(filename, "r");
     if(plumb->fp == NULL) {

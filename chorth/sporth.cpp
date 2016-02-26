@@ -86,7 +86,9 @@ CK_DLL_CTOR(sporth_ctor)
 {
     OBJ_MEMBER_INT(SELF, sporth_data_offset) = 0;
    
+#ifdef DEBUG_MODE
     printf("Creating Sporth\n");
+#endif
     sporthData * data = new sporthData;
     data->parsed = 0;
     data->in = 0;
@@ -107,7 +109,9 @@ CK_DLL_DTOR(sporth_dtor)
     sporthData * data = (sporthData *) OBJ_MEMBER_INT(SELF, sporth_data_offset);
     if(data)
     {
+#ifdef DEBUG_MODE
         printf("Destroying Sporth\n");
+#endif
         plumber_clean(&data->pd);
         sp_destroy(&data->sp);
 
@@ -236,18 +240,19 @@ CK_DLL_MFUN(sporth_parse_file)
     const char * cstr = ckstring->str.c_str();
     char *str = (char *)malloc(strlen(cstr) + 1);
     str = strdup(cstr);
-    data->pd.fp = fopen(str, "r");
-    if(!data->parsed) {
-        data->parsed = 1;
-        plumber_parse(&data->pd);
-        plumber_compute(&data->pd, PLUMBER_INIT);
-    } else {
-        plumber_recompile(&data->pd);
+
+    if(plumber_open_file(&data->pd, str) == PLUMBER_OK) {
+        if(!data->parsed) {
+            data->parsed = 1;
+            plumber_parse(&data->pd);
+            plumber_compute(&data->pd, PLUMBER_INIT);
+        } else {
+            plumber_recompile(&data->pd);
+        }
+        plumber_close_file(&data->pd);
+        free(str);
+        RETURN->v_float = data->var;
     }
-    fclose(data->pd.fp);
-    data->pd.fp = NULL;
-    free(str);
-    RETURN->v_float = data->var;
 }
 
 extern "C" {
