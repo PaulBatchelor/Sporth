@@ -721,10 +721,10 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     pd->nchan = nchan;
     srand(pd->seed);
     sp_data *sp;
-
     sp_createn(&sp, pd->nchan);
     strncpy(sp->filename, filename, 60);
     pd->sp = sp;
+    sp_srand(pd->sp, pd->seed);
     sp->sr = sr;
     if(time != NULL) sp->len = str2time(pd, time);
     pd->ud = ud;

@@ -603,3 +603,8 @@ Args: atk rel bwq sig exc
 Output: f
 Description: 32-band channel vocoder
 ---
+Name: gen_sporth
+Args: tblname size filename
+Output: n/a
+Description: render a (mono) sporth file to a table
+---
