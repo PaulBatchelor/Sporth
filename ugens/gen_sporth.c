@@ -42,9 +42,7 @@ int sporth_gen_sporth(sporth_stack *stack, void *ud)
                         plumber_compute(&my_pd, PLUMBER_COMPUTE);
                         ft->tbl[n] = sporth_stack_pop_float(&my_pd.sporth.stack);
                     }
-                    //plumber_clean(&my_pd);
                 }
-
                 plumber_close_file(&my_pd);
             } 
             plumber_clean(&my_pd);

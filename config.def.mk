@@ -40,6 +40,7 @@ gen_padsynth \
 gen_sine \
 gen_sinecomp \
 gen_sinesum \
+gen_sporth \
 gen_vals \
 in \
 jcrev \

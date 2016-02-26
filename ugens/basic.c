@@ -1056,6 +1056,7 @@ int sporth_dur(sporth_stack *stack, void *ud)
             fprintf(stderr, "dur: Creating\n");
 #endif
             dur = malloc(sizeof(SPFLOAT));
+            *dur = (SPFLOAT) pd->sp->len / pd->sp->sr;
             plumber_add_ugen(pd, SPORTH_DUR, dur);
             break;
         case PLUMBER_INIT:
@@ -1063,7 +1064,6 @@ int sporth_dur(sporth_stack *stack, void *ud)
             fprintf(stderr, "dur: Initializing\n");
 #endif
             dur = pd->last->ud;
-            *dur = (SPFLOAT) pd->sp->len / pd->sp->sr;
             sporth_stack_push_float(stack, *dur);
             break;
         case PLUMBER_COMPUTE:
@@ -1123,6 +1123,46 @@ int sporth_ampdb(sporth_stack *stack, void *ud)
             break;
         default:
             fprintf(stderr,"ampdb: unknown mode!");
+            stack->error++;
+            return PLUMBER_NOTOK;
+            break;
+    }
+    return PLUMBER_OK;
+}
+
+int sporth_sr(sporth_stack *stack, void *ud)
+{
+    if(stack->error > 0) return PLUMBER_NOTOK;
+
+    plumber_data *pd = ud;
+    SPFLOAT *sr;
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "sr: Creating\n");
+#endif
+            sr = malloc(sizeof(SPFLOAT));
+            plumber_add_ugen(pd, SPORTH_SR, sr);
+            *sr = pd->sp->sr;
+            sporth_stack_push_float(stack, *sr);
+            break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "sr: Initializing\n");
+#endif
+            sr = pd->last->ud;
+            sporth_stack_push_float(stack, *sr);
+            break;
+        case PLUMBER_COMPUTE:
+            sr = pd->last->ud;
+            sporth_stack_push_float(stack, *sr);
+            break;
+        case PLUMBER_DESTROY:
+            sr = pd->last->ud;
+            free(sr);
+            break;
+        default:
+            fprintf(stderr,"sr: unknown mode!");
             stack->error++;
             return PLUMBER_NOTOK;
             break;
