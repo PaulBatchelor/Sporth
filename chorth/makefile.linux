@@ -1,4 +1,4 @@
-CHUGIN_PATH=/usr/lib/chuck
+CHUGIN_PATH=/usr/local/lib/chuck
 
 # If you're building kona, this is where the kona directory is
 K_PATH=~/playground/kona/kona

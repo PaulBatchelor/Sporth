@@ -22,6 +22,7 @@ CK_DLL_MFUN(sporth_get_table);
 CK_DLL_MFUN(sporth_set_table);
 
 CK_DLL_MFUN(sporth_parse_string);
+CK_DLL_MFUN(sporth_parse_file);
 
 CK_DLL_TICK(sporth_get_tick);
 
@@ -68,6 +69,9 @@ CK_DLL_QUERY(Sporth)
     QUERY->add_arg(QUERY, "string", "table");
     
     QUERY->add_mfun(QUERY, sporth_parse_string, "string", "parse");
+    QUERY->add_arg(QUERY, "string", "arg");
+    
+    QUERY->add_mfun(QUERY, sporth_parse_file, "string", "parsefile");
     QUERY->add_arg(QUERY, "string", "arg");
     
     sporth_data_offset = QUERY->add_mvar(QUERY, "int", "@sporth_data", false);
@@ -221,6 +225,27 @@ CK_DLL_MFUN(sporth_parse_string)
     } else {
         plumber_recompile_string(&data->pd, str);
     }
+    free(str);
+    RETURN->v_float = data->var;
+}
+
+CK_DLL_MFUN(sporth_parse_file)
+{
+    sporthData * data = (sporthData *) OBJ_MEMBER_INT(SELF, sporth_data_offset);
+    Chuck_String * ckstring = GET_CK_STRING(ARGS);
+    const char * cstr = ckstring->str.c_str();
+    char *str = (char *)malloc(strlen(cstr) + 1);
+    str = strdup(cstr);
+    data->pd.fp = fopen(str, "r");
+    if(!data->parsed) {
+        data->parsed = 1;
+        plumber_parse(&data->pd);
+        plumber_compute(&data->pd, PLUMBER_INIT);
+    } else {
+        plumber_recompile(&data->pd);
+    }
+    fclose(data->pd.fp);
+    data->pd.fp = NULL;
     free(str);
     RETURN->v_float = data->var;
 }
