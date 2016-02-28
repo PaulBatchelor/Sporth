@@ -19,4 +19,6 @@
 
 + + +
 
-dup jcrev 4 * swap 0.2 * +
+#dup jcrev 4 * swap 0.2 * +
+
+dup dup 0.9 3000 revsc 0.1 * drop +

@@ -7,6 +7,10 @@
 
 #include "../h/plumber.h"
 
+#ifndef SRATE 
+#define SRATE 16000
+#endif 
+
 typedef struct {
     plumber_data pd;
     sp_data *sp;
@@ -171,7 +175,9 @@ int main(int argc, char *argv[])
         sp_create(&ud.sp);
     }
     
+    
     sp_srand(ud.sp, time(NULL));
+    ud.sp->sr = SRATE;
     ud.pd.sp = ud.sp;
     ud.pd.fp = fp;
 
