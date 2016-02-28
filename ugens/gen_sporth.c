@@ -9,6 +9,7 @@ int sporth_gen_sporth(sporth_stack *stack, void *ud)
     plumber_data my_pd;
 
     uint32_t size;
+    sp_data *sp;
     sp_ftbl *ft;
     char *ftname;
     char *filename;
@@ -34,7 +35,10 @@ int sporth_gen_sporth(sporth_stack *stack, void *ud)
 #endif
             plumber_register(&my_pd);
             plumber_init(&my_pd);
-            my_pd.sp = pd->sp;
+            sp_create(&sp);
+            sp->sr = pd->sp->sr;
+            my_pd.sp = sp;
+            my_pd.sp->len = size;
             if(plumber_open_file(&my_pd, filename) == PLUMBER_OK) {
                 if(plumber_parse(&my_pd) == PLUMBER_OK) {
                     plumber_compute(&my_pd, PLUMBER_INIT);
@@ -47,6 +51,7 @@ int sporth_gen_sporth(sporth_stack *stack, void *ud)
             } 
             plumber_clean(&my_pd);
             free(filename);
+            sp_destroy(&sp);
             break;
 
         case PLUMBER_INIT:

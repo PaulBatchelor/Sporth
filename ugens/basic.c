@@ -1058,6 +1058,7 @@ int sporth_dur(sporth_stack *stack, void *ud)
             dur = malloc(sizeof(SPFLOAT));
             *dur = (SPFLOAT) pd->sp->len / pd->sp->sr;
             plumber_add_ugen(pd, SPORTH_DUR, dur);
+            sporth_stack_push_float(stack, *dur);
             break;
         case PLUMBER_INIT:
 #ifdef DEBUG_MODE
