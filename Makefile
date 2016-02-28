@@ -62,6 +62,10 @@ jacksporth: util/jacksporth
 util/jacksporth: util/jacksporth.c libsporth.a
 	$(CC) $< -L. -lsporth $(LIBS) -lm -ljack -llo -o $@ 
 
+jsporth: util/jsporth
+util/jsporth: util/jsporth.c libsporth.a
+	$(CC) $< $(CFLAGS) -L. -lsporth $(LIBS) -lm -ljack -o $@ 
+
 sporth: sporth.c $(OBJ) h/ugens.h
 	$(CC) sporth.c -L/usr/local/lib $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 
 
