@@ -16,6 +16,12 @@ LIBS+=-ldl -lpthread
 CFLAGS += -Ikona -DBUILD_KONA 
 endif
 
+ifdef BUILD_POLYSPORTH
+OBJ += s7.o 
+CFLAGS += -DBUILD_POLYSPORTH
+LIBS += -ldl
+endif
+
 include ugens/ling/Makefile
 include ugens/poly/Makefile
 

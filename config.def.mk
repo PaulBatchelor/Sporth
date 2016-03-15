@@ -108,3 +108,7 @@ zitarev
 # Build Kona gen routine. Must have kona compiled and in the directory KONA_PATh
 # BUILD_KONA=1
 # KONA_PATH=~/playground/kona/kona
+#
+
+# Build polysporth
+BUILD_POLYSPORTH=1
