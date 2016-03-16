@@ -141,6 +141,7 @@ static int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ni
         return PS_NOTOK;
     }
 
+
     /* create output table */
     sp_ftbl_create(pd->sp, &ps->out, ninstances);
     plumber_ftmap_add(pd, out_tbl, ps->out);
@@ -150,6 +151,11 @@ static int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ni
     plumber_register(&ps->pd); 
     plumber_init(&ps->pd);
     ps->pd.sp = pd->sp;
+    
+    /* add input table to internal plumber instance with same name*/
+    plumber_ftmap_delete(&ps->pd, 0);
+    plumber_ftmap_add(&ps->pd, in_tbl, ps->in);
+    plumber_ftmap_delete(&ps->pd, 1);
 
     /* create sporthlets */
     ps->spl = malloc(sizeof(sporthlet) * ninstances);
