@@ -40,13 +40,10 @@ static void ps_compute(polysporth *ps, SPFLOAT tick);
 static SPFLOAT compute_sample(polysporth *ps, int id);
 static void ps_turnon_sporthlet(polysporth *ps, int id);
 static void ps_turnoff_sporthlet(polysporth *ps, int id);
-static void ps_remove(polysporth *ps, int id);
 
 static void top_of_list(polysporth *ps);
 static int get_next_voice_id(polysporth *ps);
-static int get_time(polysporth *ps, int id);
 static int get_voice_count(polysporth *ps);
-static void decrement_timer(polysporth *ps, int id);
 static int is_first_element(polysporth *ps, int id);
 static int is_last_element(polysporth *ps, int id);
 
@@ -196,10 +193,7 @@ static void ps_compute(polysporth *ps, SPFLOAT tick)
 {
     SPFLOAT *out = ps->out->tbl;
     if(tick != 0) {
-        s7_call(ps->s7,
-                s7_name_to_value(ps->s7, "run"),
-                s7_nil(ps->s7));
-                //s7_cons(ps->s7, s7_make_integer(ps->s7, 2), s7_nil(ps->s7)));
+        s7_call(ps->s7, s7_name_to_value(ps->s7, "run"), s7_nil(ps->s7));
     }
     int i;
     int id;
@@ -308,7 +302,6 @@ static void top_of_list(polysporth *ps)
 
 static int get_next_voice_id(polysporth *ps)
 {
-    int id = 0;
     sporthlet *spl = ps->last->next;
     ps->last = spl;
     return spl->id;
@@ -323,6 +316,6 @@ static int is_first_element(polysporth *ps, int id)
 
 static int is_last_element(polysporth *ps, int id)
 {
-    sporthlet *p1 = &ps->spl[id].next;
+    sporthlet *p1 = ps->spl[id].next;
     return p1 == NULL;
 }
