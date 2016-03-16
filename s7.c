@@ -1051,6 +1051,7 @@ struct s7_scheme {
   s7_pointer hash_table_float_epsilon_symbol, morally_equal_float_epsilon_symbol, initial_string_port_length_symbol, memory_usage_symbol;
   s7_pointer undefined_identifier_warnings_symbol, print_length_symbol, bignum_precision_symbol, stacktrace_defaults_symbol;
   bool undefined_identifier_warnings;
+  void *ud;
 };
 
 typedef enum {USE_DISPLAY, USE_WRITE, USE_READABLE_WRITE, USE_WRITE_WRONG} use_write_t;
@@ -73787,4 +73788,10 @@ int main(int argc, char **argv)
  *
  * pretty-print uses {list} et al!
  */
- 
+void s7_set_ud(s7_scheme *sc, void *ud) {
+    sc->ud = ud;
+}
+
+void * s7_get_ud(s7_scheme *sc) {
+    return sc->ud;
+}

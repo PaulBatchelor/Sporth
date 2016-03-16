@@ -128,23 +128,21 @@ int plumber_compute(plumber_data *plumb, int mode)
 
 int plumber_show_pipes(plumber_data *plumb)
 {
-/* DEPRECATED 
-    plumber_pipe *pipe = plumb->root.next, *next;
+    return plumbing_show_pipes(plumb->pipes);
+}
+
+int plumbing_show_pipes(plumbing *pipes)
+{
+    fprintf(stderr, "\nShowing pipes: \n");
     uint32_t n;
-    float *fval;
-    for(n = 0; n < plumb->npipes; n++) {
+    plumber_pipe *pipe, *next;
+    pipe = pipes->root.next;
+    for(n = 0; n < pipes->npipes; n++) {
         next = pipe->next;
-        fprintf(stderr,"type = %d size = %ld", pipe->type, (long)pipe->size);
-        if(pipe->type == SPORTH_FLOAT) {
-            fval = pipe->ud;
-            fprintf(stderr," val = %g\n", *fval);
-        } else {
-            fprintf(stderr,"\n");
-        }
+        fprintf(stderr, "\ttype = %d\n", pipe->type);
         pipe = next;
     }
-*/
-    return PLUMBER_OK;
+    fprintf(stderr, "%d pipes total. \n\n", pipes->npipes);
 }
 
 int plumbing_destroy(plumbing *pipes)

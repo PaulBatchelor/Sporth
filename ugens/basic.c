@@ -259,6 +259,9 @@ int sporth_sine(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+           fprintf(stderr,"Initializing sine function... \n");
+#endif
             amp = sporth_stack_pop_float(stack);
             freq = sporth_stack_pop_float(stack);
             data = pd->last->ud;

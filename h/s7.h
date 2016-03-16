@@ -990,3 +990,5 @@ s7_pointer s7_apply_n_9(s7_scheme *sc, s7_pointer args,
  *              and s7_scheme arg to new_type print func.
  * 1-Oct-08   version 1.0
  */
+void s7_set_ud(s7_scheme *sc, void *ud);
+void * s7_get_ud(s7_scheme *sc);
