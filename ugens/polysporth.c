@@ -19,6 +19,7 @@ typedef struct sporthlet {
     int main_timer;
     int state;
     sp_ftbl *argtbl;
+    int id;
     struct sporthlet *prev, *next;
 } sporthlet;
 
@@ -39,7 +40,8 @@ static int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ni
 static void ps_clean(polysporth *ps);
 static void ps_compute(polysporth *ps, SPFLOAT tick);
 static SPFLOAT compute_sample(polysporth *ps, int id);
-static void ps_insert(polysporth *ps, int id, int duration, int release);
+static void ps_turnon_sporthlet(polysporth *ps, int id);
+static void ps_turnoff_sporthlet(polysporth *ps, int id);
 static void ps_remove(polysporth *ps, int id);
 
 static void top_of_list(polysporth *ps);
@@ -47,10 +49,12 @@ static int get_next_voice_id(polysporth *ps);
 static int get_time(polysporth *ps, int id);
 static int get_voice_count(polysporth *ps);
 static void decrement_timer(polysporth *ps, int id);
-static int is_first_element(polysporth *ps);
-static int is_last_element(polysporth *ps);
+static int is_first_element(polysporth *ps, int id);
+static int is_last_element(polysporth *ps, int id);
 
 static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_turnon(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_turnoff(s7_scheme *sc, s7_pointer args);
 
 int sporth_polysporth(sporth_stack *stack, void *ud)
 {
@@ -158,12 +162,20 @@ static int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ni
     /* PS_NULL ensures that the plumbing won't be compiled */ 
     for(i = 0; i < ninstances; i++) {
         ps->spl[i].state = PS_NULL;
+        ps->spl[i].id = i;
+        ps->spl[i].next = NULL;
+        ps->spl[i].prev = NULL;
         plumbing_init(&ps->spl[i].pipes);
     }
+
+    /* set up linked list */
+    ps->last = &ps->root;
 
     /* load scheme */
     ps->s7 = s7_init();
     s7_define_function(ps->s7, "ps-eval", ps_eval, 2, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-turnon", ps_turnon, 1, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-turnoff", ps_turnoff, 1, 0, false, "TODO");
     s7_set_ud(ps->s7, (void *)ps);
     s7_load(ps->s7, filename);
 
@@ -185,8 +197,24 @@ static void ps_clean(polysporth *ps)
 static void ps_compute(polysporth *ps, SPFLOAT tick)
 {
     SPFLOAT *out = ps->out->tbl;
-    out[0] = compute_sample(ps, 0);
-    out[1] = compute_sample(ps, 1);
+    if(tick != 0) {
+        s7_call(ps->s7,
+                s7_name_to_value(ps->s7, "run"),
+                s7_nil(ps->s7));
+                //s7_cons(ps->s7, s7_make_integer(ps->s7, 2), s7_nil(ps->s7)));
+    }
+    int i;
+    int id;
+    top_of_list(ps);
+    int count = get_voice_count(ps);
+    for(i = 0; i < count; i++) {
+        id = get_next_voice_id(ps);
+        out[id] = compute_sample(ps, id);
+    }
+
+    //out[0] = compute_sample(ps, 0);
+    //out[1] = compute_sample(ps, 1);
+
 }
 
 static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args)
@@ -197,15 +225,12 @@ static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args)
 
     int id = s7_integer(s7_list_ref(sc, args, 0));
     const char *str = s7_string(s7_list_ref(sc, args, 1));
-    printf("\nid to render to %d\n", id);
-    printf("sporth string: '%s'\n", str);
     spl = &ps->spl[id];
     pd->tmp = &spl->pipes;
     plumbing_parse_string(pd, &spl->pipes, (char *)str);
     plumbing_compute(pd, &spl->pipes, PLUMBER_INIT);
     spl->state = PS_OFF;
     return NULL;
-    //return (s7_wrong_type_arg_error(sc, "sp_eval", 1, s7_car(args), "a blah"));
 }
 
 static SPFLOAT compute_sample(polysporth *ps, int id)
@@ -218,8 +243,88 @@ static SPFLOAT compute_sample(polysporth *ps, int id)
         ps->pd.tmp = &spl->pipes;
         plumbing_compute(pd, &spl->pipes, PLUMBER_COMPUTE);
         out = sporth_stack_pop_float(&pd->sporth.stack);
-    } else {
-        //fprintf(stderr, "PS_NULL UH OH!\n");
     }
+
     return out;
+}
+
+static void ps_turnon_sporthlet(polysporth *ps, int id)
+{
+    sporthlet *spl = &ps->spl[id];
+    if(spl->state == PS_OFF) {
+        ps->last->next = spl;
+        spl->prev = ps->last;
+        ps->last = spl;
+        spl->state = PS_ON;
+        ps->nvoices++;
+    }
+}
+
+static void ps_turnoff_sporthlet(polysporth *ps, int id)
+{
+    sporthlet *spl = &ps->spl[id];
+    if(spl->state == PS_ON) {
+        sporthlet *prev = spl->prev;
+        sporthlet *next = spl->next;
+
+        if(is_first_element(ps, id)) {
+            ps->root.next = next;
+        } else if(is_last_element(ps, id)) {
+            prev->next = NULL;
+        } else {
+            prev->next = next;
+        }
+
+        
+        spl->next = NULL; 
+        spl->prev = NULL;
+        ps->nvoices--; 
+    }
+}
+
+static s7_pointer ps_turnon(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    int id = s7_integer(s7_list_ref(sc, args, 0));
+    ps_turnon_sporthlet(ps, id);
+    return NULL;
+}
+
+static s7_pointer ps_turnoff(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    int id = s7_integer(s7_list_ref(sc, args, 0));
+    ps_turnoff_sporthlet(ps, id);
+    return NULL;
+}
+
+static int get_voice_count(polysporth *ps)
+{
+    return ps->nvoices;
+}
+
+static void top_of_list(polysporth *ps)
+{
+    ps->last = &ps->root;
+}
+
+static int get_next_voice_id(polysporth *ps)
+{
+    int id = 0;
+    sporthlet *spl = ps->last->next;
+    ps->last = spl;
+    return spl->id;
+}
+
+static int is_first_element(polysporth *ps, int id)
+{
+    sporthlet *p1 = &ps->spl[id];
+    sporthlet *p2 = ps->root.next;
+    return p1 == p2;
+}
+
+static int is_last_element(polysporth *ps, int id)
+{
+    sporthlet *p1 = &ps->spl[id].next;
+    return p1 == NULL;
 }
