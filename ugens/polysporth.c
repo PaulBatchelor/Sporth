@@ -15,10 +15,8 @@ PS_NOTOK
 
 typedef struct sporthlet {
     plumbing pipes;
-    int release_timer;
-    int main_timer;
     int state;
-    sp_ftbl *argtbl;
+    /* sp_ftbl *argtbl; */
     int id;
     struct sporthlet *prev, *next;
 } sporthlet;
