@@ -186,6 +186,7 @@ static void ps_compute(polysporth *ps, SPFLOAT tick)
 {
     SPFLOAT *out = ps->out->tbl;
     out[0] = compute_sample(ps, 0);
+    out[1] = compute_sample(ps, 1);
 }
 
 static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args)
@@ -196,16 +197,13 @@ static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args)
 
     int id = s7_integer(s7_list_ref(sc, args, 0));
     const char *str = s7_string(s7_list_ref(sc, args, 1));
-    char *dup = malloc(strlen(str));
-    dup = strdup(str);
     printf("\nid to render to %d\n", id);
-    printf("sporth string: '%s'\n", dup);
+    printf("sporth string: '%s'\n", str);
     spl = &ps->spl[id];
     pd->tmp = &spl->pipes;
-    plumbing_parse_string(pd, &spl->pipes, (char *)dup);
+    plumbing_parse_string(pd, &spl->pipes, (char *)str);
     plumbing_compute(pd, &spl->pipes, PLUMBER_INIT);
     spl->state = PS_OFF;
-    free(dup);
     return NULL;
     //return (s7_wrong_type_arg_error(sc, "sp_eval", 1, s7_car(args), "a blah"));
 }
@@ -213,8 +211,15 @@ static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args)
 static SPFLOAT compute_sample(polysporth *ps, int id)
 {
     SPFLOAT out = 0;
-    ps->pd.tmp = &ps->spl[id].pipes;
-    plumbing_compute(&ps->pd, &ps->spl[id].pipes, PLUMBER_COMPUTE);
-    out = sporth_stack_pop_float(&ps->pd.sporth.stack);
+    sporthlet *spl = &ps->spl[id];
+    plumber_data *pd = &ps->pd;
+    
+    if(spl->state != PS_NULL) {
+        ps->pd.tmp = &spl->pipes;
+        plumbing_compute(pd, &spl->pipes, PLUMBER_COMPUTE);
+        out = sporth_stack_pop_float(&pd->sporth.stack);
+    } else {
+        //fprintf(stderr, "PS_NULL UH OH!\n");
+    }
     return out;
 }
