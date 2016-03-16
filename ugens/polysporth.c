@@ -210,9 +210,6 @@ static void ps_compute(polysporth *ps, SPFLOAT tick)
         out[id] = compute_sample(ps, id);
     }
 
-    //out[0] = compute_sample(ps, 0);
-    //out[1] = compute_sample(ps, 1);
-
 }
 
 static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args)
@@ -250,9 +247,17 @@ static void ps_turnon_sporthlet(polysporth *ps, int id)
 {
     sporthlet *spl = &ps->spl[id];
     if(spl->state == PS_OFF) {
-        ps->last->next = spl;
-        spl->prev = ps->last;
-        ps->last = spl;
+        //ps->last->next = spl;
+        //spl->prev = ps->last;
+        //ps->last = spl;
+        sporthlet *first = ps->root.next;
+        if(ps->nvoices == 0) {
+            ps->root.next = spl;
+        } else {
+            spl->next = first;
+            first->prev = spl;
+            ps->root.next = spl;
+        }
         spl->state = PS_ON;
         ps->nvoices++;
     }
