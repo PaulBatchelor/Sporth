@@ -85,6 +85,8 @@ void ps_clean(polysporth *ps)
     int i;
     for(i = 0; i < ps->out->size; i++) {
         if(ps->spl[i].state != PS_NULL) {
+            printf("destroying %d\n", i);
+            plumbing_compute(&ps->pd, &ps->spl[i].pipes, PLUMBER_DESTROY);
             plumbing_destroy(&ps->spl[i].pipes);
         }
     }
