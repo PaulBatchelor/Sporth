@@ -14,8 +14,9 @@ PS_NOTOK
 };
 
 static SPFLOAT compute_sample(polysporth *ps, int id);
-static void ps_turnon_sporthlet(polysporth *ps, int id);
+static void ps_turnon_sporthlet(polysporth *ps, int id, int dur);
 static void ps_turnoff_sporthlet(polysporth *ps, int id);
+static void ps_decrement_clock(polysporth *ps, int id);
 
 static void top_of_list(polysporth *ps);
 static int get_next_voice_id(polysporth *ps);
@@ -72,7 +73,7 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     /* load scheme */
     ps->s7 = s7_init();
     s7_define_function(ps->s7, "ps-eval", ps_eval, 2, 0, false, "TODO");
-    s7_define_function(ps->s7, "ps-turnon", ps_turnon, 1, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-turnon", ps_turnon, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-turnoff", ps_turnoff, 1, 0, false, "TODO");
     s7_set_ud(ps->s7, (void *)ps);
     s7_load(ps->s7, filename);
@@ -97,13 +98,23 @@ void ps_clean(polysporth *ps)
 void ps_compute(polysporth *ps, SPFLOAT tick)
 {
     SPFLOAT *out = ps->out->tbl;
-    if(tick != 0) {
-        s7_call(ps->s7, s7_name_to_value(ps->s7, "run"), s7_nil(ps->s7));
-    }
     int i;
     int id;
+    int count;
+
+    if(tick != 0) {
+        s7_call(ps->s7, s7_name_to_value(ps->s7, "run"), s7_nil(ps->s7));
+        top_of_list(ps);
+        count = get_voice_count(ps);
+        for(i = 0; i < count; i++) {
+            id = get_next_voice_id(ps);
+            printf("-- the id is %d\n", id);
+            ps_decrement_clock(ps, id);
+        }
+    }
+
     top_of_list(ps);
-    int count = get_voice_count(ps);
+    count = get_voice_count(ps);
     for(i = 0; i < count; i++) {
         id = get_next_voice_id(ps);
         out[id] = compute_sample(ps, id);
@@ -133,7 +144,7 @@ static SPFLOAT compute_sample(polysporth *ps, int id)
     sporthlet *spl = &ps->spl[id];
     plumber_data *pd = &ps->pd;
     
-    if(spl->state != PS_NULL) {
+    if(spl->state != PS_NULL || spl->state != PS_OFF) {
         ps->pd.tmp = &spl->pipes;
         plumbing_compute(pd, &spl->pipes, PLUMBER_COMPUTE);
         out = sporth_stack_pop_float(&pd->sporth.stack);
@@ -142,7 +153,7 @@ static SPFLOAT compute_sample(polysporth *ps, int id)
     return out;
 }
 
-static void ps_turnon_sporthlet(polysporth *ps, int id)
+static void ps_turnon_sporthlet(polysporth *ps, int id, int dur)
 {
     sporthlet *spl = &ps->spl[id];
     if(spl->state == PS_OFF) {
@@ -158,6 +169,7 @@ static void ps_turnon_sporthlet(polysporth *ps, int id)
             ps->root.next = spl;
         }
         spl->state = PS_ON;
+        spl->dur = dur;
         ps->nvoices++;
     }
 }
@@ -176,7 +188,6 @@ static void ps_turnoff_sporthlet(polysporth *ps, int id)
         } else {
             prev->next = next;
         }
-
         
         spl->next = NULL; 
         spl->prev = NULL;
@@ -188,7 +199,8 @@ static s7_pointer ps_turnon(s7_scheme *sc, s7_pointer args)
 {
     polysporth *ps = (polysporth *)s7_get_ud(sc);
     int id = s7_integer(s7_list_ref(sc, args, 0));
-    ps_turnon_sporthlet(ps, id);
+    int dur = s7_integer(s7_list_ref(sc, args, 1));
+    ps_turnon_sporthlet(ps, id, dur);
     return NULL;
 }
 
@@ -214,7 +226,11 @@ static int get_next_voice_id(polysporth *ps)
 {
     sporthlet *spl = ps->last->next;
     ps->last = spl;
-    return spl->id;
+    if(ps->nvoices == 1) {
+        return ps->root.next->id;
+    } else {
+        return spl->id;
+    }
 }
 
 static int is_first_element(polysporth *ps, int id)
@@ -228,4 +244,17 @@ static int is_last_element(polysporth *ps, int id)
 {
     sporthlet *p1 = ps->spl[id].next;
     return p1 == NULL;
+}
+
+static void ps_decrement_clock(polysporth *ps, int id)
+{
+    printf("id is %d\n", id);
+    sporthlet *spl = &ps->spl[id];
+    if(spl->dur < 0) {
+        return;
+    } else if(spl->dur == 0) {
+        ps_turnoff_sporthlet(ps, id);
+    } else {
+        spl->dur--;
+    }
 }

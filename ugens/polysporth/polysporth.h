@@ -4,6 +4,7 @@ typedef struct sporthlet {
     int state;
     /* sp_ftbl *argtbl; */
     int id;
+    int dur;
     struct sporthlet *prev, *next;
 } sporthlet;
 
