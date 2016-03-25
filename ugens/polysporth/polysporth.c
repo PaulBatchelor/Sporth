@@ -20,6 +20,8 @@ static void ps_decrement_clock(polysporth *ps, int id);
 
 static void top_of_list(polysporth *ps);
 static int get_next_voice_id(polysporth *ps);
+static int find_free_voice(polysporth *ps, int grp_start, int grp_end);
+
 static int get_voice_count(polysporth *ps);
 static int is_first_element(polysporth *ps, int id);
 static int is_last_element(polysporth *ps, int id);
@@ -27,6 +29,8 @@ static int is_last_element(polysporth *ps, int id);
 static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_turnon(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_turnoff(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_note(s7_scheme *sc, s7_pointer args);
+
 
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
     char *out_tbl, char *filename)
@@ -70,11 +74,19 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     /* set up linked list */
     ps->last = &ps->root;
 
+    /* initialize event table */
+    dvector_init(&ps->events);
+
+
+    /* set clock to 0 */
+    ps->time = 0;
+
     /* load scheme */
     ps->s7 = s7_init();
     s7_define_function(ps->s7, "ps-eval", ps_eval, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-turnon", ps_turnon, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-turnoff", ps_turnoff, 1, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-note", ps_note, 4, 0, false, "TODO");
     s7_set_ud(ps->s7, (void *)ps);
     s7_load(ps->s7, filename);
 
@@ -91,6 +103,7 @@ void ps_clean(polysporth *ps)
             plumbing_destroy(&ps->spl[i].pipes);
         }
     }
+    dvector_free(&ps->events);
     plumber_clean(&ps->pd);
     free(ps->spl);
 }
@@ -101,9 +114,25 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
     int i;
     int id;
     int count;
-
+    int nevents;
+    dvalue *val, *next;
     if(tick != 0) {
         s7_call(ps->s7, s7_name_to_value(ps->s7, "run"), s7_nil(ps->s7));
+
+        dvector_pop(&ps->events, &nevents, &val);
+        if(nevents != 0) printf("There are %d events\n", nevents);
+        for(i = 0; i < nevents; i++) {
+            next = val->next;
+            printf("\t ### Time: %d Event: %d Dur: %d\n", ps->time, i, val->dur);
+            id = find_free_voice(ps, val->grp_start, val->grp_end);
+            free(val);
+            if(id >= 0) {
+                ps_turnon_sporthlet(ps, id, val->dur);
+            } else {
+                printf("No free voices left!\n");
+            }
+            val = next;
+        }
         top_of_list(ps);
         count = get_voice_count(ps);
         for(i = 0; i < count; i++) {
@@ -111,6 +140,7 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
             printf("-- the id is %d\n", id);
             ps_decrement_clock(ps, id);
         }
+        ps->time++;
     }
 
     top_of_list(ps);
@@ -178,6 +208,7 @@ static void ps_turnoff_sporthlet(polysporth *ps, int id)
 {
     sporthlet *spl = &ps->spl[id];
     if(spl->state == PS_ON) {
+        spl->state = PS_OFF;
         sporthlet *prev = spl->prev;
         sporthlet *next = spl->next;
 
@@ -233,6 +264,22 @@ static int get_next_voice_id(polysporth *ps)
     }
 }
 
+static int find_free_voice(polysporth *ps, int grp_start, int grp_end)
+{
+    int i, tmp;
+    if(grp_start > grp_end) {
+        tmp = grp_start;
+        grp_start = grp_end;
+        grp_end = tmp;
+    }
+    for(i = grp_start; i <= grp_end; i++) {
+        if(ps->spl[i].state == PS_OFF) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 static int is_first_element(polysporth *ps, int id)
 {
     sporthlet *p1 = &ps->spl[id];
@@ -257,4 +304,15 @@ static void ps_decrement_clock(polysporth *ps, int id)
     } else {
         spl->dur--;
     }
+}
+
+static s7_pointer ps_note(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    int grp_start = s7_integer(s7_list_ref(sc, args, 0));
+    int grp_end = s7_integer(s7_list_ref(sc, args, 1));
+    int delta = s7_integer(s7_list_ref(sc, args, 2));
+    int dur = s7_integer(s7_list_ref(sc, args, 3));
+    dvector_append(&ps->events, grp_start, grp_end, delta, dur);
+    return NULL;
 }
