@@ -6,3 +6,6 @@
 0 "out" tget
 1 "out" tget + 
 2 "out" tget + 
+3 "out" tget +
+4 "out" tget + 
+5 "out" tget + 
