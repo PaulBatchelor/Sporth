@@ -2,17 +2,6 @@
 #include "plumber.h"
 #include "polysporth.h"
 
-enum {
-PS_ON,
-PS_OFF,
-PS_NULL,
-PS_RELEASE,
-PS_TRUE,
-PS_FALSE,
-PS_OK,
-PS_NOTOK
-};
-
 static SPFLOAT compute_sample(polysporth *ps, int id);
 static void ps_turnon_sporthlet(polysporth *ps, int id, int dur);
 static void ps_turnoff_sporthlet(polysporth *ps, int id);
@@ -30,6 +19,10 @@ static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_turnon(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_turnoff(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_note_append(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_noteblock_begin(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_note(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_noteblock_end(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_metanote(s7_scheme *sc, s7_pointer args);
 
 
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
@@ -81,12 +74,19 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     /* set clock to 0 */
     ps->time = 0;
 
+    /* set block boolean to off */
+    ps->noteblock = PS_OFF;
+
     /* load scheme */
     ps->s7 = s7_init();
     s7_define_function(ps->s7, "ps-eval", ps_eval, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-turnon", ps_turnon, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-turnoff", ps_turnoff, 1, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-note-append", ps_note_append, 4, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-note", ps_note, 4, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-noteblock-begin", ps_noteblock_begin, 0, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-noteblock-end", ps_noteblock_end, 0, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-metanote", ps_metanote, 2, 0, false, "TODO");
     s7_set_ud(ps->s7, (void *)ps);
     s7_load(ps->s7, filename);
 
@@ -123,13 +123,19 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
         if(nevents != 0) printf("There are %d events\n", nevents);
         for(i = 0; i < nevents; i++) {
             next = val->next;
-            printf("\t ### Time: %d Event: %d Dur: %d\n", ps->time, i, val->dur);
-            id = find_free_voice(ps, val->grp_start, val->grp_end);
-            free(val);
-            if(id >= 0) {
-                ps_turnon_sporthlet(ps, id, val->dur);
-            } else {
-                printf("No free voices left!\n");
+            if(val->type == PS_NOTE) {
+                printf("\t ### Time: %d Event: %d Dur: %d\n", 
+                    ps->time, i, val->dur);
+                id = find_free_voice(ps, val->grp_start, val->grp_end);
+                if(id >= 0) {
+                    ps_turnon_sporthlet(ps, id, val->dur);
+                } else {
+                    printf("No free voices left!\n");
+                }
+                free(val);
+            } else if(val->type == PS_METANOTE) {
+                s7_call(ps->s7, val->func, s7_nil(ps->s7));
+                free(val);
             }
             val = next;
         }
@@ -225,7 +231,7 @@ static void ps_turnoff_sporthlet(polysporth *ps, int id)
         } else {
             prev->next = next;
         }
-        
+        ps->out->tbl[id] = 0; 
         spl->next = NULL; 
         spl->prev = NULL;
         ps->nvoices--; 
@@ -323,3 +329,50 @@ static s7_pointer ps_note_append(s7_scheme *sc, s7_pointer args)
     dvector_append(&ps->events, grp_start, grp_end, delta, dur);
     return NULL;
 }
+
+static s7_pointer ps_noteblock_begin(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    dvector_init(&ps->tmp);
+    if(ps->noteblock == PS_OFF) {
+        ps->noteblock = PS_ON;
+    } else {
+        fprintf(stderr, 
+            "Warning: noteblock already on. Not doing anything.\n");
+    }
+    return NULL;
+}
+
+static s7_pointer ps_note(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    int grp_start = s7_integer(s7_list_ref(sc, args, 0));
+    int grp_end = s7_integer(s7_list_ref(sc, args, 1));
+    int start = s7_integer(s7_list_ref(sc, args, 2));
+    int dur = s7_integer(s7_list_ref(sc, args, 3));
+    dvector_append(&ps->tmp, grp_start, grp_end, start, dur);
+    return NULL;
+}
+
+static s7_pointer ps_metanote(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    int start = s7_integer(s7_list_ref(sc, args, 0));
+    s7_pointer func = s7_list_ref(sc, args, 1);
+    dvector_append_metanote(&ps->tmp, start, func);
+    return NULL;
+}
+
+static s7_pointer ps_noteblock_end(s7_scheme *sc, s7_pointer args)
+{
+    fprintf(stderr, "--- NOTEBLOCK END ---\n");
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    if(ps->noteblock == PS_ON) {
+        dvector_print(&ps->events);
+        dvector_time_to_delta(&ps->tmp);
+        ps->events = dvector_merge(&ps->events, &ps->tmp);
+        ps->noteblock = PS_OFF;
+    }
+    return NULL;
+}
+

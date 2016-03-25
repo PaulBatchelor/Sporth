@@ -35,6 +35,16 @@ void dvector_append(dvector *dv,
     new->grp_start = grp_start;
     new->grp_end = grp_end;
     new->dur = dur;
+    new->type = PS_NOTE;
+    dvector_append_value(dv, new);
+}
+
+void dvector_append_metanote(dvector *dv, int start, s7_pointer func)
+{
+    dvalue *new = malloc(sizeof(dvalue));
+    new->delta = start;
+    new->func = func;
+    new->type = PS_METANOTE;
     dvector_append_value(dv, new);
 }
 
@@ -58,6 +68,17 @@ void dvector_free(dvector *dv)
 
 dvector dvector_merge(dvector *dvect1, dvector *dvect2)
 {
+    /* Check for empty vectors */
+
+    if(dvect1->size == 0 && dvect2->size == 0) {
+        fprintf(stderr, "Warning: both dvectors are empty\n");
+        return *dvect1;
+    } else if(dvect1->size == 0 && dvect2->size > 0) {
+        return *dvect2;
+    } else if(dvect1->size > 0 && dvect2->size == 0) {
+        return *dvect1;
+    }
+
     dvector new, *tmp;
     dvector_init(&new);
  
@@ -79,7 +100,6 @@ dvector dvector_merge(dvector *dvect1, dvector *dvect2)
     int i;
     int append = 0;
 
-    printf("m_1\tm_2\t<=\tout_d\tout_t\n");
     for(i = 0; i < dvect1->size + dvect2->size; i++) {
         if((dv1_t <= dv2_t || append)) {
             dv1_pos++;
@@ -147,9 +167,4 @@ void dvector_time_to_delta(dvector *dvect)
         pdelta = tmp;
         val = next;
     }
-}
-
-void dvector_reset(dvector *dvect)
-{
-
 }

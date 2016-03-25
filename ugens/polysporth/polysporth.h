@@ -1,8 +1,21 @@
 #include "s7.h"
+
+enum {
+PS_ON,
+PS_OFF,
+PS_NULL,
+PS_RELEASE,
+PS_TRUE,
+PS_FALSE,
+PS_OK,
+PS_NOTOK,
+PS_NOTE,
+PS_METANOTE
+};
+
 typedef struct sporthlet {
     plumbing pipes;
     int state;
-    /* sp_ftbl *argtbl; */
     int id;
     int dur;
     struct sporthlet *prev, *next;
@@ -13,6 +26,10 @@ typedef struct dvalue {
     int grp_start;
     int grp_end;
     int dur;
+    /* either note or metanote */
+    int type;
+    /* s7 function if metanote */
+    s7_pointer func;
     struct dvalue *next;
 } dvalue;
 
@@ -36,6 +53,10 @@ typedef struct polysporth {
 
     /* Delta Vector Event list */
     dvector events; 
+
+    /* temp list for notelists */
+    dvector tmp;
+    int noteblock;
 } polysporth;
 
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
@@ -46,8 +67,9 @@ void dvector_print(dvector *dv);
 void dvector_append_value(dvector *dv, dvalue *new);
 void dvector_append(dvector *dv, 
     int grp_start, int grp_end, int delta, int dur);
+void dvector_append_metanote(dvector *dv, int start, s7_pointer func);
 void dvector_init(dvector *dv);
 void dvector_free(dvector *dv);
 dvector dvector_merge(dvector *dvect1, dvector *dvect2);
 void dvector_pop(dvector *dvect, int *nvoice, dvalue **start);
-void dvector_reset(dvector *dvect);
+void dvector_time_to_delta(dvector *dvect);
