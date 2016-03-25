@@ -50,3 +50,4 @@ void dvector_init(dvector *dv);
 void dvector_free(dvector *dv);
 dvector dvector_merge(dvector *dvect1, dvector *dvect2);
 void dvector_pop(dvector *dvect, int *nvoice, dvalue **start);
+void dvector_reset(dvector *dvect);

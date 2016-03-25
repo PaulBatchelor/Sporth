@@ -149,62 +149,7 @@ void dvector_time_to_delta(dvector *dvect)
     }
 }
 
-//int main()
-//{
-//    dvector dv1, dv2;
-//
-//    dvector_init(&dv1);
-//
-//    dvector_append(&dv1, 0);
-//    dvector_append(&dv1, 3);
-//    dvector_append(&dv1, 8);
-//
-//    dvector_print(&dv1);
-//    
-//    dvector_init(&dv2);
-//    dvector_append(&dv2, 0);
-//    dvector_append(&dv2, 2);
-//    dvector_append(&dv2, 4);
-//    dvector_append(&dv2, 6);
-//    dvector_append(&dv2, 1);
-//    dvector_append(&dv2, 9);
-//    dvector_append(&dv2, 1);
-//    dvector_append(&dv2, 2);
-//    dvector_append(&dv2, 3);
-//    
-//    dvector_print(&dv2);
-//
-//    printf("---\n");
-//    dvector merge = dvector_merge(&dv1, &dv2);
-//    printf("---\n");
-//    dvector_print(&merge);
-//
-//    dvector_free(&merge);
-//
-//    printf("---\n");
-//
-//    dvector dv3;
-//    dvector_init(&dv3);
-//    dvector_append(&dv3, 0);
-//    dvector_append(&dv3, 1);
-//    dvector_append(&dv3, 1);
-//    dvector_append(&dv3, 4);
-//    dvector_append(&dv3, 9);
-//    dvector_time_to_delta(&dv3);
-//    dvector_print(&dv3);
-//
-//    int i,v;
-//    int nvoices = 0;
-//    printf("---\n");
-//    for(i = 0; i < 15; i++) {
-//        printf("%d: ", i);
-//        dvector_pop(&dv3, &nvoices);
-//        for(v = 0; v < nvoices; v++) {
-//            printf("%d ", v); 
-//        }
-//        printf("\n");
-//    }
-//
-//    dvector_free(&dv3);
-//    return 0;
-//}
+void dvector_reset(dvector *dvect)
+{
+
+}

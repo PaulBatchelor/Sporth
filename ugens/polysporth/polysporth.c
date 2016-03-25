@@ -29,7 +29,7 @@ static int is_last_element(polysporth *ps, int id);
 static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_turnon(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_turnoff(s7_scheme *sc, s7_pointer args);
-static s7_pointer ps_note(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_note_append(s7_scheme *sc, s7_pointer args);
 
 
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
@@ -86,7 +86,7 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     s7_define_function(ps->s7, "ps-eval", ps_eval, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-turnon", ps_turnon, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-turnoff", ps_turnoff, 1, 0, false, "TODO");
-    s7_define_function(ps->s7, "ps-note", ps_note, 4, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-note-append", ps_note_append, 4, 0, false, "TODO");
     s7_set_ud(ps->s7, (void *)ps);
     s7_load(ps->s7, filename);
 
@@ -135,10 +135,14 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
         }
         top_of_list(ps);
         count = get_voice_count(ps);
+        sporthlet *spl, *next;
+        spl = ps->root.next;
         for(i = 0; i < count; i++) {
-            id = get_next_voice_id(ps);
+            next = spl->next;
+            id = spl->id;
             printf("-- the id is %d\n", id);
             ps_decrement_clock(ps, id);
+            spl = next;
         }
         ps->time++;
     }
@@ -206,6 +210,7 @@ static void ps_turnon_sporthlet(polysporth *ps, int id, int dur)
 
 static void ps_turnoff_sporthlet(polysporth *ps, int id)
 {
+    printf("ps_turnoff: removing id %d\n", id);
     sporthlet *spl = &ps->spl[id];
     if(spl->state == PS_ON) {
         spl->state = PS_OFF;
@@ -213,6 +218,7 @@ static void ps_turnoff_sporthlet(polysporth *ps, int id)
         sporthlet *next = spl->next;
 
         if(is_first_element(ps, id)) {
+            printf("removing first element!\n");
             ps->root.next = next;
         } else if(is_last_element(ps, id)) {
             prev->next = NULL;
@@ -257,6 +263,7 @@ static int get_next_voice_id(polysporth *ps)
 {
     sporthlet *spl = ps->last->next;
     ps->last = spl;
+    /* TODO: see if things break if we remove this conditional */
     if(ps->nvoices == 1) {
         return ps->root.next->id;
     } else {
@@ -306,7 +313,7 @@ static void ps_decrement_clock(polysporth *ps, int id)
     }
 }
 
-static s7_pointer ps_note(s7_scheme *sc, s7_pointer args)
+static s7_pointer ps_note_append(s7_scheme *sc, s7_pointer args)
 {
     polysporth *ps = (polysporth *)s7_get_ud(sc);
     int grp_start = s7_integer(s7_list_ref(sc, args, 0));
