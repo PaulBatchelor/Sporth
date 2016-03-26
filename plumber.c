@@ -59,6 +59,7 @@ int sporth_f_default(sporth_stack *stack, void *ud)
 
 int plumbing_init(plumbing *pipes)
 {
+    pipes->tick = 0;
     pipes->last = &pipes->root;
     pipes->npipes = 0;
     return PLUMBER_OK;
@@ -126,12 +127,12 @@ int plumber_compute(plumber_data *plumb, int mode)
     return PLUMBER_OK;
 }
 
-int plumber_show_pipes(plumber_data *plumb)
+void plumber_show_pipes(plumber_data *plumb)
 {
     return plumbing_show_pipes(plumb->pipes);
 }
 
-int plumbing_show_pipes(plumbing *pipes)
+void plumbing_show_pipes(plumbing *pipes)
 {
     fprintf(stderr, "\nShowing pipes: \n");
     uint32_t n;
@@ -753,4 +754,9 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     }
     plumber_clean(pd);
     sp_destroy(&sp);
+}
+
+plumbing * plumber_get_pipes(plumber_data *plumb)
+{
+    return plumb->tmp;
 }

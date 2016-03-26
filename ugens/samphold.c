@@ -24,7 +24,7 @@ int sporth_samphold(sporth_stack *stack, void *ud)
             }
             trig = sporth_stack_pop_float(stack);
             input = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, 0);
+            sporth_stack_push_float(stack, input);
             break;
         case PLUMBER_INIT:
 
@@ -36,7 +36,7 @@ int sporth_samphold(sporth_stack *stack, void *ud)
             input = sporth_stack_pop_float(stack);
             samphold = pd->last->ud;
             sp_samphold_init(pd->sp, samphold);
-            sporth_stack_push_float(stack, 0);
+            sporth_stack_push_float(stack, input);
             break;
         case PLUMBER_COMPUTE:
             trig = sporth_stack_pop_float(stack);

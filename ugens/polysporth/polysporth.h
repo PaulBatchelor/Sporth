@@ -13,11 +13,14 @@ PS_NOTE,
 PS_METANOTE
 };
 
+#define NARGS 8
+
 typedef struct sporthlet {
     plumbing pipes;
     int state;
     int id;
     int dur;
+    SPFLOAT args[NARGS];
     struct sporthlet *prev, *next;
 } sporthlet;
 
@@ -30,6 +33,8 @@ typedef struct dvalue {
     int type;
     /* s7 function if metanote */
     s7_pointer func;
+    SPFLOAT *args;
+    int nargs;
     struct dvalue *next;
 } dvalue;
 
@@ -57,6 +62,8 @@ typedef struct polysporth {
     /* temp list for notelists */
     dvector tmp;
     int noteblock;
+    
+    sp_ftbl *args;
 } polysporth;
 
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
@@ -66,10 +73,12 @@ void ps_compute(polysporth *ps, SPFLOAT tick);
 void dvector_print(dvector *dv);
 void dvector_append_value(dvector *dv, dvalue *new);
 void dvector_append(dvector *dv, 
-    int grp_start, int grp_end, int delta, int dur);
+    int grp_start, int grp_end, int delta, int dur, 
+    SPFLOAT *args, int nargs);
 void dvector_append_metanote(dvector *dv, int start, s7_pointer func);
 void dvector_init(dvector *dv);
 void dvector_free(dvector *dv);
 dvector dvector_merge(dvector *dvect1, dvector *dvect2);
-void dvector_pop(dvector *dvect, int *nvoice, dvalue **start);
+//void dvector_pop(dvector *dvect, int *nvoice, dvalue **start);
+int dvector_pop(dvector *dvect, dvalue **start);
 void dvector_time_to_delta(dvector *dvect);

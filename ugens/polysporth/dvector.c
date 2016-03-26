@@ -28,7 +28,8 @@ void dvector_append_value(dvector *dv, dvalue *new)
 }
 
 void dvector_append(dvector *dv, 
-    int grp_start, int grp_end, int delta, int dur) 
+    int grp_start, int grp_end, int delta, int dur, 
+    SPFLOAT *args, int nargs)
 {
     dvalue *new = malloc(sizeof(dvalue));
     new->delta = delta;
@@ -36,6 +37,8 @@ void dvector_append(dvector *dv,
     new->grp_end = grp_end;
     new->dur = dur;
     new->type = PS_NOTE;
+    new->nargs = nargs;
+    new->args = args;
     dvector_append_value(dv, new);
 }
 
@@ -61,6 +64,9 @@ void dvector_free(dvector *dv)
     dvalue *next;
     for(i = 0; i < dv->size; i++) {
         next = val->next;
+        if(val->nargs > 0) {
+            free(val->args);
+        }
         free(val);
         val = next;
     }
@@ -71,7 +77,6 @@ dvector dvector_merge(dvector *dvect1, dvector *dvect2)
     /* Check for empty vectors */
 
     if(dvect1->size == 0 && dvect2->size == 0) {
-        fprintf(stderr, "Warning: both dvectors are empty\n");
         return *dvect1;
     } else if(dvect1->size == 0 && dvect2->size > 0) {
         return *dvect2;
@@ -132,26 +137,25 @@ void dvector_time_sort(dvector *dvect)
 {
 }
 
-void dvector_pop(dvector *dvect, int *nvoice, dvalue **start)
+int dvector_pop(dvector *dvect, dvalue **start)
 {
-    *nvoice = 0;
     dvalue *val = dvect->root.next, *next;
     *start = dvect->root.next;
     int run = 1;
-    if(dvect->size == 0) return;
-    while(run != 0 && dvect->size != 0) {
+    if(dvect->size <= 0) return 0;
+    //while(run != 0 && dvect->size != 0) {
         if(val->delta == 0) {
             dvect->size--;
             next = val->next;
-            //free(val);
-            *nvoice = *nvoice + 1;
             dvect->root.next = next;
-            val = next;
+            //val = next;
+            return 1;
         } else {
             val->delta--;
             run = 0;
+            return 0;
         }
-    }
+    //}
 }
 
 void dvector_time_to_delta(dvector *dvect)

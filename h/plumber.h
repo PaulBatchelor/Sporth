@@ -57,6 +57,7 @@ typedef struct {
 
 typedef struct {
     uint32_t npipes;
+    int tick;
     plumber_pipe root;
     plumber_pipe *last;
 } plumbing;
@@ -112,7 +113,7 @@ int plumber_open_file(plumber_data *plumb, char *filename);
 int plumber_close_file(plumber_data *plumb);
 
 int plumber_gettype(plumber_data *plumb, char *str, int mode);
-int plumber_show_pipes(plumber_data *plumb);
+void plumber_show_pipes(plumber_data *plumb);
 int plumber_error(plumber_data *plumb, const char *str);
 
 int plumber_ftmap_init(plumber_data *plumb);
@@ -120,6 +121,7 @@ int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft);
 int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft);
 int plumber_ftmap_destroy(plumber_data *plumb);
 int plumber_ftmap_delete(plumber_data *plumb, char mode);
+plumbing * plumber_get_pipes(plumber_data *plumb);
 
 void sporth_run(plumber_data *pd, int argc, char *argv[],
     void *ud, void (*process)(sp_data *, void *));
@@ -132,3 +134,4 @@ int plumbing_add_pipe(plumbing *pipes, plumber_pipe *pipe);
 int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode);
 int plumbing_parse(plumber_data *plumb, plumbing *pipes);
 int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, char *str);
+void plumbing_show_pipes(plumbing *pipes);
