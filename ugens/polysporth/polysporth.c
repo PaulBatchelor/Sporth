@@ -167,10 +167,10 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
                 free(val);
             }
             if(ps->tmp.size > 0) {
-                printf("---tmp\n");
-                dvector_print(&ps->tmp);
                 printf("---events\n");
                 dvector_print(&ps->events);
+                printf("---tmp\n");
+                dvector_print(&ps->tmp);
                 ps->events = dvector_merge(&ps->events, &ps->tmp);
                 dvector_init(&ps->tmp);
                 printf("---\n");

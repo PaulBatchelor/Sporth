@@ -104,9 +104,10 @@ dvector dvector_merge(dvector *dvect1, dvector *dvect2)
 
     int i;
     int append = 0;
-
     for(i = 0; i < dvect1->size + dvect2->size; i++) {
-        if((dv1_t <= dv2_t || append)) {
+        printf("%d: dv1_t is %d and dv2_t is %d\n", i, dv1_t, dv2_t);
+        /* TODO: fix this cluster fuck of a conditional... */
+        if((dv1_t <= dv2_t || append) && dv1_pos < dvect1->size) {
             dv1_pos++;
             out_d = dv1_t - out_t;
             val1->delta = out_d;
@@ -114,8 +115,9 @@ dvector dvector_merge(dvector *dvect1, dvector *dvect2)
             if(dv1_pos < dvect1->size) {
                 val1 = val1->next;
                 dv1_t += val1->delta;
-            }
+            } 
         } else {
+            printf("are we here?\n");
             dv2_pos++;
             out_d = dv2_t - out_t;
             val2->delta = out_d;

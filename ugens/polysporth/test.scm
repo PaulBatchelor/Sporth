@@ -2,7 +2,8 @@
 (define make-note (lambda () 
     ;(display "hello world")
     (ps-noteblock-begin)
-    (ps-note 0 3 3 4 #(69.0 0.3))
+    (ps-note 0 3 0 4 #(69.0 0.3))
+    (ps-note 0 3 0 4 #(71.0 0.3))
     ;(ps-note 0 3 1 4 #(68.0 0.3))
     ;(ps-note 0 3 0 4 #(64.0 0.3))
     ;(ps-note 0 3 0 4 #(71.0 0.3))
@@ -20,12 +21,11 @@
 
 (ps-noteblock-begin)
 (ps-metanote 0 make-note)
-(ps-metanote 0 make-note)
-;(ps-note 0 3 4 1 #(64 0.5))
+(ps-metanote 2 make-note)
 (ps-noteblock-end)
 
 (define tick (lambda () (display "tick") (newline) ))
 (define none (lambda () ()))
-(define run none)
+(define run tick)
 
-(run)
+;(run)
