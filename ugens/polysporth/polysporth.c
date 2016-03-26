@@ -136,11 +136,19 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
     dvalue *val, *next;
     if(tick != 0) {
         s7_call(ps->s7, s7_name_to_value(ps->s7, "run"), s7_nil(ps->s7));
+        //top_of_list(ps);
+        //count = get_voice_count(ps);
+        //sporthlet *spl, *next;
+        //spl = ps->root.next;
+        //for(i = 0; i < count; i++) {
+        //    next = spl->next;
+        //    id = spl->id;
+        //    ps_decrement_clock(ps, id);
+        //    spl = next;
+        //}
         if(ps->tmp.size > 0) {
             ps->events = dvector_merge(&ps->events, &ps->tmp);
             dvector_init(&ps->tmp);
-            printf("Before\n");
-            dvector_print(&ps->events);
         }
         while(dvector_pop(&ps->events, &val)){
             if(val->type == PS_NOTE) {
@@ -156,6 +164,7 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
                         ps->spl[id].args[i] = val->args[i];
                     } 
                 } else {
+                    // TODO: does this need to be handled better?
                     fprintf(stderr, "No free voices left!\n");
                 }
                 if(val->nargs > 0) {
@@ -167,14 +176,8 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
                 free(val);
             }
             if(ps->tmp.size > 0) {
-                printf("---events\n");
-                dvector_print(&ps->events);
-                printf("---tmp\n");
-                dvector_print(&ps->tmp);
                 ps->events = dvector_merge(&ps->events, &ps->tmp);
                 dvector_init(&ps->tmp);
-                printf("---\n");
-                dvector_print(&ps->events);
             }
         }
 
@@ -189,7 +192,6 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
             ps_decrement_clock(ps, id);
             spl = next;
         }
-        /* make sure ftable is at original table */
         ps->time++;
     }
 
@@ -358,6 +360,7 @@ static void ps_decrement_clock(polysporth *ps, int id)
 #endif
     sporthlet *spl = &ps->spl[id];
     if(spl->dur < 0) {
+        printf("id %d is inifite\n", id);
         return;
     } else if(spl->dur == 0) {
         ps_turnoff_sporthlet(ps, id);
@@ -387,15 +390,15 @@ static s7_pointer ps_note(s7_scheme *sc, s7_pointer args)
     int start = s7_integer(s7_list_ref(sc, args, 2));
     int dur = s7_integer(s7_list_ref(sc, args, 3));
 
-    int len = s7_vector_length((s7_list_ref(sc, args, 4)));
+    int len = s7_list_length(sc, (s7_list_ref(sc, args, 4)));
     SPFLOAT *argtbl = NULL;
     s7_pointer tbl = s7_list_ref(sc, args, 4);
-
     if(len > 0) {
         int i;
         argtbl = malloc(sizeof(SPFLOAT) * len);
         for(i = 0; i < len; i++) {
-            argtbl[i] = (SPFLOAT) s7_real(s7_vector_ref(sc, tbl, i));
+            argtbl[i] = (SPFLOAT) s7_real(s7_list_ref(sc, tbl, i));
+            //printf("--- %g\n", argtbl[i]);
         }
     }
     dvector_append(&ps->tmp, grp_start, grp_end, start, dur, argtbl, len);

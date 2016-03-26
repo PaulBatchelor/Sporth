@@ -15,7 +15,6 @@ void dvector_print(dvector *dv)
     dvalue *next;
     for(i = 0; i < dv->size; i++) {
         next = val->next;
-        printf("%d\n", val->delta);
         val = next;
     }
 }
@@ -64,8 +63,10 @@ void dvector_free(dvector *dv)
     dvalue *next;
     for(i = 0; i < dv->size; i++) {
         next = val->next;
-        if(val->nargs > 0) {
-            free(val->args);
+        if(val->type == PS_NOTE) {
+            if(val->nargs > 0) {
+                free(val->args);
+            }
         }
         free(val);
         val = next;
@@ -105,7 +106,6 @@ dvector dvector_merge(dvector *dvect1, dvector *dvect2)
     int i;
     int append = 0;
     for(i = 0; i < dvect1->size + dvect2->size; i++) {
-        printf("%d: dv1_t is %d and dv2_t is %d\n", i, dv1_t, dv2_t);
         /* TODO: fix this cluster fuck of a conditional... */
         if((dv1_t <= dv2_t || append) && dv1_pos < dvect1->size) {
             dv1_pos++;
@@ -117,7 +117,6 @@ dvector dvector_merge(dvector *dvect1, dvector *dvect2)
                 dv1_t += val1->delta;
             } 
         } else {
-            printf("are we here?\n");
             dv2_pos++;
             out_d = dv2_t - out_t;
             val2->delta = out_d;
