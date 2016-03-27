@@ -240,6 +240,9 @@ static SPFLOAT compute_sample(polysporth *ps, int id)
 
 static void ps_turnon_sporthlet(polysporth *ps, int id, int dur)
 {
+//#ifdef DEBUG_MODE
+    fprintf(stderr, "ps_turnon: adding id %d\n", id);
+//#endif
     sporthlet *spl = &ps->spl[id];
     if(spl->state == PS_OFF) {
         sporthlet *first = ps->root.next;
@@ -259,9 +262,10 @@ static void ps_turnon_sporthlet(polysporth *ps, int id, int dur)
 
 static void ps_turnoff_sporthlet(polysporth *ps, int id)
 {
-#ifdef DEBUG_MODE
-    fprintf(stderr, "ps_turnoff: removing id %d\n", id);
-#endif
+//#ifdef DEBUG_MODE
+    fprintf(stderr, "ps_turnoff: removing id %d, state %d\n", id,
+    ps->spl[id].state);
+//#endif
     sporthlet *spl = &ps->spl[id];
     if(spl->state == PS_ON) {
         spl->state = PS_OFF;
@@ -282,6 +286,11 @@ static void ps_turnoff_sporthlet(polysporth *ps, int id)
         spl->next = NULL; 
         spl->prev = NULL;
         ps->nvoices--; 
+    } else {
+        fprintf(stderr, "this shouldn't happen\n");
+        if(spl->state == PS_OFF) {
+            fprintf(stderr, "this voice is already off...?\n");
+        }    
     }
 }
 
@@ -355,12 +364,12 @@ static int is_last_element(polysporth *ps, int id)
 
 static void ps_decrement_clock(polysporth *ps, int id)
 {
-#ifdef DEBUG_MODE
+//#ifdef DEBUG_MODE
     fprintf(stderr, "ps_decrement: id is %d\n", id);
-#endif
+//#endif
     sporthlet *spl = &ps->spl[id];
     if(spl->dur < 0) {
-        printf("id %d is inifite\n", id);
+        fprintf(stderr, "id %d is inifite (dur is %d)\n", id, spl->dur);
         return;
     } else if(spl->dur == 0) {
         ps_turnoff_sporthlet(ps, id);

@@ -49,7 +49,8 @@
 ))
 
 
-(define instr "0 'args' tget mtof 1 'args' tget 1 1 1 fm tick 0.01 0.1 1 tenv *")
+;(define instr "0 'args' tget mtof 1 'args' tget 1 1 1 fm tick 0.01 0.1 1 tenv *")
+(define instr "0 'args' tget mtof 1 'args' tget 1 1 1 fm")
 
 (define eval-block (lambda (str start end) 
 (if (> start end) 
@@ -63,19 +64,26 @@
 ))
 
 (define kick "0 'in' tget 0 pset 
-500
+1000
 0.1 sine
 ")
 
 (ps-eval 6 kick)
 (eval-block instr 0 5)
-(ps-turnon 6 -1)
 (ps-noteblock-begin)
-(ps-metanote 0 chord-one)
-(ps-metanote 4 chord-two)
-(ps-metanote 6 chord-three)
-(ps-metanote 8 chord-four)
-(ps-metanote 12 chord-two)
+(ps-turnon 6 -1)
+(ps-metanote 0 chord-two)
+(ps-metanote 2 chord-three)
+;(ps-note 0 5 0 4 '(60.0 0.1))
+;(ps-note 0 5 1 4 '(62.0 0.1))
+;(ps-note 0 5 2 4 '(67.0 0.1))
+;(ps-note 0 5 3 4 '(69.0 0.1))
+;(ps-note 0 5 4 4 '(72.0 0.1))
+;(ps-metanote 0 chord-one)
+;(ps-metanote 4 chord-two)
+;(ps-metanote 6 chord-three)
+;(ps-metanote 8 chord-four)
+;(ps-metanote 12 chord-two)
 (ps-noteblock-end)
 
 (define tick (lambda () (display "tick") (newline) ))
