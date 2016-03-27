@@ -26,7 +26,6 @@ static s7_pointer ps_noteblock_end(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_metanote(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args);
 
-
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
     char *out_tbl, char *filename)
 {
@@ -136,16 +135,6 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
     dvalue *val, *next;
     if(tick != 0) {
         s7_call(ps->s7, s7_name_to_value(ps->s7, "run"), s7_nil(ps->s7));
-        //top_of_list(ps);
-        //count = get_voice_count(ps);
-        //sporthlet *spl, *next;
-        //spl = ps->root.next;
-        //for(i = 0; i < count; i++) {
-        //    next = spl->next;
-        //    id = spl->id;
-        //    ps_decrement_clock(ps, id);
-        //    spl = next;
-        //}
         if(ps->tmp.size > 0) {
             ps->events = dvector_merge(&ps->events, &ps->tmp);
             dvector_init(&ps->tmp);
@@ -240,9 +229,9 @@ static SPFLOAT compute_sample(polysporth *ps, int id)
 
 static void ps_turnon_sporthlet(polysporth *ps, int id, int dur)
 {
-//#ifdef DEBUG_MODE
+#ifdef DEBUG_MODE
     fprintf(stderr, "ps_turnon: adding id %d\n", id);
-//#endif
+#endif
     sporthlet *spl = &ps->spl[id];
     if(spl->state == PS_OFF) {
         sporthlet *first = ps->root.next;
@@ -262,25 +251,28 @@ static void ps_turnon_sporthlet(polysporth *ps, int id, int dur)
 
 static void ps_turnoff_sporthlet(polysporth *ps, int id)
 {
-//#ifdef DEBUG_MODE
+#ifdef DEBUG_MODE
     fprintf(stderr, "ps_turnoff: removing id %d, state %d\n", id,
     ps->spl[id].state);
-//#endif
+#endif
     sporthlet *spl = &ps->spl[id];
     if(spl->state == PS_ON) {
         spl->state = PS_OFF;
         sporthlet *prev = spl->prev;
         sporthlet *next = spl->next;
-
         if(is_first_element(ps, id)) {
 #ifdef DEBUG_MODE
-            fprintf(stderr, "removing first element!\n");
+            fprintf(stderr, ">>> removing first element!\n");
 #endif
             ps->root.next = next;
         } else if(is_last_element(ps, id)) {
+#ifdef DEBUG_MODE
+            fprintf(stderr, ">>> removing last element!\n");
+#endif
             prev->next = NULL;
         } else {
             prev->next = next;
+            next->prev = prev;
         }
         ps->out->tbl[id] = 0; 
         spl->next = NULL; 
@@ -364,12 +356,11 @@ static int is_last_element(polysporth *ps, int id)
 
 static void ps_decrement_clock(polysporth *ps, int id)
 {
-//#ifdef DEBUG_MODE
+#ifdef DEBUG_MODE
     fprintf(stderr, "ps_decrement: id is %d\n", id);
-//#endif
+#endif
     sporthlet *spl = &ps->spl[id];
     if(spl->dur < 0) {
-        fprintf(stderr, "id %d is inifite (dur is %d)\n", id, spl->dur);
         return;
     } else if(spl->dur == 0) {
         ps_turnoff_sporthlet(ps, id);
@@ -452,3 +443,4 @@ static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args)
     //tbl[pos] = val;
     return NULL;
 }
+
