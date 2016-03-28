@@ -112,4 +112,4 @@ zitarev
 #
 
 # Build polysporth
-BUILD_POLYSPORTH=1
+# BUILD_POLYSPORTH=1

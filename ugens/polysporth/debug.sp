@@ -2,7 +2,7 @@
 #60 0 'in' tset
 60 120 2 * / dmetro 
 dup 0 "in" tset
-10 "in" "out" "test.scm" polysporth
+9 "in" "out" "test.scm" polysporth
 
 # Keys
 0 "out" tget
@@ -17,7 +17,6 @@ dup 0 "in" tset
 7 "out" tget +
 
 # Lead
-8 "out" tget 
-9 "out" tget + dup dup 3 3 10000 zrev drop 0.2 * + +
+8 "out" tget dup dup 3 3 10000 zrev drop 0.2 * + +
 
 0.9 *

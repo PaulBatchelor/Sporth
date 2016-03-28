@@ -334,7 +334,12 @@ static int find_free_voice(polysporth *ps, int grp_start, int grp_end)
         grp_end = tmp;
     }
     for(i = grp_start; i <= grp_end; i++) {
-        if(ps->spl[i].state == PS_OFF) {
+        /* check if sporthlet is off or is about to be off */
+        if(ps->spl[i].state == PS_OFF || ps->spl[i].dur == 0) {
+            /* turn off sporthlet early */
+            if(ps->spl[i].state == PS_ON) {
+                ps_turnoff_sporthlet(ps, i);
+            }
             return i;
         }
     }

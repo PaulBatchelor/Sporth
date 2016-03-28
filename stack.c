@@ -5,6 +5,7 @@
 
 #include "sporth.h"
 
+#ifdef DEBUG_MODE
 static void print_guts(sporth_stack *stack) 
 {
     int i;
@@ -24,6 +25,8 @@ static void print_guts(sporth_stack *stack)
         }
     }
 }
+#endif
+
 int sporth_stack_push_float(sporth_stack *stack, float val)
 {
     if(stack->error > 0) return SPORTH_NOTOK;

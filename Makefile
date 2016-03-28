@@ -13,18 +13,18 @@ endif
 ifdef BUILD_KONA
 KOBJ=$(shell find $(KONA_PATH) -name "*.o" | egrep -v "\.t\.o|main")
 LIBS+=-ldl -lpthread 
-CFLAGS += -Ikona -DBUILD_KONA 
+CFLAGS += -I$(KONA_PATH)/src -DBUILD_KONA 
 endif
 
 ifdef BUILD_POLYSPORTH
 OBJ += s7.o 
 CFLAGS += -DBUILD_POLYSPORTH
 LIBS += -ldl
+include ugens/polysporth/Makefile
 endif
 
 include ugens/ling/Makefile
 include ugens/poly/Makefile
-include ugens/polysporth/Makefile
 
 BIN += sporth examples/parse examples/user_function util/jack_wrapper util/val \
 	  util/float2bin util/jacksporth
