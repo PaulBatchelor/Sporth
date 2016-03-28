@@ -69,7 +69,7 @@ int plumber_init(plumber_data *plumb)
 {
     plumb->mode = PLUMBER_CREATE;
     plumb->current_pipe = 0;
-    plumb->ftmap = plumb->ft1;
+    plumb->ftmap = plumb->ft_main;
     plumb->pipes= &plumb->main;
     plumb->tmp = &plumb->main;
     plumbing_init(plumb->pipes);
@@ -357,16 +357,16 @@ int plumber_reinit(plumber_data *plumb)
         fprintf(stderr, "compiling to alt\n");
         newpipes = &plumb->alt;
         plumb->current_pipe = 1;
-        plumb->ftmap = plumb->ft2;
-        plumb->ftnew = plumb->ft2;
-        plumb->ftold = plumb->ft1;
+        plumb->ftmap = plumb->ft_alt;
+        plumb->ftnew = plumb->ft_alt;
+        plumb->ftold = plumb->ft_main;
     } else {
         fprintf(stderr, "compiling to main\n");
         newpipes = &plumb->main;
         plumb->current_pipe = 0;
-        plumb->ftmap = plumb->ft1;
-        plumb->ftnew = plumb->ft1;
-        plumb->ftold = plumb->ft2;
+        plumb->ftmap = plumb->ft_main;
+        plumb->ftnew = plumb->ft_main;
+        plumb->ftold = plumb->ft_alt;
     }
 
     plumbing_init(newpipes);

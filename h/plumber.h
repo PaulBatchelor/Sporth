@@ -78,8 +78,8 @@ typedef struct plumber_data {
 
     plumber_ftentry *ftmap;
     plumber_ftentry *ftnew, *ftold;
-    plumber_ftentry ft1[256];
-    plumber_ftentry ft2[256];
+    plumber_ftentry ft_main[256];
+    plumber_ftentry ft_alt[256];
     char delete_ft;
 
     SPFLOAT p[16];
