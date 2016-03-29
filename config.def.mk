@@ -38,7 +38,7 @@ gen_file \
 gen_line \
 gen_padsynth \
 gen_sine \
-gen_sinecomp \
+gen_composite \
 gen_sinesum \
 gen_sporth \
 gen_vals \
