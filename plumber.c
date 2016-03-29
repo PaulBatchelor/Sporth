@@ -69,7 +69,7 @@ int plumber_init(plumber_data *plumb)
 {
     plumb->mode = PLUMBER_CREATE;
     plumb->current_pipe = 0;
-    plumb->ftmap = plumb->ft_main;
+    plumb->ftmap = plumb->main.ft;
     plumb->pipes= &plumb->main;
     plumb->tmp = &plumb->main;
     plumbing_init(plumb->pipes);
@@ -96,6 +96,7 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
     /* swap out the current plumbing */
     plumbing *prev = plumb->pipes;
     plumb->pipes = pipes;
+    plumb->ftmap = pipes->ft;
     for(n = 0; n < pipes->npipes; n++) {
         plumb->next = pipe->next;
         switch(pipe->type) {
@@ -258,6 +259,7 @@ int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len)
 {
     char *tmp;
     float flt = 0;
+    int rc;
     switch(sporth_lexer(out, len)) {
         case SPORTH_FLOAT:
 #ifdef DEBUG_MODE
@@ -281,7 +283,8 @@ int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len)
 #ifdef DEBUG_MODE
             fprintf(stderr, "%s is a function!\n", out);
 #endif
-            if(sporth_exec(&plumb->sporth, out) == PLUMBER_NOTOK) {
+            rc = sporth_exec(&plumb->sporth, out);
+            if(rc == PLUMBER_NOTOK || rc == SPORTH_NOTOK) {
 #ifdef DEBUG_MODE
             fprintf(stderr, "plumber_lexer: error with function %s\n", out);
 #endif
@@ -350,25 +353,34 @@ int plumber_parse(plumber_data *plumb)
     return plumbing_parse(plumb, plumb->pipes);
 }
 
-int plumber_reinit(plumber_data *plumb)
+plumbing *plumbing_choose(plumber_data *plumb, 
+        plumbing *main, plumbing *alt, int *current_pipe)
 {
     plumbing *newpipes;
+
     if(plumb->current_pipe == 0) {
         fprintf(stderr, "compiling to alt\n");
-        newpipes = &plumb->alt;
-        plumb->current_pipe = 1;
-        plumb->ftmap = plumb->ft_alt;
-        plumb->ftnew = plumb->ft_alt;
-        plumb->ftold = plumb->ft_main;
+        newpipes = alt;
+        *current_pipe = 1;
+        plumb->ftmap = alt->ft;
+        plumb->ftnew = alt->ft;
+        plumb->ftold = main->ft;
     } else {
         fprintf(stderr, "compiling to main\n");
-        newpipes = &plumb->main;
-        plumb->current_pipe = 0;
-        plumb->ftmap = plumb->ft_main;
-        plumb->ftnew = plumb->ft_main;
-        plumb->ftold = plumb->ft_alt;
+        newpipes = main;
+        *current_pipe = 0;
+        plumb->ftmap = main->ft;
+        plumb->ftnew = main->ft;
+        plumb->ftold = alt->ft;
     }
 
+    return newpipes;
+}
+
+int plumber_reinit(plumber_data *plumb)
+{
+    plumbing *newpipes = plumbing_choose(plumb, 
+            &plumb->main, &plumb->alt, &plumb->current_pipe);
     plumbing_init(newpipes);
     plumb->tmp = newpipes;
     if(plumb->fp != NULL) fseek(plumb->fp, 0L, SEEK_SET);
@@ -420,14 +432,13 @@ int plumber_swap(plumber_data *plumb, int error)
         if(plumb->current_pipe == 1) {
 #ifdef DEBUG_MODE
             fprintf(stderr, "Reverting to alt\n");
-            plumb->pipes = &plumb->alt;
 #endif
+            plumb->pipes = &plumb->alt;
         } else {
 #ifdef DEBUG_MODE
             fprintf(stderr, "Reverting to main\n");
-            plumb->pipes = &plumb->main;
 #endif
-
+            plumb->pipes = &plumb->main;
         }
         plumb->sp->pos = 0;
     } else {

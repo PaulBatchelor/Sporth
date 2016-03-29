@@ -13,13 +13,14 @@ SPORTH_LAST
 /* Do not remove this line below! It is needed for a script. */
 /* ---- */
 
+/* it just so happens that PLUMBER_OK and SPORTH_OK are the same values */
 enum {
 PLUMBER_CREATE,
 PLUMBER_INIT,
 PLUMBER_COMPUTE,
 PLUMBER_DESTROY,
-PLUMBER_OK,
 PLUMBER_NOTOK,
+PLUMBER_OK,
 PLUMBER_PANIC
 };
 
@@ -58,6 +59,7 @@ typedef struct {
 typedef struct {
     uint32_t npipes;
     int tick;
+    plumber_ftentry ft[256];
     plumber_pipe root;
     plumber_pipe *last;
 } plumbing;
@@ -78,8 +80,6 @@ typedef struct plumber_data {
 
     plumber_ftentry *ftmap;
     plumber_ftentry *ftnew, *ftold;
-    plumber_ftentry ft_main[256];
-    plumber_ftentry ft_alt[256];
     char delete_ft;
 
     SPFLOAT p[16];
@@ -104,6 +104,8 @@ int plumber_parse_string(plumber_data *plumb, char *str);
 
 int plumber_recompile(plumber_data *plumb);
 int plumber_recompile_string(plumber_data *plumb, char *str);
+plumbing *plumbing_choose(plumber_data *plumb, 
+        plumbing *main, plumbing *alt, int *current_pipe);
 int plumber_reinit(plumber_data *plumb);
 int plumber_reparse(plumber_data *plumb);
 int plumber_reparse_string(plumber_data *plumb, char *str);
@@ -135,3 +137,4 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode);
 int plumbing_parse(plumber_data *plumb, plumbing *pipes);
 int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, char *str);
 void plumbing_show_pipes(plumbing *pipes);
+
