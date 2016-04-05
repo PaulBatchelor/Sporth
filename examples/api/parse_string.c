@@ -18,6 +18,7 @@ int main()
     plumber_init(&pd);
     pd.sp = sp;
     plumber_parse_string(&pd, "440 0.1 sine");
+    plumber_show_pipes(&pd);
     plumber_compute(&pd, PLUMBER_INIT);
 
     sp_process(sp, &pd, process);
