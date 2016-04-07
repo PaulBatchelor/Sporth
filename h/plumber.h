@@ -29,6 +29,9 @@ DRIVER_FILE,
 DRIVER_RAW,
 DRIVER_PLOT
 };
+    
+//typedef (int (sporth_stack *, void *)) plumber_func;
+typedef int (* plumber_func) (sporth_stack *, void *) ;
 
 typedef struct plumber_ftbl {
     void *ud;
@@ -52,7 +55,7 @@ typedef struct plumber_pipe {
 } plumber_pipe;
 
 typedef struct {
-    int (*fun)(sporth_stack *, void *);
+    plumber_func fun;
     void *ud;
 } sporth_func_d;
 
