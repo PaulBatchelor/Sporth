@@ -23,6 +23,13 @@ LIBS += -ldl
 include ugens/polysporth/Makefile
 endif
 
+ifdef BUILD_LADSPA
+CFLAGS += -DBUILD_POLYSPORTH -Iugens/ladspa/
+UGENS += ladspa/ladspa
+OBJ += ugens/ladspa/load.o
+LIBS += -ldl
+endif
+
 include ugens/ling/Makefile
 include ugens/poly/Makefile
 
