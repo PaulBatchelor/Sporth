@@ -86,8 +86,17 @@ static int init_ladspa(plumber_data *pd, sporth_stack *stack, sporth_ladspa_d *l
     l->in = malloc(sizeof(SPFLOAT) * ic);
     l->out = malloc(sizeof(SPFLOAT) * oc);
 
-    sp_ftbl_create(pd->sp, &l->argtbl, l->arg_count);
-    plumber_ftmap_add(pd, ftname, l->argtbl);
+    if(plumber_ftmap_search(pd, ftname, &l->argtbl) == PLUMBER_NOTOK) {
+        stack->error++;
+        return PLUMBER_NOTOK;
+    }
+
+    if(l->argtbl->size < l->arg_count) {
+        fprintf(stderr, 
+                "LADSPA: table \"%s\" should have a size of at least %d",
+                ftname, l->arg_count);
+        return PLUMBER_NOTOK;
+    }
 
     ac = 0;
     ic = 0;
