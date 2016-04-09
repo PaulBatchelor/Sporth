@@ -91,7 +91,7 @@ all: $(CHUG)
 
 $(CHUG): $(C_OBJECTS) $(CXX_OBJECTS) 
 ifeq ($(CK_CHUGIN_STATIC),0)
-	$(LD) $(LDFLAGS) -o $@ $^ 
+	$(LD) -o $@ $^ $(LDFLAGS)
 else
 	ar rv $@ $^
 	ranlib $@

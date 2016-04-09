@@ -1,24 +1,8 @@
 CHUGIN_PATH=/usr/local/lib/chuck
 
-# If you're building kona, this is where the kona directory is
-K_PATH=~/playground/kona/kona
-
-# Location of the soundpipe source code
-SP_PATH=~/proj/soundpipe 
-
-SPORTH_O=`find ../ -name "*.o" | grep -v chorth`
-SP_O=`find $(SP_PATH) -name "*.o" `
-
 FLAGS=-D__LINUX_ALSA__ -D__PLATFORM_LINUX__ -I$(CK_SRC_PATH) -fPIC 
-LDFLAGS=-shared -lstdc++ -fPIC -lsndfile -lm $(SPORTH_O) $(SP_O) $(K_O)
-LD=gcc 
+LDFLAGS += -lsporth -lsoundpipe -lstdc++ -fPIC -lsndfile -lm -shared
+LD=ld
 CXX=g++
 
 
-# make linux BUILD_KONA=1
-
-ifdef BUILD_KONA
-LDFLAGS += -lpthread -ldl -lm
-FLAGS += -DBUILD_KONA 
-K_O=`find $(K_PATH) -name "*.o" | egrep -v "\.t\.o"`
-endif
