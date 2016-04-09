@@ -20,6 +20,7 @@ ifdef BUILD_POLYSPORTH
 OBJ += s7.o 
 CFLAGS += -DBUILD_POLYSPORTH
 LIBS += -ldl
+UGENS += polysporth
 include ugens/polysporth/Makefile
 endif
 
