@@ -58,7 +58,7 @@ config.mk: config.def.mk
 	$(CC) $(CFLAGS) -g -c -Ih -I. $< -o $@
 
 ugens/%.o: ugens/%.c
-	$(CC) $(CFLAGS) -g -Ih -c $< -o $@
+	$(CC) $(CFLAGS) -g -Ih -I. -c $< -o $@
 
 util/jack_wrapper: util/jack_wrapper.c
 	$(CC) $< -ljack $(LIBS) -o jack_wrapper -lm
