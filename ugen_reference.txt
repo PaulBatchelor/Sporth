@@ -474,7 +474,7 @@ Output: n/a
 Description: Generate table of zeros
 ---
 Name: tabread
-Args: (f) index, scaled, offset, wrap, (s) ftname
+Args: (f) index, scaled (1: yes, 0: no), offset, wrap, (s) ftname
 Output: f
 Description: read from table with interpolation
 ---

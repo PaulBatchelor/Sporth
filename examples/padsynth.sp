@@ -6,16 +6,16 @@
 'padsynth' 262144 0 p 40 'amps' gen_padsynth
 
 36 mtof 0 p / 'padsynth' tbldur / 0 phasor
-0 0 0 'padsynth' tabread  0 0.1 3 randi * 
+1 0 0 'padsynth' tabread  0 0.1 3 randi * 
 
 60 mtof 0 p / 'padsynth' tbldur / 0 phasor
-0 0 0 'padsynth' tabread  0 0.1 2 randi * 
+1 0 0 'padsynth' tabread  0 0.1 2 randi * 
 
 65 mtof 0 p / 'padsynth' tbldur / 0 phasor
-0 0 0 'padsynth' tabread  0 0.15 1 randi *
+1 0 0 'padsynth' tabread  0 0.15 1 randi *
 
 70 mtof 0 p / 'padsynth' tbldur / 0 phasor
-0 0 0 'padsynth' tabread 0 0.2 0.5 randi * 
+1 0 0 'padsynth' tabread 0 0.2 0.5 randi * 
 
 + + +
 
