@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "sporth.h"
+#include "h/sporth.h"
 #include "ling.h"
 
 #define ENTRY(NAME, FUNC) fl[n].name=NAME;fl[n].func=FUNC;fl[n].ud=NULL; n++;

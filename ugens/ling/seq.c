@@ -2,7 +2,7 @@
 #ifdef DEBUG_MODE
 #include <stdio.h>
 #endif
-#include "sporth.h"
+#include "h/sporth.h"
 #include "ling.h"
 
 int ling_seq_init(ling_seq *seq)

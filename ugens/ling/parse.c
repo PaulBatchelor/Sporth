@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
-#include "sporth.h"
+#include "h/sporth.h"
 #include "ling.h"
 
 enum {

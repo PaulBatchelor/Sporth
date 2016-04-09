@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "sporth.h"
+#include "h/sporth.h"
 #include "ling.h"
 
 int ling_stack_push(ling_stack *stack, uint32_t val)

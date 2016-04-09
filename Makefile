@@ -55,7 +55,7 @@ config.mk: config.def.mk
 	cp config.def.mk config.mk
 
 %.o: %.c h/ugens.h
-	$(CC) $(CFLAGS) -g -c -Ih $< -o $@
+	$(CC) $(CFLAGS) -g -c -Ih -I. $< -o $@
 
 ugens/%.o: ugens/%.c
 	$(CC) $(CFLAGS) -g -Ih -c $< -o $@

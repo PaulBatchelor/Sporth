@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "sporth.h"
+#include "h/sporth.h"
 
 #ifdef DEBUG_MODE
 static void print_guts(sporth_stack *stack) 

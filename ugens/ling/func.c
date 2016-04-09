@@ -2,7 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include "sporth.h"
+#include "h/sporth.h"
 #include "ling.h"
 
 #define LENGTH(x) ((int)(sizeof(x) / sizeof *(x)))

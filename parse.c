@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "sporth.h"
+#include "h/sporth.h"
 
 enum {
     SPACE,
