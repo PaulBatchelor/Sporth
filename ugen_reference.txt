@@ -608,3 +608,8 @@ Args: tblname size filename
 Output: n/a
 Description: render a (mono) sporth file to a table
 ---
+Name: ladspa
+Args: in (f), plugin (s), argbl (s)
+Output: n/a
+Description: load up a loadspa plugin
+---
