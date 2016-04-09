@@ -6,6 +6,8 @@
 #include "ladspa.h"
 #include "utils.h"
 
+#define LADSPA_PORT_GROUP LADSPA_PORT_AUDIO << 1 /* 16 */
+
 typedef struct {
     LADSPA_Descriptor_Function pfDescriptorFunction;
     LADSPA_Handle *handle;
@@ -35,7 +37,7 @@ static void push_outputs(plumber_data *pd, sporth_stack *stack, sporth_ladspa_d 
     }
 }
 
-static int init_ladspa(plumber_data *pd, sporth_stack *stack, sporth_ladspa_d *l, char *plugin, char *ftname)
+static int init_ladspa(plumber_data *pd, sporth_stack *stack, sporth_ladspa_d *l, char *plugin, char *ftname, uint32_t id)
 {
     uint32_t i = 0;
     uint32_t ac = 0, ic = 0, oc = 0;
@@ -55,17 +57,21 @@ static int init_ladspa(plumber_data *pd, sporth_stack *stack, sporth_ladspa_d *l
         return PLUMBER_NOTOK;
     }
 
-    l->psDescriptor = l->pfDescriptorFunction(0);
+    l->psDescriptor = l->pfDescriptorFunction(id);
     l->handle = l->psDescriptor->instantiate(l->psDescriptor, pd->sp->sr);
+    if(l->psDescriptor->activate) {
+        printf("activating...\n");
+        l->psDescriptor->activate(l->handle);
+    }
 
     fprintf(stderr, "Loading LADSPA plugin \"%s\"\n", l->psDescriptor->Label);
 
     for(i = 0; i < l->psDescriptor->PortCount; i++) {
 
         switch(l->psDescriptor->PortDescriptors[i]) {
+            case (LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL | LADSPA_PORT_GROUP):
             case (LADSPA_PORT_INPUT | LADSPA_PORT_CONTROL):
-                fprintf(stderr, "Control %d: %s\n", 
-                        ac, l->psDescriptor->PortNames[i]);
+                fprintf(stderr, "Control %d: %s\n", ac, l->psDescriptor->PortNames[i]);
                 ac++;
                 break;
             case (LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO):
@@ -144,19 +150,21 @@ int sporth_ladspa(sporth_stack *stack, void *ud)
     sporth_ladspa_d *ladspa;
     char *argtbl;
     char *plugin;
+    uint32_t id;
 
     switch(pd->mode){
         case PLUMBER_CREATE:
             ladspa = malloc(sizeof(sporth_ladspa_d));
             plumber_add_ugen(pd, SPORTH_LADSPA, ladspa);
-            if(sporth_check_args(stack, "ss") != SPORTH_OK) {
+            if(sporth_check_args(stack, "sfs") != SPORTH_OK) {
                 stack->error++;
                 fprintf(stderr,"Invalid arguments for LADSPA.\n");
                 return PLUMBER_NOTOK;
             }
             argtbl = sporth_stack_pop_string(stack);
+            id = (uint32_t) sporth_stack_pop_float(stack);
             plugin = sporth_stack_pop_string(stack);
-            if(init_ladspa(pd, stack, ladspa, plugin, argtbl) == PLUMBER_NOTOK) {
+            if(init_ladspa(pd, stack, ladspa, plugin, argtbl, id) == PLUMBER_NOTOK) {
                 free(argtbl);
                 free(plugin);
                 return PLUMBER_NOTOK;
@@ -169,6 +177,7 @@ int sporth_ladspa(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
             ladspa = pd->last->ud;
             argtbl = sporth_stack_pop_string(stack);
+            id = (uint32_t) sporth_stack_pop_float(stack);
             plugin = sporth_stack_pop_string(stack);
             free(argtbl);
             free(plugin);
@@ -178,6 +187,7 @@ int sporth_ladspa(sporth_stack *stack, void *ud)
 
         case PLUMBER_COMPUTE:
             ladspa = pd->last->ud;
+            id = (uint32_t) sporth_stack_pop_float(stack);
             pop_inputs(pd, stack, ladspa);
             ladspa->psDescriptor->run(ladspa->handle, 1);
             push_outputs(pd, stack, ladspa);
