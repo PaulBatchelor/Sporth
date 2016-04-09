@@ -25,7 +25,7 @@ include ugens/polysporth/Makefile
 endif
 
 ifdef BUILD_LADSPA
-CFLAGS += -DBUILD_POLYSPORTH -Iugens/ladspa/
+CFLAGS += -DBUILD_LADSPA -Iugens/ladspa/
 UGENS += ladspa/ladspa
 OBJ += ugens/ladspa/load.o
 LIBS += -ldl

@@ -64,6 +64,9 @@ SPORTH_UGEN("jitter", sporth_jitter, SPORTH_JITTER)
 SPORTH_UGEN("kona", sporth_kona, SPORTH_KONA)
 SPORTH_UGEN("line", sporth_line, SPORTH_LINE)
 SPORTH_UGEN("ling", sporth_ling, SPORTH_LING)
+#ifdef BUILD_LADSPA
+SPORTH_UGEN("ladspa", sporth_ladspa, SPORTH_LADSPA)
+#endif
 SPORTH_UGEN("loadfile", sporth_loadfile, SPORTH_LOADFILE)
 SPORTH_UGEN("log", sporth_log, SPORTH_LOG)
 SPORTH_UGEN("log10", sporth_log10, SPORTH_LOG10)
@@ -93,7 +96,7 @@ SPORTH_UGEN("pinknoise", sporth_pinknoise, SPORTH_PINKNOISE)
 SPORTH_UGEN("pluck", sporth_pluck, SPORTH_PLUCK)
 SPORTH_UGEN("poly", sporth_poly, SPORTH_POLY)
 SPORTH_UGEN("polyget", sporth_polyget, SPORTH_POLYGET)
-#ifdef BULID_POLYSPORTh
+#ifdef BULID_POLYSPORTH
 SPORTH_UGEN("polysporth", sporth_polysporth, SPORTH_POLYSPORTH)
 #endif
 SPORTH_UGEN("port", sporth_port, SPORTH_PORT)
