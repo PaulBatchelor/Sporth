@@ -93,7 +93,9 @@ SPORTH_UGEN("pinknoise", sporth_pinknoise, SPORTH_PINKNOISE)
 SPORTH_UGEN("pluck", sporth_pluck, SPORTH_PLUCK)
 SPORTH_UGEN("poly", sporth_poly, SPORTH_POLY)
 SPORTH_UGEN("polyget", sporth_polyget, SPORTH_POLYGET)
+#ifdef BULID_POLYSPORTh
 SPORTH_UGEN("polysporth", sporth_polysporth, SPORTH_POLYSPORTH)
+#endif
 SPORTH_UGEN("port", sporth_port, SPORTH_PORT)
 SPORTH_UGEN("pos", sporth_pos, SPORTH_POS)
 SPORTH_UGEN("prop", sporth_prop, SPORTH_PROP)
