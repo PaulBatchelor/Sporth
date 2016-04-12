@@ -3,6 +3,9 @@
 #include <string.h>
 #include <dlfcn.h>
 #include "plumber.h"
+
+
+#ifdef BUILD_LADSPA
 #include "ladspa.h"
 #include "utils.h"
 
@@ -60,7 +63,6 @@ static int init_ladspa(plumber_data *pd, sporth_stack *stack, sporth_ladspa_d *l
     l->psDescriptor = l->pfDescriptorFunction(id);
     l->handle = l->psDescriptor->instantiate(l->psDescriptor, pd->sp->sr);
     if(l->psDescriptor->activate) {
-        printf("activating...\n");
         l->psDescriptor->activate(l->handle);
     }
 
@@ -143,9 +145,11 @@ static void clean_ladspa(sporth_ladspa_d *l)
     free(l->out);
     free(l->in);
 }
+#endif
 
 int sporth_ladspa(sporth_stack *stack, void *ud)
 {
+#ifdef BUILD_LADSPA
     plumber_data *pd = ud;
     sporth_ladspa_d *ladspa;
     char *argtbl;
@@ -203,4 +207,8 @@ int sporth_ladspa(sporth_stack *stack, void *ud)
             break;
     }
     return PLUMBER_OK;
+#else
+    return PLUMBER_NOTOK;
+#endif
+
 }
