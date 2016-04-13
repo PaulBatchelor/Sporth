@@ -20,13 +20,13 @@ ifdef BUILD_POLYSPORTH
 OBJ += s7.o 
 CFLAGS += -DBUILD_POLYSPORTH
 LIBS += -ldl
-UGENS += polysporth
+#UGENS += polysporth
 include ugens/polysporth/Makefile
 endif
 
 ifdef BUILD_LADSPA
 CFLAGS += -DBUILD_LADSPA -Iugens/ladspa/
-UGENS += ladspa/ladspa
+#UGENS += ladspa/ladspa
 OBJ += ugens/ladspa/load.o
 LIBS += -ldl
 endif

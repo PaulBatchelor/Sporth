@@ -34,8 +34,7 @@ LINUXINCLUDE =  -I../../src -I $(SP_PATH)/h
 
 .c.pd_linux:
 	cc $(LINUXCFLAGS) $(LINUXINCLUDE) -o $*.o -c $*.c
-	#ld -shared -o $*.pd_linux $*.o $(SP_O) $(SPORTH_O) $(K_) -lc -lm -lsndfile
-	ld -shared -o $*.pd_linux $*.o $(SP_O) $(SPORTH_O) $(K_O) -lc -lm -lsndfile
+	ld -shared -o $*.pd_linux $*.o $(SP_O) $(SPORTH_O) $(K_) -lc -lm -lsndfile
 	strip --strip-unneeded $*.pd_linux
 	rm $*.o
 

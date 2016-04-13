@@ -1,5 +1,5 @@
 #include "soundpipe.h"
-#include "../tmp.h"
+#include "sporth.h"
 #include "m_pd.h"
 #ifdef NT
 #pragma warning( disable : 4244 )

@@ -55,10 +55,11 @@ int sporth_tblrec(sporth_stack *stack, void *ud)
             trig = sporth_stack_pop_float(stack);
             td->val = sporth_stack_pop_float(stack);
 
-            if(trig != 0) {
+            if(trig > 0) {
                 if(td->record == 1) {
                     td->record = 0;
                 } else {
+                    printf("we are recording\n");
                     td->record = 1;
                     td->index = 0;
                     memset(td->ft->tbl, 0, sizeof(SPFLOAT) * td->ft->size);

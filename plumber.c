@@ -59,7 +59,7 @@ int sporth_f_default(sporth_stack *stack, void *ud)
 
 int plumbing_init(plumbing *pipes)
 {
-    pipes->tick = 0;
+    pipes->tick = 1;
     pipes->last = &pipes->root;
     pipes->npipes = 0;
     return PLUMBER_OK;
