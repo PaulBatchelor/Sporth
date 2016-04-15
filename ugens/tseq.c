@@ -69,7 +69,6 @@ int sporth_tseq(sporth_stack *stack, void *ud)
 #ifdef DEBUG_MODE
             fprintf(stderr, "Destroying tseq\n");
 #endif 
-            fprintf(stderr, "Destroying tseq\n");
             tseq = pd->last->ud;
             sp_tseq_destroy(&tseq);
             break;
