@@ -519,11 +519,17 @@ int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
 #ifdef DEBUG_MODE
     fprintf(stderr, "ftmap_add: Adding new table %s\n", str);
 #endif
+    plumber_ftmap_add_userdata(plumb, str, (void *)ft);
+    return PLUMBER_OK;
+}
+
+int plumber_ftmap_add_userdata(plumber_data *plumb, const char *str, void *ud)
+{
     uint32_t pos = sporth_hash(str);
     plumber_ftentry *entry = &plumb->ftmap[pos];
     entry->nftbl++;
     plumber_ftbl *new = malloc(sizeof(plumber_ftbl));
-    new->ud = (void *)ft;
+    new->ud = ud;
     new->type = 1;
     new->to_delete = plumb->delete_ft;
     new->name = malloc(sizeof(char) * strlen(str) + 1);
@@ -534,6 +540,14 @@ int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
 }
 
 int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
+{
+    void *ud;
+    int rc = plumber_ftmap_search_userdata(plumb, str, &ud);
+    *ft = (sp_ftbl *)ud;
+    return rc;
+}
+
+int plumber_ftmap_search_userdata(plumber_data *plumb, const char *str, void **ud)
 {
     uint32_t pos = sporth_hash(str);
 
@@ -550,7 +564,7 @@ int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
     fprintf(stderr, "ftmap_search: comparing %s with %s\n", str, ftbl->name);
 #endif
         if(!strcmp(str, ftbl->name)){
-            *ft = (sp_ftbl *)ftbl->ud;
+            *ud = ftbl->ud;
             return PLUMBER_OK;
         }
         ftbl = next;

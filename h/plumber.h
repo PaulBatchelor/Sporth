@@ -123,7 +123,9 @@ int plumber_error(plumber_data *plumb, const char *str);
 
 int plumber_ftmap_init(plumber_data *plumb);
 int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft);
+int plumber_ftmap_add_userdata(plumber_data *plumb, const char *str, void *ud);
 int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft);
+int plumber_ftmap_search_userdata(plumber_data *plumb, const char *str, void **ud);
 int plumber_ftmap_destroy(plumber_data *plumb);
 int plumber_ftmap_delete(plumber_data *plumb, char mode);
 plumbing * plumber_get_pipes(plumber_data *plumb);
