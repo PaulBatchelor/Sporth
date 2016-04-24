@@ -115,6 +115,7 @@ int sporth_metatable_add(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
             pos = (int)sporth_stack_pop_float(stack);
             metatable = sporth_stack_pop_string(stack);
+            table = sporth_stack_pop_string(stack);
             free(metatable);
             free(table);
             break;
@@ -180,6 +181,7 @@ int sporth_metatable_copy(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
             pos = (int)sporth_stack_pop_float(stack);
             metatable = sporth_stack_pop_string(stack);
+            table = sporth_stack_pop_string(stack);
             free(metatable);
             free(table);
             break;
