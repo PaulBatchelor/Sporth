@@ -611,5 +611,15 @@ Description: render a (mono) sporth file to a table
 Name: ladspa
 Args: in (f), plugin (s), argbl (s)
 Output: n/a
-Description: load up a loadspa plugin
+Description: load up a ladspa plugin
+---
+Name: loadfile
+Args: table name (s), file name (s)
+Output: n/a
+Description: load a (mono) audio file into a table
+---
+Name: paulstretch
+Args: window size (F), stretch (F), tbl (s)
+Output: f
+Description: Paulstretch algorithm
 ---

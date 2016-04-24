@@ -46,6 +46,7 @@ in \
 jcrev \
 jitter \
 kona \
+ladspa/ladspa \
 line \
 ling \
 loadfile \
@@ -62,10 +63,12 @@ osc \
 oscmorph \
 p \
 pan \
+paulstretch \
 phasor \
 pinknoise \
 pluck \
 poly \
+polysporth \
 port \
 prop \
 randh \
