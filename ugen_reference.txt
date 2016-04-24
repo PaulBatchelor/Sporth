@@ -623,3 +623,18 @@ Args: window size (F), stretch (F), tbl (s)
 Output: f
 Description: Paulstretch algorithm
 ---
+Name: metatable_create
+Args: name (s), length (F)
+Output: n/a
+Description: create metatable that holds a number of tables
+---
+Name: metatable_add
+Args: name (s), metatable (s), position 
+Output: n/a
+Description: add ftable to position in metatable
+---
+Name: metatable_copy
+Args: name (s), metatable (s), position 
+Output: n/a
+Description: create a new ftable which shares the data at a metatable position
+---
