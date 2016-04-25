@@ -62,7 +62,6 @@ typedef struct {
 typedef struct {
     uint32_t npipes;
     int tick;
-    plumber_ftentry ft[256];
     plumber_pipe root;
     plumber_pipe *last;
 } plumbing;
@@ -81,6 +80,8 @@ typedef struct plumber_data {
     int current_pipe;
     plumbing main, alt;
 
+    plumber_ftentry ft1[256];
+    plumber_ftentry ft2[256];
     plumber_ftentry *ftmap;
     plumber_ftentry *ftnew, *ftold;
     char delete_ft;

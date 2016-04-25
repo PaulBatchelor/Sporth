@@ -104,13 +104,13 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
 
 void ps_clean(polysporth *ps)
 {
-#ifdef DEBUG_MODE
+#ifdef DEBUG_POLYSPORTH
     fprintf(stderr, "--- PS CLEAN ---\n");
 #endif
     int i;
     for(i = 0; i < ps->out->size; i++) {
         if(ps->spl[i].state != PS_NULL) {
-#ifdef DEBUG_MODE
+#ifdef DEBUG_POLYSPORTH
             fprintf(stderr, "\tdestroying %d\n", i);
 #endif
             plumbing_compute(&ps->pd, &ps->spl[i].pipes, PLUMBER_DESTROY);
@@ -141,9 +141,9 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
         }
         while(dvector_pop(&ps->events, &val)){
             if(val->type == PS_NOTE) {
-#ifdef DEBUG_MODE
-                fprintf(stderr, "\t ### Time: %d Event: %d Dur: %d\n", 
-                    ps->time, i, val->dur);
+#ifdef DEBUG_POLYSPORTH
+                fprintf(stderr, "\t ### Time: %d Dur: %d\n", 
+                    ps->time, val->dur);
 #endif
                 id = find_free_voice(ps, val->grp_start, val->grp_end);
                 if(id >= 0) {
@@ -153,7 +153,7 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
                         ps->spl[id].args[i] = val->args[i];
                     } 
                 } else {
-                    // TODO: does this need to be handled better?
+                    /* TODO: does this need to be handled better? */
                     fprintf(stderr, "No free voices left!\n");
                 }
                 if(val->nargs > 0) {
@@ -229,7 +229,7 @@ static SPFLOAT compute_sample(polysporth *ps, int id)
 
 static void ps_turnon_sporthlet(polysporth *ps, int id, int dur)
 {
-#ifdef DEBUG_MODE
+#ifdef DEBUG_POLYSPORTH
     fprintf(stderr, "ps_turnon: adding id %d\n", id);
 #endif
     sporthlet *spl = &ps->spl[id];
@@ -251,7 +251,7 @@ static void ps_turnon_sporthlet(polysporth *ps, int id, int dur)
 
 static void ps_turnoff_sporthlet(polysporth *ps, int id)
 {
-#ifdef DEBUG_MODE
+#ifdef DEBUG_POLYSPORTH
     fprintf(stderr, "ps_turnoff: removing id %d, state %d\n", id,
     ps->spl[id].state);
 #endif
@@ -261,12 +261,12 @@ static void ps_turnoff_sporthlet(polysporth *ps, int id)
         sporthlet *prev = spl->prev;
         sporthlet *next = spl->next;
         if(is_first_element(ps, id)) {
-#ifdef DEBUG_MODE
+#ifdef DEBUG_POLYSPORTH
             fprintf(stderr, ">>> removing first element!\n");
 #endif
             ps->root.next = next;
         } else if(is_last_element(ps, id)) {
-#ifdef DEBUG_MODE
+#ifdef DEBUG_POLYSPORTH
             fprintf(stderr, ">>> removing last element!\n");
 #endif
             prev->next = NULL;
@@ -361,9 +361,11 @@ static int is_last_element(polysporth *ps, int id)
 
 static void ps_decrement_clock(polysporth *ps, int id)
 {
-#ifdef DEBUG_MODE
+/*
+#ifdef DEBUG_POLYSPORTH
     fprintf(stderr, "ps_decrement: id is %d\n", id);
 #endif
+*/
     sporthlet *spl = &ps->spl[id];
     if(spl->dur < 0) {
         return;
@@ -376,6 +378,9 @@ static void ps_decrement_clock(polysporth *ps, int id)
 
 static s7_pointer ps_noteblock_begin(s7_scheme *sc, s7_pointer args)
 {
+#ifdef DEBUG_POLYSPORTH
+    fprintf(stderr, "--- NOTEBLOCK BEGIN ---\n");
+#endif
     polysporth *ps = (polysporth *)s7_get_ud(sc);
     dvector_init(&ps->tmp);
     if(ps->noteblock == PS_OFF) {
@@ -389,6 +394,9 @@ static s7_pointer ps_noteblock_begin(s7_scheme *sc, s7_pointer args)
 
 static s7_pointer ps_note(s7_scheme *sc, s7_pointer args)
 {
+#ifdef DEBUG_POLYSPORTH
+            fprintf(stderr, "ps-note: adding value\n");
+#endif
     polysporth *ps = (polysporth *)s7_get_ud(sc);
     int grp_start = s7_integer(s7_list_ref(sc, args, 0));
     int grp_end = s7_integer(s7_list_ref(sc, args, 1));
@@ -403,7 +411,9 @@ static s7_pointer ps_note(s7_scheme *sc, s7_pointer args)
         argtbl = malloc(sizeof(SPFLOAT) * len);
         for(i = 0; i < len; i++) {
             argtbl[i] = (SPFLOAT) s7_real(s7_list_ref(sc, tbl, i));
-            //printf("--- %g\n", argtbl[i]);
+#ifdef DEBUG_POLYSPORTH
+            fprintf(stderr, "--- %g\n", argtbl[i]);
+#endif
         }
     }
     dvector_append(&ps->tmp, grp_start, grp_end, start, dur, argtbl, len);
@@ -421,7 +431,7 @@ static s7_pointer ps_metanote(s7_scheme *sc, s7_pointer args)
 
 static s7_pointer ps_noteblock_end(s7_scheme *sc, s7_pointer args)
 {
-#ifdef DEBUG_MODE
+#ifdef DEBUG_POLYSPORTH
     fprintf(stderr, "--- NOTEBLOCK END ---\n");
 #endif
     polysporth *ps = (polysporth *)s7_get_ud(sc);

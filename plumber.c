@@ -69,7 +69,7 @@ int plumber_init(plumber_data *plumb)
 {
     plumb->mode = PLUMBER_CREATE;
     plumb->current_pipe = 0;
-    plumb->ftmap = plumb->main.ft;
+    plumb->ftmap = plumb->ft1;
     plumb->pipes= &plumb->main;
     plumb->tmp = &plumb->main;
     plumbing_init(plumb->pipes);
@@ -96,7 +96,6 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
     /* swap out the current plumbing */
     plumbing *prev = plumb->pipes;
     plumb->pipes = pipes;
-    plumb->ftmap = pipes->ft;
     for(n = 0; n < pipes->npipes; n++) {
         plumb->next = pipe->next;
         switch(pipe->type) {
@@ -362,16 +361,16 @@ plumbing *plumbing_choose(plumber_data *plumb,
         fprintf(stderr, "compiling to alt\n");
         newpipes = alt;
         *current_pipe = 1;
-        plumb->ftmap = alt->ft;
-        plumb->ftnew = alt->ft;
-        plumb->ftold = main->ft;
+        plumb->ftmap = plumb->ft2;
+        plumb->ftnew = plumb->ft2;
+        plumb->ftold = plumb->ft1;
     } else {
         fprintf(stderr, "compiling to main\n");
         newpipes = main;
         *current_pipe = 0;
-        plumb->ftmap = main->ft;
-        plumb->ftnew = main->ft;
-        plumb->ftold = alt->ft;
+        plumb->ftmap = plumb->ft1;
+        plumb->ftnew = plumb->ft1;
+        plumb->ftold = plumb->ft2;
     }
 
     return newpipes;
