@@ -51,7 +51,7 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     
     /* add input table to internal plumber instance with same name*/
     plumber_ftmap_delete(&ps->pd, 0);
-    plumber_ftmap_add(&ps->pd, in_tbl, ps->in);
+    plumber_ftmap_add_userdata(&ps->pd, in_tbl, ps->in);
     plumber_ftmap_delete(&ps->pd, 1);
 
     /* create arg table */
