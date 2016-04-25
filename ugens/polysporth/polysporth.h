@@ -69,7 +69,7 @@ typedef struct polysporth {
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
     char *out_tbl, char *filename);
 void ps_clean(polysporth *ps);
-void ps_compute(polysporth *ps, SPFLOAT tick);
+void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock);
 void dvector_print(dvector *dv);
 void dvector_append_value(dvector *dv, dvalue *new);
 void dvector_append(dvector *dv, 

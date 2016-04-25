@@ -15,6 +15,7 @@ int sporth_polysporth(sporth_stack *stack, void *ud)
     char *out_tbl;
     char *filename;
     int ninstances;
+    SPFLOAT clock;
     SPFLOAT tick;
 
     switch(pd->mode) {
@@ -27,7 +28,7 @@ int sporth_polysporth(sporth_stack *stack, void *ud)
             ps = malloc(sizeof(polysporth));
             plumber_add_ugen(pd, SPORTH_POLYSPORTH, ps);
 
-            if(sporth_check_args(stack, "ffsss") != SPORTH_OK) {
+            if(sporth_check_args(stack, "fffsss") != SPORTH_OK) {
                 fprintf(stderr, "polysporth: not enough/wrong arguments\n");
                 return PLUMBER_NOTOK;
             }
@@ -36,6 +37,7 @@ int sporth_polysporth(sporth_stack *stack, void *ud)
             out_tbl = sporth_stack_pop_string(stack);
             in_tbl = sporth_stack_pop_string(stack);
             ninstances = (int) sporth_stack_pop_float(stack);
+            clock = sporth_stack_pop_float(stack);
             tick = sporth_stack_pop_float(stack);
 
             if(ps_init(pd, stack, ps, ninstances, in_tbl, out_tbl, filename) == PLUMBER_NOTOK) {
@@ -56,6 +58,7 @@ int sporth_polysporth(sporth_stack *stack, void *ud)
             out_tbl = sporth_stack_pop_string(stack);
             in_tbl = sporth_stack_pop_string(stack);
             ninstances = (int) sporth_stack_pop_float(stack);
+            clock = sporth_stack_pop_float(stack);
             tick = sporth_stack_pop_float(stack);
             
             free(filename);
@@ -67,9 +70,10 @@ int sporth_polysporth(sporth_stack *stack, void *ud)
 
         case PLUMBER_COMPUTE:
             ninstances = (int) sporth_stack_pop_float(stack);
+            clock = sporth_stack_pop_float(stack);
             tick = sporth_stack_pop_float(stack);
             ps = pd->last->ud;
-            ps_compute(ps, tick);
+            ps_compute(ps, tick, clock);
 
             break;
         case PLUMBER_DESTROY:

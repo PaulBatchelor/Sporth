@@ -125,7 +125,7 @@ void ps_clean(polysporth *ps)
     free(ps->spl);
 }
 
-void ps_compute(polysporth *ps, SPFLOAT tick)
+void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
 {
     SPFLOAT *out = ps->out->tbl;
     int i;
@@ -135,6 +135,9 @@ void ps_compute(polysporth *ps, SPFLOAT tick)
     dvalue *val, *next;
     if(tick != 0) {
         s7_call(ps->s7, s7_name_to_value(ps->s7, "run"), s7_nil(ps->s7));
+    }
+
+    if(clock != 0) {
         if(ps->tmp.size > 0) {
             ps->events = dvector_merge(&ps->events, &ps->tmp);
             dvector_init(&ps->tmp);
