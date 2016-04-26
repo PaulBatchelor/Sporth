@@ -67,7 +67,6 @@ paulstretch \
 phasor \
 pinknoise \
 pluck \
-poly \
 polysporth \
 port \
 prop \
