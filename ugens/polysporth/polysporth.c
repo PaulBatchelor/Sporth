@@ -131,8 +131,7 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
     int i;
     int id;
     int count;
-    int nevents;
-    dvalue *val, *next;
+    dvalue *val;
     if(tick != 0) {
         s7_call(ps->s7, s7_name_to_value(ps->s7, "run"), s7_nil(ps->s7));
     }

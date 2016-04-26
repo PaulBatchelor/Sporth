@@ -142,7 +142,7 @@ int dvector_pop(dvector *dvect, dvalue **start)
 {
     dvalue *val = dvect->root.next, *next;
     *start = dvect->root.next;
-    int run = 1;
+    //int run = 1;
     if(dvect->size <= 0) return 0;
     //while(run != 0 && dvect->size != 0) {
         if(val->delta == 0) {
@@ -153,7 +153,7 @@ int dvector_pop(dvector *dvect, dvalue **start)
             return 1;
         } else {
             val->delta--;
-            run = 0;
+            //run = 0;
             return 0;
         }
     //}
