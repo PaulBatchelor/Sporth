@@ -96,6 +96,9 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
     /* swap out the current plumbing */
     plumbing *prev = plumb->pipes;
     plumb->pipes = pipes;
+    if(mode == PLUMBER_DESTROY) {
+        sporth_stack_init(&plumb->sporth.stack);
+    }
     for(n = 0; n < pipes->npipes; n++) {
         plumb->next = pipe->next;
         switch(pipe->type) {
