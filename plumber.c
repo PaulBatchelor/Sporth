@@ -582,32 +582,6 @@ int plumber_ftmap_search_userdata(plumber_data *plumb, const char *str, void **u
     return PLUMBER_NOTOK;
 }
 
-int plumber_ftmap_get_address(plumber_data *plumb, const char *str, void ***ud)
-{
-    uint32_t pos = sporth_hash(str);
-
-    uint32_t n;
-    plumber_ftentry *entry = &plumb->ftmap[pos];
-    plumber_ftbl *ftbl = entry->root.next;
-    plumber_ftbl *next;
-#ifdef DEBUG_MODE
-    fprintf(stderr, "ftmap_search: looking at %d ftbls\n", entry->nftbl);
-#endif
-    for(n = 0; n < entry->nftbl; n++) {
-        next = ftbl->next;
-#ifdef DEBUG_MODE
-    fprintf(stderr, "ftmap_search: comparing %s with %s\n", str, ftbl->name);
-#endif
-        if(!strcmp(str, ftbl->name)){
-            *ud = ftbl->ud;
-            return PLUMBER_OK;
-        }
-        ftbl = next;
-    }
-    fprintf(stderr,"Could not find an ftable match for %s.\n", str);
-    return PLUMBER_NOTOK;
-}
-
 int plumber_ftmap_delete(plumber_data *plumb, char mode)
 {
     plumb->delete_ft = mode;

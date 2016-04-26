@@ -54,7 +54,6 @@ lpf18 \
 maygate \
 maytrig \
 metro \
-metatable \
 mincer \
 mode \
 moogladder \
