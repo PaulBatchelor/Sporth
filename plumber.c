@@ -287,6 +287,7 @@ int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len)
 #endif
             rc = sporth_exec(&plumb->sporth, out);
             if(rc == PLUMBER_NOTOK || rc == SPORTH_NOTOK) {
+                fprintf(stderr, "%s returned an error.\n", out);
 #ifdef DEBUG_MODE
             fprintf(stderr, "plumber_lexer: error with function %s\n", out);
 #endif

@@ -33,6 +33,7 @@ f \
 fm \
 fof \
 fog \
+ftsum \
 gbuzz \
 gen_file \
 gen_line \

@@ -638,3 +638,8 @@ Args: name (s), metatable (s), position
 Output: n/a
 Description: create a new ftable which shares the data at a metatable position
 ---
+Name: ftsum
+Args: start (f), end (f), tbl (s)
+Output: f
+Description: sum a range of ftable values (inclusive). built for polysporth.
+---
