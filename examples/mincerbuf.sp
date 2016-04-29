@@ -4,8 +4,11 @@
 # Create a sequence
 'seq' '0 2 7 11 14 4 2' gen_vals
 
+# tick can only be used once in a sporth patch, so put it in a p-register
+tick 0 pset
+
 # our maygate clock with a guaranteed start
-tick 1 metro 0.7 maytrig + 
+0 p 1 metro 0.7 maytrig + 
 # duplicate the clock signal for tseq and pluck
 dup
 
@@ -22,7 +25,7 @@ dup 0.6 0.75 delay 1000 buthp 0.7 * +
 dup dup 10 10 8000 zrev 0.5 * drop +
 
 # duplicate our entire signal and record it in buffer
-dup tick 'buf' tblrec 
+dup 0 p 'buf' tblrec 
 
 # mincer object shuffles through recording buffer
 0 'buf' tbldur 10 randi 1 1 'buf' mincer 
