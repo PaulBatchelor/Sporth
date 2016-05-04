@@ -1,3 +1,5 @@
+(load "ps.scm")
+
 (define meta "
 'saw' 4096 '0 1 4096 -1' gen_line
 'sine' 4096 gen_sine
@@ -11,9 +13,6 @@
 0 p 0.1 1 0.1 tenv * ")
 
 (define ins #(1 3))
-
-(define nt (lambda (i start dur args) 
-    (ps-note (vector-ref i 0) (vector-ref i 1) start dur args)))
 
 (ps-eval 0 meta)
 

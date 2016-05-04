@@ -25,6 +25,7 @@ static s7_pointer ps_note(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_noteblock_end(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_metanote(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_set_release(s7_scheme *sc, s7_pointer args);
 
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
     char *out_tbl, char *filename)
@@ -83,6 +84,9 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     /* set clock to 0 */
     ps->time = 0;
 
+    /* set release time (in ticks) to 0 by default */
+    ps->reltime = 0;
+
     /* set block boolean to off */
     ps->noteblock = PS_OFF;
 
@@ -96,6 +100,7 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     s7_define_function(ps->s7, "ps-noteblock-end", ps_noteblock_end, 0, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-metanote", ps_metanote, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-tset", ps_tset, 2, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-set-release", ps_set_release, 1, 0, false, NULL);
     s7_set_ud(ps->s7, (void *)ps);
     s7_load(ps->s7, filename);
 
@@ -404,7 +409,8 @@ static s7_pointer ps_note(s7_scheme *sc, s7_pointer args)
     int grp_end = s7_integer(s7_list_ref(sc, args, 1));
     int start = s7_integer(s7_list_ref(sc, args, 2));
     int dur = s7_integer(s7_list_ref(sc, args, 3));
-
+    /* add release value to duration */ 
+    dur += ps->reltime;
     int len = s7_list_length(sc, (s7_list_ref(sc, args, 4)));
     SPFLOAT *argtbl = NULL;
     s7_pointer tbl = s7_list_ref(sc, args, 4);
@@ -461,3 +467,10 @@ static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args)
     return NULL;
 }
 
+static s7_pointer ps_set_release(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    int release = s7_integer(s7_list_ref(sc, args, 0));
+    ps->reltime = release;
+    return s7_nil(sc);
+}

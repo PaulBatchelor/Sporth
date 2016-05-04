@@ -50,6 +50,7 @@ typedef struct polysporth {
     sporthlet *spl;
     int nvoices;
     uint32_t time;
+    uint32_t reltime;
     sp_ftbl *in;
     sp_ftbl *out;
     /* linked list */
