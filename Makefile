@@ -19,7 +19,7 @@ endif
 ifdef BUILD_POLYSPORTH
 OBJ += s7.o 
 CFLAGS += -DBUILD_POLYSPORTH
-LIBS += -ldl
+LIBS += -ldl -Wl,-export-dynamic
 #UGENS += polysporth
 include ugens/polysporth/Makefile
 endif

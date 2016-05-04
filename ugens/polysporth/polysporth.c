@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <dlfcn.h>
 #include "plumber.h"
 #include "polysporth.h"
 
@@ -26,6 +27,8 @@ static s7_pointer ps_noteblock_end(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_metanote(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_set_release(s7_scheme *sc, s7_pointer args);
+static s7_pointer cload(s7_scheme *sc, s7_pointer args);
+static void *library = NULL;
 
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
     char *out_tbl, char *filename)
@@ -101,6 +104,7 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     s7_define_function(ps->s7, "ps-metanote", ps_metanote, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-tset", ps_tset, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-set-release", ps_set_release, 1, 0, false, NULL);
+    s7_define_function(ps->s7, "cload", cload, 2, 0, false, NULL);
     s7_set_ud(ps->s7, (void *)ps);
     s7_load(ps->s7, filename);
 
@@ -473,4 +477,26 @@ static s7_pointer ps_set_release(s7_scheme *sc, s7_pointer args)
     int release = s7_integer(s7_list_ref(sc, args, 0));
     ps->reltime = release;
     return s7_nil(sc);
+}
+
+static s7_pointer cload(s7_scheme *sc, s7_pointer args)
+{
+  /* cload loads a shared library */
+  //#define CLOAD_HELP "(cload so-file-name) loads the module"
+  library = dlopen(s7_string(s7_car(args)), RTLD_LAZY);
+  if (library)
+    {
+      /* call our init func to define add-1 in s7 */
+      void *init_func;
+      init_func = dlsym(library, s7_string(s7_cadr(args)));
+      if (init_func)
+	{
+	  typedef void *(*dl_func)(s7_scheme *sc);
+	  ((dl_func)init_func)(sc);  /* call the initialization function (init_ex above) */
+	  return(s7_t(sc));
+	}
+    }
+  return(s7_error(sc, s7_make_symbol(sc, "load-error"), 
+		      s7_list(sc, 2, s7_make_string(sc, "loader error: ~S"), 
+			             s7_make_string(sc, dlerror()))));
 }
