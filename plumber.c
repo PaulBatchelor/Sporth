@@ -23,6 +23,13 @@ enum {
     LEX_ERROR
 };
 
+enum {
+    DRIVER_FILE,
+    DRIVER_RAW,
+    DRIVER_PLOT,
+    DRIVER_NULL
+};
+
 int sporth_f_default(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
@@ -733,11 +740,14 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 }
                 break;
             case 'h':
-               fprintf(stderr,"Usage: sporth input.sp\n");
+                fprintf(stderr,"Usage: sporth input.sp\n");
                 exit(1);
                 break;
+            case 'n':
+                driver = DRIVER_NULL;
+                break;
             default:
-               fprintf(stderr,"default.. \n");
+                fprintf(stderr,"default.. \n");
                 exit(1);
                 break;
         }
@@ -784,6 +794,9 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
             case DRIVER_PLOT:
                 sp_process_plot(sp, ud, process);
                 break;
+            case DRIVER_NULL:
+                plumber_process_null(sp, ud, process);
+                break;
             default:
                 sp_process(sp, ud, process);
                 break;
@@ -795,6 +808,23 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     }
     plumber_clean(pd);
     sp_destroy(&sp);
+}
+
+int plumber_process_null(sp_data *sp, void *ud, void (*callback)(sp_data *, void *))
+{
+    if(sp->len == 0) {
+        while(1) {
+            callback(sp, ud);
+            sp->len--;
+        }
+    } else {
+        while(sp->len > 0) {
+            callback(sp, ud);
+            sp->len--;
+            sp->pos++;
+        }
+    }
+    return SP_OK;
 }
 
 plumbing * plumber_get_pipes(plumber_data *plumb)

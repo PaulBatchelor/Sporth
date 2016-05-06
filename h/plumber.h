@@ -23,12 +23,6 @@ PLUMBER_NOTOK,
 PLUMBER_OK,
 PLUMBER_PANIC
 };
-
-enum {
-DRIVER_FILE,
-DRIVER_RAW,
-DRIVER_PLOT
-};
     
 typedef int (* plumber_func) (sporth_stack *, void *) ;
 
@@ -157,4 +151,5 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode);
 int plumbing_parse(plumber_data *plumb, plumbing *pipes);
 int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, char *str);
 void plumbing_show_pipes(plumbing *pipes);
+int plumber_process_null(sp_data *sp, void *ud, void (*callback)(sp_data *, void *));
 
