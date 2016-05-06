@@ -17,7 +17,7 @@ CFLAGS += -I$(KONA_PATH)/src -DBUILD_KONA
 endif
 
 ifdef BUILD_POLYSPORTH
-OBJ += s7.o 
+OBJ += ugens/polysporth/s7.o 
 CFLAGS += -DBUILD_POLYSPORTH
 LIBS += -Wl,-export-dynamic
 #UGENS += polysporth
