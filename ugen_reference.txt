@@ -643,3 +643,18 @@ Args: start (f), end (f), tbl (s)
 Output: f
 Description: sum a range of ftable values (inclusive). built for polysporth.
 ---
+Name: fl
+Args: filename (s), tbl 
+Output: n/a
+Description: dynamically load a ugen
+---
+Name: fe
+Args: tbl (s)
+Output: varies
+Description: execute a dynamically loaded ugen
+---
+Name: fc
+Args: tbl (s)
+Output: n/a
+Description: close a dynamically loaded ugen (call this once at the end)
+---

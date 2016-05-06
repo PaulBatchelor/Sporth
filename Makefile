@@ -19,7 +19,7 @@ endif
 ifdef BUILD_POLYSPORTH
 OBJ += s7.o 
 CFLAGS += -DBUILD_POLYSPORTH
-LIBS += -ldl -Wl,-export-dynamic
+LIBS += -Wl,-export-dynamic
 #UGENS += polysporth
 include ugens/polysporth/Makefile
 endif
@@ -28,7 +28,6 @@ ifdef BUILD_LADSPA
 CFLAGS += -DBUILD_LADSPA -Iugens/ladspa/
 #UGENS += ladspa/ladspa
 OBJ += ugens/ladspa/load.o
-LIBS += -ldl
 endif
 
 include ugens/ling/Makefile
@@ -43,7 +42,7 @@ OBJ += func.o plumber.o stack.o parse.o hash.o
 
 SPORTHLIBS = libsporth.a
 
-LIBS += -lsoundpipe -lsndfile -lm 
+LIBS += -lsoundpipe -lsndfile -lm -ldl
 
 
 ifdef BUILD_DYNAMIC

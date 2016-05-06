@@ -538,6 +538,9 @@ int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
 
 int plumber_ftmap_add_userdata(plumber_data *plumb, const char *str, void *ud)
 {
+#ifdef DEBUG_MODE
+    fprintf(stderr, "ftmap_add_userdata: Adding new generic table %s\n", str);
+#endif
     uint32_t pos = sporth_hash(str);
     plumber_ftentry *entry = &plumb->ftmap[pos];
     entry->nftbl++;

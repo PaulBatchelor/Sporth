@@ -30,7 +30,6 @@ DRIVER_RAW,
 DRIVER_PLOT
 };
     
-//typedef (int (sporth_stack *, void *)) plumber_func;
 typedef int (* plumber_func) (sporth_stack *, void *) ;
 
 typedef struct plumber_ftbl {
@@ -58,6 +57,8 @@ typedef struct {
     plumber_func fun;
     void *ud;
 } sporth_func_d;
+
+
 
 typedef struct {
     uint32_t npipes;
@@ -92,6 +93,19 @@ typedef struct plumber_data {
     plumber_pipe *next;
     plumber_pipe *last;
 } plumber_data;
+
+typedef int (* plumber_dyn_func) (plumber_data *, sporth_stack *, void **);
+
+/* needed for dynamic loading */
+typedef struct {
+    sporth_func_d *fd;
+    plumber_dyn_func fun;
+    plumber_dyn_func (*getter)();
+    char *filename;
+    char *name;
+    void *handle;
+    void *ud;
+} sporth_fload_d; 
 
 int plumber_init(plumber_data *plumb);
 int plumber_register(plumber_data *plumb);
