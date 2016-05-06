@@ -25,9 +25,10 @@ static s7_pointer ps_noteblock_begin(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_note(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_noteblock_end(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_metanote(s7_scheme *sc, s7_pointer args);
-static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_set_release(s7_scheme *sc, s7_pointer args);
 static s7_pointer cload(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_tget(s7_scheme *sc, s7_pointer args);
 static void *library = NULL;
 
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
@@ -102,7 +103,8 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     s7_define_function(ps->s7, "ps-noteblock-begin", ps_noteblock_begin, 0, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-noteblock-end", ps_noteblock_end, 0, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-metanote", ps_metanote, 2, 0, false, "TODO");
-    s7_define_function(ps->s7, "ps-tset", ps_tset, 2, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-tset", ps_tset, 3, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-tget", ps_tget, 2, 1, false, "TODO");
     s7_define_function(ps->s7, "ps-set-release", ps_set_release, 1, 0, false, NULL);
     s7_define_function(ps->s7, "cload", cload, 2, 0, false, NULL);
     s7_set_ud(ps->s7, (void *)ps);
@@ -457,18 +459,47 @@ static s7_pointer ps_noteblock_end(s7_scheme *sc, s7_pointer args)
 
 static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args)
 {
-    //polysporth *ps = (polysporth *)s7_get_ud(sc);
-    //int pos = s7_integer(s7_list_ref(sc, args, 0));
-    //double val = s7_real(s7_list_ref(sc, args, 1));
-    //SPFLOAT *tbl = ps->argtbl[ps->last_id + 1];
-    //if(pos > NARGS) {
-    //    fprintf(stderr, "Warning: tset: position %d out of bounds.\n",
-    //        pos);
-    //    return NULL;
-    //} 
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    sp_ftbl *ft;
+    /*TODO: add type checking */
+    const char *str = s7_string(s7_list_ref(sc, args, 0));
+    int pos = s7_integer(s7_list_ref(sc, args, 1));
+    s7_double val = s7_real(s7_list_ref(sc, args, 2));
 
-    //tbl[pos] = val;
-    return NULL;
+    if(plumber_ftmap_search(&ps->pd, str, &ft) == PLUMBER_NOTOK) {
+        fprintf(stderr, "Could not find table %s\n", str);
+        return s7_make_real(sc, 0.0);
+    }
+
+    if(pos > ft->size) {
+        fprintf(stderr, "Warning: tset: position %d out of bounds.\n",
+            pos);
+        return s7_nil(sc);
+    } 
+   
+    ft->tbl[pos] = (SPFLOAT) val;
+
+    return s7_nil(sc);
+}
+
+static s7_pointer ps_tget(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    sp_ftbl *ft;
+    const char *str = s7_string(s7_list_ref(sc, args, 0));
+    int pos = s7_integer(s7_list_ref(sc, args, 1));
+
+    if(plumber_ftmap_search(&ps->pd, str, &ft) == PLUMBER_NOTOK) {
+        return s7_make_real(sc, 0.0);
+    }
+
+    if(pos > ft->size) {
+        fprintf(stderr, "Warning: tset: position %d out of bounds.\n",
+            pos);
+        return s7_make_real(sc, 0.0);
+    } 
+
+    return s7_make_real(sc, ft->tbl[pos]);
 }
 
 static s7_pointer ps_set_release(s7_scheme *sc, s7_pointer args)
