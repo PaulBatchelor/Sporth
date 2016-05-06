@@ -658,3 +658,8 @@ Args: tbl (s)
 Output: n/a
 Description: close a dynamically loaded ugen (call this once at the end)
 ---
+Name: polysporth
+Args: trigger (f), clock (f), max voices (f) in (s), out (s), file (s)
+Output: (none)
+Description: polysporth
+---
