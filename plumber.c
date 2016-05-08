@@ -369,14 +369,18 @@ plumbing *plumbing_choose(plumber_data *plumb,
     plumbing *newpipes;
 
     if(plumb->current_pipe == 0) {
+#ifdef DEBUG_MODE
         fprintf(stderr, "compiling to alt\n");
+#endif
         newpipes = alt;
         *current_pipe = 1;
         plumb->ftmap = plumb->ft2;
         plumb->ftnew = plumb->ft2;
         plumb->ftold = plumb->ft1;
     } else {
+#ifdef DEBUG_MODE
         fprintf(stderr, "compiling to main\n");
+#endif
         newpipes = main;
         *current_pipe = 0;
         plumb->ftmap = plumb->ft1;
@@ -402,12 +406,14 @@ int plumber_reinit(plumber_data *plumb)
 int plumber_reparse(plumber_data *plumb) 
 {
     if(plumbing_parse(plumb, plumb->tmp) == PLUMBER_OK) {
-        fprintf(stderr, "Successful parse...\n");
         plumbing_compute(plumb, plumb->tmp, PLUMBER_INIT);
+#ifdef DEBUG_MODE
+        fprintf(stderr, "Successful parse...\n");
         fprintf(stderr, "at stack position %d\n",
                 plumb->sporth.stack.pos);
         fprintf(stderr, "%d errors\n",
                 plumb->sporth.stack.error);
+#endif
     } else {
        return PLUMBER_NOTOK;
     }
@@ -417,12 +423,14 @@ int plumber_reparse(plumber_data *plumb)
 int plumber_reparse_string(plumber_data *plumb, char *str) 
 {
     if(plumbing_parse_string(plumb, plumb->tmp, str) == PLUMBER_OK) {
-        fprintf(stderr, "Successful parse...\n");
         plumbing_compute(plumb, plumb->tmp, PLUMBER_INIT);
+#ifdef DEBUG_MODE
+        fprintf(stderr, "Successful parse...\n");
         fprintf(stderr, "at stack position %d\n",
                 plumb->sporth.stack.pos);
         fprintf(stderr, "%d errors\n",
                 plumb->sporth.stack.error);
+#endif
     } else {
         return PLUMBER_NOTOK;
     }
@@ -452,7 +460,9 @@ int plumber_swap(plumber_data *plumb, int error)
         }
         plumb->sp->pos = 0;
     } else {
+#ifdef DEBUG_MODE
         fprintf(stderr, "Recompiling...\n");
+#endif
         plumbing_compute(plumb, plumb->pipes, PLUMBER_DESTROY);
         plumbing_destroy(plumb->pipes);
         plumb->ftmap = plumb->ftold;
