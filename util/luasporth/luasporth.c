@@ -22,7 +22,7 @@ typedef struct {
 
 static plumber_data *g_pd = NULL;
 
-static int add_ftable(lua_State *L) 
+static int add_ftable(lua_State *L)
 {
     const char *str = luaL_checkstring(L, 1);
     int size = luaL_checknumber(L, 2);
@@ -65,10 +65,6 @@ static int luasporth(plumber_data *pd, sporth_stack *stack, void **ud)
             lua_pushcfunction(L, add_ftable);
             lua_setglobal(L, "add_ftable");
             luaL_openlibs(L);
-            luaopen_base(L);
-            luaopen_string(L);
-            luaopen_math(L);
-            luaopen_io(L);
             filename = sporth_stack_pop_string(stack);
             if(luaL_loadfile(L, filename) || lua_pcall(L, 0, 0, 0)) {
                 error(L, "cannot run configuration file: %s", lua_tostring(L, -1));
