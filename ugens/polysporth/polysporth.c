@@ -31,7 +31,7 @@ static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_tget(s7_scheme *sc, s7_pointer args);
 static void *library = NULL;
 
-int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
+int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl,
     char *out_tbl, char *filename)
 {
     int i, j;
@@ -49,11 +49,11 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
 
 
     ps->nvoices = 0;
-   
-    plumber_register(&ps->pd); 
+
+    plumber_register(&ps->pd);
     plumber_init(&ps->pd);
     ps->pd.sp = pd->sp;
-    
+
     /* add input table to internal plumber instance with same name*/
     plumber_ftmap_delete(&ps->pd, 0);
     plumber_ftmap_add_userdata(&ps->pd, in_tbl, ps->in);
@@ -67,8 +67,8 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
 
     /* create sporthlets */
     ps->spl = malloc(sizeof(sporthlet) * ninstances);
-   
-    /* PS_NULL ensures that the plumbing won't be compiled */ 
+
+    /* PS_NULL ensures that the plumbing won't be compiled */
     for(i = 0; i < ninstances; i++) {
         ps->spl[i].state = PS_NULL;
         ps->spl[i].id = i;
@@ -132,7 +132,7 @@ void ps_clean(polysporth *ps)
     plumber_clean(&ps->pd);
     /* clean arg table stuff */
     sp_ftbl_destroy(&ps->args);
-   
+
     free(ps->spl);
 }
 
@@ -155,7 +155,7 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
         while(dvector_pop(&ps->events, &val)){
             if(val->type == PS_NOTE) {
 #ifdef DEBUG_POLYSPORTH
-                fprintf(stderr, "\t ### Time: %d Dur: %d\n", 
+                fprintf(stderr, "\t ### Time: %d Dur: %d\n",
                     ps->time, val->dur);
 #endif
                 id = find_free_voice(ps, val->grp_start, val->grp_end);
@@ -164,13 +164,13 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
                     int len = (val->nargs < NARGS) ? val->nargs : NARGS;
                     for(i = 0; i < len; i++) {
                         ps->spl[id].args[i] = val->args[i];
-                    } 
+                    }
                 } else {
                     /* TODO: does this need to be handled better? */
                     fprintf(stderr, "No free voices left!\n");
                 }
                 if(val->nargs > 0) {
-                    free(val->args); 
+                    free(val->args);
                 }
                 free(val);
             } else if(val->type == PS_METANOTE) {
@@ -230,7 +230,7 @@ static SPFLOAT compute_sample(polysporth *ps, int id)
     SPFLOAT out = 0;
     sporthlet *spl = &ps->spl[id];
     plumber_data *pd = &ps->pd;
-    
+
     if(spl->state != PS_NULL || spl->state != PS_OFF) {
         ps->pd.tmp = &spl->pipes;
         plumbing_compute(pd, &spl->pipes, PLUMBER_COMPUTE);
@@ -287,15 +287,15 @@ static void ps_turnoff_sporthlet(polysporth *ps, int id)
             prev->next = next;
             next->prev = prev;
         }
-        ps->out->tbl[id] = 0; 
-        spl->next = NULL; 
+        ps->out->tbl[id] = 0;
+        spl->next = NULL;
         spl->prev = NULL;
-        ps->nvoices--; 
+        ps->nvoices--;
     } else {
         fprintf(stderr, "this shouldn't happen\n");
         if(spl->state == PS_OFF) {
             fprintf(stderr, "this voice is already off...?\n");
-        }    
+        }
     }
 }
 
@@ -399,7 +399,7 @@ static s7_pointer ps_noteblock_begin(s7_scheme *sc, s7_pointer args)
     if(ps->noteblock == PS_OFF) {
         ps->noteblock = PS_ON;
     } else {
-        fprintf(stderr, 
+        fprintf(stderr,
             "Warning: noteblock already on. Not doing anything.\n");
     }
     return NULL;
@@ -415,7 +415,7 @@ static s7_pointer ps_note(s7_scheme *sc, s7_pointer args)
     int grp_end = s7_integer(s7_list_ref(sc, args, 1));
     int start = s7_integer(s7_list_ref(sc, args, 2));
     int dur = s7_integer(s7_list_ref(sc, args, 3));
-    /* add release value to duration */ 
+    /* add release value to duration */
     dur += ps->reltime;
     int len = s7_list_length(sc, (s7_list_ref(sc, args, 4)));
     SPFLOAT *argtbl = NULL;
@@ -475,8 +475,8 @@ static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args)
         fprintf(stderr, "Warning: tset: position %d out of bounds.\n",
             pos);
         return s7_nil(sc);
-    } 
-   
+    }
+
     ft->tbl[pos] = (SPFLOAT) val;
 
     return s7_nil(sc);
@@ -497,7 +497,7 @@ static s7_pointer ps_tget(s7_scheme *sc, s7_pointer args)
         fprintf(stderr, "Warning: tset: position %d out of bounds.\n",
             pos);
         return s7_make_real(sc, 0.0);
-    } 
+    }
 
     return s7_make_real(sc, ft->tbl[pos]);
 }
@@ -527,7 +527,7 @@ static s7_pointer cload(s7_scheme *sc, s7_pointer args)
 	  return(s7_t(sc));
 	}
     }
-  return(s7_error(sc, s7_make_symbol(sc, "load-error"), 
-		      s7_list(sc, 2, s7_make_string(sc, "loader error: ~S"), 
+  return(s7_error(sc, s7_make_symbol(sc, "load-error"),
+		      s7_list(sc, 2, s7_make_string(sc, "loader error: ~S"),
 			             s7_make_string(sc, dlerror()))));
 }
