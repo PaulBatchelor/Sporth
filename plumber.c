@@ -27,6 +27,7 @@ enum {
     DRIVER_FILE,
     DRIVER_RAW,
     DRIVER_PLOT,
+    DRIVER_SPA,
     DRIVER_NULL
 };
 
@@ -740,6 +741,8 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                         driver = DRIVER_RAW;
                     } else if ((!strcmp(argv[0], "plot"))) {
                         driver = DRIVER_PLOT;
+                    } else if ((!strcmp(argv[0], "spa"))) {
+                        driver = DRIVER_SPA;
                     } else {
                        fprintf(stderr,"Could not find driver \"%s\".\n", argv[0]);
                         exit(1);
@@ -803,6 +806,9 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 break;
             case DRIVER_PLOT:
                 sp_process_plot(sp, ud, process);
+                break;
+            case DRIVER_SPA:
+                sp_process_spa(sp, ud, process);
                 break;
             case DRIVER_NULL:
                 plumber_process_null(sp, ud, process);

@@ -51,6 +51,7 @@ ladspa/ladspa \
 line \
 ling \
 loadfile \
+loadspa \
 lpf18 \
 maygate \
 maytrig \

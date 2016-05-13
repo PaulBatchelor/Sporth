@@ -1,13 +1,20 @@
+.PHONY: luasporth 
 
-SPORTHPATH=./
+SPORTHPATH=
 
 ifdef MASTER_MAKEFILE
 SPORTHPATH=util/luasporth/
-luasporth: $(SPORTHPATH)luasporth
+luasporth.so: $(SPORTHPATH)luasporth.so
 endif
-BIN += $(SPORTHPATH)luasporth
 
-$(SPORTHPATH)luasporth: $(SPORTHPATH)luasporth.c
-	gcc -g -I/home/paul/playground/kona/kona/src/ $< -ldl -lsporth -lsoundpipe -lsndfile -lpthread -llua -lm -o $@
+BIN += $(SPORTHPATH)luasporth.so
 
-SPORTHPATH= 
+luasporth: $(SPORTHPATH)luasporth.so
+
+$(SPORTHPATH)luasporth.so: $(SPORTHPATH)luasporth.c
+	gcc -fPIC -shared $< -o $(SPORTHPATH)luasporth.so -lsporth -llua 
+
+ifndef MASTER_MAKEFILE
+clean:
+	rm -rf $(SPORTHPATH)luasporth.so
+endif
