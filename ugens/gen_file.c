@@ -5,6 +5,7 @@
 
 int sporth_gen_file(sporth_stack *stack, void *ud)
 {
+#ifndef NO_LIBSNDFILE
     plumber_data *pd = ud;
 
     sp_ftbl *ft;
@@ -54,4 +55,7 @@ int sporth_gen_file(sporth_stack *stack, void *ud)
            break;
     }
     return PLUMBER_OK;
+#else
+    return PLUMBER_NOTOK;
+#endif
 }

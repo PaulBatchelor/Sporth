@@ -3,6 +3,7 @@
 
 int sporth_diskin(sporth_stack *stack, void *ud)
 {
+#ifndef NO_LIBSNDFILE
     plumber_data *pd = ud;
     SPFLOAT out;
     char * filename;
@@ -52,4 +53,7 @@ int sporth_diskin(sporth_stack *stack, void *ud)
             break;
     }
     return PLUMBER_OK;
+#else 
+    return PLUMBER_OK;
+#endif
 }
