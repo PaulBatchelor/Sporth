@@ -663,3 +663,8 @@ Args: trigger (f), clock (f), max voices (f) in (s), out (s), file (s)
 Output: (none)
 Description: polysporth
 ---
+Name: pshift
+Args: in (f), window size (samps) (f), xfade (samps) (f)
+Output: f
+Description: pitch shifter
+---

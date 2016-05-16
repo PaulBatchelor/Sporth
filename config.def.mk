@@ -72,6 +72,7 @@ pluck \
 polysporth \
 port \
 prop \
+pshift \
 randh \
 randi \
 reverse \
