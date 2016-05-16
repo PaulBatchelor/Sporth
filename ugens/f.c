@@ -85,8 +85,8 @@ int sporth_fload(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            fload->name = sporth_stack_pop_string(stack);
             fload->filename= sporth_stack_pop_string(stack);
+            fload->name = sporth_stack_pop_string(stack);
            
             fload->handle = dlopen(fload->filename, RTLD_NOW);
             if(fload->handle == NULL) {

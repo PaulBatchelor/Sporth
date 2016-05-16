@@ -247,7 +247,7 @@ int sporth_sine(sporth_stack *stack, void *ud)
 #endif
             data = malloc(sizeof(sporth_sine_d));
             sp_osc_create(&data->osc);
-            sp_ftbl_create(pd->sp, &data->ft, 4096);
+            sp_ftbl_create(pd->sp, &data->ft, 8192);
             plumber_add_ugen(pd, SPORTH_SINE, data);
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 fprintf(stderr, "returning error SPORTH_NOTOK\n");

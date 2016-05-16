@@ -64,8 +64,9 @@ int sporth_polysporth(sporth_stack *stack, void *ud)
             free(filename);
             free(out_tbl);
             free(in_tbl);
-
+#ifdef DEBUG_MODE
             fprintf(stderr, "polysporth: Initialising\n");
+#endif
             break;
 
         case PLUMBER_COMPUTE:

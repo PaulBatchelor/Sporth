@@ -420,11 +420,17 @@ static s7_pointer ps_note(s7_scheme *sc, s7_pointer args)
     int len = s7_list_length(sc, (s7_list_ref(sc, args, 4)));
     SPFLOAT *argtbl = NULL;
     s7_pointer tbl = s7_list_ref(sc, args, 4);
+    s7_pointer val;
     if(len > 0) {
         int i;
         argtbl = malloc(sizeof(SPFLOAT) * len);
         for(i = 0; i < len; i++) {
-            argtbl[i] = (SPFLOAT) s7_real(s7_list_ref(sc, tbl, i));
+            val = s7_list_ref(sc, tbl, i);
+            if(s7_is_integer(val)) {
+                argtbl[i] = (SPFLOAT) s7_integer(val);
+            } else {
+                argtbl[i] = (SPFLOAT) s7_real(val);
+            }
 #ifdef DEBUG_POLYSPORTH
             fprintf(stderr, "--- %g\n", argtbl[i]);
 #endif
