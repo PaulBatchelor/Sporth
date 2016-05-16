@@ -9,6 +9,3 @@
 (ps-note 0 2 2 4 '(71.0))
 (ps-note 0 2 4 4 '(73.0))
 (ps-noteblock-end)
-
-(define none (lambda () ()))
-(define run none)

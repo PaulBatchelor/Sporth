@@ -119,6 +119,7 @@ int sporth_lexer(char *str, int32_t size)
                     case '9':
                         mode = LEX_FLOAT;
                         break;
+                    case '_':
                     case '"':
                     case '\'':
                         mode = LEX_STRING;
