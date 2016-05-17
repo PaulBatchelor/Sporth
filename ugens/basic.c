@@ -1127,6 +1127,42 @@ int sporth_durs(sporth_stack *stack, void *ud)
     return PLUMBER_OK;
 }
 
+int sporth_setdurs(sporth_stack *stack, void *ud)
+{
+    if(stack->error > 0) return PLUMBER_NOTOK;
+
+    plumber_data *pd = ud;
+    uint32_t dur = 0;
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "setdurs: Creating\n");
+#endif
+            plumber_add_ugen(pd, SPORTH_SETDURS, NULL);
+            if(sporth_check_args(stack, "f") != SPORTH_OK) {
+                fprintf(stderr, "Not enough args for setdurs\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            dur = (uint32_t) sporth_stack_pop_float(stack);
+            pd->sp->len = dur;
+            break;
+        case PLUMBER_INIT:
+            sporth_stack_pop_float(stack);
+            break;
+        case PLUMBER_COMPUTE:
+            sporth_stack_pop_float(stack);
+            break;
+        case PLUMBER_DESTROY:
+            break;
+        default:
+            stack->error++;
+            return PLUMBER_NOTOK;
+            break;
+    }
+    return PLUMBER_OK;
+}
+
 int sporth_ampdb(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
