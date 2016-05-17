@@ -673,3 +673,8 @@ Args: seed (f)
 Output: n/a
 Description: seed internal RNG
 ---
+Name: setdurs
+Args: size (f)
+Output: n/a
+Description: set total duration (in samples)
+---
