@@ -81,6 +81,7 @@ rpt \
 rms \
 samphold \
 scale \
+srand \
 streson \
 switch \
 t \

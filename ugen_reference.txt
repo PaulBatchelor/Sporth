@@ -668,3 +668,8 @@ Args: in (f), window size (samps) (f), xfade (samps) (f)
 Output: f
 Description: pitch shifter
 ---
+Name: srand
+Args: seed (f)
+Output: n/a
+Description: seed internal RNG
+---
