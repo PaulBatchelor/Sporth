@@ -63,13 +63,11 @@ static void sporth_dsp(t_sporth *x, t_signal **sp)
 
 static void *sporth_new(void)
 {
-    printf("creating!\n");
     t_sporth *x = (t_sporth *)pd_new(sporth_class);
     outlet_new(&x->x_obj, gensym("signal"));
     x->x_f = 0;
     sp_create(&x->sp);
     plumber_register(&x->pd);
-    printf("Replacing IN (position %d)\n", SPORTH_IN - SPORTH_FOFFSET);
     x->pd.sporth.flist[SPORTH_IN - SPORTH_FOFFSET].func = sporth_pd_in;
     plumber_init(&x->pd);
     x->pd.sp = x->sp;

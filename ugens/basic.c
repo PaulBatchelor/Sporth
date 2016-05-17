@@ -1087,6 +1087,46 @@ int sporth_dur(sporth_stack *stack, void *ud)
     return PLUMBER_OK;
 }
 
+int sporth_durs(sporth_stack *stack, void *ud)
+{
+    if(stack->error > 0) return PLUMBER_NOTOK;
+
+    plumber_data *pd = ud;
+    SPFLOAT *dur;
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "dur: Creating\n");
+#endif
+            dur = malloc(sizeof(SPFLOAT));
+            *dur = (SPFLOAT) pd->sp->len;
+            plumber_add_ugen(pd, SPORTH_DURS, dur);
+            sporth_stack_push_float(stack, *dur);
+            break;
+        case PLUMBER_INIT:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "dur: Initializing\n");
+#endif
+            dur = pd->last->ud;
+            sporth_stack_push_float(stack, *dur);
+            break;
+        case PLUMBER_COMPUTE:
+            dur = pd->last->ud;
+            sporth_stack_push_float(stack, *dur);
+            break;
+        case PLUMBER_DESTROY:
+            dur = pd->last->ud;
+            free(dur);
+            break;
+        default:
+            fprintf(stderr,"pos: unknown mode!");
+            stack->error++;
+            return PLUMBER_NOTOK;
+            break;
+    }
+    return PLUMBER_OK;
+}
+
 int sporth_ampdb(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
