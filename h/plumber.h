@@ -1,4 +1,4 @@
-#include <soundpipe.h>
+#include "soundpipe.h"
 #include "sporth.h"
 
 /* implement macros */
