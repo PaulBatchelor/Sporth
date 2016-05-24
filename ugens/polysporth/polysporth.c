@@ -566,11 +566,9 @@ static s7_pointer ps_init_sporthlet(s7_scheme *sc, s7_pointer args)
 {
     polysporth *ps = (polysporth *)s7_get_ud(sc);
     int id = s7_integer(s7_list_ref(sc, args, 0));
-    fprintf(stderr, "ps_init_sporthlet %d\n", id);
 
     /* TODO: error checking */
     sporthlet *spl = &ps->spl[id];
-    fprintf(stderr, "ps_init_sporthlet: there are %d pipes\n", spl->pipes.npipes);
     plumbing_compute(&ps->pd, &spl->pipes, PLUMBER_INIT);
     spl->state = PS_OFF;
     return s7_nil(sc);
