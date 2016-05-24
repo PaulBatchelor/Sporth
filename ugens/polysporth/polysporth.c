@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <dlfcn.h>
 #include "plumber.h"
 #include "polysporth.h"
@@ -29,6 +30,8 @@ static s7_pointer ps_set_release(s7_scheme *sc, s7_pointer args);
 static s7_pointer cload(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_tget(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_lexer(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_init_sporthlet(s7_scheme *sc, s7_pointer args);
 static void *library = NULL;
 
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl,
@@ -107,6 +110,8 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     s7_define_function(ps->s7, "ps-tget", ps_tget, 2, 1, false, "TODO");
     s7_define_function(ps->s7, "ps-set-release", ps_set_release, 1, 0, false, NULL);
     s7_define_function(ps->s7, "cload", cload, 2, 0, false, NULL);
+    s7_define_function(ps->s7, "ps-lexer", ps_lexer, 2, 0, false, NULL);
+    s7_define_function(ps->s7, "ps-init-sporthlet", ps_init_sporthlet, 1, 0, false, NULL);
     s7_set_ud(ps->s7, (void *)ps);
     s7_load(ps->s7, filename);
 
@@ -536,4 +541,37 @@ static s7_pointer cload(s7_scheme *sc, s7_pointer args)
   return(s7_error(sc, s7_make_symbol(sc, "load-error"),
 		      s7_list(sc, 2, s7_make_string(sc, "loader error: ~S"),
 			             s7_make_string(sc, dlerror()))));
+}
+
+static s7_pointer ps_lexer(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    int id = s7_integer(s7_list_ref(sc, args, 0));
+    const char *str = s7_string(s7_list_ref(sc, args, 1));
+    uint32_t size = strlen(str);
+    plumbing *old_tmp;
+    /* TODO: error checking */
+    sporthlet *spl = &ps->spl[id];
+    int prev_mode = ps->pd.mode;
+    ps->pd.mode = PLUMBER_CREATE;
+    old_tmp = ps->pd.tmp; 
+    ps->pd.tmp = &spl->pipes; 
+    plumber_lexer(&ps->pd, &spl->pipes, (char *)str, size);
+    ps->pd.tmp = old_tmp; 
+    ps->pd.mode = prev_mode;
+    return s7_nil(sc);
+}
+
+static s7_pointer ps_init_sporthlet(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    int id = s7_integer(s7_list_ref(sc, args, 0));
+    fprintf(stderr, "ps_init_sporthlet %d\n", id);
+
+    /* TODO: error checking */
+    sporthlet *spl = &ps->spl[id];
+    fprintf(stderr, "ps_init_sporthlet: there are %d pipes\n", spl->pipes.npipes);
+    plumbing_compute(&ps->pd, &spl->pipes, PLUMBER_INIT);
+    spl->state = PS_OFF;
+    return s7_nil(sc);
 }
