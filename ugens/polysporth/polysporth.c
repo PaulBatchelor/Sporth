@@ -20,6 +20,7 @@ static int is_first_element(polysporth *ps, int id);
 static int is_last_element(polysporth *ps, int id);
 
 static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_parse(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_turnon(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_turnoff(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_noteblock_begin(s7_scheme *sc, s7_pointer args);
@@ -100,6 +101,7 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     /* load scheme */
     ps->s7 = s7_init();
     s7_define_function(ps->s7, "ps-eval", ps_eval, 2, 0, false, "TODO");
+    s7_define_function(ps->s7, "ps-parse", ps_parse, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-turnon", ps_turnon, 2, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-turnoff", ps_turnoff, 1, 0, false, "TODO");
     s7_define_function(ps->s7, "ps-note", ps_note, 5, 0, false, "TODO");
@@ -226,6 +228,23 @@ static s7_pointer ps_eval(s7_scheme *sc, s7_pointer args)
     pd->tmp = &spl->pipes;
     plumbing_parse_string(pd, &spl->pipes, (char *)str);
     plumbing_compute(pd, &spl->pipes, PLUMBER_INIT);
+    spl->state = PS_OFF;
+    return NULL;
+}
+
+/* Parse: just parses, doesn't call plumbing_compute. Can be called multiple times.
+ * Designed to build up patches programatically. */
+static s7_pointer ps_parse(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    sporthlet *spl;
+    plumber_data *pd = &ps->pd;
+
+    int id = s7_integer(s7_list_ref(sc, args, 0));
+    const char *str = s7_string(s7_list_ref(sc, args, 1));
+    spl = &ps->spl[id];
+    pd->tmp = &spl->pipes;
+    plumbing_parse_string(pd, &spl->pipes, (char *)str);
     spl->state = PS_OFF;
     return NULL;
 }

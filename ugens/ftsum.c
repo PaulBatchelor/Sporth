@@ -20,13 +20,13 @@ int sporth_ftsum(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
 #ifdef DEBUG_MODE
-            fprintf(stderr, "Creating osc function... \n");
+            fprintf(stderr, "ftsum: creating... \n");
 #endif
             ftsum = malloc(sizeof(sporth_ftsum_d));
             plumber_add_ugen(pd, SPORTH_FTSUM, ftsum);
             if(sporth_check_args(stack, "ffs") != SPORTH_OK) {
                 stack->error++;
-                fprintf(stderr,"Invalid arguments for osc.\n");
+                fprintf(stderr,"Invalid arguments for ftsum.\n");
                 return PLUMBER_NOTOK;
             }
 
