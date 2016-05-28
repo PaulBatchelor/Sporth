@@ -150,6 +150,6 @@ int plumbing_add_pipe(plumbing *pipes, plumber_pipe *pipe);
 int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode);
 int plumbing_parse(plumber_data *plumb, plumbing *pipes);
 int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, char *str);
-void plumbing_show_pipes(plumbing *pipes);
+void plumbing_show_pipes(plumber_data *plumb, plumbing *pipes);
 int plumber_process_null(sp_data *sp, void *ud, void (*callback)(sp_data *, void *));
 

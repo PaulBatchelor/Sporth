@@ -33,6 +33,7 @@ static s7_pointer ps_tset(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_tget(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_lexer(s7_scheme *sc, s7_pointer args);
 static s7_pointer ps_init_sporthlet(s7_scheme *sc, s7_pointer args);
+static s7_pointer ps_show_pipes(s7_scheme *sc, s7_pointer args);
 static void *library = NULL;
 
 int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl,
@@ -114,6 +115,7 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     s7_define_function(ps->s7, "cload", cload, 2, 0, false, NULL);
     s7_define_function(ps->s7, "ps-lexer", ps_lexer, 2, 0, false, NULL);
     s7_define_function(ps->s7, "ps-init-sporthlet", ps_init_sporthlet, 1, 0, false, NULL);
+    s7_define_function(ps->s7, "ps-show-pipes", ps_show_pipes, 1, 0, false, NULL);
     s7_set_ud(ps->s7, (void *)ps);
     s7_load(ps->s7, filename);
 
@@ -590,5 +592,16 @@ static s7_pointer ps_init_sporthlet(s7_scheme *sc, s7_pointer args)
     sporthlet *spl = &ps->spl[id];
     plumbing_compute(&ps->pd, &spl->pipes, PLUMBER_INIT);
     spl->state = PS_OFF;
+    return s7_nil(sc);
+}
+
+static s7_pointer ps_show_pipes(s7_scheme *sc, s7_pointer args)
+{
+    polysporth *ps = (polysporth *)s7_get_ud(sc);
+    int id = s7_integer(s7_list_ref(sc, args, 0));
+
+    /* TODO: error checking */
+    sporthlet *spl = &ps->spl[id];
+    plumbing_show_pipes(&ps->pd, &spl->pipes);
     return s7_nil(sc);
 }
