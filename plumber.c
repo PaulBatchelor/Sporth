@@ -140,10 +140,10 @@ int plumber_compute(plumber_data *plumb, int mode)
 
 void plumber_show_pipes(plumber_data *plumb)
 {
-    return plumbing_show_pipes(plumb->pipes);
+    return plumbing_show_pipes(plumb, plumb->pipes);
 }
 
-void plumbing_show_pipes(plumbing *pipes)
+void plumbing_show_pipes(plumber_data *plumb, plumbing *pipes)
 {
     fprintf(stderr, "\nShowing pipes: \n");
     uint32_t n;
@@ -151,7 +151,20 @@ void plumbing_show_pipes(plumbing *pipes)
     pipe = pipes->root.next;
     for(n = 0; n < pipes->npipes; n++) {
         next = pipe->next;
-        fprintf(stderr, "\ttype = %d\n", pipe->type);
+        fprintf(stderr, "\ttype = %d ", pipe->type);
+        switch(pipe->type) {
+            case SPORTH_FLOAT:
+                fprintf(stderr, "(float)\n");
+                break;
+            case SPORTH_STRING:
+                fprintf(stderr, "(string)\n");
+                break;
+            default:
+                fprintf(stderr, "(%s)\n", 
+                        plumb->sporth.flist[pipe->type - SPORTH_FOFFSET].name);
+                break;
+        }
+
         pipe = next;
     }
     fprintf(stderr, "%d pipes total. \n\n", pipes->npipes);
