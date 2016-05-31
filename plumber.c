@@ -860,3 +860,20 @@ plumbing * plumber_get_pipes(plumber_data *plumb)
 {
     return plumb->tmp;
 }
+
+int plumber_argtbl_create(plumber_data *plumb, plumber_argtbl **at, uint32_t size)
+{
+    plumber_argtbl *atp = malloc(sizeof(plumber_argtbl));
+    atp->size = size;
+    atp->tbl = malloc(sizeof(SPFLOAT *) * size);
+    *at = atp;
+    return PLUMBER_OK;
+}
+
+int plumber_argtbl_destroy(plumber_data *plumb, plumber_argtbl **at)
+{
+    plumber_argtbl *atp = *at;
+    free(atp->tbl);
+    free(at);
+    return PLUMBER_OK;
+}

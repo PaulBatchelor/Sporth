@@ -1,6 +1,7 @@
 UGENS = \
 adsr \
 allpass \
+argtbl \
 atone \
 autowah \
 bal \

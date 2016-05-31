@@ -101,6 +101,13 @@ typedef struct {
     void *ud;
 } sporth_fload_d; 
 
+/* needed for plugin formats that work with pointer references */
+
+typedef struct {
+    SPFLOAT **tbl;
+    uint32_t size;
+} plumber_argtbl;
+
 int plumber_init(plumber_data *plumb);
 int plumber_register(plumber_data *plumb);
 int plumber_clean(plumber_data *plumb);
@@ -153,3 +160,5 @@ int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, char *str);
 void plumbing_show_pipes(plumber_data *plumb, plumbing *pipes);
 int plumber_process_null(sp_data *sp, void *ud, void (*callback)(sp_data *, void *));
 
+int plumber_argtbl_create(plumber_data *plumb, plumber_argtbl **at, uint32_t size);
+int plumber_argtbl_destroy(plumber_data *plumb, plumber_argtbl **at);
