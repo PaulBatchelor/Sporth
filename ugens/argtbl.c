@@ -16,6 +16,7 @@ int sporth_atget(sporth_stack *stack, void *ud)
     plumber_data *pd = ud;
 
     sporth_atbl_d *atd;
+    plumber_argtbl *at;
     char *ftname;
 
     switch(pd->mode){
@@ -28,11 +29,12 @@ int sporth_atget(sporth_stack *stack, void *ud)
             }
             ftname = sporth_stack_pop_string(stack);
             atd->index = floor(sporth_stack_pop_float(stack));
-            if(plumber_ftmap_search_userdata(pd, ftname, (void**)&atd->at) == PLUMBER_NOTOK) {
+            if(plumber_ftmap_search_userdata(pd, ftname, &at) == PLUMBER_NOTOK) {
                 fprintf(stderr, "atget: could not find table '%s'\n", ftname);
                 stack->error++;
                 return PLUMBER_NOTOK;
-            }
+            } printf("found argtable %s of size %d\n", ftname, at->size);
+            atd->at = at;
             free(ftname);
             sporth_stack_push_float(stack, 0.0);
             break;

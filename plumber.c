@@ -550,10 +550,10 @@ int plumber_ftmap_init(plumber_data *plumb)
 
 int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
 {
-#ifdef DEBUG_MODE
-    fprintf(stderr, "ftmap_add: Adding new table %s\n", str);
-#endif
     uint32_t pos = sporth_hash(str);
+#ifdef DEBUG_MODE
+    fprintf(stderr, "ftmap_add: Adding new table %s, position %d\n", str, pos);
+#endif
     plumber_ftentry *entry = &plumb->ftmap[pos];
     entry->nftbl++;
     plumber_ftbl *new = malloc(sizeof(plumber_ftbl));
@@ -569,12 +569,16 @@ int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
 
 int plumber_ftmap_add_userdata(plumber_data *plumb, const char *str, void *ud)
 {
-#ifdef DEBUG_MODE
-    fprintf(stderr, "ftmap_add_userdata: Adding new generic table %s\n", str);
-#endif
     uint32_t pos = sporth_hash(str);
+#ifdef DEBUG_MODE
+    fprintf(stderr, "ftmap_add_userdata: Adding new generic table %s, position %d\n", str, pos);
+#endif
     plumber_ftentry *entry = &plumb->ftmap[pos];
     entry->nftbl++;
+#ifdef DEBUG_MODE
+    fprintf(stderr, "ftmap_add_userdata: there are now %d in position %d\n", 
+            entry->nftbl, pos);
+#endif
     plumber_ftbl *new = malloc(sizeof(plumber_ftbl));
     new->ud = ud;
     new->type = 0;
@@ -603,7 +607,8 @@ int plumber_ftmap_search_userdata(plumber_data *plumb, const char *str, void **u
     plumber_ftbl *ftbl = entry->root.next;
     plumber_ftbl *next;
 #ifdef DEBUG_MODE
-    fprintf(stderr, "ftmap_search: looking at %d ftbls\n", entry->nftbl);
+    fprintf(stderr, "ftmap_search: looking at %d ftbls in position %d\n", 
+            entry->nftbl, pos);
 #endif
     for(n = 0; n < entry->nftbl; n++) {
         next = ftbl->next;

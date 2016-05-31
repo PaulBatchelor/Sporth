@@ -41,6 +41,7 @@ typedef struct {
     sp_data *sp;
     int recompile, error;
     char *str;
+    plumber_argtbl *at;
 } UserData;
 
 
@@ -121,7 +122,11 @@ instantiateLADsporth(const LADSPA_Descriptor * Descriptor,
     ud->pd.sp = sp;
     plumber_init(&ud->pd);
     plumber_register(&ud->pd);
-    //plumber_parse_string(&ud->pd, "0 0");
+
+    plumber_argtbl_create(&ud->pd, &ud->at, 16);
+    plumber_ftmap_delete(&ud->pd, 0);
+    plumber_ftmap_add_userdata(&ud->pd, "ls", (void *)ud->at);
+    plumber_ftmap_delete(&ud->pd, 1);
     plumber_open_file(&ud->pd, "file.sp");
     plumber_parse(&ud->pd);
     plumber_close_file(&ud->pd);
@@ -140,14 +145,15 @@ connectPortToLADsporth(LADSPA_Handle Instance,
 		       LADSPA_Data * DataLocation) {
 
   LADsporth * psLADsporth;
-
   psLADsporth = (LADsporth *)Instance;
+  UserData *ud = &psLADsporth->ud;
   switch (Port) {
   case AMP_CONTROL:
-    psLADsporth->m_pfControlValue = DataLocation;
+    printf("are we here as well? the argtbl size is %d\n", ud->at->size);
+    ud->at->tbl[0] = DataLocation;
     break;
   case AMP_INPUT1:
-    psLADsporth->m_pfInputBuffer1 = DataLocation;
+    psLADsporth->m_pfInputBuffer1 = (SPFLOAT *)DataLocation;
     break;
   case AMP_OUTPUT1:
     psLADsporth->m_pfOutputBuffer1 = DataLocation;
@@ -182,7 +188,14 @@ runMonoLADsporth(LADSPA_Handle Instance,
     if(ud->recompile) {
         printf("compiling string\n");
         //plumber_recompile_string(&ud->pd, ud->str);
-        plumber_recompile(&ud->pd);
+        //plumber_recompile(&ud->pd);
+        int error;
+        plumber_reinit(&ud->pd);
+        plumber_ftmap_delete(&ud->pd, 0);
+        plumber_ftmap_add_userdata(&ud->pd, "ls", (void *)ud->at);
+        plumber_ftmap_delete(&ud->pd, 1);
+        error = plumber_reparse(&ud->pd);
+        plumber_swap(&ud->pd, error);
         plumber_close_file(&ud->pd);
         ud->recompile = 0;
         //free(ud->str);
@@ -208,13 +221,13 @@ runMonoLADsporth(LADSPA_Handle Instance,
 
 /*****************************************************************************/
 
-/* Throw away a simple delay line. */
 void 
 cleanupLADsporth(LADSPA_Handle Instance) {
     UserData *ud;
     LADsporth *amp = Instance;
     ud = &amp->ud;
     if(ud->sp != NULL) {
+        //plumber_argtbl_destroy(&ud->pd, &ud->at);
         sp_destroy(&ud->sp);
         plumber_clean(&ud->pd);
     }
@@ -293,10 +306,12 @@ void _init() {
       = (const LADSPA_PortRangeHint *)psPortRangeHints;
     psPortRangeHints[AMP_CONTROL].HintDescriptor
       = (LADSPA_HINT_BOUNDED_BELOW 
-	 | LADSPA_HINT_LOGARITHMIC
-	 | LADSPA_HINT_DEFAULT_1);
+	 | LADSPA_HINT_BOUNDED_ABOVE
+	 | LADSPA_HINT_DEFAULT_0);
     psPortRangeHints[AMP_CONTROL].LowerBound 
       = 0;
+    psPortRangeHints[AMP_CONTROL].UpperBound
+      = 1;
     psPortRangeHints[AMP_INPUT1].HintDescriptor
       = 0;
     psPortRangeHints[AMP_OUTPUT1].HintDescriptor
