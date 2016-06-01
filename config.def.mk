@@ -67,6 +67,7 @@ oscmorph \
 p \
 pan \
 paulstretch \
+phaser \
 phasor \
 pinknoise \
 pluck \

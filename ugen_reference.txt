@@ -678,3 +678,8 @@ Args: size (f)
 Output: n/a
 Description: set total duration (in samples)
 ---
+Name: phaser
+Args: inl,in2,max notch,min notch,width,notch freq,depth,fdbk,invert,lvl,lfobpm
+Output: f f
+Description: stereo phaser
+---
