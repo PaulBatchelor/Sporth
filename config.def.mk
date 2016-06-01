@@ -66,6 +66,7 @@ osc \
 oscmorph \
 p \
 pan \
+pareq \
 paulstretch \
 phaser \
 phasor \

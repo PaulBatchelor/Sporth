@@ -683,3 +683,8 @@ Args: inl,in2,max notch,min notch,width,notch freq,depth,fdbk,invert,lvl,lfobpm
 Output: f f
 Description: stereo phaser
 ---
+Name: pareq
+Args: in,freq,boost,Q,mode(0=peak, 1=low shelf, 2= high shelf)
+Output: f 
+Description: parametric equalizer
+---

@@ -29,7 +29,7 @@ int sporth_atget(sporth_stack *stack, void *ud)
             }
             ftname = sporth_stack_pop_string(stack);
             atd->index = floor(sporth_stack_pop_float(stack));
-            if(plumber_ftmap_search_userdata(pd, ftname, &at) == PLUMBER_NOTOK) {
+            if(plumber_ftmap_search_userdata(pd, ftname, (void **)&at) == PLUMBER_NOTOK) {
                 fprintf(stderr, "atget: could not find table '%s'\n", ftname);
                 stack->error++;
                 return PLUMBER_NOTOK;
