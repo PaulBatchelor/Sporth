@@ -120,28 +120,22 @@ int sporth_handler(const char *path, const char *types, lo_arg ** argv,
 LADSPA_Handle 
 instantiateLADsporth(const LADSPA_Descriptor * Descriptor,
 		     unsigned long             SampleRate) {
-    LADSPA_Handle *h = malloc(sizeof(LADsporth));
-    LADsporth *amp = (LADsporth *)h;
-    UserData *ud = &amp->ud;
-    sp_data *sp;
-    sp_create(&sp);
-    sp->sr = SampleRate;
-    ud->sp = sp;
-    ud->pd.sp = sp;
-    plumber_init(&ud->pd);
-    plumber_register(&ud->pd);
+    LADsporth *ls = g_ls;
+    UserData *ud = &ls->ud;
+    sp_data *sp = ud->sp;
 
-    plumber_argtbl_create(&ud->pd, &ud->at, 16);
+    sp->sr = SampleRate;
+
     plumber_ftmap_delete(&ud->pd, 0);
     plumber_ftmap_add_userdata(&ud->pd, "ls", (void *)ud->at);
     plumber_ftmap_delete(&ud->pd, 1);
+
     plumber_open_file(&ud->pd, "file.sp");
     plumber_parse(&ud->pd);
     plumber_close_file(&ud->pd);
     plumber_compute(&ud->pd, PLUMBER_INIT);
     ud->recompile = 0;
-    g_ls = amp;
-  return h;
+    return (LADSPA_Handle)ls;
 }
 
 /*****************************************************************************/
@@ -200,7 +194,6 @@ connectPortToLADsporth(LADSPA_Handle Instance,
 void 
 runMonoLADsporth(LADSPA_Handle Instance,
 		 unsigned long SampleCount) {
-  
     LADSPA_Data * pfInput, *pfInput2;
     LADSPA_Data * pfOutput, *pfOutput2;
     LADsporth * psLADsporth;
@@ -213,8 +206,6 @@ runMonoLADsporth(LADSPA_Handle Instance,
 
     if(ud->recompile) {
         printf("compiling string\n");
-        //plumber_recompile_string(&ud->pd, ud->str);
-        //plumber_recompile(&ud->pd);
         int error;
         plumber_reinit(&ud->pd);
         plumber_ftmap_delete(&ud->pd, 0);
@@ -224,7 +215,6 @@ runMonoLADsporth(LADSPA_Handle Instance,
         plumber_swap(&ud->pd, error);
         plumber_close_file(&ud->pd);
         ud->recompile = 0;
-        //free(ud->str);
     }
 
     pfInput = psLADsporth->m_pfInputBuffer1;
@@ -232,15 +222,11 @@ runMonoLADsporth(LADSPA_Handle Instance,
     pfInput2 = psLADsporth->m_pfInputBuffer2;
     pfOutput2 = psLADsporth->m_pfOutputBuffer2;
     for (lSampleIndex = 0; lSampleIndex < SampleCount; lSampleIndex++) {
-        in1 = *(pfInput++);
-        in2 = *(pfInput2++);
-        pd->p[14] = in1;
-        pd->p[15] = in2;
+        ud->at->tbl[16] = pfInput++;
+        ud->at->tbl[17] = pfInput2++;
+        ud->at->tbl[18] = pfOutput++;
+        ud->at->tbl[19] = pfOutput2++;
         plumber_compute(pd, PLUMBER_COMPUTE);
-        out1 = sporth_stack_pop_float(&pd->sporth.stack);
-        out2 = sporth_stack_pop_float(&pd->sporth.stack);
-        *(pfOutput++) = out1;
-        *(pfOutput2++) = out2;
     }
 }
 
@@ -249,15 +235,6 @@ runMonoLADsporth(LADSPA_Handle Instance,
 
 void 
 cleanupLADsporth(LADSPA_Handle Instance) {
-    UserData *ud;
-    LADsporth *amp = Instance;
-    ud = &amp->ud;
-    if(ud->sp != NULL) {
-        //plumber_argtbl_destroy(&ud->pd, &ud->at);
-        sp_destroy(&ud->sp);
-        plumber_clean(&ud->pd);
-    }
-  free(Instance);
 }
 
 LADSPA_Descriptor * g_psMonoDescriptor = NULL;
@@ -384,6 +361,20 @@ void _init()
     g_psMonoDescriptor->cleanup
       = cleanupLADsporth;
   }
+
+    LADSPA_Handle *h = malloc(sizeof(LADsporth));
+    LADsporth *ls = (LADsporth *)h;
+    g_ls = ls;
+
+    UserData *ud = &ls->ud;
+    sp_data *sp;
+    sp_create(&sp);
+    ud->sp = sp;
+    ud->pd.sp = sp;
+    plumber_init(&ud->pd);
+    plumber_register(&ud->pd);
+
+    plumber_argtbl_create(&ud->pd, &ud->at, 20);
   
 }
 
@@ -410,6 +401,14 @@ deleteDescriptor(LADSPA_Descriptor * psDescriptor) {
 
 /* _fini() is called automatically when the library is unloaded. */
 void _fini() {
+    UserData *ud;
+    LADsporth *ls= g_ls;
+    ud = &ls->ud;
+    if(ud->sp != NULL) {
+        plumber_argtbl_destroy(&ud->pd, &ud->at);
+        plumber_clean(&ud->pd);
+        sp_destroy(&ud->sp);
+    }
     deleteDescriptor(g_psMonoDescriptor);
     lo_server_thread_free(st);
 }

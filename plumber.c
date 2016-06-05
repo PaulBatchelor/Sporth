@@ -879,6 +879,6 @@ int plumber_argtbl_destroy(plumber_data *plumb, plumber_argtbl **at)
 {
     plumber_argtbl *atp = *at;
     free(atp->tbl);
-    free(at);
+    free(atp);
     return PLUMBER_OK;
 }
