@@ -74,6 +74,7 @@ pinknoise \
 pluck \
 polysporth \
 port \
+posc3 \
 prop \
 pshift \
 randh \

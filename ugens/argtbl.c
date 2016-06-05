@@ -70,6 +70,7 @@ int sporth_atset(sporth_stack *stack, void *ud)
     plumber_data *pd = ud;
 
     sporth_atbl_d *atd;
+    plumber_argtbl *at;
     char *ftname;
 
     switch(pd->mode){
@@ -83,20 +84,23 @@ int sporth_atset(sporth_stack *stack, void *ud)
             ftname = sporth_stack_pop_string(stack);
             atd->index = floor(sporth_stack_pop_float(stack));
             atd->val = sporth_stack_pop_float(stack);
-            if(plumber_ftmap_search_userdata(pd, ftname, (void **)&atd->at) == PLUMBER_NOTOK) {
+            if(plumber_ftmap_search_userdata(pd, ftname, (void **)&at) == PLUMBER_NOTOK) {
                 fprintf(stderr, "tset: could not find table '%s'\n", ftname);
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
+            atd->at = at;
             free(ftname);
             break;
 
         case PLUMBER_INIT:
             atd = pd->last->ud;
             ftname = sporth_stack_pop_string(stack);
-            atd->index = floor(sporth_stack_pop_float(stack));
+            atd->index = (unsigned int) floor(sporth_stack_pop_float(stack)) % atd->at->size;
             atd->val = sporth_stack_pop_float(stack);
+            /* TODO: figure out why this segfaults  
             *atd->at->tbl[atd->index] = atd->val;
+            */
             free(ftname);
             break;
 
