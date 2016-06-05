@@ -102,8 +102,6 @@ int sporth_handler(const char *path, const char *types, lo_arg ** argv,
 
 
     if(!ud->recompile) {
-        //ud->str = malloc(sizeof(char) * strlen(&argv[0]->s) + 1);
-        //ud->str = strdup(&argv[0]->s);
         plumber_open_file(&ud->pd, &argv[0]->s);
         ud->recompile = 1;
     }
@@ -191,6 +189,18 @@ connectPortToLADsporth(LADSPA_Handle Instance,
 
 /*****************************************************************************/
 
+static void ls_compute(plumber_data *pd, SPFLOAT **tbl,
+        SPFLOAT *in1, SPFLOAT *in2,
+        SPFLOAT *out1, SPFLOAT *out2, 
+        int offset) 
+{
+        tbl[offset] = in1;
+        tbl[offset + 1] = in2;
+        tbl[offset + 2] = out1;
+        tbl[offset + 3] = out2;
+        plumber_compute(pd, PLUMBER_COMPUTE);
+}
+
 void 
 runMonoLADsporth(LADSPA_Handle Instance,
 		 unsigned long SampleCount) {
@@ -222,11 +232,9 @@ runMonoLADsporth(LADSPA_Handle Instance,
     pfInput2 = psLADsporth->m_pfInputBuffer2;
     pfOutput2 = psLADsporth->m_pfOutputBuffer2;
     for (lSampleIndex = 0; lSampleIndex < SampleCount; lSampleIndex++) {
-        ud->at->tbl[16] = pfInput++;
-        ud->at->tbl[17] = pfInput2++;
-        ud->at->tbl[18] = pfOutput++;
-        ud->at->tbl[19] = pfOutput2++;
-        plumber_compute(pd, PLUMBER_COMPUTE);
+        ls_compute(pd,ud->at->tbl, 
+                pfInput++, pfInput2++, 
+                pfOutput++, pfOutput2++, 16);
     }
 }
 
@@ -239,7 +247,7 @@ cleanupLADsporth(LADSPA_Handle Instance) {
 
 LADSPA_Descriptor * g_psMonoDescriptor = NULL;
 
-void register_port(LADSPA_PortDescriptor *pdesc, 
+static void register_port(LADSPA_PortDescriptor *pdesc, 
         LADSPA_PortRangeHint *phint,
         char **pnames, int id) 
 {
@@ -259,6 +267,40 @@ void register_port(LADSPA_PortDescriptor *pdesc,
       = 1;
 }
 
+static void register_audio_ports(LADSPA_PortDescriptor *piPortDescriptors,
+        LADSPA_PortRangeHint *psPortRangeHints,
+        char **pcPortNames,
+        int in1,
+        int in2,
+        int out1,
+        int out2)
+{
+    piPortDescriptors[in1]
+      = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
+    piPortDescriptors[out1]
+      = LADSPA_PORT_OUTPUT | LADSPA_PORT_AUDIO;
+    piPortDescriptors[in2]
+      = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
+    piPortDescriptors[out2]
+      = LADSPA_PORT_OUTPUT | LADSPA_PORT_AUDIO;
+    pcPortNames[in1]
+      = strdup("Input");
+    pcPortNames[out1]
+      = strdup("Output");
+    pcPortNames[in2]
+      = strdup("Input2");
+    pcPortNames[out2]
+      = strdup("Output2");
+    psPortRangeHints[in1].HintDescriptor
+      = 0;
+    psPortRangeHints[out1].HintDescriptor
+      = 0;
+    psPortRangeHints[in2].HintDescriptor
+      = 0;
+    psPortRangeHints[out2].HintDescriptor
+      = 0;
+}
+
 void _init() 
 {
 
@@ -275,92 +317,68 @@ void _init()
     lo_server_thread_start(st);
 
     if (g_psMonoDescriptor) {
-  
-    g_psMonoDescriptor->UniqueID
-      = 2222;
-    g_psMonoDescriptor->Label
-      = strdup("LADsporth");
-    g_psMonoDescriptor->Properties
-      = LADSPA_PROPERTY_HARD_RT_CAPABLE;
-    g_psMonoDescriptor->Name 
-      = strdup("Sporth Plugin");
-    g_psMonoDescriptor->Maker
-      = strdup("Paul Batchelor");
-    g_psMonoDescriptor->Copyright
-      = strdup("None");
-    g_psMonoDescriptor->PortCount
-      = NPORTS;
+        g_psMonoDescriptor->UniqueID
+          = 2222;
+        g_psMonoDescriptor->Label
+          = strdup("LADsporth");
+        g_psMonoDescriptor->Properties
+          = LADSPA_PROPERTY_HARD_RT_CAPABLE;
+        g_psMonoDescriptor->Name 
+          = strdup("Sporth Plugin");
+        g_psMonoDescriptor->Maker
+          = strdup("Paul Batchelor");
+        g_psMonoDescriptor->Copyright
+          = strdup("None");
+        g_psMonoDescriptor->PortCount
+          = NPORTS;
 
-    piPortDescriptors
-      = (LADSPA_PortDescriptor *)calloc(NPORTS, sizeof(LADSPA_PortDescriptor));
-    g_psMonoDescriptor->PortDescriptors
-      = (const LADSPA_PortDescriptor *)piPortDescriptors;
+        piPortDescriptors
+          = (LADSPA_PortDescriptor *)calloc(NPORTS, sizeof(LADSPA_PortDescriptor));
+        g_psMonoDescriptor->PortDescriptors
+          = (const LADSPA_PortDescriptor *)piPortDescriptors;
 
-    pcPortNames
-      = (char **)calloc(NPORTS, sizeof(char *));
-    g_psMonoDescriptor->PortNames 
-      = (const char **)pcPortNames;
+        pcPortNames
+          = (char **)calloc(NPORTS, sizeof(char *));
+        g_psMonoDescriptor->PortNames 
+          = (const char **)pcPortNames;
 
-    psPortRangeHints = ((LADSPA_PortRangeHint *)
-			calloc(NPORTS, sizeof(LADSPA_PortRangeHint)));
-    g_psMonoDescriptor->PortRangeHints
-      = (const LADSPA_PortRangeHint *)psPortRangeHints;
+        psPortRangeHints = ((LADSPA_PortRangeHint *)
+                calloc(NPORTS, sizeof(LADSPA_PortRangeHint)));
+        g_psMonoDescriptor->PortRangeHints
+          = (const LADSPA_PortRangeHint *)psPortRangeHints;
 
-    register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P1);
-    register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P2);
-    register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P3);
-    register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P4);
-    register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P5);
-    register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P6);
-    register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P7);
-    register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P8);
-
-    piPortDescriptors[AMP_INPUT1]
-      = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
-    piPortDescriptors[AMP_OUTPUT1]
-      = LADSPA_PORT_OUTPUT | LADSPA_PORT_AUDIO;
-
-    piPortDescriptors[AMP_INPUT1]
-      = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
-    piPortDescriptors[AMP_OUTPUT1]
-      = LADSPA_PORT_OUTPUT | LADSPA_PORT_AUDIO;
-    piPortDescriptors[AMP_INPUT2]
-      = LADSPA_PORT_INPUT | LADSPA_PORT_AUDIO;
-    piPortDescriptors[AMP_OUTPUT2]
-      = LADSPA_PORT_OUTPUT | LADSPA_PORT_AUDIO;
-    pcPortNames[AMP_INPUT1]
-      = strdup("Input");
-    pcPortNames[AMP_OUTPUT1]
-      = strdup("Output");
-    pcPortNames[AMP_INPUT2]
-      = strdup("Input2");
-    pcPortNames[AMP_OUTPUT2]
-      = strdup("Output2");
-    psPortRangeHints[AMP_INPUT1].HintDescriptor
-      = 0;
-    psPortRangeHints[AMP_OUTPUT1].HintDescriptor
-      = 0;
-    psPortRangeHints[AMP_INPUT2].HintDescriptor
-      = 0;
-    psPortRangeHints[AMP_OUTPUT2].HintDescriptor
-      = 0;
-    g_psMonoDescriptor->instantiate 
-      = instantiateLADsporth;
-    g_psMonoDescriptor->connect_port 
-      = connectPortToLADsporth;
-    g_psMonoDescriptor->activate
-      = NULL;
-    g_psMonoDescriptor->run
-      = runMonoLADsporth;
-    g_psMonoDescriptor->run_adding
-      = NULL;
-    g_psMonoDescriptor->set_run_adding_gain
-      = NULL;
-    g_psMonoDescriptor->deactivate
-      = NULL;
-    g_psMonoDescriptor->cleanup
-      = cleanupLADsporth;
-  }
+        register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P1);
+        register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P2);
+        register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P3);
+        register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P4);
+        register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P5);
+        register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P6);
+        register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P7);
+        register_port(piPortDescriptors, psPortRangeHints, pcPortNames, LS_P8);
+        register_audio_ports(piPortDescriptors, 
+                psPortRangeHints, 
+                pcPortNames,
+                AMP_INPUT1,
+                AMP_INPUT2,
+                AMP_OUTPUT1,
+                AMP_OUTPUT2);
+        g_psMonoDescriptor->instantiate 
+          = instantiateLADsporth;
+        g_psMonoDescriptor->connect_port 
+          = connectPortToLADsporth;
+        g_psMonoDescriptor->activate
+          = NULL;
+        g_psMonoDescriptor->run
+          = runMonoLADsporth;
+        g_psMonoDescriptor->run_adding
+          = NULL;
+        g_psMonoDescriptor->set_run_adding_gain
+          = NULL;
+        g_psMonoDescriptor->deactivate
+          = NULL;
+        g_psMonoDescriptor->cleanup
+          = cleanupLADsporth;
+    }
 
     LADSPA_Handle *h = malloc(sizeof(LADsporth));
     LADsporth *ls = (LADsporth *)h;
