@@ -80,7 +80,6 @@ static void error(int num, const char *m, const char *path)
 int quit_handler(const char *path, const char *types, lo_arg ** argv,
                  int argc, void *data, void *user_data)
 {
-    //done = 1;
     printf("quiting\n\n");
     fflush(stdout);
 
@@ -90,8 +89,6 @@ int quit_handler(const char *path, const char *types, lo_arg ** argv,
 int sporth_handler(const char *path, const char *types, lo_arg ** argv,
                 int argc, void *data, void *user_data)
 {
-    /* example showing pulling the argument values out of the argv array */
-    //printf("%s <- f:%f, i:%d\n\n", path, argv[0]->f, argv[1]->i);
     printf("Sporth string: %s\n", &argv[0]->s);
 
     if(g_ls == NULL) {
@@ -99,7 +96,6 @@ int sporth_handler(const char *path, const char *types, lo_arg ** argv,
     } 
 
     UserData *ud = &g_ls->ud;
-
 
     if(!ud->recompile) {
         plumber_open_file(&ud->pd, &argv[0]->s);
@@ -112,9 +108,6 @@ int sporth_handler(const char *path, const char *types, lo_arg ** argv,
 }
 
 
-/*****************************************************************************/
-
-/* Construct a new plugin instance. */
 LADSPA_Handle 
 instantiateLADsporth(const LADSPA_Descriptor * Descriptor,
 		     unsigned long             SampleRate) {
@@ -136,9 +129,6 @@ instantiateLADsporth(const LADSPA_Descriptor * Descriptor,
     return (LADSPA_Handle)ls;
 }
 
-/*****************************************************************************/
-
-/* Connect a port to a data location. */
 void 
 connectPortToLADsporth(LADSPA_Handle Instance,
 		       unsigned long Port,
@@ -186,8 +176,6 @@ connectPortToLADsporth(LADSPA_Handle Instance,
         break;
   }
 }
-
-/*****************************************************************************/
 
 static void ls_compute(plumber_data *pd, SPFLOAT **tbl,
         SPFLOAT *in1, SPFLOAT *in2,
@@ -238,8 +226,6 @@ runMonoLADsporth(LADSPA_Handle Instance,
     }
 }
 
-
-/*****************************************************************************/
 
 void 
 cleanupLADsporth(LADSPA_Handle Instance) {
@@ -396,8 +382,6 @@ void _init()
   
 }
 
-/*****************************************************************************/
-
 void
 deleteDescriptor(LADSPA_Descriptor * psDescriptor) {
   unsigned long lIndex;
@@ -414,10 +398,6 @@ deleteDescriptor(LADSPA_Descriptor * psDescriptor) {
     free(psDescriptor);
   }
 }
-
-/*****************************************************************************/
-
-/* _fini() is called automatically when the library is unloaded. */
 void _fini() {
     UserData *ud;
     LADsporth *ls= g_ls;
@@ -431,10 +411,6 @@ void _fini() {
     lo_server_thread_free(st);
 }
 
-/*****************************************************************************/
-
-/* Return a descriptor of the requested plugin type. There are two
-   plugin types available in this library (mono and stereo). */
 const LADSPA_Descriptor * 
 ladspa_descriptor(unsigned long Index) {
   /* Return the requested descriptor or null if the index is out of
@@ -447,6 +423,3 @@ ladspa_descriptor(unsigned long Index) {
   }
 }
 
-/*****************************************************************************/
-
-/* EOF */

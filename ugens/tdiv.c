@@ -6,6 +6,7 @@ int sporth_tdiv(sporth_stack *stack, void *ud)
     SPFLOAT trigger;
     SPFLOAT out;
     SPFLOAT num;
+    SPFLOAT offset;
     sp_tdiv *tdiv;
 
     switch(pd->mode) {
@@ -17,11 +18,12 @@ int sporth_tdiv(sporth_stack *stack, void *ud)
 
             sp_tdiv_create(&tdiv);
             plumber_add_ugen(pd, SPORTH_TDIV, tdiv);
-            if(sporth_check_args(stack, "f") != SPORTH_OK) {
+            if(sporth_check_args(stack, "fff") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for tdiv\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
+            offset = sporth_stack_pop_float(stack);
             num = sporth_stack_pop_float(stack);
             trigger = sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, 0);
@@ -32,6 +34,7 @@ int sporth_tdiv(sporth_stack *stack, void *ud)
             fprintf(stderr, "tdiv: Initialising\n");
 #endif
 
+            offset = sporth_stack_pop_float(stack);
             num = sporth_stack_pop_float(stack);
             trigger = sporth_stack_pop_float(stack);
             tdiv = pd->last->ud;
@@ -39,10 +42,12 @@ int sporth_tdiv(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
+            offset = sporth_stack_pop_float(stack);
             num = sporth_stack_pop_float(stack);
             trigger = sporth_stack_pop_float(stack);
             tdiv = pd->last->ud;
             tdiv->num = num;
+            tdiv->offset = offset;
             sp_tdiv_compute(pd->sp, tdiv, &trigger, &out);
             sporth_stack_push_float(stack, out);
             break;
