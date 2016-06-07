@@ -92,6 +92,7 @@ t \
 tabread \
 tadsr \
 tblrec \
+tdiv \
 tenv \
 tenv2 \
 tenvx \
