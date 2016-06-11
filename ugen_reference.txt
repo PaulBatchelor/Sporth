@@ -694,7 +694,12 @@ Output: f
 Description: high-precision oscillator with cubic interpolation
 ---
 Name: tdiv
-Args: num
+Args: num (f) offset (f)
 Output: f 
 Description: trigger divider
+---
+Name: hilbert
+Args: in (f)
+Output: f f
+Description: hilbert transform
 ---

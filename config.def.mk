@@ -44,6 +44,7 @@ gen_composite \
 gen_sinesum \
 gen_sporth \
 gen_vals \
+hilbert \
 in \
 jcrev \
 jitter \

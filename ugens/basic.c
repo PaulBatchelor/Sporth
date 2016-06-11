@@ -157,6 +157,49 @@ int sporth_dup(sporth_stack *stack, void *ud)
     return PLUMBER_OK;
 }
 
+int sporth_dup2(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = ud;
+    SPFLOAT val1 = 0;
+    SPFLOAT val2 = 0;
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+            plumber_add_ugen(pd, SPORTH_DUP2, NULL);
+            val1 = sporth_stack_pop_float(stack);
+            val2 = sporth_stack_pop_float(stack);
+            if(stack->error) {
+                return PLUMBER_NOTOK;
+            }
+            sporth_stack_push_float(stack, val1);
+            sporth_stack_push_float(stack, val2);
+            sporth_stack_push_float(stack, val1);
+            sporth_stack_push_float(stack, val2);
+            break;
+        case PLUMBER_INIT:
+            val1 = sporth_stack_pop_float(stack);
+            val2 = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, val1);
+            sporth_stack_push_float(stack, val2);
+            sporth_stack_push_float(stack, val1);
+            sporth_stack_push_float(stack, val2);
+            break;
+        case PLUMBER_COMPUTE:
+            val1 = sporth_stack_pop_float(stack);
+            val2 = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, val1);
+            sporth_stack_push_float(stack, val2);
+            sporth_stack_push_float(stack, val1);
+            sporth_stack_push_float(stack, val2);
+            break;
+        case PLUMBER_DESTROY:
+            break;
+        default:
+          fprintf(stderr,"Error: Unknown mode!");
+           break;
+    }
+    return PLUMBER_OK;
+}
+
 int sporth_swap(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
