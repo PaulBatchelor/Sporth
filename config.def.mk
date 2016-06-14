@@ -105,6 +105,7 @@ tog \
 tone \
 tphasor \
 trand \
+tseg \
 tseq \
 vdelay \
 vocoder \
