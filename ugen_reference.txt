@@ -703,3 +703,8 @@ Args: in (f)
 Output: f f
 Description: hilbert transform
 ---
+Name: tseg
+Args: trig (f), val (f), dur (f), curve (f), init (f)
+Output: f
+Description: hilbert transform
+---
