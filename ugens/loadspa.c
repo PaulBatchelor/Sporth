@@ -5,6 +5,9 @@
 
 int sporth_loadspa(sporth_stack *stack, void *ud)
 {
+#ifndef USE_SPA
+    return PLUMBER_NOTOK;
+#else
     plumber_data *pd = ud;
 
     sp_ftbl *ft;
@@ -49,4 +52,5 @@ int sporth_loadspa(sporth_stack *stack, void *ud)
            break;
     }
     return PLUMBER_OK;
+#endif
 }

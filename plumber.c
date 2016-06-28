@@ -826,7 +826,9 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 sp_process_plot(sp, ud, process);
                 break;
             case DRIVER_SPA:
+#ifdef USE_SPA
                 sp_process_spa(sp, ud, process);
+#endif
                 break;
             case DRIVER_NULL:
                 plumber_process_null(sp, ud, process);
