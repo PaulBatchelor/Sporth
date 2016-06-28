@@ -83,7 +83,7 @@ sporth: sporth.c $(OBJ) h/ugens.h
 	$(CC) sporth.c -L/usr/local/lib $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 
 
 libsporth.a: $(OBJ) tmp.h
-	ar rcs libsporth.a $(KOBJ) $(OBJ) 
+	$(AR) rcs libsporth.a $(KOBJ) $(OBJ) 
 
 tmp.h: $(OBJ)
 	sh util/header_gen.sh
