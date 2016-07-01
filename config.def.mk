@@ -109,6 +109,7 @@ tseg \
 tseq \
 vdelay \
 vocoder \
+wpkorg35 \
 zeros \
 zitarev
 

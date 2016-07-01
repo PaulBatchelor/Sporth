@@ -708,3 +708,8 @@ Args: trig (f), val (f), dur (f), curve (f), init (f)
 Output: f
 Description: trigger segment
 ---
+Name: wpkorg35
+Args: in (f) cutoff (f) res (f) saturation (f)
+Output: f
+Description: wpkorg filter
+---
