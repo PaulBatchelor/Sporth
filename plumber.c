@@ -302,6 +302,22 @@ int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len)
             plumber_add_string(plumb, pipes, tmp);
             sporth_stack_push_string(&plumb->sporth.stack, out + 1);
             break;
+        case SPORTH_WORD:
+            /* A sporth word is like a string, except it looks like _this
+             * instead of "this" or 'this'.
+             * It saves a character, and it can make things look nicer. 
+             * A sporth word has no spaces, hence the name.
+             */
+            tmp = out;
+            /* don't truncate the last character here like the string */
+            tmp[len] = '\0';
+            tmp++;
+#ifdef DEBUG_MODE
+            fprintf(stderr, "%s is a word!\n", out);
+#endif
+            plumber_add_string(plumb, pipes, tmp);
+            sporth_stack_push_string(&plumb->sporth.stack, out + 1);
+            break;
         case SPORTH_FUNC:
 #ifdef DEBUG_MODE
             fprintf(stderr, "%s is a function!\n", out);
