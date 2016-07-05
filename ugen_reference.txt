@@ -713,3 +713,8 @@ Args: in (f) cutoff (f) res (f) saturation (f)
 Output: f
 Description: wpkorg filter
 ---
+Name: waveset
+Args: in (f) rep (f) buflen (F)
+Output: f
+Description: waveset timestretching algorithm
+---
