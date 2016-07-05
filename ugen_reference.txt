@@ -564,7 +564,7 @@ Output: f
 Description: dust. bipolar = 1 unipolar = 0
 ---
 Name: dtrig
-Args: trig (f) loop (f) delay (f) tbl (s)
+Args: trig (f) loop (f) delay (f) scale (f) tbl (s)
 Output: f
 Description: delta trig. loop = 1 will loop the sequence
 ---
