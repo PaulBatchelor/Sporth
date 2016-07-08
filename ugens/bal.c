@@ -50,7 +50,7 @@ int sporth_bal(sporth_stack *stack, void *ud)
             sp_bal_destroy(&bal);
             break;
         default:
-            fprintf(stderr, "bal: Uknown mode!\n");
+            fprintf(stderr, "bal: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

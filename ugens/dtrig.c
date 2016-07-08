@@ -77,7 +77,7 @@ int sporth_dtrig(sporth_stack *stack, void *ud)
             sp_dtrig_destroy(&dtrig);
             break;
         default:
-            fprintf(stderr, "dtrig: Uknown mode!\n");
+            fprintf(stderr, "dtrig: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

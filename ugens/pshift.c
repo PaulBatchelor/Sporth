@@ -61,7 +61,7 @@ int sporth_pshift(sporth_stack *stack, void *ud)
             sp_pshift_destroy(&pshift);
             break;
         default:
-            fprintf(stderr, "pshift: Uknown mode!\n");
+            fprintf(stderr, "pshift: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

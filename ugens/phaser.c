@@ -104,7 +104,7 @@ int sporth_phaser(sporth_stack *stack, void *ud)
             sp_phaser_destroy(&phaser);
             break;
         default:
-            fprintf(stderr, "phaser: Uknown mode!\n");
+            fprintf(stderr, "phaser: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

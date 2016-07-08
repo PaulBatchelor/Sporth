@@ -122,7 +122,7 @@ int sporth_fog(sporth_stack *stack, void *ud)
             sp_fog_destroy(&fog);
             break;
         default:
-            fprintf(stderr, "fog: Uknown mode!\n");
+            fprintf(stderr, "fog: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

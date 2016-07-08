@@ -112,7 +112,7 @@ int sporth_ling(sporth_stack *stack, void *ud)
             free(ling);
             break;
         default:
-            fprintf(stderr, "ling: Uknown mode!\n");
+            fprintf(stderr, "ling: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

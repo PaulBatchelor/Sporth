@@ -56,7 +56,7 @@ int sporth_tdiv(sporth_stack *stack, void *ud)
             sp_tdiv_destroy(&tdiv);
             break;
         default:
-            fprintf(stderr, "tdiv: Uknown mode!\n");
+            fprintf(stderr, "tdiv: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

@@ -58,7 +58,7 @@ int sporth_ptrack(sporth_stack *stack, void *ud)
             sp_ptrack_destroy(&ptrack);
             break;
         default:
-            fprintf(stderr, "ptrack: Uknown mode!\n");
+            fprintf(stderr, "ptrack: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

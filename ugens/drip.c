@@ -76,7 +76,7 @@ int sporth_drip(sporth_stack *stack, void *ud)
             sp_drip_destroy(&drip);
             break;
         default:
-            fprintf(stderr, "drip: Uknown mode!\n");
+            fprintf(stderr, "drip: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

@@ -56,7 +56,7 @@ int sporth_jitter(sporth_stack *stack, void *ud)
             sp_jitter_destroy(&jitter);
             break;
         default:
-            fprintf(stderr, "jitter: Uknown mode!\n");
+            fprintf(stderr, "jitter: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

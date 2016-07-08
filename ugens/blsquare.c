@@ -57,7 +57,7 @@ int sporth_blsquare(sporth_stack *stack, void *ud)
             sp_blsquare_destroy(&blsquare);
             break;
         default:
-            fprintf(stderr, "blsquare: Uknown mode!\n");
+            fprintf(stderr, "blsquare: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

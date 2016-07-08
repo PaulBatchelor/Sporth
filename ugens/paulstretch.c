@@ -63,7 +63,7 @@ int sporth_paulstretch(sporth_stack *stack, void *ud)
             sp_paulstretch_destroy(&paulstretch);
             break;
         default:
-            fprintf(stderr, "paulstretch: Uknown mode!\n");
+            fprintf(stderr, "paulstretch: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

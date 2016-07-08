@@ -55,7 +55,7 @@ int sporth_scale(sporth_stack *stack, void *ud)
             sp_scale_destroy(&scale);
             break;
         default:
-            fprintf(stderr, "scale: Uknown mode!\n");
+            fprintf(stderr, "scale: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

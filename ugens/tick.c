@@ -39,7 +39,7 @@ int sporth_tick(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             break;
         default:
-            fprintf(stderr, "tick: Uknown mode!\n");
+            fprintf(stderr, "tick: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

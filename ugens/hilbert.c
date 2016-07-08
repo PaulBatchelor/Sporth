@@ -50,7 +50,7 @@ int sporth_hilbert(sporth_stack *stack, void *ud)
             sp_hilbert_destroy(&hilbert);
             break;
         default:
-            fprintf(stderr, "hilbert: Uknown mode!\n");
+            fprintf(stderr, "hilbert: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

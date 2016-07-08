@@ -47,7 +47,7 @@ int sporth_dmetro(sporth_stack *stack, void *ud)
             sp_dmetro_destroy(&dmetro);
             break;
         default:
-            fprintf(stderr, "dmetro: Uknown mode!\n");
+            fprintf(stderr, "dmetro: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

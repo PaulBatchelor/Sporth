@@ -65,7 +65,7 @@ int sporth_tseg(sporth_stack *stack, void *ud)
             sp_tseg_destroy(&tseg);
             break;
         default:
-            fprintf(stderr, "tseg: Uknown mode!\n");
+            fprintf(stderr, "tseg: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

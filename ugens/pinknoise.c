@@ -47,7 +47,7 @@ int sporth_pinknoise(sporth_stack *stack, void *ud)
             sp_pinknoise_destroy(&pinknoise);
             break;
         default:
-            fprintf(stderr, "pinknoise: Uknown mode!\n");
+            fprintf(stderr, "pinknoise: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

@@ -58,7 +58,7 @@ int sporth_pitchamdf(sporth_stack *stack, void *ud)
             sp_pitchamdf_destroy(&pitchamdf);
             break;
         default:
-            fprintf(stderr, "pitchamdf: Uknown mode!\n");
+            fprintf(stderr, "pitchamdf: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

@@ -83,7 +83,7 @@ int sporth_polysporth(sporth_stack *stack, void *ud)
             free(ps);
             break;
         default:
-            fprintf(stderr, "polysporth: Uknown mode!\n");
+            fprintf(stderr, "polysporth: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

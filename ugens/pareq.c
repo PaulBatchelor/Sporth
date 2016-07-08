@@ -66,7 +66,7 @@ int sporth_pareq(sporth_stack *stack, void *ud)
             sp_pareq_destroy(&pareq);
             break;
         default:
-            fprintf(stderr, "pareq: Uknown mode!\n");
+            fprintf(stderr, "pareq: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

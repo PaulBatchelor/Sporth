@@ -51,7 +51,7 @@ int sporth_bltriangle(sporth_stack *stack, void *ud)
             sp_bltriangle_destroy(&bltriangle);
             break;
         default:
-            fprintf(stderr, "bltriangle: Uknown mode!\n");
+            fprintf(stderr, "bltriangle: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

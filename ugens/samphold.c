@@ -50,7 +50,7 @@ int sporth_samphold(sporth_stack *stack, void *ud)
             sp_samphold_destroy(&samphold);
             break;
         default:
-            fprintf(stderr, "samphold: Uknown mode!\n");
+            fprintf(stderr, "samphold: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

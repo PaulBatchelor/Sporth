@@ -118,7 +118,7 @@ int sporth_fof(sporth_stack *stack, void *ud)
             sp_fof_destroy(&fof);
             break;
         default:
-            fprintf(stderr, "fof: Uknown mode!\n");
+            fprintf(stderr, "fof: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

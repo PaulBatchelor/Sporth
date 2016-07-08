@@ -49,7 +49,7 @@ int sporth_diskin(sporth_stack *stack, void *ud)
             sp_diskin_destroy(&diskin);
             break;
         default:
-            fprintf(stderr, "diskin: Uknown mode!\n");
+            fprintf(stderr, "diskin: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

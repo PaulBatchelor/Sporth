@@ -46,7 +46,7 @@ int sporth_timer(sporth_stack *stack, void *ud)
             sp_timer_destroy(&timer);
             break;
         default:
-            fprintf(stderr, "timer: Uknown mode!\n");
+            fprintf(stderr, "timer: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

@@ -82,7 +82,7 @@ int sporth_gbuzz(sporth_stack *stack, void *ud)
             free(gbuzz);
             break;
         default:
-            fprintf(stderr, "gbuzz: Uknown mode!\n");
+            fprintf(stderr, "gbuzz: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

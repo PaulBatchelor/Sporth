@@ -61,7 +61,7 @@ int sporth_wpkorg35(sporth_stack *stack, void *ud)
             sp_wpkorg35_destroy(&wpkorg35);
             break;
         default:
-            fprintf(stderr, "wpkorg35: Uknown mode!\n");
+            fprintf(stderr, "wpkorg35: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

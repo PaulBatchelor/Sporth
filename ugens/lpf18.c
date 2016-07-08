@@ -57,7 +57,7 @@ int sporth_lpf18(sporth_stack *stack, void *ud)
             sp_lpf18_destroy(&lpf18);
             break;
         default:
-            fprintf(stderr, "lpf18: Uknown mode!\n");
+            fprintf(stderr, "lpf18: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

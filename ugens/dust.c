@@ -54,7 +54,7 @@ int sporth_dust(sporth_stack *stack, void *ud)
             sp_dust_destroy(&dust);
             break;
         default:
-            fprintf(stderr, "dust: Uknown mode!\n");
+            fprintf(stderr, "dust: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

@@ -55,7 +55,7 @@ int sporth_waveset(sporth_stack *stack, void *ud)
             sp_waveset_destroy(&waveset);
             break;
         default:
-            fprintf(stderr, "waveset: Uknown mode!\n");
+            fprintf(stderr, "waveset: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

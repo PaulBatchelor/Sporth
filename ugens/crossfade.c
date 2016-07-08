@@ -55,7 +55,7 @@ int sporth_crossfade(sporth_stack *stack, void *ud)
             sp_crossfade_destroy(&crossfade);
             break;
         default:
-            fprintf(stderr, "crossfade: Uknown mode!\n");
+            fprintf(stderr, "crossfade: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

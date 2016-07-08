@@ -65,7 +65,7 @@ int sporth_posc3(sporth_stack *stack, void *ud)
             sp_posc3_destroy(&posc3);
             break;
         default:
-            fprintf(stderr, "posc3: Uknown mode!\n");
+            fprintf(stderr, "posc3: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

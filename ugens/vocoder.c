@@ -65,7 +65,7 @@ int sporth_vocoder(sporth_stack *stack, void *ud)
             sp_vocoder_destroy(&vocoder);
             break;
         default:
-            fprintf(stderr, "vocoder: Uknown mode!\n");
+            fprintf(stderr, "vocoder: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

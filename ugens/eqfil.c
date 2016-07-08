@@ -57,7 +57,7 @@ int sporth_eqfil(sporth_stack *stack, void *ud)
             sp_eqfil_destroy(&eqfil);
             break;
         default:
-            fprintf(stderr, "eqfil: Uknown mode!\n");
+            fprintf(stderr, "eqfil: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;
