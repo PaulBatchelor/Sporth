@@ -173,7 +173,7 @@ function UGen.default(self,sp)
     spaces = "        "
     indent = spaces .. "    "
     io.write(string.format("%sdefault:\n", spaces));
-    io.write(string.format("%sfprintf(stderr, \"%s: Uknown mode!\\n\");\n",
+    io.write(string.format("%sfprintf(stderr, \"%s: Unknown mode!\\n\");\n",
         indent, self.name))
     io.write(string.format("%sbreak;\n", indent))
 end
