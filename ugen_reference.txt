@@ -718,3 +718,8 @@ Args: in (f) rep (f) buflen (F)
 Output: f
 Description: waveset timestretching algorithm
 ---
+Name: ptrack
+Args: in (f) 
+Output: amp (f) pitch (f)
+Description: pitch tracking
+---

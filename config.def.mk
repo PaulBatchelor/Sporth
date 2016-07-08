@@ -78,6 +78,7 @@ port \
 posc3 \
 prop \
 pshift \
+ptrack \
 randh \
 randi \
 reverse \
@@ -109,6 +110,7 @@ tseg \
 tseq \
 vdelay \
 vocoder \
+waveset \
 wpkorg35 \
 zeros \
 zitarev
