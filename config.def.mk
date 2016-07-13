@@ -81,6 +81,7 @@ pshift \
 ptrack \
 randh \
 randi \
+reson \
 reverse \
 revsc \
 rpt \

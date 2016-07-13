@@ -723,3 +723,8 @@ Args: in (f)
 Output: amp (f) pitch (f)
 Description: pitch tracking
 ---
+Name: reson
+Args: in (f) 
+Output: freq (f) bw (f)
+Description: resonator filter
+---
