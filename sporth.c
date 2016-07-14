@@ -16,6 +16,10 @@ static void process(sp_data *sp, void *udata){
         out = sporth_stack_pop_float(&pd->sporth.stack);
         sp->out[chan] = out;
     }
+
+    if(pd->showprog) {
+        sp_progress_compute(sp, pd->prog, NULL, NULL);
+    }
 }
 
 int main(int argc, char *argv[])

@@ -90,6 +90,7 @@ int plumber_init(plumber_data *plumb)
     int pos;
     for(pos = 0; pos < 16; pos++) plumb->p[pos] = 0;
     for(pos = 0; pos < 16; pos++) plumb->f[pos] = sporth_f_default;
+    plumb->showprog = 0;
     return PLUMBER_OK;
 }
 
@@ -767,6 +768,9 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                    fprintf(stderr,"There was a problem setting the output file..\n");
                     exit(1);
                 }
+                break; 
+            case 'P':
+                pd->showprog = 1;
                 break;
             case 'r':
                 if(--argc) {
@@ -851,6 +855,10 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     sp->sr = sr;
     if(time != NULL) sp->len = str2time(pd, time);
     pd->ud = ud;
+    if(pd->showprog) {
+        sp_progress_create(&pd->prog);
+        sp_progress_init(sp, pd->prog);
+    }
     if(plumber_parse(pd) == PLUMBER_OK){
         plumber_compute(pd, PLUMBER_INIT);
         pd->sporth.stack.pos = 0;
@@ -884,6 +892,11 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
        fprintf(stderr,"Uh-oh! Sporth created %d error(s).\n",
                 pd->sporth.stack.error);
     }
+
+    if(pd->showprog){
+        sp_progress_destroy(&pd->prog);
+    }
+
     plumber_clean(pd);
     sp_destroy(&sp);
 }
