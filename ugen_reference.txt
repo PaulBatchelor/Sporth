@@ -738,3 +738,8 @@ Args: bpm (f)
 Output: f
 Description: convert bpm to rate (Hertz) 
 ---
+Name: pdhalf
+Args: amount -1 to 1 (f)
+Output: f
+Description: casio phasor distortion
+---
