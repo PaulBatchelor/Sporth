@@ -52,8 +52,6 @@ typedef struct {
     void *ud;
 } sporth_func_d;
 
-
-
 typedef struct {
     uint32_t npipes;
     int tick;
@@ -158,6 +156,7 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode);
 int plumbing_parse(plumber_data *plumb, plumbing *pipes);
 int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, char *str);
 void plumbing_show_pipes(plumber_data *plumb, plumbing *pipes);
+void plumbing_write_code(plumber_data *plumb, plumbing *pipes, FILE *fp);
 int plumber_process_null(sp_data *sp, void *ud, void (*callback)(sp_data *, void *));
 
 int plumber_argtbl_create(plumber_data *plumb, plumber_argtbl **at, uint32_t size);

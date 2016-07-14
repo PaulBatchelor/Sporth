@@ -15,6 +15,7 @@
 ; This needs to be called after you push stuff
 (ps-init-sporthlet 0)
 
+
 (sine 1 0.2 350)
 ; then call ps-init
 (ps-init-sporthlet 1)
@@ -26,3 +27,4 @@
 (ps-note 1 1 0 4 '(0))
 (ps-note 2 2 0 4 '(0))
 (ps-noteblock-end)
+(ps-write-code 0)

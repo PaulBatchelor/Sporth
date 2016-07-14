@@ -170,6 +170,32 @@ void plumbing_show_pipes(plumber_data *plumb, plumbing *pipes)
     fprintf(stderr, "%d pipes total. \n\n", pipes->npipes);
 }
 
+void plumbing_write_code(plumber_data *plumb, plumbing *pipes, FILE *fp)
+{
+    uint32_t n;
+    plumber_pipe *pipe, *next;
+    pipe = pipes->root.next;
+    SPFLOAT *ptr;
+    for(n = 0; n < pipes->npipes; n++) {
+        next = pipe->next;
+        switch(pipe->type) {
+            case SPORTH_FLOAT:
+                ptr = (SPFLOAT *)pipe->ud;
+                fprintf(fp, "%g ", *ptr);
+                break;
+            case SPORTH_STRING:
+                fprintf(fp, "\'%s\' ", (char *) pipe->ud);
+                break;
+            default:
+                fprintf(fp, "%s ", 
+                        plumb->sporth.flist[pipe->type - SPORTH_FOFFSET].name);
+                break;
+        }
+
+        pipe = next;
+    }
+}
+
 int plumbing_destroy(plumbing *pipes)
 {
 #ifdef DEBUG_MODE
