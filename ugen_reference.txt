@@ -728,3 +728,13 @@ Args: in (f)
 Output: freq (f) bw (f)
 Description: resonator filter
 ---
+Name: bpm2dur
+Args: bpm (f) 
+Output: f
+Description: convert bpm to duration (seconds) 
+---
+Name: bpm2rate
+Args: bpm (f) 
+Output: f
+Description: convert bpm to rate (Hertz) 
+---

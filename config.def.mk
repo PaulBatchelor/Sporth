@@ -11,6 +11,7 @@ bitcrush \
 blsaw \
 blsquare \
 bltriangle \
+bpm \
 butbp \
 butbr \
 buthp \
