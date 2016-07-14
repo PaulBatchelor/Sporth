@@ -7,7 +7,7 @@ inspired by stack languages like Forth and PostScript.
 
 - Stack oriented paradigm
 - Written entirely in C
-- 30+ unit generators to choose from
+- 100+ unit generators to choose from
 - Powered by the Soundpipe DSP library
 - Unix-Friendly
 - Small codebase
