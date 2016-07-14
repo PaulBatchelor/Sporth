@@ -35,4 +35,4 @@ tenvx 1 pset
 
 # reverb throw, smooth out the gate signal
 dup (3 p 0.001 port *) dup
-0.97 4000 revsc drop 0.1 * + 
+20 20 1000 zrev drop 0.2 * + 
