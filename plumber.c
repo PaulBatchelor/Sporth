@@ -745,6 +745,9 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     argv++;
     argc--;
     int driver = DRIVER_FILE;
+    int nullfile = 0;
+    int i;
+    int rc;
     while(argc > 0 && argv[0][0] == '-') {
         switch(argv[0][1]) {
             case 'd':
@@ -833,6 +836,10 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
             case 'n':
                 driver = DRIVER_NULL;
                 break;
+            case '0':
+                /* TODO: NULL file mode */
+                nullfile = 1;
+                break;
             default:
                 fprintf(stderr,"default.. \n");
                 exit(1);
@@ -841,6 +848,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
         argv++;
         argc--;
     }
+
 
     if(argc == 0) {
         pd->fp = stdin;
@@ -869,7 +877,19 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
         sp_progress_create(&pd->prog);
         sp_progress_init(sp, pd->prog);
     }
-    if(plumber_parse(pd) == PLUMBER_OK){
+    if(nullfile) {
+        pd->mode = PLUMBER_CREATE;
+        for(i = 0; i < nchan; i++) {
+            //plumber_lexer(pd, pd->pipes, "0 ", 4);
+            plumber_add_float(pd, pd->pipes, 0);
+            sporth_stack_push_float(&pd->sporth.stack, 0);
+        }
+        rc = PLUMBER_OK;
+    } else {
+        rc  = plumber_parse(pd);
+    }
+
+    if(rc == PLUMBER_OK){
         plumber_compute(pd, PLUMBER_INIT);
         pd->sporth.stack.pos = 0;
 #ifdef DEBUG_MODE
