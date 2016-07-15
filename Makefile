@@ -36,8 +36,6 @@ OBJ += util/sp_jack.o
 LIBS += -ljack  -llo
 endif
 
-CLFAGS += -DRECOMPILATION
-
 include ugens/ling/Makefile
 
 BIN += sporth examples/parse examples/user_function util/jack_wrapper util/val \
