@@ -30,6 +30,14 @@ CFLAGS += -DBUILD_LADSPA -Iugens/ladspa/
 OBJ += ugens/ladspa/load.o
 endif
 
+ifdef BUILD_JACK
+CFLAGS += -DBUILD_JACK 
+OBJ += util/sp_jack.o
+LIBS += -ljack  -llo
+endif
+
+CLFAGS += -DRECOMPILATION
+
 include ugens/ling/Makefile
 
 BIN += sporth examples/parse examples/user_function util/jack_wrapper util/val \
@@ -103,6 +111,7 @@ install: $(SPORTHLIBS) sporth tmp.h
 	mkdir -p /usr/local/share/sporth
 	install ugen_reference.txt /usr/local/share/sporth
 	install util/ugen_lookup /usr/local/bin
+	install util/spparse /usr/local/bin
 
 clean:
 	rm -rf $(OBJ)

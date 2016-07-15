@@ -1,82 +1,21 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <soundpipe.h>
-#include <sporth.h>
 #include <jack/jack.h>
 #include <time.h>
-#include <lo/lo.h>
 #include <string.h>
+#include <lo/lo.h>
 
-typedef struct {
-    plumber_data pd;
-    sp_data *sp;
-    int recompile, error;
-    char *str;
-} UserData;
+#include "plumber.h"
 
 typedef struct {
     sp_data *sp;
+    plumber_data *pd;
     jack_port_t **output_port;
     jack_client_t **client;
     void *ud;
     void (*callback)(sp_data *, void *);
 } sp_jack;
-
-static void error(int num, const char *m, const char *path)
-{
-    printf("liblo server error %d in path %s: %s\n", num, path, msg);
-    fflush(stdout);
-}
-
-int quit_handler(const char *path, const char *types, lo_arg ** argv,
-                 int argc, void *data, void *user_data)
-{
-    //done = 1;
-    printf("quiting\n\n");
-    fflush(stdout);
-
-    return 0;
-}
-
-int sporth_handler(const char *path, const char *types, lo_arg ** argv,
-                int argc, void *data, void *user_data)
-{
-    /* example showing pulling the argument values out of the argv array */
-    //printf("%s <- f:%f, i:%d\n\n", path, argv[0]->f, argv[1]->i);
-    printf("Sporth string: %s\n", &argv[0]->s);
-    
-    UserData *ud = user_data;
-
-    if(!ud->recompile) {
-        //ud->str = malloc(sizeof(char) * strlen(&argv[0]->s) + 1);
-        ud->str = strdup(&argv[0]->s);
-        ud->recompile = 1;
-    }
-
-    fflush(stdout);
-
-    return 0;
-}
-
-static void process(sp_data *sp, void *udata){
-    UserData *ud = udata;
-    plumber_data *pd = &ud->pd;
-
-    if(ud->recompile) {
-        plumber_recompile_string(&ud->pd, ud->str);
-        ud->recompile = 0;
-        free(ud->str);
-    }
-
-    plumber_compute(pd, PLUMBER_COMPUTE);
-    SPFLOAT out = 0;
-    int chan;
-    for (chan = 0; chan < pd->nchan; chan++) {
-        out = sporth_stack_pop_float(&pd->sporth.stack);
-        sp->out[chan] = out;
-    }
-}
 
 static int sp_jack_cb(jack_nframes_t nframes, void *arg)
 {
@@ -93,13 +32,43 @@ static int sp_jack_cb(jack_nframes_t nframes, void *arg)
     return 0;
 }
 
-void sp_jack_shutdown (void *arg)
+static void error(int num, const char *m, const char *path)
+{
+    fflush(stdout);
+}
+
+int quit_handler(const char *path, const char *types, lo_arg ** argv,
+                 int argc, void *data, void *user_data)
+{
+    printf("quiting\n\n");
+    fflush(stdout);
+    return 0;
+}
+
+int sporth_handler(const char *path, const char *types, lo_arg ** argv,
+                int argc, void *data, void *user_data)
+{
+    fprintf(stderr, "Sporth string: %s\n", &argv[0]->s);
+    
+    sp_jack *ud = user_data;
+    plumber_data *pd = ud->pd;
+
+    if(!pd->recompile) {
+        pd->str = strdup(&argv[0]->s);
+        pd->recompile = 1;
+    }
+
+    fflush(stdout);
+
+    return 0;
+}
+
+static void sp_jack_shutdown (void *arg)
 {
     exit (1);
 }
 
-
-int sp_jack_process(sp_data *sp, void *ud, void (*callback)(sp_data *, void *))
+int sp_process_jack(plumber_data *pd, void *ud, void (*callback)(sp_data *, void *))
 {
     const char **ports;
     const char *client_name = "soundpipe";
@@ -108,12 +77,18 @@ int sp_jack_process(sp_data *sp, void *ud, void (*callback)(sp_data *, void *))
     jack_options_t options = JackNullOption;
     jack_status_t status;
     sp_jack jd;
-    jd.sp = sp;
+    jd.sp = pd->sp;
+    jd.pd = pd;
+    sp_data *sp = pd->sp;
     jd.callback = callback;
     jd.ud = ud;
 
     jd.output_port = malloc(sizeof(jack_port_t *) * sp->nchan);
     jd.client = malloc(sizeof(jack_client_t *));
+    
+    lo_server_thread st = lo_server_thread_new("6449", error);
+    lo_server_thread_add_method(st, "/sporth", "s", sporth_handler, &jd);
+    lo_server_thread_start(st);
 
     jd.client[0] = jack_client_open (client_name, options, &status, server_name);
     if (jd.client[0] == NULL) {
@@ -137,7 +112,6 @@ int sp_jack_process(sp_data *sp, void *ud, void (*callback)(sp_data *, void *))
     char chan_name[50];
     for(chan = 0; chan < sp->nchan; chan++) {
         sprintf(chan_name, "output_%d", chan);
-        printf("registering %s\n", chan_name);
         jd.output_port[chan] = jack_port_register (jd.client[0], chan_name,
                           JACK_DEFAULT_AUDIO_TYPE,
                           JackPortIsOutput, chan);
@@ -169,65 +143,7 @@ int sp_jack_process(sp_data *sp, void *ud, void (*callback)(sp_data *, void *))
     free(jd.output_port);
     free(jd.client);
 
-    return SP_OK;
-}
-
-int main(int argc, char *argv[])
-{
-    if(argc < 2) {
-        fprintf(stderr, "Usage: %s file.sp nchan\n", argv[0]);
-        return 1;
-    }
-
-    int nchan = 1;
-
-    FILE *fp;
-
-    if(argc > 2) {
-        nchan = atoi(argv[1]);
-        fp = fopen(argv[2], "r");
-    } else {
-        fp = fopen(argv[1], "r");
-    }
-
-
-    if(fp == NULL) {
-        fprintf(stderr, "Couldn't open file %s.\n", argv[1]);
-        return 1;
-    }
-
-    UserData ud;
-    ud.recompile = 0;
-    plumber_init(&ud.pd);
-    plumber_register(&ud.pd);
-
-    lo_server_thread st = lo_server_thread_new("6449", error);
-    lo_server_thread_add_method(st, "/sporth/", "s", sporth_handler, &ud);
-
-    if(nchan == 2) {
-        sp_createn(&ud.sp, 2);
-        ud.pd.nchan = 2;
-    } else {
-        sp_create(&ud.sp);
-    }
-    
-    sp_srand(ud.sp, time(NULL));
-    ud.pd.sp = ud.sp;
-    ud.pd.fp = fp;
-
-    lo_server_thread_start(st);
-
-    if(plumber_parse(&ud.pd) == PLUMBER_OK) {
-        plumber_compute(&ud.pd, PLUMBER_INIT);
-        sp_jack_process(ud.sp, &ud, process);
-    } else {
-        fprintf(stderr, "Errors. Bye\n");
-    }
-
-
-    sp_destroy(&ud.sp);
-    plumber_clean(&ud.pd);
-
     lo_server_thread_free(st);
-    return 0;
+
+    return SP_OK;
 }

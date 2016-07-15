@@ -1,0 +1,14 @@
+# spparse
+# By Paul Batchelor
+# This shell utility formats sporth code to be sent over OSC via oscsend
+
+str=""
+
+while read line 
+do
+    str=$(echo "$str" | sed "s/\#.*//")
+    str="$str $line"
+    echo "$line"
+done
+
+oscsend localhost 6449 /sporth s "$str"

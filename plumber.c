@@ -10,6 +10,10 @@
 #include "ugens.h"
 #undef SPORTH_UGEN
 
+#ifdef BUILD_JACK
+int sp_process_jack(plumber_data *pd, void *ud, void (*callback)(sp_data *, void *));
+#endif 
+
 enum {
     SPACE,
     QUOTE,
@@ -28,6 +32,7 @@ enum {
     DRIVER_RAW,
     DRIVER_PLOT,
     DRIVER_SPA,
+    DRIVER_JACK,
     DRIVER_NULL
 };
 
@@ -87,6 +92,7 @@ int plumber_init(plumber_data *plumb)
     plumber_ftmap_init(plumb);
     plumb->seed = (int) time(NULL);
     plumb->fp = NULL;
+    plumb->recompile = 0;
     int pos;
     for(pos = 0; pos < 16; pos++) plumb->p[pos] = 0;
     for(pos = 0; pos < 16; pos++) plumb->f[pos] = sporth_f_default;
@@ -807,6 +813,10 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                         driver = DRIVER_PLOT;
                     } else if ((!strcmp(argv[0], "spa"))) {
                         driver = DRIVER_SPA;
+#ifdef BUILD_JACK
+                    } else if ((!strcmp(argv[0], "jack"))) {
+                        driver = DRIVER_JACK;
+#endif
                     } else {
                        fprintf(stderr,"Could not find driver \"%s\".\n", argv[0]);
                         exit(1);
@@ -880,6 +890,11 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 sp_process_spa(sp, ud, process);
 #endif
                 break;
+#ifdef BUILD_JACK
+            case DRIVER_JACK:
+                sp_process_jack(pd, ud, process);
+                break;
+#endif
             case DRIVER_NULL:
                 plumber_process_null(sp, ud, process);
                 break;
