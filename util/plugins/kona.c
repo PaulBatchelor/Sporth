@@ -55,16 +55,12 @@ static int sporth_gen_kona(plumber_data *pd, sporth_stack *stack, void **ud)
                 ft->tbl[n] = (SPFLOAT)tbl[n];
             }
             plumber_ftmap_add(pd, ftname, ft);
-            free(ftname);
-            free(str);
             break;
 
         case PLUMBER_INIT:
 
             ftname = sporth_stack_pop_string(stack);
             str = sporth_stack_pop_string(stack);
-            free(str);
-            free(ftname);
             break;
 
         case PLUMBER_COMPUTE:

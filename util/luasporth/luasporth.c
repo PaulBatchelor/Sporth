@@ -69,12 +69,10 @@ static int luasporth(plumber_data *pd, sporth_stack *stack, void **ud)
             if(luaL_loadfile(L, filename) || lua_pcall(L, 0, 0, 0)) {
                 error(L, "cannot run configuration file: %s", lua_tostring(L, -1));
             }
-            free(filename);
             break;
 
         case PLUMBER_INIT:
             filename = sporth_stack_pop_string(stack);
-            free(filename);
             break;
 
         case PLUMBER_COMPUTE:
