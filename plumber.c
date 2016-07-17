@@ -124,7 +124,7 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
                 break;
             case SPORTH_STRING:
                 sval = pipe->ud;
-                if(mode == PLUMBER_INIT) sporth_stack_push_string(&sporth->stack, sval);
+                if(mode == PLUMBER_INIT) sporth_stack_push_string(&sporth->stack, &sval);
                 break;
             default:
                 plumb->last = pipe;
@@ -217,8 +217,10 @@ int plumbing_destroy(plumbing *pipes)
         fprintf(stderr, "Pipe %d\ttype %d\n", n, pipe->type);
 #endif
 
-        if(pipe->type == SPORTH_FLOAT || pipe->type == SPORTH_STRING)
+        if(pipe->type == SPORTH_FLOAT || pipe->type == SPORTH_STRING) {
             free(pipe->ud);
+        }
+
         free(pipe);
         pipe = next;
     }
@@ -267,13 +269,13 @@ int plumber_add_float(plumber_data *plumb, plumbing *pipes, float num)
     return PLUMBER_OK;
 }
 
-int plumber_add_string(plumber_data *plumb, plumbing *pipes, const char *str)
+char * plumber_add_string(plumber_data *plumb, plumbing *pipes, const char *str)
 {
     plumber_pipe *new = malloc(sizeof(plumber_pipe));
 
     if(new == NULL) {
         fprintf(stderr,"Memory error\n");
-        return PLUMBER_NOTOK;
+        return NULL;
     }
 
     new->type = SPORTH_STRING;
@@ -283,11 +285,11 @@ int plumber_add_string(plumber_data *plumb, plumbing *pipes, const char *str)
     strncpy(sval, str, new->size);
     if(new->ud == NULL) {
         fprintf(stderr,"Memory error\n");
-        return PLUMBER_NOTOK;
+        return NULL;
     }
 
     plumbing_add_pipe(pipes, new);
-    return PLUMBER_OK;
+    return sval;
 }
 
 int plumber_add_ugen(plumber_data *plumb, uint32_t id, void *ud)
@@ -332,8 +334,8 @@ int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len)
 #ifdef DEBUG_MODE
             fprintf(stderr, "%s is a string!\n", out);
 #endif
-            plumber_add_string(plumb, pipes, tmp);
-            sporth_stack_push_string(&plumb->sporth.stack, out + 1);
+            tmp = plumber_add_string(plumb, pipes, tmp);
+            sporth_stack_push_string(&plumb->sporth.stack, &tmp);
             break;
         case SPORTH_WORD:
             /* A sporth word is like a string, except it looks like _this
@@ -348,8 +350,8 @@ int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len)
 #ifdef DEBUG_MODE
             fprintf(stderr, "%s is a word!\n", out);
 #endif
-            plumber_add_string(plumb, pipes, tmp);
-            sporth_stack_push_string(&plumb->sporth.stack, out + 1);
+            tmp = plumber_add_string(plumb, pipes, tmp);
+            sporth_stack_push_string(&plumb->sporth.stack, &tmp);
             break;
         case SPORTH_FUNC:
 #ifdef DEBUG_MODE
@@ -880,7 +882,6 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     if(nullfile) {
         pd->mode = PLUMBER_CREATE;
         for(i = 0; i < nchan; i++) {
-            //plumber_lexer(pd, pd->pipes, "0 ", 4);
             plumber_add_float(pd, pd->pipes, 0);
             sporth_stack_push_float(&pd->sporth.stack, 0);
         }

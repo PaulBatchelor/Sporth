@@ -115,7 +115,7 @@ int plumber_register(plumber_data *plumb);
 int plumber_clean(plumber_data *plumb);
 
 int plumber_add_float(plumber_data *plumb, plumbing *pipes, float num);
-int plumber_add_string(plumber_data *plumb, plumbing *pipes, const char *str);
+char * plumber_add_string(plumber_data *plumb, plumbing *pipes, const char *str);
 int plumber_add_ugen(plumber_data *plumb, uint32_t id, void *ud);
 
 int plumber_compute(plumber_data *plumb, int mode);
