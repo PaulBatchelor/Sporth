@@ -6,8 +6,7 @@ str=""
 
 while read line 
 do
-    str=$(echo "$str" | sed "s/\#.*//")
-    str="$str $line"
+    str=$(printf "$str\n$line")
     echo "$line"
 done
 
