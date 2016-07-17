@@ -46,7 +46,6 @@ int sporth_ling(sporth_stack *stack, void *ud)
             sporth_stack_pop_float(stack);
             sporth_stack_pop_float(stack);
             sporth_stack_push_float(stack, 0);
-            free(str);
             break;
         case PLUMBER_INIT:
 
@@ -69,7 +68,6 @@ int sporth_ling(sporth_stack *stack, void *ud)
             printf("ling: the string is %s\n", str);
 #endif
             ling_parse_line(&ling->ling, str);
-            free(str);
             break;
         case PLUMBER_COMPUTE:
             ling = pd->last->ud;

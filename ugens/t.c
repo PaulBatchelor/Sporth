@@ -33,7 +33,6 @@ int sporth_tget(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            free(ftname);
             sporth_stack_push_float(stack, 0.0);
             break;
 
@@ -41,7 +40,6 @@ int sporth_tget(sporth_stack *stack, void *ud)
             td = pd->last->ud;
             ftname = sporth_stack_pop_string(stack);
             td->index = floor(sporth_stack_pop_float(stack));
-            free(ftname);
             sporth_stack_push_float(stack, 0.0);
             break;
 
@@ -86,7 +84,6 @@ int sporth_tset(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            free(ftname);
             break;
 
         case PLUMBER_INIT:
@@ -95,7 +92,6 @@ int sporth_tset(sporth_stack *stack, void *ud)
             td->index = floor(sporth_stack_pop_float(stack));
             td->val = sporth_stack_pop_float(stack);
             td->ft->tbl[td->index] = td->val;
-            free(ftname);
             break;
 
         case PLUMBER_COMPUTE:
@@ -140,7 +136,6 @@ int sporth_tblsize(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             *tsize = ft->size;
-            free(ftname);
             sporth_stack_push_float(stack, *tsize);
             break;
 
@@ -148,7 +143,6 @@ int sporth_tblsize(sporth_stack *stack, void *ud)
             tsize = pd->last->ud;
             ftname = sporth_stack_pop_string(stack);
             *tsize = ft->size;
-            free(ftname);
             sporth_stack_push_float(stack, *tsize);
             break;
 
@@ -192,14 +186,12 @@ int sporth_tbldur(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             *tlen = (SPFLOAT) ft->size / pd->sp->sr;
-            free(ftname);
             sporth_stack_push_float(stack, (SPFLOAT) *tlen);
             break;
 
         case PLUMBER_INIT:
             tlen = pd->last->ud;
             ftname = sporth_stack_pop_string(stack);
-            free(ftname);
             sporth_stack_push_float(stack, (SPFLOAT) *tlen);
             break;
 

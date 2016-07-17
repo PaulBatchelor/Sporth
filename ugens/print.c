@@ -35,7 +35,6 @@ int sporth_print(sporth_stack *stack, void *ud)
             strncpy(prnt->label, str, 128);
             prnt->pval = val; 
             prnt->init = 1;
-            free(str);
             sporth_stack_push_float(stack, val);
             break;
         case PLUMBER_INIT:
@@ -46,7 +45,6 @@ int sporth_print(sporth_stack *stack, void *ud)
             prnt = pd->last->ud;
             str = sporth_stack_pop_string(stack);
             val = sporth_stack_pop_float(stack);
-            free(str);
             sporth_stack_push_float(stack, val);
             break;
         case PLUMBER_COMPUTE:

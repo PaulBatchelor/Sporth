@@ -45,8 +45,6 @@ int sporth_kona(sporth_stack *stack, void *ud)
                 ft->tbl[n] = (SPFLOAT)tbl[n];
             }
             plumber_ftmap_add(pd, ftname, ft);
-            free(ftname);
-            free(str);
 #endif
             break;
 
@@ -55,8 +53,6 @@ int sporth_kona(sporth_stack *stack, void *ud)
 #ifdef BUILD_KONA
             ftname = sporth_stack_pop_string(stack);
             str = sporth_stack_pop_string(stack);
-            free(str);
-            free(ftname);
 #endif
             break;
 

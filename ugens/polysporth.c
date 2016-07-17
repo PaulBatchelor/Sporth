@@ -42,14 +42,8 @@ int sporth_polysporth(sporth_stack *stack, void *ud)
 
             if(ps_init(pd, stack, ps, ninstances, in_tbl, out_tbl, filename) == PLUMBER_NOTOK) {
                 fprintf(stderr, "Initialization of polysporth failed\n");
-                free(filename);
-                free(out_tbl);
-                free(in_tbl);
                 return PLUMBER_NOTOK;
             }
-            free(filename);
-            free(out_tbl);
-            free(in_tbl);
 
             break;
 
@@ -61,9 +55,6 @@ int sporth_polysporth(sporth_stack *stack, void *ud)
             clock = sporth_stack_pop_float(stack);
             tick = sporth_stack_pop_float(stack);
             
-            free(filename);
-            free(out_tbl);
-            free(in_tbl);
 #ifdef DEBUG_MODE
             fprintf(stderr, "polysporth: Initialising\n");
 #endif
