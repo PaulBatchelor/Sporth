@@ -5,6 +5,9 @@
 
 int sporth_loadfile(sporth_stack *stack, void *ud)
 {
+#ifdef NO_LIBSNDFILE
+    return PLUMBER_NOTOK;
+#else
     plumber_data *pd = ud;
 
     sp_ftbl *ft;
@@ -49,4 +52,5 @@ int sporth_loadfile(sporth_stack *stack, void *ud)
            break;
     }
     return PLUMBER_OK;
+#endif
 }
