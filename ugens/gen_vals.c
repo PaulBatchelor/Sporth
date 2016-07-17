@@ -39,15 +39,11 @@ int sporth_gen_vals(sporth_stack *stack, void *ud)
 
             plumber_ftmap_add(pd, str, ft);
 
-            //free(args);
-            //free(str);
             break;
 
         case PLUMBER_INIT:
             args = sporth_stack_pop_string(stack);
             str = sporth_stack_pop_string(stack);
-            //free(str);
-            //free(args);
             break;
 
         case PLUMBER_COMPUTE:

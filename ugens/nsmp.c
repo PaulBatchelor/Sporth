@@ -41,8 +41,6 @@ int sporth_nsmp(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             };
             sporth_stack_push_float(stack, 0.0);
-            free(wav);
-            free(ini);
             break;
         case PLUMBER_INIT:
             nsmp = pd->last->ud;
@@ -54,8 +52,6 @@ int sporth_nsmp(sporth_stack *stack, void *ud)
             trig = sporth_stack_pop_float(stack);
 
             sporth_stack_push_float(stack, 0.0);
-            free(wav);
-            free(ini);
             break;
 
         case PLUMBER_COMPUTE:

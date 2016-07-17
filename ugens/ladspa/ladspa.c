@@ -169,22 +169,16 @@ int sporth_ladspa(sporth_stack *stack, void *ud)
             id = (uint32_t) sporth_stack_pop_float(stack);
             plugin = sporth_stack_pop_string(stack);
             if(init_ladspa(pd, stack, ladspa, plugin, argtbl, id) == PLUMBER_NOTOK) {
-                free(argtbl);
-                free(plugin);
                 return PLUMBER_NOTOK;
             } 
             pop_inputs(pd, stack, ladspa);
             push_outputs(pd, stack, ladspa);
-            free(argtbl);
-            free(plugin);
             break;
         case PLUMBER_INIT:
             ladspa = pd->last->ud;
             argtbl = sporth_stack_pop_string(stack);
             id = (uint32_t) sporth_stack_pop_float(stack);
             plugin = sporth_stack_pop_string(stack);
-            free(argtbl);
-            free(plugin);
             pop_inputs(pd, stack, ladspa);
             push_outputs(pd, stack, ladspa);
             break;

@@ -25,7 +25,6 @@ int sporth_diskin(sporth_stack *stack, void *ud)
             }
             filename = sporth_stack_pop_string(stack);
             sporth_stack_push_float(stack, 0);
-            free(filename);
             break;
         case PLUMBER_INIT:
 
@@ -37,7 +36,6 @@ int sporth_diskin(sporth_stack *stack, void *ud)
             diskin = pd->last->ud;
             sp_diskin_init(pd->sp, diskin, filename);
             sporth_stack_push_float(stack, 0);
-            free(filename);
             break;
         case PLUMBER_COMPUTE:
             diskin = pd->last->ud;

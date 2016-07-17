@@ -30,17 +30,12 @@ int sporth_gen_composite(sporth_stack *stack, void *ud)
             sp_gen_composite(pd->sp, ft, args);
 
             plumber_ftmap_add(pd, str, ft);
-
-            free(args);
-            free(str);
             break;
 
         case PLUMBER_INIT:
             args = sporth_stack_pop_string(stack);
             size = (uint32_t)sporth_stack_pop_float(stack);
             str = sporth_stack_pop_string(stack);
-            free(str);
-            free(args);
             break;
 
         case PLUMBER_COMPUTE:
