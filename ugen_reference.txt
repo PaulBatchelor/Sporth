@@ -748,3 +748,13 @@ Args: val (f) label (s)
 Output: f
 Description: prints values to terminal 
 ---
+Name: cdbload
+Args: ftname (s) filename (s)
+Output: n/a
+Description: loads cdb file
+---
+Name: cdb
+Args: key (s) ftname (s)
+Output: s
+Description: loads string from cdb file
+---

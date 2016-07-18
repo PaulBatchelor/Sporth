@@ -16,6 +16,7 @@ butbp \
 butbr \
 buthp \
 butlp \
+cdb \
 clip \
 comb \
 conv \
@@ -138,3 +139,4 @@ BUILD_LADSPA=1
 
 # Enable support for JACK audio
 # BUILD_JACK=1
+#

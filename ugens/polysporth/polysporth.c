@@ -574,7 +574,7 @@ static s7_pointer ps_lexer(s7_scheme *sc, s7_pointer args)
     uint32_t size = strlen(str);
     plumbing *old_tmp;
     /* TODO: error checking */
-    sporthlet *splj= &ps->spl[id];
+    sporthlet *spl= &ps->spl[id];
     int prev_mode = ps->pd.mode;
     ps->pd.mode = PLUMBER_CREATE;
     old_tmp = ps->pd.tmp; 

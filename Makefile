@@ -38,6 +38,8 @@ endif
 
 include ugens/ling/Makefile
 
+include ugens/cdb/Makefile
+
 BIN += sporth examples/parse examples/user_function util/jack_wrapper util/val \
 	  util/float2bin util/jacksporth
 

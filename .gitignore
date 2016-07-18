@@ -8,3 +8,6 @@ playground
 sp_dict.lua
 TODO.txt
 config.mk
+util/jacksporth
+util/cdb
+util/jsporth
