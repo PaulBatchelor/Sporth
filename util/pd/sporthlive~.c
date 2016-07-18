@@ -28,7 +28,7 @@ typedef struct _sporthlive
     char *str;
 } t_sporth;
 
-int sporth_handler(const char *path, const char *types, lo_arg ** argv,
+static int sporth_handler(const char *path, const char *types, lo_arg ** argv,
                 int argc, void *data, void *user_data)
 {
     printf("Sporth string: %s\n", &argv[0]->s);
