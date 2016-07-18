@@ -33,14 +33,14 @@ int sporth_tget(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            sporth_stack_push_float(stack, 0.0);
+            sporth_stack_push_float(stack, td->ft->tbl[td->index]);
             break;
 
         case PLUMBER_INIT:
             td = pd->last->ud;
             ftname = sporth_stack_pop_string(stack);
             td->index = floor(sporth_stack_pop_float(stack));
-            sporth_stack_push_float(stack, 0.0);
+            sporth_stack_push_float(stack, td->ft->tbl[td->index]);
             break;
 
         case PLUMBER_COMPUTE:
