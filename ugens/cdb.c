@@ -45,10 +45,14 @@ int sporth_cdb(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-
+            cdb->val = NULL;
             if(cdb_seek(*cdb->fd, key, strlen(key), &cdb->vlen) > 0) {
                 cdb->val = malloc(cdb->vlen + 1);
                 cdb_bread(*cdb->fd, cdb->val, cdb->vlen);
+            } else {
+                fprintf(stderr,"cdb: could not find value from key %s\n", key);
+                stack->error++;
+                return PLUMBER_NOTOK;
             }
             cdb->val[cdb->vlen] = '\0';
             sporth_stack_push_string(stack, &cdb->val);
@@ -67,7 +71,7 @@ int sporth_cdb(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_DESTROY:
             cdb = pd->last->ud;
-            free(cdb->val);
+            if(cdb->val != NULL) free(cdb->val);
             free(cdb);
             break;
         default:
