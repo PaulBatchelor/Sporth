@@ -132,7 +132,7 @@ zitarev
 #
 
 # Build polysporth
-# BUILD_POLYSPORTH=1
+BUILD_POLYSPORTH=1
 
 # LADSPA support
 BUILD_LADSPA=1
