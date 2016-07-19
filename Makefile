@@ -16,14 +16,6 @@ LIBS+=-ldl -lpthread
 CFLAGS += -I$(KONA_PATH)/src -DBUILD_KONA 
 endif
 
-ifdef BUILD_POLYSPORTH
-OBJ += ugens/polysporth/s7.o 
-CFLAGS += -DBUILD_POLYSPORTH
-LIBS += -Wl,-export-dynamic
-#UGENS += polysporth
-include ugens/polysporth/Makefile
-endif
-
 ifdef BUILD_LADSPA
 CFLAGS += -DBUILD_LADSPA -Iugens/ladspa/
 #UGENS += ladspa/ladspa

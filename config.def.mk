@@ -76,7 +76,6 @@ phaser \
 phasor \
 pinknoise \
 pluck \
-polysporth \
 port \
 posc3 \
 print \
@@ -131,12 +130,8 @@ zitarev
 # KONA_PATH=~/playground/kona/kona
 #
 
-# Build polysporth
-BUILD_POLYSPORTH=1
-
 # LADSPA support
 BUILD_LADSPA=1
 
 # Enable support for JACK audio
 # BUILD_JACK=1
-#
