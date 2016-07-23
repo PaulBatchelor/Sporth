@@ -161,6 +161,9 @@ int sporth_fclose(sporth_stack *stack, void *ud)
             break;
 
         case PLUMBER_DESTROY:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "fclose: destroying\n");
+#endif
             fclose= pd->last->ud;
             dlclose(fclose->handle);
             free(fclose);

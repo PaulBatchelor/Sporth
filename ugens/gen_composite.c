@@ -17,7 +17,8 @@ int sporth_gen_composite(sporth_stack *stack, void *ud)
             plumber_add_ugen(pd, SPORTH_GEN_COMPOSITE, NULL);
 
             if(sporth_check_args(stack, "sfs") != SPORTH_OK) {
-               fprintf(stderr,"composite: not enough arguments for gen_vals\n");
+               fprintf(stderr,
+                       "composite: not enough arguments for gen_composite\n");
                 return PLUMBER_NOTOK;
             }
 
