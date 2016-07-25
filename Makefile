@@ -10,12 +10,6 @@ ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE -DPOLY_DEBUG
 endif
 
-ifdef BUILD_KONA
-KOBJ=$(shell find $(KONA_PATH) -name "*.o" | egrep -v "\.t\.o|main")
-LIBS+=-ldl -lpthread 
-CFLAGS += -I$(KONA_PATH)/src -DBUILD_KONA 
-endif
-
 ifdef BUILD_LADSPA
 CFLAGS += -DBUILD_LADSPA -Iugens/ladspa/
 #UGENS += ladspa/ladspa
