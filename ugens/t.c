@@ -84,6 +84,7 @@ int sporth_tset(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
+            td->ft->tbl[td->index] = td->val;
             break;
 
         case PLUMBER_INIT:
