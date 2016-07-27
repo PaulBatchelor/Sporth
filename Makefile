@@ -73,6 +73,10 @@ jsporth: util/jsporth
 util/jsporth: util/jsporth.c libsporth.a
 	$(CC) $< $(CFLAGS) -L. -lsporth $(LIBS) -lm -ljack -o $@ 
 
+sporthdot: util/sporthdot
+util/sporthdot: util/sporthdot.c libsporth.a
+	$(CC) $< $(CFLAGS) -Ih libsporth.a $(LIBS) -lm -ljack -o $@ 
+
 sporth: sporth.c $(OBJ) h/ugens.h
 	$(CC) sporth.c -L/usr/local/lib $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 
 

@@ -6,7 +6,8 @@
 
 #include "plumber.h"
 
-#define SPORTH_UGEN(key, func, macro) int func(sporth_stack *stack, void *ud);
+#define SPORTH_UGEN(key, func, macro, ninputs, noutputs) \
+    int func(sporth_stack *stack, void *ud);
 #include "ugens.h"
 #undef SPORTH_UGEN
 
@@ -705,7 +706,7 @@ int plumber_ftmap_destroy(plumber_data *plumb)
 
 int plumber_register(plumber_data *plumb)
 {
-#define SPORTH_UGEN(key, func, macro) {key, func, plumb},
+#define SPORTH_UGEN(key, func, macro, ninputs, noutputs) {key, func, plumb},
     sporth_func flist[] = {
 #include "ugens.h"
         {NULL, NULL, NULL}
