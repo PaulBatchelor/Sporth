@@ -758,3 +758,8 @@ Args: key (s) ftname (s)
 Output: s
 Description: loads string from cdb file
 ---
+Name: smoothdelay
+Args: in(f) fdbk(f) del(f) maxdel(f) interp (f)
+Output: f
+Description: smooth delay line
+---

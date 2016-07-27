@@ -90,6 +90,7 @@ rpt \
 rms \
 samphold \
 scale \
+smoothdelay \
 srand \
 streson \
 switch \
