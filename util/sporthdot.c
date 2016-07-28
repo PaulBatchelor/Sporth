@@ -44,14 +44,19 @@ void sd_init(sporthdot *sd)
     sd->fp = stdout;
 }
 
-void sd_pop(sporthdot *sd, const char *func)
+int sd_pop(sporthdot *sd, const char *func)
 {
+    if(sd->stack_pos == 0) {
+        fprintf(stderr, "%s: not enough arguments on the stack!. Bye.\n", func);
+        return 0;
+    }
     sporthdot_stacklet *stack = &sd->stack[sd->stack_pos - 1];
-    printf("%s -> %s_%d\n", stack->label, func, sd->pipe_pos);
+    fprintf(sd->fp,"%s -> %s_%d\n", stack->label, func, sd->pipe_pos);
     stack->tick--;
     if(stack->tick <= 0) {
         sd->stack_pos--;
     }
+    return 1;
 }
 
 void sd_push_float(sporthdot *sd, SPFLOAT flt)
@@ -108,11 +113,11 @@ void sd_push_func(sporthdot *sd, uint32_t type)
     
     if(ent->noutputs != 0) {
         sd->stack_pos++;
+        sporthdot_stacklet *stack = &sd->stack[sd->stack_pos - 1];
+        stack->tick = ent->noutputs;
+        sprintf(stack->label, "%s_%d", var, sd->pipe_pos);  
     }
 
-    sporthdot_stacklet *stack = &sd->stack[sd->stack_pos - 1];
-    stack->tick = ent->noutputs;
-    sprintf(stack->label, "%s_%d", var, sd->pipe_pos);  
 }
 
 

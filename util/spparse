@@ -10,4 +10,4 @@ do
     echo "$line"
 done
 
-oscsend localhost 6449 /sporth s "$str"
+oscsend localhost 6449 /sporth/eval s "$str"

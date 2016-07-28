@@ -45,7 +45,7 @@ int quit_handler(const char *path, const char *types, lo_arg ** argv,
     return 0;
 }
 
-int sporth_handler(const char *path, const char *types, lo_arg ** argv,
+static int sporth_handler(const char *path, const char *types, lo_arg ** argv,
                 int argc, void *data, void *user_data)
 {
     fprintf(stderr, "Sporth string: %s\n", &argv[0]->s);
@@ -59,6 +59,21 @@ int sporth_handler(const char *path, const char *types, lo_arg ** argv,
     }
 
     fflush(stdout);
+
+    return 0;
+}
+
+static int sporth_pset(const char *path, const char *types, lo_arg ** argv,
+                int argc, void *data, void *user_data)
+{
+    sp_jack *ud = user_data;
+    plumber_data *pd = ud->pd;
+
+
+    int pval = argv[0]->i % 16;
+    SPFLOAT val = argv[1]->f;
+
+    pd->p[pval] = val;
 
     return 0;
 }
@@ -87,7 +102,8 @@ int sp_process_jack(plumber_data *pd, void *ud, void (*callback)(sp_data *, void
     jd.client = malloc(sizeof(jack_client_t *));
     
     lo_server_thread st = lo_server_thread_new("6449", error);
-    lo_server_thread_add_method(st, "/sporth", "s", sporth_handler, &jd);
+    lo_server_thread_add_method(st, "/sporth/eval", "s", sporth_handler, &jd);
+    lo_server_thread_add_method(st, "/sporth/pset", "if", sporth_pset, &jd);
     lo_server_thread_start(st);
 
     jd.client[0] = jack_client_open (client_name, options, &status, server_name);
