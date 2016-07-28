@@ -124,6 +124,7 @@ int sporth_cdbload(sporth_stack *stack, void *ud)
         case PLUMBER_DESTROY:
             fd = pd->last->ud;
             close(*fd);
+            /* fd is freed elsewhere */
             break;
         default:
             fprintf(stderr, "cdbload: Unknown mode!\n");
