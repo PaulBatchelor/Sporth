@@ -63,6 +63,8 @@ int sporth_cdb(sporth_stack *stack, void *ud)
 #ifdef DEBUG_MODE
             fprintf(stderr, "cdb: Initialising\n");
 #endif
+            sporth_stack_pop_string(stack);
+            sporth_stack_pop_string(stack);
             cdb = pd->last->ud;
             sporth_stack_push_string(stack, &cdb->val);
             break;
