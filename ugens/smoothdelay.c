@@ -25,8 +25,8 @@ int sporth_smoothdelay(sporth_stack *stack, void *ud)
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            maxdel = sporth_stack_pop_float(stack);
             interp = sporth_stack_pop_float(stack);
+            maxdel = sporth_stack_pop_float(stack);
             del = sporth_stack_pop_float(stack);
             feedback = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
@@ -38,8 +38,8 @@ int sporth_smoothdelay(sporth_stack *stack, void *ud)
             fprintf(stderr, "smoothdelay: Initialising\n");
 #endif
 
+            interp = (uint32_t) sporth_stack_pop_float(stack);
             maxdel = sporth_stack_pop_float(stack);
-            interp = sporth_stack_pop_float(stack);
             del = sporth_stack_pop_float(stack);
             feedback = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
@@ -48,8 +48,8 @@ int sporth_smoothdelay(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
-            maxdel = sporth_stack_pop_float(stack);
             interp = sporth_stack_pop_float(stack);
+            maxdel = sporth_stack_pop_float(stack);
             del = sporth_stack_pop_float(stack);
             feedback = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
