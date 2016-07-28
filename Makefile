@@ -26,8 +26,8 @@ include ugens/ling/Makefile
 
 include ugens/cdb/Makefile
 
-BIN += sporth examples/parse examples/user_function util/jack_wrapper util/val \
-	  util/float2bin util/jacksporth
+BIN += examples/parse examples/user_function util/jack_wrapper util/val \
+	  util/float2bin util/jacksporth util/sporthdot
 
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
@@ -75,7 +75,7 @@ util/jsporth: util/jsporth.c libsporth.a
 
 sporthdot: util/sporthdot
 util/sporthdot: util/sporthdot.c libsporth.a
-	$(CC) $< $(CFLAGS) -Ih libsporth.a $(LIBS) -lm -ljack -o $@ 
+	$(CC) $< $(CFLAGS) -Ih libsporth.a $(LIBS) -lm -ljack -o $@
 
 sporth: sporth.c $(OBJ) h/ugens.h
 	$(CC) sporth.c -L/usr/local/lib $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 
@@ -102,10 +102,12 @@ install: $(SPORTHLIBS) sporth tmp.h
 	install ugen_reference.txt /usr/local/share/sporth
 	install util/ugen_lookup /usr/local/bin
 	install util/spparse /usr/local/bin
+	./util/installer.sh $(BIN)
 
 clean:
 	rm -rf $(OBJ)
 	rm -rf $(BIN)
 	rm -rf tmp.h
 	rm -rf libsporth.a libsporth_dyn.so
+	rm -rf sporth
 
