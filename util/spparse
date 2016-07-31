@@ -2,6 +2,8 @@
 # By Paul Batchelor
 # This shell utility formats sporth code to be sent over OSC via oscsend
 
+PORT=$1
+
 str=""
 
 while read line 
@@ -10,4 +12,4 @@ do
     echo "$line"
 done
 
-oscsend localhost 6449 /sporth/eval s "$str"
+oscsend localhost $PORT /sporth/eval s "$str"

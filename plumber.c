@@ -12,7 +12,8 @@
 #undef SPORTH_UGEN
 
 #ifdef BUILD_JACK
-int sp_process_jack(plumber_data *pd, void *ud, void (*callback)(sp_data *, void *));
+int sp_process_jack(plumber_data *pd, 
+        void *ud, void (*callback)(sp_data *, void *), int port);
 #endif 
 
 enum {
@@ -751,6 +752,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     int nullfile = 0;
     int i;
     int rc;
+    int port = 6449;
     while(argc > 0 && argv[0][0] == '-') {
         switch(argv[0][1]) {
             case 'd':
@@ -840,8 +842,16 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 driver = DRIVER_NULL;
                 break;
             case '0':
-                /* TODO: NULL file mode */
                 nullfile = 1;
+                break;
+            case 'p':
+                argv++;
+                if(--argc) { 
+                    port = atoi(argv[0]);
+                } else {
+                    fprintf(stderr, "Please specify a port number for jack\n");
+                    exit(1);
+                }
                 break;
             default:
                 fprintf(stderr,"default.. \n");
@@ -916,7 +926,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 break;
 #ifdef BUILD_JACK
             case DRIVER_JACK:
-                sp_process_jack(pd, ud, process);
+                sp_process_jack(pd, ud, process, port);
                 break;
 #endif
             case DRIVER_NULL:

@@ -93,10 +93,14 @@ static void sp_jack_shutdown (void *arg)
     exit (1);
 }
 
-int sp_process_jack(plumber_data *pd, void *ud, void (*callback)(sp_data *, void *))
+int sp_process_jack(plumber_data *pd, 
+        void *ud, void (*callback)(sp_data *, void *), int port)
 {
     const char **ports;
-    const char *client_name = "soundpipe";
+
+
+
+
     const char *server_name = NULL;
     int chan;
     jack_options_t options = JackNullOption;
@@ -105,16 +109,27 @@ int sp_process_jack(plumber_data *pd, void *ud, void (*callback)(sp_data *, void
     jd.sp = pd->sp;
     jd.pd = pd;
     pd->ud = &jd;
+
+    char client_name[256];
+
     sp_data *sp = pd->sp;
     jd.callback = callback;
     jd.ud = ud;
+   
+    if(!strcmp(pd->sp->filename, "test.wav")) {
+        strncpy(client_name, "soundpipe", 256);
+    } else {
+        strncpy(client_name, pd->sp->filename, 256);
+    }
 
     pd->sporth.flist[SPORTH_IN - SPORTH_FOFFSET].func = sporth_jack_in;
 
     jd.output_port = malloc(sizeof(jack_port_t *) * sp->nchan);
     jd.client = malloc(sizeof(jack_client_t *));
-    
-    lo_server_thread st = lo_server_thread_new("6449", error);
+   
+    char sport[8];
+    sprintf(sport, "%d", port); 
+    lo_server_thread st = lo_server_thread_new(sport, error);
     lo_server_thread_add_method(st, "/sporth/eval", "s", sporth_handler, &jd);
     lo_server_thread_add_method(st, "/sporth/pset", "if", sporth_pset, &jd);
     lo_server_thread_start(st);
@@ -132,7 +147,7 @@ int sp_process_jack(plumber_data *pd, void *ud, void (*callback)(sp_data *, void
         fprintf (stderr, "JACK server started\n");
     }
     if (status & JackNameNotUnique) {
-        client_name = jack_get_client_name(jd.client[0]);
+        //client_name = jack_get_client_name(jd.client[0]);
         fprintf (stderr, "unique name `%s' assigned\n", client_name);
     }
     jack_set_process_callback (jd.client[0], sp_jack_cb, &jd);
