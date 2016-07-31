@@ -8,11 +8,15 @@
 
 #include "plumber.h"
 
+static int sporth_jack_in(sporth_stack *stack, void *ud);
+
 typedef struct {
     sp_data *sp;
     plumber_data *pd;
     jack_port_t **output_port;
+    jack_port_t *input_port;
     jack_client_t **client;
+    SPFLOAT in;
     void *ud;
     void (*callback)(sp_data *, void *);
 } sp_jack;
@@ -22,9 +26,15 @@ static int sp_jack_cb(jack_nframes_t nframes, void *arg)
     int i, chan;
     sp_jack *jd = arg;
     jack_default_audio_sample_t  *out[jd->sp->nchan];
+    jack_default_audio_sample_t  *in;
+
+    in = jack_port_get_buffer(jd->input_port, nframes);
+
     for(chan = 0; chan < jd->sp->nchan; chan++)
-    out[chan] = jack_port_get_buffer (jd->output_port[chan], nframes);
+        out[chan] = jack_port_get_buffer (jd->output_port[chan], nframes);
+
     for(i = 0; i < nframes; i++){
+        jd->in = in[i];
         jd->callback(jd->sp, jd->ud);
         for(chan = 0; chan < jd->sp->nchan; chan++)
         out[chan][i] = jd->sp->out[chan];
@@ -94,9 +104,12 @@ int sp_process_jack(plumber_data *pd, void *ud, void (*callback)(sp_data *, void
     sp_jack jd;
     jd.sp = pd->sp;
     jd.pd = pd;
+    pd->ud = &jd;
     sp_data *sp = pd->sp;
     jd.callback = callback;
     jd.ud = ud;
+
+    pd->sporth.flist[SPORTH_IN - SPORTH_FOFFSET].func = sporth_jack_in;
 
     jd.output_port = malloc(sizeof(jack_port_t *) * sp->nchan);
     jd.client = malloc(sizeof(jack_client_t *));
@@ -126,6 +139,11 @@ int sp_process_jack(plumber_data *pd, void *ud, void (*callback)(sp_data *, void
     jack_on_shutdown (jd.client[0], sp_jack_shutdown, 0);
 
     char chan_name[50];
+
+    jd.input_port = jack_port_register(jd.client[0], "sp_input",
+            JACK_DEFAULT_AUDIO_TYPE,
+            JackPortIsInput, 0);
+
     for(chan = 0; chan < sp->nchan; chan++) {
         sprintf(chan_name, "output_%d", chan);
         jd.output_port[chan] = jack_port_register (jd.client[0], chan_name,
@@ -162,4 +180,49 @@ int sp_process_jack(plumber_data *pd, void *ud, void (*callback)(sp_data *, void
     lo_server_thread_free(st);
 
     return SP_OK;
+}
+
+static int sporth_jack_in(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = (plumber_data *) ud;
+
+    sp_jack * data = (sp_jack *) pd->ud;
+    switch(pd->mode) {
+        case PLUMBER_CREATE:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "JACK IN: creating\n");
+#endif
+            plumber_add_ugen(pd, SPORTH_IN, NULL);
+
+            sporth_stack_push_float(stack, 0);
+            break;
+        case PLUMBER_INIT:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "JACK IN: initialising.\n");
+#endif
+
+            sporth_stack_push_float(stack, 0);
+
+            break;
+
+        case PLUMBER_COMPUTE:
+
+            sporth_stack_push_float(stack, data->in);
+
+            break;
+
+        case PLUMBER_DESTROY:
+#ifdef DEBUG_MODE
+            fprintf(stderr, "JACK IN: destroying.\n");
+#endif
+
+            break;
+
+        default:
+            fprintf(stderr, "Unknown mode!\n");
+            break;
+    }
+    return PLUMBER_OK;
 }
