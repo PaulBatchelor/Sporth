@@ -71,6 +71,7 @@ pan \
 pareq \
 paulstretch \
 pdhalf \
+peaklim \
 phaser \
 phasor \
 pinknoise \

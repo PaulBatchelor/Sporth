@@ -47,7 +47,8 @@ void sd_init(sporthdot *sd)
 int sd_pop(sporthdot *sd, const char *func)
 {
     if(sd->stack_pos == 0) {
-        fprintf(stderr, "%s: not enough arguments on the stack!. Bye.\n", func);
+        fprintf(stderr, "%s_%d: not enough arguments on the stack!. Bye.\n", 
+                func, sd->pipe_pos);
         return 0;
     }
     sporthdot_stacklet *stack = &sd->stack[sd->stack_pos - 1];
@@ -132,6 +133,7 @@ void sd_go(sporthdot *sd)
     fprintf(sd->fp, "digraph G {\n");
     fprintf(sd->fp, "ordering=out\n");
     fprintf(sd->fp, "rankdir=LR\n");
+    //fprintf(sd->fp, "node[fontsize=60]\n");
     for(n = 0; n < pipes->npipes; n++) {
         next = pipe->next;
         switch(pipe->type) {

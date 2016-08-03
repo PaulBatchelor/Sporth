@@ -763,3 +763,13 @@ Args: in(f) fdbk(f) del(f) maxdel(f) interp (f)
 Output: f
 Description: smooth delay line
 ---
+Name: timer
+Args: trig (f)
+Output: f
+Description: timer
+---
+Name: inv
+Args: inv (f)
+Output: f
+Description: inverse a signal 1/x
+---
