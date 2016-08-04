@@ -12,7 +12,6 @@ int sporth_get(sporth_stack *stack, void *ud)
 
     char *ftname;
     SPFLOAT **var;
-    sp_ftbl *ft;
     switch(pd->mode){
         case PLUMBER_CREATE:
             var = malloc(sizeof(SPFLOAT *));
@@ -22,12 +21,11 @@ int sporth_get(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             ftname = sporth_stack_pop_string(stack);
-            if(plumber_ftmap_search(pd, ftname, &ft) == PLUMBER_NOTOK) {
+            if(plumber_ftmap_search_userdata(pd, ftname, (void **)var) == PLUMBER_NOTOK) {
                 fprintf(stderr, "get: could not find table '%s'\n", ftname);
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            *var = &ft->tbl[0];
             sporth_stack_push_float(stack, **var);
             break;
 
@@ -60,7 +58,6 @@ int sporth_set(sporth_stack *stack, void *ud)
 
     char *ftname;
     SPFLOAT **var;
-    sp_ftbl *ft;
     SPFLOAT val;
     switch(pd->mode){
         case PLUMBER_CREATE:
@@ -72,12 +69,11 @@ int sporth_set(sporth_stack *stack, void *ud)
             }
             ftname = sporth_stack_pop_string(stack);
             val = sporth_stack_pop_float(stack);
-            if(plumber_ftmap_search(pd, ftname, &ft) == PLUMBER_NOTOK) {
-                fprintf(stderr, "get: could not find table '%s'\n", ftname);
+            if(plumber_ftmap_search_userdata(pd, ftname, (void **)var) == PLUMBER_NOTOK) {
+                fprintf(stderr, "set: could not find table '%s'\n", ftname);
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
-            *var = &ft->tbl[0];
             **var = val;
             break;
 
@@ -110,7 +106,7 @@ int sporth_var(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
 
-    sp_ftbl *ft;
+    SPFLOAT *var;
     char *str;
 
     switch(pd->mode){
@@ -124,8 +120,8 @@ int sporth_var(sporth_stack *stack, void *ud)
 #ifdef DEBUG_MODE
             fprintf(stderr, "var: creating table %s\n", str);
 #endif
-            sp_ftbl_create(pd->sp, &ft, 1);
-            plumber_ftmap_add(pd, str, ft);
+            var = malloc(sizeof(SPFLOAT));
+            plumber_ftmap_add_userdata(pd, str, var);
             break;
 
         case PLUMBER_INIT:
