@@ -121,6 +121,7 @@ int sporth_var(sporth_stack *stack, void *ud)
             fprintf(stderr, "var: creating table %s\n", str);
 #endif
             var = malloc(sizeof(SPFLOAT));
+            *var = 0;
             plumber_ftmap_add_userdata(pd, str, var);
             break;
 
@@ -129,6 +130,50 @@ int sporth_var(sporth_stack *stack, void *ud)
             break;
 
         case PLUMBER_COMPUTE:
+            break;
+
+        case PLUMBER_DESTROY:
+            break;
+
+        default:
+           fprintf(stderr, "Error: Unknown mode!\n");
+           break;
+    }
+    return PLUMBER_OK;
+}
+
+int sporth_varset(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = ud;
+
+    SPFLOAT *var;
+    SPFLOAT val;
+    char *str;
+
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+            plumber_add_ugen(pd, SPORTH_VARSET, NULL);
+            if(sporth_check_args(stack, "sf") != SPORTH_OK) {
+                fprintf(stderr, "Init: not enough arguments for varset\n");
+                return PLUMBER_NOTOK;
+            }
+            val = sporth_stack_pop_float(stack);
+            str = sporth_stack_pop_string(stack);
+#ifdef DEBUG_MODE
+            fprintf(stderr, "var: creating table %s\n", str);
+#endif
+            var = malloc(sizeof(SPFLOAT));
+            *var = val;
+            plumber_ftmap_add_userdata(pd, str, var);
+            break;
+
+        case PLUMBER_INIT:
+            sporth_stack_pop_float(stack);
+            sporth_stack_pop_string(stack);
+            break;
+
+        case PLUMBER_COMPUTE:
+            sporth_stack_pop_float(stack);
             break;
 
         case PLUMBER_DESTROY:
