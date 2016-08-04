@@ -26,7 +26,6 @@ int main()
     *amp = 0.5;
 
     plumber_parse_string(&pd, "_freq get _amp get sine");
-    //plumber_parse_string(&pd, "440 0.5 sine");
     plumber_show_pipes(&pd);
     plumber_compute(&pd, PLUMBER_INIT);
 
