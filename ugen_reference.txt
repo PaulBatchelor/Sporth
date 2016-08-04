@@ -773,3 +773,23 @@ Args: inv (f)
 Output: f
 Description: inverse a signal 1/x
 ---
+Name: tgate
+Args: time (f)
+Output: f
+Description: triggerable gate
+---
+Name: set
+Args: name (s)
+Output: n/a
+Description: sets variable
+---
+Name: get
+Args: name (s)
+Output: f
+Description: gets variable
+---
+Name: var
+Args: name (s)
+Output: 0
+Description: creates variable
+---

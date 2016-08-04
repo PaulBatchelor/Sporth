@@ -752,7 +752,10 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     int nullfile = 0;
     int i;
     int rc;
+#ifdef BUILD_JACK
     int port = 6449;
+#endif
+
     while(argc > 0 && argv[0][0] == '-') {
         switch(argv[0][1]) {
             case 'd':
@@ -845,6 +848,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 nullfile = 1;
                 break;
             case 'p':
+#ifdef BUILD_JACK
                 argv++;
                 if(--argc) { 
                     port = atoi(argv[0]);
@@ -852,6 +856,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                     fprintf(stderr, "Please specify a port number for jack\n");
                     exit(1);
                 }
+#endif
                 break;
             default:
                 fprintf(stderr,"default.. \n");

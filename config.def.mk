@@ -103,6 +103,7 @@ tdiv \
 tenv \
 tenv2 \
 tenvx \
+tgate \
 thresh \
 tin \
 tick \
@@ -113,6 +114,7 @@ tphasor \
 trand \
 tseg \
 tseq \
+v \
 vdelay \
 vocoder \
 waveset \
