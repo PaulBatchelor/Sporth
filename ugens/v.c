@@ -188,9 +188,8 @@ int sporth_varset(sporth_stack *stack, void *ud)
 
 int plumber_create_var(plumber_data *pd, char *name, SPFLOAT **var)
 {
-    sp_ftbl *ft;
-    sp_ftbl_create(pd->sp, &ft, 1);
-    plumber_ftmap_add(pd, name, ft);
-    *var = &ft->tbl[0];
+    SPFLOAT *ptr = malloc(sizeof(SPFLOAT));
+    plumber_ftmap_add_userdata(pd, name, ptr);
+    *var = ptr;
     return PLUMBER_OK;
 }
