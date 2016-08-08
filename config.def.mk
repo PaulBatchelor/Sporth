@@ -53,6 +53,7 @@ jitter \
 ladspa/ladspa \
 line \
 ling \
+load \
 loadfile \
 loadspa \
 lpf18 \

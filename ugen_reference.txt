@@ -798,3 +798,8 @@ Args: name (s) val (f)
 Output: 0
 Description: creates and sets a variable
 ---
+Name: load
+Args: filename (s)
+Output: 0
+Description: loads a sporth file
+---
