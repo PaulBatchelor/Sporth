@@ -503,7 +503,7 @@ Args: ftname (s), size (f), base freq (f), bandwidth (f), amp table (s)
 Output: n/a
 Description: padsynth algorithm by Paul Nasca Octavian
 ---
-Name: revz
+Name: zrev 
 Args: in2,in1,rtlo,rthi,hfdmp
 Output: ff
 Description: zitareverb module (simplified)
