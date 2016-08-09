@@ -6,6 +6,7 @@
 int sporth_load(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
+    plumbing *pipes;
 
     FILE *tmp, *fp;
     char *filename;
@@ -29,7 +30,8 @@ int sporth_load(sporth_stack *stack, void *ud)
             }
             tmp = pd->fp;
             pd->fp = fp;
-            rc = plumber_parse(pd);
+            pipes = plumber_get_pipes(pd);
+            rc = plumbing_parse(pd, pipes);
             fclose(fp);
             pd->fp = tmp;
             return rc;
