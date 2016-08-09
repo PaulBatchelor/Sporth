@@ -803,3 +803,18 @@ Args: filename (s)
 Output: 0
 Description: loads a sporth file
 ---
+Name: slist
+Args: ftname (s) size (s) slist
+Output: 0
+Description: loads a text file into a string list
+---
+Name: slick
+Args: ftname (s) 
+Output: s
+Description: picks a string randomly from string list 
+---
+Name: sget
+Args: index (f) ftname (s) 
+Output: s
+Description: picks a string from a string list
+---

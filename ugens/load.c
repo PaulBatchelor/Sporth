@@ -35,7 +35,7 @@ int sporth_load(sporth_stack *stack, void *ud)
             return rc;
 
         case PLUMBER_INIT:
-            sporth_stack_pop_string(stack);
+            filename = sporth_stack_pop_string(stack);
             break;
 
         case PLUMBER_COMPUTE:
