@@ -170,7 +170,7 @@ int sporth_slick(sporth_stack *stack, void *ud)
             plumber_add_ugen(pd, SPORTH_SLICK, str);
 
             if(sporth_check_args(stack, "s") != SPORTH_OK) {
-               fprintf(stderr,"Not enough arguments for spick\n");
+               fprintf(stderr,"Not enough arguments for slick\n");
                 return PLUMBER_NOTOK;
             }
 
