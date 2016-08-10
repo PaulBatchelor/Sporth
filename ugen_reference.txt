@@ -619,7 +619,7 @@ Output: n/a
 Description: load a (mono) audio file into a table
 ---
 Name: paulstretch
-Args: window size (F), stretch (F), tbl (s)
+Args: stretch (F), window size (F), tbl (s)
 Output: f
 Description: Paulstretch algorithm
 ---
