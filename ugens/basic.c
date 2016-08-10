@@ -1365,7 +1365,7 @@ int sporth_inv(sporth_stack *stack, void *ud)
             inv = malloc(sizeof(inv_d));
             plumber_add_ugen(pd, SPORTH_INV, inv);
             if(sporth_check_args(stack, "f") != SPORTH_OK) {
-                fprintf(stderr, "limit: not enough args\n");
+                fprintf(stderr, "inv: not enough args\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
