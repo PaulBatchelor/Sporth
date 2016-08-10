@@ -818,3 +818,8 @@ Args: index (f) ftname (s)
 Output: s
 Description: picks a string from a string list
 ---
+Name: rand
+Args: min (f) max(f0
+Output: f
+Description: picks random number at start time
+---

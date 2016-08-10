@@ -83,6 +83,7 @@ print \
 prop \
 pshift \
 ptrack \
+rand \
 randh \
 randi \
 reson \
@@ -92,6 +93,7 @@ rpt \
 rms \
 samphold \
 scale \
+slist \
 smoothdelay \
 srand \
 streson \
