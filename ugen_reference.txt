@@ -744,8 +744,8 @@ Output: f
 Description: casio phasor distortion
 ---
 Name: print
-Args: val (f) label (s)
-Output: f
+Args: val (f/s) label (s)
+Output: f/s
 Description: prints values to terminal 
 ---
 Name: cdbload

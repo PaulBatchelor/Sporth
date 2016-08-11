@@ -92,6 +92,12 @@ float sporth_stack_pop_float(sporth_stack *stack)
     return pstack->fval;
 }
 
+/*TODO use this function inside sporth stack functions*/
+sporth_stack_val * sporth_stack_get_last(sporth_stack *stack)
+{
+    return &stack->stack[stack->pos - 1];
+}
+
 char * sporth_stack_pop_string(sporth_stack *stack)
 {
     if(stack->error > 0) return NULL;
