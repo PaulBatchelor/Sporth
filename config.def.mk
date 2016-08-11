@@ -92,6 +92,7 @@ revsc \
 rpt \
 rms \
 samphold \
+say \
 scale \
 slist \
 smoothdelay \

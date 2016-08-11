@@ -44,6 +44,7 @@ int sporth_print(sporth_stack *stack, void *ud)
             } else if(prnt->type == SPORTH_STRING) {
                 sval = sporth_stack_pop_string(stack);
                 prnt->sval = sval;
+                fprintf(stderr, "%s: \"%s\"\n", str, prnt->sval); 
                 sporth_stack_push_string(stack, &sval);
             } else {
                 fprintf(stderr, "Print: unknown type\n");
@@ -80,12 +81,7 @@ int sporth_print(sporth_stack *stack, void *ud)
                     printf("%s: %g\n", prnt->label, val);
                 }
                 sporth_stack_push_float(stack, val);
-            } else {
-                if(prnt->init) {
-                    fprintf(stderr, "%s: \"%s\"\n", prnt->label, prnt->sval); 
-                    prnt->init = 0;
-                }
-            }
+            } 
             break;
         case PLUMBER_DESTROY:
             prnt = pd->last->ud;
