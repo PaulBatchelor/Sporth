@@ -82,7 +82,7 @@ int sporth_print(sporth_stack *stack, void *ud)
                 sporth_stack_push_float(stack, val);
             } else {
                 if(prnt->init) {
-                    printf("%s: \"%s\"\n", prnt->label, prnt->sval); 
+                    fprintf(stderr, "%s: \"%s\"\n", prnt->label, prnt->sval); 
                     prnt->init = 0;
                 }
             }
