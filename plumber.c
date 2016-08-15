@@ -862,6 +862,15 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
             case 'w':
                 write_code = 1;
                 break;
+            case 's':
+                argv++;
+                if(--argc) { 
+                    pd->seed = atoi(argv[0]);
+                } else {
+                    fprintf(stderr, "Seed needs an argument.\n");
+                    exit(1);
+                }
+                break;
             default:
                 fprintf(stderr,"default.. \n");
                 exit(1);
