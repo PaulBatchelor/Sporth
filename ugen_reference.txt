@@ -503,7 +503,7 @@ Args: ftname (s), size (f), base freq (f), bandwidth (f), amp table (s)
 Output: n/a
 Description: padsynth algorithm by Paul Nasca Octavian
 ---
-Name: revz
+Name: zrev 
 Args: in2,in1,rtlo,rthi,hfdmp
 Output: ff
 Description: zitareverb module (simplified)
@@ -619,7 +619,7 @@ Output: n/a
 Description: load a (mono) audio file into a table
 ---
 Name: paulstretch
-Args: window size (F), stretch (F), tbl (s)
+Args: stretch (F), window size (F), tbl (s)
 Output: f
 Description: Paulstretch algorithm
 ---
@@ -744,8 +744,8 @@ Output: f
 Description: casio phasor distortion
 ---
 Name: print
-Args: val (f) label (s)
-Output: f
+Args: val (f/s) label (s)
+Output: f/s
 Description: prints values to terminal 
 ---
 Name: cdbload
@@ -797,4 +797,29 @@ Name: varset
 Args: name (s) val (f)
 Output: 0
 Description: creates and sets a variable
+---
+Name: load
+Args: filename (s)
+Output: 0
+Description: loads a sporth file
+---
+Name: slist
+Args: ftname (s) size (s) slist
+Output: 0
+Description: loads a text file into a string list
+---
+Name: slick
+Args: ftname (s) 
+Output: s
+Description: picks a string randomly from string list 
+---
+Name: sget
+Args: index (f) ftname (s) 
+Output: s
+Description: picks a string from a string list
+---
+Name: rand
+Args: min (f) max(f0
+Output: f
+Description: picks random number at start time
 ---

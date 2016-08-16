@@ -1,0 +1,5 @@
+mincerbuf.sp
+dialtone.sp
+waveset.sp
+pdhalf.sp
+maygate.sp

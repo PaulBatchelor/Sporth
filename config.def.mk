@@ -53,6 +53,7 @@ jitter \
 ladspa/ladspa \
 line \
 ling \
+load \
 loadfile \
 loadspa \
 lpf18 \
@@ -82,6 +83,7 @@ print \
 prop \
 pshift \
 ptrack \
+rand \
 randh \
 randi \
 reson \
@@ -90,7 +92,9 @@ revsc \
 rpt \
 rms \
 samphold \
+say \
 scale \
+slist \
 smoothdelay \
 srand \
 streson \

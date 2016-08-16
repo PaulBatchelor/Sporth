@@ -750,6 +750,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     argc--;
     int driver = DRIVER_FILE;
     int nullfile = 0;
+    int write_code = 0;
     int i;
     int rc;
 #ifdef BUILD_JACK
@@ -858,6 +859,18 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 }
 #endif
                 break;
+            case 'w':
+                write_code = 1;
+                break;
+            case 's':
+                argv++;
+                if(--argc) { 
+                    pd->seed = atoi(argv[0]);
+                } else {
+                    fprintf(stderr, "Seed needs an argument.\n");
+                    exit(1);
+                }
+                break;
             default:
                 fprintf(stderr,"default.. \n");
                 exit(1);
@@ -904,6 +917,10 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
         rc = PLUMBER_OK;
     } else {
         rc  = plumber_parse(pd);
+    }
+    if(write_code) {
+        plumbing_write_code(pd, pd->pipes, stdout);
+        fflush(stdout);
     }
 
     if(rc == PLUMBER_OK){
