@@ -40,12 +40,12 @@ int sporth_print(sporth_stack *stack, void *ud)
             if(prnt->type == SPORTH_FLOAT) {
                 val = sporth_stack_pop_float(stack);
                 prnt->pval = val; 
-                fprintf(stderr, "%s: %g\n", str, val);
+                fprintf(stderr, "%s: \"%g\",\n", str, val);
                 sporth_stack_push_float(stack, val);
             } else if(prnt->type == SPORTH_STRING) {
                 sval = sporth_stack_pop_string(stack);
                 prnt->sval = sval;
-                fprintf(stderr, "%s: \"%s\"\n", str, prnt->sval); 
+                fprintf(stderr, "%s: \"%s\",\n", str, prnt->sval); 
                 sporth_stack_push_string(stack, &sval);
             } else {
                 fprintf(stderr, "Print: unknown type\n");
@@ -78,7 +78,7 @@ int sporth_print(sporth_stack *stack, void *ud)
                 val = sporth_stack_pop_float(stack);
                 if(val != prnt->pval && prnt->init == 0) {
                     prnt->pval = val;
-                    fprintf(stderr, "%s: %g\n", prnt->label, val);
+                    fprintf(stderr, "%s: \"%g\",\n", prnt->label, val);
                 }
                 prnt->init = 0;
                 sporth_stack_push_float(stack, val);
