@@ -17,6 +17,7 @@ typedef struct {
     jack_port_t *input_port;
     jack_client_t **client;
     SPFLOAT in;
+    int start;
     void *ud;
     void (*callback)(sp_data *, void *);
 } sp_jack;
@@ -25,6 +26,9 @@ static int sp_jack_cb(jack_nframes_t nframes, void *arg)
 {
     int i, chan;
     sp_jack *jd = arg;
+    if(jd->start == 0) {
+        return 0;
+    }
     jack_default_audio_sample_t  *out[jd->sp->nchan];
     jack_default_audio_sample_t  *in;
 
@@ -108,6 +112,7 @@ int sp_process_jack(plumber_data *pd,
     sp_jack jd;
     jd.sp = pd->sp;
     jd.pd = pd;
+    jd.start = 0;
     pd->ud = &jd;
 
     char client_name[256];
@@ -186,6 +191,7 @@ int sp_process_jack(plumber_data *pd,
             fprintf (stderr, "cannot connect output ports\n");
         }
     }
+    jd.start = 1;
     fgetc(stdin);
     free (ports);
     jack_client_close(jd.client[0]);
