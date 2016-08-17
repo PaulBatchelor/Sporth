@@ -57,6 +57,7 @@ load \
 loadfile \
 loadspa \
 lpf18 \
+mark \
 maygate \
 maytrig \
 metro \
@@ -122,6 +123,7 @@ v \
 vdelay \
 vocoder \
 waveset \
+writecode \
 wpkorg35 \
 zeros \
 zitarev

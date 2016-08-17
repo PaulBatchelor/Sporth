@@ -205,6 +205,11 @@ void plumbing_write_code(plumber_data *plumb, plumbing *pipes, FILE *fp)
     }
 }
 
+void plumber_write_code(plumber_data *plumb, FILE *fp)
+{
+    plumbing_write_code(plumb, plumb->pipes, fp);
+}
+
 int plumbing_destroy(plumbing *pipes)
 {
 #ifdef DEBUG_MODE
