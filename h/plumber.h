@@ -62,7 +62,7 @@ typedef struct {
 typedef struct plumber_data {
     int nchan;
     int mode;
-    int seed;
+    uint32_t seed;
     sp_data *sp;
     FILE *fp;
     char *filename;

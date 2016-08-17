@@ -22,6 +22,7 @@ int sporth_srand(sporth_stack *stack, void *ud)
             seed = (uint32_t)sporth_stack_pop_float(stack);
             fprintf(stderr, "seed: %lu\n", seed);
             sp_srand(pd->sp, seed);
+            pd->seed = seed;
 
             break;
 
