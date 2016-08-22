@@ -41,6 +41,7 @@ gbuzz \
 gen_file \
 gen_line \
 gen_padsynth \
+gen_rand \
 gen_sine \
 gen_composite \
 gen_sinesum \
@@ -48,6 +49,7 @@ gen_sporth \
 gen_vals \
 hilbert \
 in \
+incr \
 jcrev \
 jitter \
 ladspa/ladspa \

@@ -828,3 +828,13 @@ Args: filename (s)
 Output: 0
 Description: writes sporth code to file
 ---
+Name: peaklim
+Args: input (f), atk (f), rel (f), thresh db (f)
+Output: f
+Description: peak limiter
+---
+Name: gen_rand
+Args: name (s) size (f) args (s)
+Output: f
+Description: random distribution generator
+---
