@@ -1,4 +1,4 @@
-'env' 4096 '0.5 0.5 270 0.5' gen_sinecomp
+'env' 4096 '0.5 0.5 270 0.5' gen_composite
 'sine' 4096 gen_sine
 
 'forms' '800 1150 2800 3500 4950' gen_vals

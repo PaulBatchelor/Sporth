@@ -1,4 +1,4 @@
-'env' 4096 '0.5 0.5 270 0.5' gen_sinecomp
+'env' 4096 '0.5 0.5 270 0.5' gen_composite
 
 'buf' 44100 3 * zeros
 
