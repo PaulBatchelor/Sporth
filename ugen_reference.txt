@@ -838,3 +838,13 @@ Args: name (s) size (f) args (s)
 Output: f
 Description: random distribution generator
 ---
+Name: render
+Args: filename (s) 
+Output: ?
+Description: renders a sporth file (private variables/tables)
+---
+Name: load
+Args: filename (s)
+Output: ?
+Description: loads a sporth file (global variables/tables)
+---
