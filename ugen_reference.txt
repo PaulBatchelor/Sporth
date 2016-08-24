@@ -848,3 +848,8 @@ Args: filename (s)
 Output: ?
 Description: loads a sporth file (global variables/tables)
 ---
+Name: cdbtab
+Args: ftname (s) key(s) db(s) filename (s)
+Output: n/a
+Description: loads raw floating point data from a cdb file
+---
