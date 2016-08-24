@@ -27,7 +27,7 @@ include ugens/ling/Makefile
 include ugens/cdb/Makefile
 
 BIN += examples/parse examples/user_function util/jack_wrapper util/val \
-	  util/float2bin util/jacksporth util/sporthdot
+	  util/float2bin util/jacksporth util/sporthdot util/lsys
 
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
@@ -76,6 +76,10 @@ util/jsporth: util/jsporth.c libsporth.a
 sporthdot: util/sporthdot
 util/sporthdot: util/sporthdot.c libsporth.a
 	$(CC) $< $(CFLAGS) -Ih libsporth.a $(LIBS) -lm -ljack -o $@
+
+lsys: util/lsys
+util/lsys: ugens/lsys.c
+	$(CC) -DLSYS_STANDALONE $< -o $@
 
 sporth: sporth.c $(OBJ) h/ugens.h
 	$(CC) sporth.c -L/usr/local/lib $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 

@@ -60,6 +60,7 @@ load \
 loadfile \
 loadspa \
 lpf18 \
+lsys \
 mark \
 maygate \
 maytrig \

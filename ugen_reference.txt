@@ -853,3 +853,8 @@ Args: ftname (s) key(s) db(s) filename (s)
 Output: n/a
 Description: loads raw floating point data from a cdb file
 ---
+Name: lsys
+Args: trig (f), ord (f), code (s)
+Output: f
+Description: L-Systems microlanguage
+---
