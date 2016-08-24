@@ -90,6 +90,7 @@ ptrack \
 rand \
 randh \
 randi \
+render \
 reson \
 reverse \
 revsc \
@@ -141,4 +142,4 @@ zitarev
 BUILD_LADSPA=1
 
 # Enable support for JACK audio
-BUILD_JACK=1
+# BUILD_JACK=1

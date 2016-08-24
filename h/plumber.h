@@ -146,6 +146,7 @@ int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft);
 int plumber_ftmap_search_userdata(plumber_data *plumb, const char *str, void **ud);
 int plumber_ftmap_destroy(plumber_data *plumb);
 int plumber_ftmap_delete(plumber_data *plumb, char mode);
+void plumber_ftmap_dump(plumber_ftentry *ft);
 plumbing * plumber_get_pipes(plumber_data *plumb);
 
 void sporth_run(plumber_data *pd, int argc, char *argv[],

@@ -112,7 +112,11 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
     sporth_data *sporth = &plumb->sporth;
     /* swap out the current plumbing */
     plumbing *prev = plumb->pipes;
+    /* save top level next pipe */
+    plumber_pipe *top_next = plumb->next;
+
     plumb->pipes = pipes;
+
     if(mode == PLUMBER_DESTROY) {
         sporth_stack_init(&plumb->sporth.stack);
     }
@@ -126,7 +130,8 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
                 break;
             case SPORTH_STRING:
                 sval = pipe->ud;
-                if(mode == PLUMBER_INIT) sporth_stack_push_string(&sporth->stack, &sval);
+                if(mode == PLUMBER_INIT) 
+                    sporth_stack_push_string(&sporth->stack, &sval);
                 break;
             default:
                 plumb->last = pipe;
@@ -138,6 +143,8 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
     }
     /* re-swap the main pipes */
     plumb->pipes = prev;
+    /* restore top level next pipe */
+    plumb->next = top_next;
     return PLUMBER_OK;
 }
 
@@ -395,6 +402,11 @@ int plumbing_parse(plumber_data *plumb, plumbing *pipes)
     uint32_t pos = 0, len = 0;
     int err = PLUMBER_OK;
     plumb->mode = PLUMBER_CREATE;
+
+    /* save top level tmp variable. */
+    plumbing *top_tmp = plumb->tmp;
+    plumb->tmp = pipes;
+
     while((read = getline(&line, &length, fp)) != -1 && err == PLUMBER_OK) {
         pos = 0;
         len = 0;
@@ -407,6 +419,9 @@ int plumbing_parse(plumber_data *plumb, plumbing *pipes)
         }
     }
     free(line);
+
+    /* restore tmp */
+    plumb->tmp = top_tmp;
     return err;
 
 }
@@ -687,6 +702,20 @@ int plumber_ftmap_delete(plumber_data *plumb, char mode)
 {
     plumb->delete_ft = mode;
     return PLUMBER_OK;
+}
+
+void plumber_ftmap_dump(plumber_ftentry *ft)
+{
+    uint32_t i, k;
+    plumber_ftbl *cur, *next;
+    for(i = 0; i < 256; i ++) {
+        cur = ft[i].root.next;
+        for(k = 0; k < ft[i].nftbl; k++) {
+            next = cur->next;
+            printf("%s\n", cur->name);
+            cur = next; 
+        }
+    }
 }
 
 int plumber_ftmap_destroy(plumber_data *plumb)
