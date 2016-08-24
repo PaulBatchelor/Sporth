@@ -5,7 +5,7 @@
 #include "plumber.h"
 
 
-//#ifdef BUILD_LADSPA
+/* #ifdef BUILD_LADSPA */
 #include "ladspa.h"
 #include "utils.h"
 
@@ -145,11 +145,11 @@ static void clean_ladspa(sporth_ladspa_d *l)
     free(l->out);
     free(l->in);
 }
-//#endif
+/* #endif */
 
 int sporth_ladspa(sporth_stack *stack, void *ud)
 {
-//#ifdef BUILD_LADSPA
+/* #ifdef BUILD_LADSPA */
     plumber_data *pd = ud;
     sporth_ladspa_d *ladspa;
     char *argtbl;
@@ -201,8 +201,9 @@ int sporth_ladspa(sporth_stack *stack, void *ud)
             break;
     }
     return PLUMBER_OK;
-//#else
-    //return PLUMBER_NOTOK;
-//#endif
-
+/* 
+#else
+    return PLUMBER_NOTOK;
+#endif
+*/
 }

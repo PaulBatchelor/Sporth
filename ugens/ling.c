@@ -95,7 +95,7 @@ int sporth_ling(sporth_stack *stack, void *ud)
                         ling->pos++;
                         ling->pos %= ling->N;
                     } else {
-                        //fprintf(stderr, "we are here...\n");
+                        /* fprintf(stderr, "we are here...\n"); */
                         ling->val = 0;
                     }
                     break;

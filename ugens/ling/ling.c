@@ -343,7 +343,7 @@ int ling_parse_line(ling_data *ld, char *str) {
         len = strlen(out);
         switch(ling_lexer(ld, out, len)) {
             case LING_INT:
-                //ling_stack_push(&ld->stack, atof(out));
+                /* ling_stack_push(&ld->stack, atof(out)); */
                 ling_seq_add_entry(&ld->seq, LING_INT, atoi(out));
                 break;
             case LING_FUNC:
@@ -353,7 +353,7 @@ int ling_parse_line(ling_data *ld, char *str) {
                 } else {
                     ling_seq_add_entry(&ld->seq, LING_FUNC, id);
                 }
-                //ling_exec(ld, out);
+                /* ling_exec(ld, out); */
                 break;
             case LING_IGNORE:
                 break;

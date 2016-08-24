@@ -40,30 +40,31 @@ int ling_exec(ling_data *ld, const char *keyword)
 
 int ling_check_args(ling_stack *stack, const char *args)
 {
-    //if(stack->error > 0) return LING_NOTOK;
+/*
+    if(stack->error > 0) return LING_NOTOK;
 
-    //int len = strlen(args);
-    //int i;
-    //if(len > stack->pos) {
-    //   fprintf(stderr,"Expected %d arguments on the stack, but there are only %d!\n",
-    //            len, stack->pos);
-    //    stack->error++;
-    //    return LING_NOTOK;
-    //}
-    //int pos = stack->pos - len;
-    //for(i = 0; i < len; i++) {
-    //    switch(args[i]) {
-    //        case 'f':
-    //            if(stack->stack[pos].type != LING_FLOAT) {
-    //               fprintf(stderr,"Argument %d was expecting a float\n", i);
-    //                stack->error++;
-    //                return LING_NOTOK;
-    //            }
-    //            break;
-    //    }
-    //    pos++;
-    //}
-
+    int len = strlen(args);
+    int i;
+    if(len > stack->pos) {
+       fprintf(stderr,"Expected %d arguments on the stack, but there are only %d!\n",
+                len, stack->pos);
+        stack->error++;
+        return LING_NOTOK;
+    }
+    int pos = stack->pos - len;
+    for(i = 0; i < len; i++) {
+        switch(args[i]) {
+            case 'f':
+                if(stack->stack[pos].type != LING_FLOAT) {
+                   fprintf(stderr,"Argument %d was expecting a float\n", i);
+                    stack->error++;
+                    return LING_NOTOK;
+                }
+                break;
+        }
+        pos++;
+    }
+*/
     return LING_OK;
 }
 
