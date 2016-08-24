@@ -128,8 +128,78 @@ int sporth_cdbload(sporth_stack *stack, void *ud)
             close(*fd);
             /* fd is freed elsewhere */
             break;
+        default: fprintf(stderr, "cdbload: Unknown mode!\n");
+            break;
+    }
+    return PLUMBER_OK;
+}
+
+int sporth_cdbtab(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = ud;
+    
+    sporth_cdb_t *cdb;
+    char *key = NULL;
+    char *ftname = NULL;
+    char *bufname = NULL;
+
+    switch(pd->mode) {
+        case PLUMBER_CREATE:
+
+#ifdef DEBUG_MODE
+            fprintf(stderr, "cdbraw: Creating\n");
+#endif
+
+            cdb = malloc(sizeof(sporth_cdb_t));
+            plumber_add_ugen(pd, SPORTH_CDBTAB, cdb);
+
+            if(sporth_check_args(stack, "sss") != SPORTH_OK) {
+                fprintf(stderr, "cdbtab: not enough/wrong arguments\n");
+                return PLUMBER_NOTOK;
+            }
+            ftname = sporth_stack_pop_string(stack);
+            key = sporth_stack_pop_string(stack);
+            bufname = sporth_stack_pop_string(stack); 
+
+            if(plumber_ftmap_search_userdata(
+                pd, ftname, (void **)&cdb->fd) == PLUMBER_NOTOK) {
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            cdb->val = NULL;
+            if(cdb_seek(*cdb->fd, key, strlen(key), &cdb->vlen) > 0) {
+                cdb->val = malloc(cdb->vlen);
+                cdb_bread(*cdb->fd, cdb->val, cdb->vlen);
+                sp_ftbl *ft = malloc(sizeof(sp_ftbl));
+                ft->size = cdb->vlen / sizeof(SPFLOAT);
+                ft->tbl = (SPFLOAT *)cdb->val;
+                plumber_ftmap_add(pd, bufname, ft);
+            } else {
+                fprintf(stderr,"cdbtab: could not find value from key %s\n", key);
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            break;
+
+        case PLUMBER_INIT:
+            
+#ifdef DEBUG_MODE
+            fprintf(stderr, "cdb: Initialising\n");
+#endif
+            sporth_stack_pop_string(stack);
+            sporth_stack_pop_string(stack);
+            sporth_stack_pop_string(stack);
+            cdb = pd->last->ud;
+            break;
+
+        case PLUMBER_COMPUTE:
+            break;
+        case PLUMBER_DESTROY:
+            cdb = pd->last->ud;
+            free(cdb);
+            break;
         default:
-            fprintf(stderr, "cdbload: Unknown mode!\n");
+            fprintf(stderr, "cdb: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

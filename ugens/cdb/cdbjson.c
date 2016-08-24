@@ -32,13 +32,37 @@ static int parse_json(struct cdb_make *cdbm, char *filename)
 		return 1;
 	}
 
-
     for(i = 1; i < r; i+=2) {
-        cdb_make_add(cdbm, 
-                &str[t[i].start], 
-                t[i].end - t[i].start,
+        if(!strncmp((str + t[i].start), "0x", 2)) {
+            char filename[256];
+            memset(filename, 0, 256);
+            char *tmp;
+            strncpy(filename, 
                 &str[t[i + 1].start], 
                 t[i + 1].end - t[i + 1].start);
+            FILE *data = fopen(filename, "rb+");
+            if(data == NULL) {
+                printf("Couldn't open file %s\n", filename);
+            } 
+            fseek(data, 0, SEEK_END);
+            size_t size = ftell(data);
+            tmp = malloc(size * sizeof(char));
+            fseek(data, 0, SEEK_SET);
+            fread(tmp, sizeof(char), size, data);
+
+            cdb_make_add(cdbm, 
+                    &str[t[i].start + 2], 
+                    (t[i].end - t[i].start) - 2,
+                    tmp, size);
+            fclose(data);
+            free(tmp);
+        } else {
+            cdb_make_add(cdbm, 
+                    &str[t[i].start], 
+                    t[i].end - t[i].start,
+                    &str[t[i + 1].start], 
+                    t[i + 1].end - t[i + 1].start);
+        }
     }
 
     free(str);
