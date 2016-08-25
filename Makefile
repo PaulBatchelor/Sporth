@@ -3,7 +3,7 @@ default: sporth
 
 MASTER_MAKEFILE=1
 
-CFLAGS += -O3 -fPIC -I/usr/local/include -Wall -ansi
+CFLAGS += -O3 -fPIC -I/usr/local/include -Wall 
 
 include config.mk
 ifdef DEBUG_MODE

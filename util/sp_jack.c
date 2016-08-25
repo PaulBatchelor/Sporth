@@ -152,7 +152,7 @@ int sp_process_jack(plumber_data *pd,
         fprintf (stderr, "JACK server started\n");
     }
     if (status & JackNameNotUnique) {
-        //client_name = jack_get_client_name(jd.client[0]);
+        /* client_name = jack_get_client_name(jd.client[0]); */
         fprintf (stderr, "unique name `%s' assigned\n", client_name);
     }
     jack_set_process_callback (jd.client[0], sp_jack_cb, &jd);
