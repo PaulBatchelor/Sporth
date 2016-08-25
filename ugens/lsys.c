@@ -1,5 +1,6 @@
-/* LSYS
- * Yet Another Microlange by Paul Batchelor
+/* 
+ * LSYS
+ * Yet Another Micro-language by Paul Batchelor
  *
  * LSYS is a tiny little language designed to produce l-systems.
  * A grammar for a classic L-System could look like this:
@@ -25,6 +26,41 @@
  * 7 | abaababaabaababaababa
  *
  * And so on and so forth...
+ *
+ * ## LSYS in Sporth
+ *
+ * LSYS is implemented as a Sporth UGen, which takes in 
+ * 3 arguments. From left to right, they are:
+ *
+ * 1. trigger signal, which iterates through the L-System
+ * 2. The order N of the L-System (init-time only)
+ * 3. The code itself.
+ *
+ * The signal output by the LSYS ugen a number in 
+ * the range of 0-35, which correspond to the base-36
+ * numbering system:
+ *
+ * 0123456789abcdefghijklmnopqrstuvwxyz
+ * 
+ * In the example above, the signal would be alternating between
+ * 10 and 11.
+ *
+ * To see the lys ugen in action, see examples/lsys.sp
+ *
+ * ## LSYS as a standalone
+ *
+ * LSYS can also be compiled as a standalone application:
+ *
+ * gcc lsys.c -DLSYS_STANDALONE -o lsys
+ *
+ * It can be fed in code and the order as command line arguments:
+ *
+ * ./lsys 5 "01|0:121|1:01|2:1
+ *
+ * Which will produce the following string:
+ *
+ * 01101121011210101101121011210101121010110112101
+ *
  */
 
 #include <stdio.h>
