@@ -40,7 +40,6 @@ int sporth_render(sporth_stack *stack, void *ud)
             old_ftmap = pd->ftmap;
             pd->fp = fp;
             pd->ftmap = rend->ft;
-            plumber_ftmap_delete(pd, 1);
             plumber_ftmap_init(pd);
             plumbing_init(&rend->pipes);
             rc = plumbing_parse(pd, &rend->pipes);
@@ -54,7 +53,6 @@ int sporth_render(sporth_stack *stack, void *ud)
             old_ftmap = pd->ftmap;
             pd->ftmap = rend->ft;
             filename = sporth_stack_pop_string(stack);
-            plumber_show_pipes(pd);
             plumbing_compute(pd, &rend->pipes, PLUMBER_INIT);
             pd->ftmap = old_ftmap;
             break;
