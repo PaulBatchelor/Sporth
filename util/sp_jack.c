@@ -210,7 +210,6 @@ static int sporth_jack_in(sporth_stack *stack, void *ud)
     sp_jack * data = (sp_jack *) pd->ud;
     switch(pd->mode) {
         case PLUMBER_CREATE:
-
 #ifdef DEBUG_MODE
             fprintf(stderr, "JACK IN: creating\n");
 #endif
@@ -219,6 +218,7 @@ static int sporth_jack_in(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
+            printf("***are we here?\n");
 
 #ifdef DEBUG_MODE
             fprintf(stderr, "JACK IN: initialising.\n");
