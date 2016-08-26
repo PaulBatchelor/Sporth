@@ -22,8 +22,6 @@ OBJ += util/sp_jack.o
 LIBS += -ljack  -llo
 endif
 
-include ugens/ling/Makefile
-
 include ugens/cdb/Makefile
 
 BIN += examples/parse examples/user_function util/jack_wrapper util/val \
