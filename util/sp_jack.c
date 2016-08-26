@@ -4,7 +4,14 @@
 #include <jack/jack.h>
 #include <time.h>
 #include <string.h>
-#include <lo/lo.h>
+#include <netdb.h>
+#include <sys/types.h> 
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <pthread.h>
+
+#define BUFSIZE 2048
 
 #include "plumber.h"
 
@@ -20,7 +27,86 @@ typedef struct {
     int start;
     void *ud;
     void (*callback)(sp_data *, void *);
+    pthread_t thread;
+    int portno;
 } sp_jack;
+
+void error(char *msg) {
+  perror(msg);
+  exit(1);
+}
+
+static void *start_listening(void *ud)
+{
+    sp_jack *jd = ud;
+    int portno = jd->portno;
+    int sockfd; /* socket */
+    socklen_t clientlen; /* byte size of client's address */
+    struct sockaddr_in serveraddr; /* server's addr */
+    struct sockaddr_in clientaddr; /* client addr */
+    struct hostent *hostp; /* client host info */
+    char buf1[BUFSIZE]; /* message buf */
+    char buf2[BUFSIZE]; /* message buf */
+    int whichbuf = 0;
+    char *buf; /* message buf */
+    char *hostaddrp; /* dotted decimal host addr string */
+    int optval; /* flag value for setsockopt */
+    uint32_t n; /* message byte size */
+    plumber_data *pd = jd->pd;
+
+    sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (sockfd < 0) 
+    error("ERROR opening socket");
+
+    optval = 1;
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, 
+    (const void *)&optval , sizeof(int));
+
+    memset((char *) &serveraddr, 0, sizeof(serveraddr));
+    serveraddr.sin_family = AF_INET;
+    serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    serveraddr.sin_port = htons((unsigned short)portno);
+    if (bind(sockfd, (struct sockaddr *) &serveraddr, 
+    sizeof(serveraddr)) < 0) 
+    error("ERROR on binding");
+
+    clientlen = sizeof(clientaddr);
+    while (jd->start) {
+
+        if(whichbuf == 0) {
+            buf = buf1;
+        } else {
+            buf = buf2;
+        }
+        memset(buf, 0, BUFSIZE);
+        n = recvfrom(sockfd, buf, BUFSIZE, 0,
+            (struct sockaddr *) &clientaddr, &clientlen);
+
+        if (n < 0) error("ERROR in recvfrom");
+
+        hostp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr, 
+
+        sizeof(clientaddr.sin_addr.s_addr), AF_INET);
+
+        if (hostp == NULL) error("ERROR on gethostbyaddr");
+
+        hostaddrp = inet_ntoa(clientaddr.sin_addr);
+
+        if (hostaddrp == NULL) error("ERROR on inet_ntoa\n");
+
+        printf("server received datagram from %s (%s)\n", 
+        hostp->h_name, hostaddrp);
+        printf("server received %lu/%d bytes: %s\n", strlen(buf), n, buf);
+        n = sendto(sockfd, buf, strlen(buf), 0, 
+        (struct sockaddr *) &clientaddr, clientlen);
+        if (n < 0) error("ERROR in sendto"); 
+        pd->str = buf;
+        whichbuf = (whichbuf == 0) ? 1 : 0;
+        pd->recompile = 1;
+    }
+
+    pthread_exit(NULL);
+}
 
 static int sp_jack_cb(jack_nframes_t nframes, void *arg)
 {
@@ -46,64 +132,21 @@ static int sp_jack_cb(jack_nframes_t nframes, void *arg)
     return 0;
 }
 
-static void error(int num, const char *m, const char *path)
-{
-    fflush(stdout);
-}
-
-int quit_handler(const char *path, const char *types, lo_arg ** argv,
-                 int argc, void *data, void *user_data)
-{
-    printf("quiting\n\n");
-    fflush(stdout);
-    return 0;
-}
-
-static int sporth_handler(const char *path, const char *types, lo_arg ** argv,
-                int argc, void *data, void *user_data)
-{
-    fprintf(stderr, "Sporth string: %s\n", &argv[0]->s);
-    
-    sp_jack *ud = user_data;
-    plumber_data *pd = ud->pd;
-
-    if(!pd->recompile) {
-        pd->str = strdup(&argv[0]->s);
-        pd->recompile = 1;
-    }
-
-    fflush(stdout);
-
-    return 0;
-}
-
-static int sporth_pset(const char *path, const char *types, lo_arg ** argv,
-                int argc, void *data, void *user_data)
-{
-    sp_jack *ud = user_data;
-    plumber_data *pd = ud->pd;
-
-
-    int pval = argv[0]->i % 16;
-    SPFLOAT val = argv[1]->f;
-
-    pd->p[pval] = val;
-
-    return 0;
-}
-
 static void sp_jack_shutdown (void *arg)
 {
     exit (1);
 }
 
+void start_server(sp_jack *jd)
+{
+    pthread_create(&jd->thread, NULL, start_listening, jd);
+}
+
+
 int sp_process_jack(plumber_data *pd, 
         void *ud, void (*callback)(sp_data *, void *), int port)
 {
     const char **ports;
-
-
-
 
     const char *server_name = NULL;
     int chan;
@@ -132,13 +175,6 @@ int sp_process_jack(plumber_data *pd,
     jd.output_port = malloc(sizeof(jack_port_t *) * sp->nchan);
     jd.client = malloc(sizeof(jack_client_t *));
    
-    char sport[8];
-    sprintf(sport, "%d", port); 
-    lo_server_thread st = lo_server_thread_new(sport, error);
-    lo_server_thread_add_method(st, "/sporth/eval", "s", sporth_handler, &jd);
-    lo_server_thread_add_method(st, "/sporth/pset", "if", sporth_pset, &jd);
-    lo_server_thread_start(st);
-
     jd.client[0] = jack_client_open (client_name, options, &status, server_name);
     if (jd.client[0] == NULL) {
         fprintf (stderr, "jack_client_open() failed, "
@@ -191,14 +227,16 @@ int sp_process_jack(plumber_data *pd,
             fprintf (stderr, "cannot connect output ports\n");
         }
     }
+    jd.portno = port; 
+    start_server(&jd); 
     jd.start = 1;
+        
     fgetc(stdin);
     free (ports);
     jack_client_close(jd.client[0]);
     free(jd.output_port);
     free(jd.client);
 
-    lo_server_thread_free(st);
 
     return SP_OK;
 }
@@ -218,8 +256,6 @@ static int sporth_jack_in(sporth_stack *stack, void *ud)
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
-            printf("***are we here?\n");
-
 #ifdef DEBUG_MODE
             fprintf(stderr, "JACK IN: initialising.\n");
 #endif

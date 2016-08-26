@@ -3,7 +3,7 @@ default: sporth
 
 MASTER_MAKEFILE=1
 
-CFLAGS += -O3 -fPIC -I/usr/local/include -Wall 
+CFLAGS += -O3 -fPIC -I/usr/local/include -Wall -ansi
 
 include config.mk
 ifdef DEBUG_MODE
@@ -19,7 +19,7 @@ endif
 ifdef BUILD_JACK
 CFLAGS += -DBUILD_JACK 
 OBJ += util/sp_jack.o
-LIBS += -ljack  -llo
+LIBS += -ljack -lpthread
 endif
 
 include ugens/cdb/Makefile

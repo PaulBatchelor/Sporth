@@ -143,11 +143,7 @@ zitarev
 BUILD_LADSPA=1
 
 # Enable support for JACK audio
-BUILD_JACK=1
-# OSC needs C99 support at least
-CFLAGS += -std=c99
-# Otherwise, Sporth can be built with ANSI C
-# CFLAGS += -ansi
+# BUILD_JACK=1
 
 # GDB Debugging Symbols
 CFLAGS += -g 
