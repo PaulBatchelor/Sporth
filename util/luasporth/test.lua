@@ -1,14 +1,12 @@
-print("hello")
-tbl = {7, 3, 5}
+require "foo"
 
-f = io.open("out.txt", "w")
-math.randomseed(1234)
-io.write(string.format("the number is %g\n", math.random(10)))
-
-for k,v in pairs(tbl) do
-    f:write(string.format("%d ", v))
+function run()
+    print("hello")
 end
 
-io.close(f)
+function t(x, y)
+    print(x, y)
+    return 1
+end
 
-add_ftable("tbl", #tbl, tbl)
+print(foo.foo("yay!", 890))

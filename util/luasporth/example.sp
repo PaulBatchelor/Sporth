@@ -1,7 +1,13 @@
-"./luasporth.so" "f" fl
+"f" "./luasporth.so" fl
+_lcall "./luacall.so" fl
 
-"test.lua" "f" fe
+_lua "test.lua" "f" fe
 
+0.5 1337
+
+0.5 dmetro 2 1 _t  _lua  _lcall fe "val" print drop
+
+0
+
+_lcall fc
 "f" fc
-
-0.1 dmetro 0 "tbl" tseq 60 + mtof 0.5 1 1 1 fm
