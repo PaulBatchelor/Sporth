@@ -178,7 +178,7 @@ int sporth_mod(sporth_stack *stack, void *ud)
     uint32_t v1, v2;
     switch(pd->mode){
         case PLUMBER_CREATE:
-            plumber_add_ugen(pd, SPORTH_XOR, NULL);
+            plumber_add_ugen(pd, SPORTH_MOD, NULL);
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 stack->error++;
                 return PLUMBER_NOTOK;
