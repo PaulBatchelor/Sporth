@@ -100,6 +100,7 @@ rms \
 samphold \
 say \
 scale \
+sdelay \
 slist \
 smoothdelay \
 srand \
@@ -143,7 +144,7 @@ zitarev
 BUILD_LADSPA=1
 
 # Enable support for JACK audio
-# BUILD_JACK=1
+BUILD_JACK=1
 
 # GDB Debugging Symbols
 CFLAGS += -g 

@@ -584,15 +584,15 @@ int sporth_abs(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)fabsf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)fabs(val));
             break;
         case PLUMBER_INIT:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)fabsf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)fabs(val));
             break;
         case PLUMBER_COMPUTE:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)fabsf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)fabs(val));
             break;
         case PLUMBER_DESTROY:
             break;
@@ -619,15 +619,15 @@ int sporth_floor(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)floorf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)floor(val));
             break;
         case PLUMBER_INIT:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)floorf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)floor(val));
             break;
         case PLUMBER_COMPUTE:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)floorf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)floor(val));
             break;
         case PLUMBER_DESTROY:
             break;
@@ -654,18 +654,18 @@ int sporth_frac(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)(val - floorf(val)));
+            sporth_stack_push_float(stack, (SPFLOAT)(val - floor(val)));
             break;
         case PLUMBER_INIT:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)(val - floorf(val)));
+            sporth_stack_push_float(stack, (SPFLOAT)(val - floor(val)));
             break;
         case PLUMBER_COMPUTE:
             if(sporth_check_args(stack, "f") != SPORTH_OK) {
                 return PLUMBER_NOTOK;
             }
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)(val - floorf(val)));
+            sporth_stack_push_float(stack, (SPFLOAT)(val - floor(val)));
             break;
         case PLUMBER_DESTROY:
             break;
@@ -692,7 +692,7 @@ int sporth_log(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)logf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)log(val));
             break;
         case PLUMBER_INIT:
             val = sporth_stack_pop_float(stack);
@@ -700,7 +700,7 @@ int sporth_log(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_COMPUTE:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)logf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)log(val));
             break;
         case PLUMBER_DESTROY:
             break;
@@ -727,15 +727,15 @@ int sporth_log10(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)log10f(val));
+            sporth_stack_push_float(stack, (SPFLOAT)log10(val));
             break;
         case PLUMBER_INIT:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)log10f(val));
+            sporth_stack_push_float(stack, (SPFLOAT)log10(val));
             break;
         case PLUMBER_COMPUTE:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)log10f(val));
+            sporth_stack_push_float(stack, (SPFLOAT)log10(val));
             break;
         case PLUMBER_DESTROY:
             break;
@@ -763,15 +763,15 @@ int sporth_round(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)roundf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)round(val));
             break;
         case PLUMBER_INIT:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)roundf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)round(val));
             break;
         case PLUMBER_COMPUTE:
             val = sporth_stack_pop_float(stack);
-            sporth_stack_push_float(stack, (SPFLOAT)roundf(val));
+            sporth_stack_push_float(stack, (SPFLOAT)round(val));
             break;
         case PLUMBER_DESTROY:
             break;

@@ -858,3 +858,8 @@ Args: trig (f), ord (f), code (s)
 Output: f
 Description: L-Systems microlanguage
 ---
+Name: sdelay
+Args: delay (samples) (f)
+Output: f
+Description: delay (in samples)
+---
