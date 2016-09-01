@@ -863,3 +863,8 @@ Args: delay (samples) (f)
 Output: f
 Description: delay (in samples)
 ---
+Name: slice
+Args: trig (f) id (f) vals (s) buf (s)
+Output: f
+Description: in-memory slice based sampler
+---
