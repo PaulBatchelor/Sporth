@@ -12,5 +12,5 @@ DSP_FILE=$NAME.dsp
 SO_FILE=$NAME.so
 
 faust -cn $NAME -uim -o $CPP_FILE -a sporth.cpp $DSP_FILE
-g++ -g -fPIC -shared $CPP_FILE -o $SO_FILE -lsporth
+g++ -g -fPIC -I/usr/local/include -shared $CPP_FILE -o $SO_FILE -lsporth
 rm $CPP_FILE
