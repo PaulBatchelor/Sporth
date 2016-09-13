@@ -18,17 +18,22 @@
 static int sporth_jack_in(sporth_stack *stack, void *ud);
 
 typedef struct {
+    plumber_data *pd;
+    int start;
+    pthread_t thread;
+    int portno;
+} sporth_listener;
+
+typedef struct {
     sp_data *sp;
     plumber_data *pd;
     jack_port_t **output_port;
     jack_port_t *input_port;
     jack_client_t **client;
     SPFLOAT in;
-    int start;
     void *ud;
     void (*callback)(sp_data *, void *);
-    pthread_t thread;
-    int portno;
+    sporth_listener sl;
 } sp_jack;
 
 void error(char *msg) {
@@ -38,8 +43,8 @@ void error(char *msg) {
 
 static void *start_listening(void *ud)
 {
-    sp_jack *jd = ud;
-    int portno = jd->portno;
+    sporth_listener *sl = ud;
+    int portno = sl->portno;
     int sockfd; /* socket */
     socklen_t clientlen; /* byte size of client's address */
     struct sockaddr_in serveraddr; /* server's addr */
@@ -52,7 +57,7 @@ static void *start_listening(void *ud)
     char *hostaddrp; /* dotted decimal host addr string */
     int optval; /* flag value for setsockopt */
     uint32_t n; /* message byte size */
-    plumber_data *pd = jd->pd;
+    plumber_data *pd = sl->pd;
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sockfd < 0) 
@@ -71,7 +76,7 @@ static void *start_listening(void *ud)
     error("ERROR on binding");
 
     clientlen = sizeof(clientaddr);
-    while (jd->start) {
+    while (sl->start) {
 
         if(whichbuf == 0) {
             buf = buf1;
@@ -112,7 +117,7 @@ static int sp_jack_cb(jack_nframes_t nframes, void *arg)
 {
     int i, chan;
     sp_jack *jd = arg;
-    if(jd->start == 0) {
+    if(jd->sl.start == 0) {
         return 0;
     }
     jack_default_audio_sample_t  *out[jd->sp->nchan];
@@ -137,9 +142,9 @@ static void sp_jack_shutdown (void *arg)
     exit (1);
 }
 
-void start_server(sp_jack *jd)
+void start_server(sporth_listener *sl)
 {
-    pthread_create(&jd->thread, NULL, start_listening, jd);
+    pthread_create(&sl->thread, NULL, start_listening, sl);
 }
 
 
@@ -155,7 +160,6 @@ int sp_process_jack(plumber_data *pd,
     sp_jack jd;
     jd.sp = pd->sp;
     jd.pd = pd;
-    jd.start = 0;
     pd->ud = &jd;
 
     char client_name[256];
@@ -163,6 +167,8 @@ int sp_process_jack(plumber_data *pd,
     sp_data *sp = pd->sp;
     jd.callback = callback;
     jd.ud = ud;
+
+    sporth_listener *sl = &jd.sl;
    
     if(!strcmp(pd->sp->filename, "test.wav")) {
         strncpy(client_name, "soundpipe", 256);
@@ -227,9 +233,10 @@ int sp_process_jack(plumber_data *pd,
             fprintf (stderr, "cannot connect output ports\n");
         }
     }
-    jd.portno = port; 
-    start_server(&jd); 
-    jd.start = 1;
+    sl->portno = port; 
+    sl->start = 0;
+    start_server(sl); 
+    sl->start = 1;
         
     fgetc(stdin);
     free (ports);
