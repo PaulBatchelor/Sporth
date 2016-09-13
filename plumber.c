@@ -585,6 +585,29 @@ int plumber_recompile_string(plumber_data *plumb, char *str)
     return PLUMBER_OK;
 }
 
+/* This version of plumber_recompile_string includes a callback function,
+ * to be called after it is reinitialized, but before the string
+ * is parsed. Useful for adding global ftables.
+ */
+int plumber_recompile_string_v2(plumber_data *plumb, 
+        char *str, 
+        void *ud,
+        int (*callback)(plumber_data *, void *))
+{
+
+    int error;
+#ifdef DEBUG_MODE
+    fprintf(stderr, "** Attempting to compile string '%s' **\n", str);
+#endif
+    /* file pointer needs to be NULL for reinit to work with strings */
+    plumb->fp = NULL;
+    plumber_reinit(plumb);
+    callback(plumb, ud);
+    error = plumber_reparse_string(plumb, str);
+    plumber_swap(plumb, error);
+    return PLUMBER_OK;
+}
+
 int plumber_open_file(plumber_data *plumb, char *filename)
 {
     plumb->fp = fopen(filename, "r");

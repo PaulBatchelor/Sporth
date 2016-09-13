@@ -18,13 +18,6 @@
 static int sporth_jack_in(sporth_stack *stack, void *ud);
 
 typedef struct {
-    plumber_data *pd;
-    int start;
-    pthread_t thread;
-    int portno;
-} sporth_listener;
-
-typedef struct {
     sp_data *sp;
     plumber_data *pd;
     jack_port_t **output_port;
@@ -33,7 +26,9 @@ typedef struct {
     SPFLOAT in;
     void *ud;
     void (*callback)(sp_data *, void *);
+#ifdef LIVE_CODING
     sporth_listener sl;
+#endif
 } sp_jack;
 
 void error(char *msg) {
@@ -142,7 +137,7 @@ static void sp_jack_shutdown (void *arg)
     exit (1);
 }
 
-void start_server(sporth_listener *sl)
+void sporth_start_listener(sporth_listener *sl)
 {
     pthread_create(&sl->thread, NULL, start_listening, sl);
 }
@@ -168,8 +163,6 @@ int sp_process_jack(plumber_data *pd,
     jd.callback = callback;
     jd.ud = ud;
 
-    sporth_listener *sl = &jd.sl;
-   
     if(!strcmp(pd->sp->filename, "test.wav")) {
         strncpy(client_name, "soundpipe", 256);
     } else {
@@ -233,11 +226,16 @@ int sp_process_jack(plumber_data *pd,
             fprintf (stderr, "cannot connect output ports\n");
         }
     }
+
+#ifdef LIVE_CODING
+    sporth_listener *sl = &jd.sl;
     sl->portno = port; 
-    sl->start = 0;
-    start_server(sl); 
     sl->start = 1;
-        
+    sl->pd = pd;
+    sporth_start_listener(sl); 
+    sl->start = 1;
+#endif
+
     fgetc(stdin);
     free (ports);
     jack_client_close(jd.client[0]);

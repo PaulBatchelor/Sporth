@@ -110,6 +110,17 @@ typedef struct {
     uint32_t size;
 } plumber_argtbl;
 
+#ifdef LIVE_CODING
+#include <pthread.h>
+typedef struct {
+    plumber_data *pd;
+    int start;
+    pthread_t thread;
+    int portno;
+} sporth_listener;
+void sporth_start_listener(sporth_listener *sl);
+#endif
+
 int plumber_init(plumber_data *plumb);
 int plumber_register(plumber_data *plumb);
 int plumber_clean(plumber_data *plumb);
@@ -131,6 +142,10 @@ int plumber_reinit(plumber_data *plumb);
 int plumber_reparse(plumber_data *plumb);
 int plumber_reparse_string(plumber_data *plumb, char *str);
 int plumber_recompile_string(plumber_data *plumb, char *str);
+int plumber_recompile_string_v2(plumber_data *plumb, 
+        char *str, 
+        void *ud,
+        int (*callback)(plumber_data *, void *));
 int plumber_swap(plumber_data *plumb, int error);
 int plumber_open_file(plumber_data *plumb, char *filename);
 int plumber_close_file(plumber_data *plumb);
