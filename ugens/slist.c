@@ -180,7 +180,7 @@ int sporth_slick(sporth_stack *stack, void *ud)
                 fprintf(stderr, "Could not find ftable %s\n", ftname);
                 return PLUMBER_NOTOK;
             }
-            index = sp_rand(pd->sp) % sl->len;
+            index = (uint32_t)(((SPFLOAT)sp_rand(pd->sp) / SP_RANDMAX) * sl->len);
             *str = sl->list[index];
             sporth_stack_push_string(stack, &sl->list[index]);
             break;

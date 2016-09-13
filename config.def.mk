@@ -101,6 +101,7 @@ samphold \
 say \
 scale \
 sdelay \
+slice \
 slist \
 smoothdelay \
 srand \
