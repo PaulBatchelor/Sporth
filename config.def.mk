@@ -100,6 +100,7 @@ rms \
 samphold \
 say \
 scale \
+scrambler \
 sdelay \
 slice \
 slist \
