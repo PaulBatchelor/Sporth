@@ -133,7 +133,6 @@ void sd_go(sporthdot *sd)
     fprintf(sd->fp, "digraph G {\n");
     fprintf(sd->fp, "ordering=out\n");
     fprintf(sd->fp, "rankdir=LR\n");
-    //fprintf(sd->fp, "node[fontsize=60]\n");
     for(n = 0; n < pipes->npipes; n++) {
         next = pipe->next;
         switch(pipe->type) {
