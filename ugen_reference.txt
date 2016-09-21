@@ -868,3 +868,8 @@ Args: trig (f) id (f) vals (s) buf (s)
 Output: f
 Description: in-memory slice based sampler
 ---
+Name: ref
+Args: name (s) 
+Output: n/a 
+Description: save pointer reference of next pipe in table
+---
