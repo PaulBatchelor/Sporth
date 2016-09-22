@@ -1,0 +1,17 @@
+(define freq (ps-mkvar "freq" 300))
+(define rate (ps-mkvar "rate" 8))
+(define depth (ps-mkvar "depth" 0))
+(ps-eval 0 "_freq get _rate get _depth get sine + 0.5 sine")
+(display "frequency is ")
+(write (ps-varget freq))
+(newline)
+(display "frequency is ")
+(write (ps-varget rate))
+(newline)
+
+(display "setting depth to ")
+(write (* (ps-varget freq) 0.25))
+(newline)
+(ps-varset depth (* (ps-varget freq) 0.25))
+
+(ps-turnon 0 -1)

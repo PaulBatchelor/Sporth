@@ -82,6 +82,7 @@ phaser \
 phasor \
 pinknoise \
 pluck \
+polysporth \
 port \
 posc3 \
 print \
