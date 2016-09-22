@@ -331,3 +331,10 @@ static void ps_decrement_clock(polysporth *ps, int id)
         spl->dur--;
     }
 }
+
+int polysporth_eval(plumber_ptr *p, const char *str)
+{
+    polysporth *ps = p->ud;
+    scheme_load_string(&ps->sc, str);
+    return PLUMBER_OK;
+}

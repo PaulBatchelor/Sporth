@@ -121,6 +121,11 @@ typedef struct {
 void sporth_start_listener(sporth_listener *sl);
 #endif
 
+typedef struct {
+    unsigned short type;
+    void *ud;
+} plumber_ptr;
+
 int plumber_init(plumber_data *plumb);
 int plumber_register(plumber_data *plumb);
 int plumber_clean(plumber_data *plumb);
@@ -183,3 +188,6 @@ int plumber_process_null(sp_data *sp, void *ud, void (*callback)(sp_data *, void
 int plumber_argtbl_create(plumber_data *plumb, plumber_argtbl **at, uint32_t size);
 int plumber_argtbl_destroy(plumber_data *plumb, plumber_argtbl **at);
 int plumber_create_var(plumber_data *pd, char *name, SPFLOAT **var);
+
+int plumber_get_userdata(plumber_data *plumb, const char *name, plumber_ptr **p);
+int polysporth_eval(plumber_ptr *p, const char *str);

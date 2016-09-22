@@ -1069,3 +1069,10 @@ int plumber_argtbl_destroy(plumber_data *plumb, plumber_argtbl **at)
     free(atp);
     return PLUMBER_OK;
 }
+
+int plumber_get_userdata(plumber_data *plumb, const char *name, plumber_ptr **p)
+{
+    plumber_ptr *pp = *p;
+    pp->type = 0;
+    return plumber_ftmap_search_userdata(plumb, name, &pp->ud);
+}
