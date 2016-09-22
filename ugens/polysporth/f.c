@@ -248,6 +248,10 @@ static pointer ps_noteblock_end(scheme *sc, pointer args)
     if(ps->noteblock == PS_ON) {
         dvector_time_to_delta(&ps->tmp);
         ps->noteblock = PS_OFF;
+        if(ps->tmp.size > 0) {
+            ps->events = dvector_merge(&ps->events, &ps->tmp);
+            dvector_init(&ps->tmp);
+        }
     }
     return NULL;
 }

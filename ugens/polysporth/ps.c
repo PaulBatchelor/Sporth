@@ -123,10 +123,6 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
     }
 
     if(clock != 0) {
-        if(ps->tmp.size > 0) {
-            ps->events = dvector_merge(&ps->events, &ps->tmp);
-            dvector_init(&ps->tmp);
-        }
         while(dvector_pop(&ps->events, &val)){
             if(val->type == PS_NOTE) {
 #ifdef DEBUG_POLYSPORTH
