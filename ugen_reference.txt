@@ -873,3 +873,8 @@ Args: name (s)
 Output: n/a 
 Description: save pointer reference of next pipe in table
 ---
+Name: tprop
+Args: trig (f), bpm (f), code (s)
+Output: f
+Description: prop with a triggerable reset
+---
