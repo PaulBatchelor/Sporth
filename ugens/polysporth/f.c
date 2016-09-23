@@ -240,7 +240,7 @@ static pointer ps_noteblock_begin(scheme *sc, pointer args)
         fprintf(stderr,
             "Warning: noteblock already on. Not doing anything.\n");
     }
-    return NULL;
+    return sc->NIL;
 }
 
 static pointer ps_noteblock_end(scheme *sc, pointer args)
@@ -257,7 +257,7 @@ static pointer ps_noteblock_end(scheme *sc, pointer args)
             dvector_init(&ps->tmp);
         }
     }
-    return NULL;
+    return sc->NIL;
 }
 
 static pointer ps_note(scheme *sc, pointer args)
@@ -308,7 +308,7 @@ static pointer ps_note(scheme *sc, pointer args)
     }
 
     dvector_append(&ps->tmp, grp_start, grp_end, start, dur, argtbl, len);
-    return NULL;
+    return sc->NIL;
 }
 
 static pointer ps_metanote(scheme *sc, pointer args)
