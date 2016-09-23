@@ -29,6 +29,7 @@ static pointer ps_tget(scheme *sc, pointer args);
 static pointer ps_mkvar(scheme *sc, pointer args);
 static pointer ps_varset(scheme *sc, pointer args);
 static pointer ps_varget(scheme *sc, pointer args);
+static pointer ps_clear_events(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -69,6 +70,9 @@ void ps_scm_load(polysporth *ps, char *filename)
     scheme_define(sc, sc->global_env, 
         mk_symbol(sc, "ps-noteblock-begin"), 
         mk_foreign_func(sc, ps_noteblock_begin));
+    scheme_define(sc, sc->global_env, 
+        mk_symbol(sc, "ps-clear-events"), 
+        mk_foreign_func(sc, ps_clear_events));
     scheme_define(sc, sc->global_env, 
         mk_symbol(sc, "ps-noteblock-end"), 
         mk_foreign_func(sc, ps_noteblock_end));
@@ -415,4 +419,19 @@ static pointer ps_varget(scheme *sc, pointer args)
     SPFLOAT *ptr;
     ptr = (SPFLOAT *)string_value(car(args));
     return mk_real(sc, *ptr);
+}
+
+static pointer ps_clear_events(scheme *sc, pointer args)
+{
+    polysporth *ps = sc->ext_data;
+    dvector_free(&ps->events);
+    dvector_init(&ps->events);
+    ps->nvoices = 0;
+    int i;
+    for(i = 0; i < ps->out->size; i++) {
+        if(ps->spl[i].state != PS_NULL) {
+            ps->spl[i].state = PS_OFF;
+        }
+    }
+    return sc->NIL;
 }

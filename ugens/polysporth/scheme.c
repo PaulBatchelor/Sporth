@@ -1211,10 +1211,16 @@ static pointer mk_sharp_const(scheme *sc, char *name) {
  *  sec. 2.3.5), the Schorr-Deutsch-Waite link-inversion algorithm,
  *  for marking.
  */
+
+void shouldnothappen()
+{
+    printf("this shouldn't be happening\n"); 
+}
+
 static void mark(pointer a) {
      pointer t, q, p;
 
-     if(a == NULL) { printf("this shouldn't be happening\n"); return; }
+     if(a == NULL) { shouldnothappen(); return; }
      t = (pointer) 0;
      p = a;
 E2:  setmark(p);
