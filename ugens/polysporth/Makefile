@@ -21,4 +21,4 @@ OBJ += ugens/polysporth/dvector.o \
 	ugens/polysporth/scheme.o \
 	ugens/polysporth/f.o 
 
-CFLAGS += -D_DEFAULT_SOURCE -DSTANDALONE=0 -Iugens/polysporth
+CFLAGS += -DSTANDALONE=0 -Iugens/polysporth

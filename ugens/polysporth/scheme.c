@@ -27,6 +27,7 @@
 # include <math.h>
 #endif
 
+#include <stdio.h>
 #include <limits.h>
 #include <float.h>
 #include <ctype.h>
@@ -265,12 +266,18 @@ INTERFACE INLINE void setimmutable(pointer p) { typeflag(p) |= T_IMMUTABLE; }
 #define cadddr(p)        car(cdr(cdr(cdr(p))))
 #define cddddr(p)        cdr(cdr(cdr(cdr(p))))
 
+
+static int musl_isascii(int c)
+{
+	return !(c&~0x7f);
+}
+
 #if USE_CHAR_CLASSIFIERS
-static INLINE int Cisalpha(int c) { return isascii(c) && isalpha(c); }
-static INLINE int Cisdigit(int c) { return isascii(c) && isdigit(c); }
-static INLINE int Cisspace(int c) { return isascii(c) && isspace(c); }
-static INLINE int Cisupper(int c) { return isascii(c) && isupper(c); }
-static INLINE int Cislower(int c) { return isascii(c) && islower(c); }
+static INLINE int Cisalpha(int c) { return musl_isascii(c) && isalpha(c); }
+static INLINE int Cisdigit(int c) { return musl_isascii(c) && isdigit(c); }
+static INLINE int Cisspace(int c) { return musl_isascii(c) && isspace(c); }
+static INLINE int Cisupper(int c) { return musl_isascii(c) && isupper(c); }
+static INLINE int Cislower(int c) { return musl_isascii(c) && islower(c); }
 #endif
 
 #if USE_ASCII_NAMES
@@ -3964,7 +3971,7 @@ static pointer opexe_4(scheme *sc, enum scheme_opcodes op) {
           port *p;
 
           if ((p=car(sc->args)->_object._port)->kind&port_string) {
-               off_t size;
+               long int size;
                char *str;
 
                size=p->rep.string.curr-p->rep.string.start+1;
