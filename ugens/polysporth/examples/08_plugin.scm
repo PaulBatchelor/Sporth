@@ -1,0 +1,3 @@
+(load-extension "./plugin")
+
+(plugin)

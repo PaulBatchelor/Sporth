@@ -4,6 +4,7 @@
 #include "scheme-private.h"
 #include "plumber.h"
 #include "polysporth.h"
+#include "dynload.h"
 
 #define car(p) ((p)->_object._cons._car)
 #define cdr(p) ((p)->_object._cons._cdr)
@@ -109,6 +110,9 @@ void ps_scm_load(polysporth *ps, char *filename)
     scheme_define(sc, sc->global_env, 
         mk_symbol(sc, "ps-varget"), 
         mk_foreign_func(sc, ps_varget));
+  scheme_define(sc, sc->global_env,
+        mk_symbol(sc,"load-extension"),
+        mk_foreign_func(sc, scm_load_ext));
 
 
     sc->ext_data = (void *)ps;

@@ -341,7 +341,7 @@ static int alloc_cellseg(scheme *sc, int n);
 static long binary_decode(const char *s);
 static INLINE pointer get_cell(scheme *sc, pointer a, pointer b);
 static pointer _get_cell(scheme *sc, pointer a, pointer b);
-/* static pointer reserve_cells(scheme *sc, int n); */
+static pointer reserve_cells(scheme *sc, int n);
 static pointer get_consecutive_cells(scheme *sc, int n);
 static pointer find_consecutive_cells(scheme *sc, int n);
 static void finalize_cell(scheme *sc, pointer a);
@@ -393,6 +393,10 @@ static void assign_proc(scheme *sc, enum scheme_opcodes, char *name);
 
 #define num_ivalue(n)       (n.is_fixnum?(n).value.ivalue:(long)(n).value.rvalue)
 #define num_rvalue(n)       (!n.is_fixnum?(n).value.rvalue:(double)(n).value.ivalue)
+
+int scheme_nil(scheme *sc) {
+    return sc->NIL;
+}
 
 static num num_add(num a, num b) {
  num ret;
@@ -657,7 +661,6 @@ static pointer _get_cell(scheme *sc, pointer a, pointer b) {
   return (x);
 }
 
-#if 0
 /* make sure that there is a given number of cells free */
 static pointer reserve_cells(scheme *sc, int n) {
     if(sc->no_memory) {
@@ -683,7 +686,7 @@ static pointer reserve_cells(scheme *sc, int n) {
     }
     return (sc->T);
 }
-#endif
+
 static pointer get_consecutive_cells(scheme *sc, int n) {
   pointer x;
 
