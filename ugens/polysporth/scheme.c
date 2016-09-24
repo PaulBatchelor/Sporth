@@ -394,10 +394,6 @@ static void assign_proc(scheme *sc, enum scheme_opcodes, char *name);
 #define num_ivalue(n)       (n.is_fixnum?(n).value.ivalue:(long)(n).value.rvalue)
 #define num_rvalue(n)       (!n.is_fixnum?(n).value.rvalue:(double)(n).value.ivalue)
 
-int scheme_nil(scheme *sc) {
-    return sc->NIL;
-}
-
 static num num_add(num a, num b) {
  num ret;
  ret.is_fixnum=a.is_fixnum && b.is_fixnum;
