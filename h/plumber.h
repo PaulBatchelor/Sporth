@@ -1,5 +1,3 @@
-#ifndef PLUMBER_H
-#define PLUMBER_H
 #include "soundpipe.h"
 #include "sporth.h"
 
@@ -14,6 +12,9 @@ SPORTH_LAST
 
 /* Do not remove this line below! It is needed for a script. */
 /* ---- */
+
+#ifndef PLUMBER_H
+#define PLUMBER_H
 
 /* it just so happens that PLUMBER_OK and SPORTH_OK are the same values */
 enum {
