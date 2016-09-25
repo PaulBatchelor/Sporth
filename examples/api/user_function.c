@@ -11,9 +11,10 @@
  */
 
 
-
+#include <stdlib.h>
 #include <math.h>
-#include "plumber.h"
+#include <soundpipe.h>
+#include <sporth.h>
 
 typedef struct {
     plumber_data pd;
@@ -32,9 +33,8 @@ void process(sp_data *sp, void *ud)
     sp->out[0] = sporth_stack_pop_float(&pd->sporth.stack);
 }
 
-int bp2frq(sporth_stack *stack, void *ud)
+static int bp2frq(plumber_data *pd, sporth_stack *stack, void **ud)
 {
-    plumber_data *pd = ud;
     SPFLOAT step, base;
     sporth_func_d *fd;
     bp_data *bd;
@@ -44,9 +44,6 @@ int bp2frq(sporth_stack *stack, void *ud)
 #ifdef DEBUG_MODE
             fprintf(stderr, "Default user function in create mode.\n");
 #endif
-
-            fd = pd->last->ud;
-            fd->ud = malloc(sizeof(bp_data));
 
             break;
         case PLUMBER_INIT:
@@ -61,8 +58,7 @@ int bp2frq(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
 
-            fd = pd->last->ud;
-            bd = fd->ud;
+            bd = *ud;
 
             base = sporth_stack_pop_float(stack);
             step = sporth_stack_pop_float(stack);
@@ -75,12 +71,6 @@ int bp2frq(sporth_stack *stack, void *ud)
 
         case PLUMBER_COMPUTE:
 
-            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for bpscale\n");
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
-
             base = sporth_stack_pop_float(stack);
             step = sporth_stack_pop_float(stack);
 
@@ -92,10 +82,7 @@ int bp2frq(sporth_stack *stack, void *ud)
 #ifdef DEBUG_MODE
             fprintf(stderr, "Default user function in destroy mode.\n");
 #endif
-            fd = pd->last->ud;
-            bd = fd->ud;
-
-            free(bd);
+            bd = *ud;
 
             break;
 
@@ -108,9 +95,26 @@ int bp2frq(sporth_stack *stack, void *ud)
 
 int main(int argc, char *argv[])
 {
-    UserData ud;
-    plumber_init(&ud.pd);
-    ud.pd.f[0] = bp2frq;
-    sporth_run(&ud.pd, argc, argv, &ud, process);
+    plumber_data pd;
+    sp_data *sp;
+    sp_create(&sp);
+    pd.sp = sp;
+    plumber_register(&pd);
+    plumber_init(&pd);
+    
+    char *sporth_string = "8 metro 14 0 count 250 _bp f 0.5 sine";
+
+    bp_data bd; 
+    plumber_ftmap_add_function(&pd, "bp", bp2frq, &bd);
+
+    if(plumber_parse_string(&pd, sporth_string) == PLUMBER_OK) {
+        plumber_compute(&pd, PLUMBER_INIT);
+    } 
+    
+    sp_process(sp, &pd, process);
+
+    plumber_clean(&pd);
+    sp_destroy(&sp);
+
     return 0;
 }

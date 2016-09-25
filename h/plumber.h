@@ -80,7 +80,6 @@ typedef struct plumber_data {
     char delete_ft;
 
     SPFLOAT p[16];
-    int (*f[16])(sporth_stack *, void *);
     void *ud;
     plumber_pipe *next;
     plumber_pipe *last;
@@ -165,6 +164,8 @@ int plumber_error(plumber_data *plumb, const char *str);
 int plumber_ftmap_init(plumber_data *plumb);
 int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft);
 int plumber_ftmap_add_userdata(plumber_data *plumb, const char *str, void *ud);
+int plumber_ftmap_add_function(plumber_data *plumb, 
+        const char *str, plumber_dyn_func f, void *ud);
 int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft);
 int plumber_ftmap_search_userdata(plumber_data *plumb, const char *str, void **ud);
 int plumber_ftmap_destroy(plumber_data *plumb);

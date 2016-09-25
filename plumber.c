@@ -686,6 +686,15 @@ int plumber_ftmap_add_userdata(plumber_data *plumb, const char *str, void *ud)
     return PLUMBER_OK;
 }
 
+int plumber_ftmap_add_function(plumber_data *plumb, 
+        const char *str, plumber_dyn_func f, void *ud)
+{
+    sporth_fload_d *fd = malloc(sizeof(sporth_func_d));
+    fd->fun = f;
+    fd->ud = ud;
+    return plumber_ftmap_add_userdata(plumb, str, (void *)fd);
+}
+
 int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
 {
     void *ud;
