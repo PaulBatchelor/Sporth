@@ -38,40 +38,6 @@ enum {
     DRIVER_NULL
 };
 
-int sporth_f_default(sporth_stack *stack, void *ud)
-{
-    plumber_data *pd = ud;
-    switch(pd->mode) {
-        case PLUMBER_CREATE:
-
-#ifdef DEBUG_MODE
-            fprintf(stderr, "Default user function in create mode.\n");
-#endif
-
-            break;
-        case PLUMBER_INIT:
-
-#ifdef DEBUG_MODE
-            fprintf(stderr, "Default user function in init mode.\n");
-#endif
-            break;
-
-        case PLUMBER_COMPUTE:
-            break;
-
-        case PLUMBER_DESTROY:
-#ifdef DEBUG_MODE
-            fprintf(stderr, "Default user function in destroy mode.\n");
-#endif
-            break;
-
-        default:
-            fprintf(stderr, "aux (f)unction: unknown mode!\n");
-            break;
-    }
-    return PLUMBER_OK;
-}
-
 int plumbing_init(plumbing *pipes)
 {
     pipes->tick = 1;
@@ -97,7 +63,6 @@ int plumber_init(plumber_data *plumb)
     plumb->recompile = 0;
     int pos;
     for(pos = 0; pos < 16; pos++) plumb->p[pos] = 0;
-    for(pos = 0; pos < 16; pos++) plumb->f[pos] = sporth_f_default;
     plumb->showprog = 0;
     return PLUMBER_OK;
 }
