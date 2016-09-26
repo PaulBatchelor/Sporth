@@ -12,4 +12,4 @@ do
     echo "$line"
 done
 
-echo "$str" | nc -q 0 -u localhost $PORT
+echo "$str" | nc -c -u localhost $PORT

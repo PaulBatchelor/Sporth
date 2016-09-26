@@ -98,8 +98,8 @@ static void *start_listening(void *ud)
         printf("server received datagram from %s (%s)\n", 
         hostp->h_name, hostaddrp);
         printf("server received %lu/%d bytes: %s\n", strlen(buf), n, buf);
-        n = sendto(sockfd, buf, strlen(buf), 0, 
-        (struct sockaddr *) &clientaddr, clientlen);
+        /* n = sendto(sockfd, buf, strlen(buf), 0, 
+        (struct sockaddr *) &clientaddr, clientlen); */
         if (n < 0) error("ERROR in sendto"); 
         pd->str = buf;
         whichbuf = (whichbuf == 0) ? 1 : 0;
