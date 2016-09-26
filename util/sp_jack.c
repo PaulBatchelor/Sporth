@@ -29,6 +29,7 @@ typedef struct {
 #ifdef LIVE_CODING
     sporth_listener sl;
 #endif
+    char run;
 } sp_jack;
 
 void error(char *msg) {
@@ -112,7 +113,7 @@ static int sp_jack_cb(jack_nframes_t nframes, void *arg)
 {
     int i, chan;
     sp_jack *jd = arg;
-    if(jd->sl.start == 0) {
+    if(jd->sl.start == 0 || jd->run == 0) {
         return 0;
     }
     jack_default_audio_sample_t  *out[jd->sp->nchan];
@@ -163,6 +164,7 @@ int sp_process_jack(plumber_data *pd,
     jd.callback = callback;
     jd.ud = ud;
 
+    jd.run = 0;
     if(!strcmp(pd->sp->filename, "test.wav")) {
         strncpy(client_name, "soundpipe", 256);
     } else {
@@ -230,11 +232,11 @@ int sp_process_jack(plumber_data *pd,
 #ifdef LIVE_CODING
     sporth_listener *sl = &jd.sl;
     sl->portno = port; 
-    sl->start = 1;
     sl->pd = pd;
     sporth_start_listener(sl); 
     sl->start = 1;
 #endif
+    jd.run = 1;
 
     fgetc(stdin);
     free (ports);
