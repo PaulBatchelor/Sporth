@@ -1,15 +1,19 @@
-# spparse
-# By Paul Batchelor
-# This shell utility formats sporth code to be sent over OSC via oscsend
+#!/usr/bin/perl
 
-PORT=$1
+use IO::Socket;
+use strict;
 
-str=""
+my $sock = IO::Socket::INET->new(
+    Proto => 'udp',
+    PeerPort => $ARGV[0], 
+    PeerAddr => 'localhost',
+);
 
-while read line 
-do
-    str=$(printf "$str\n$line")
-    echo "$line"
-done
+my $str;
+while(<STDIN>) {
+    $str = $str . $_;
+}
 
-echo "$str" | nc -c -u localhost $PORT
+
+$sock->send($str);
+print $str;
