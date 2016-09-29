@@ -128,7 +128,7 @@ char    no_memory;       /* Whether mem. alloc. has failed */
 
 #define LINESIZE 1024
 char    linebuff[LINESIZE];
-#define STRBUFFSIZE 256
+#define STRBUFFSIZE 1024
 char    strbuff[STRBUFFSIZE];
 
 FILE *tmpfp;
