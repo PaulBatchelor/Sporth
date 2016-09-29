@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <signal.h>
 
 #include "plumber.h"
 
@@ -1005,10 +1006,19 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     sp_destroy(&sp);
 }
 
+static volatile int running = 1;
+
+void plumber_interrupt(int dummy)
+{
+    fprintf(stderr, "Cleaning up...\n");
+    running = 0;
+}
+
 int plumber_process_null(sp_data *sp, void *ud, void (*callback)(sp_data *, void *))
 {
     if(sp->len == 0) {
-        while(1) {
+        signal(SIGINT, plumber_interrupt);
+        while(running) {
             callback(sp, ud);
             sp->len--;
             usleep(100);
