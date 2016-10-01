@@ -620,7 +620,7 @@ int plumber_ftmap_add(plumber_data *plumb, const char *str, sp_ftbl *ft)
     entry->nftbl++;
     plumber_ftbl *new = malloc(sizeof(plumber_ftbl));
     new->ud = (void *)ft;
-    new->type = 1;
+    new->type = PTYPE_TABLE;
     new->to_delete = plumb->delete_ft;
     new->name = malloc(sizeof(char) * strlen(str) + 1);
     strcpy(new->name, str);
@@ -643,7 +643,7 @@ int plumber_ftmap_add_userdata(plumber_data *plumb, const char *str, void *ud)
 #endif
     plumber_ftbl *new = malloc(sizeof(plumber_ftbl));
     new->ud = ud;
-    new->type = 0;
+    new->type = PTYPE_USERDATA;
     new->to_delete = plumb->delete_ft;
     new->name = malloc(sizeof(char) * strlen(str) + 1);
     strcpy(new->name, str);
@@ -663,13 +663,35 @@ int plumber_ftmap_add_function(plumber_data *plumb,
 
 int plumber_ftmap_search(plumber_data *plumb, const char *str, sp_ftbl **ft)
 {
-    void *ud;
-    int rc = plumber_ftmap_search_userdata(plumb, str, &ud);
-    *ft = (sp_ftbl *)ud;
-    return rc;
+    plumber_ftbl *ftbl;
+    if(plumber_search(plumb, str, &ftbl) != PLUMBER_OK) {
+        return PLUMBER_NOTOK;
+    } else if(ftbl->type != PTYPE_TABLE) {
+        fprintf(stderr, "Error: value '%s' is not of type ftable\n", str);
+        return PLUMBER_NOTOK;
+    } else {
+        *ft = (sp_ftbl *)ftbl->ud;
+        return PLUMBER_OK;
+    }
 }
 
 int plumber_ftmap_search_userdata(plumber_data *plumb, const char *str, void **ud)
+{
+    plumber_ftbl *ftbl;
+
+    if(plumber_search(plumb, str, &ftbl) != PLUMBER_OK) {
+        return PLUMBER_NOTOK;
+    } else if(ftbl->type != PTYPE_USERDATA) {
+        fprintf(stderr, "Error: value '%s' is not of type userdata\n", str);
+        return PLUMBER_NOTOK;
+    } else {
+        *ud = ftbl->ud;
+        return PLUMBER_OK;
+    }
+
+}
+
+int plumber_search(plumber_data *plumb, const char *str, plumber_ftbl **ft)
 {
     uint32_t pos = sporth_hash(str);
 
@@ -677,17 +699,10 @@ int plumber_ftmap_search_userdata(plumber_data *plumb, const char *str, void **u
     plumber_ftentry *entry = &plumb->ftmap[pos];
     plumber_ftbl *ftbl = entry->root.next;
     plumber_ftbl *next;
-#ifdef DEBUG_MODE
-    fprintf(stderr, "ftmap_search: looking at %d ftbls in position %d\n", 
-            entry->nftbl, pos);
-#endif
     for(n = 0; n < entry->nftbl; n++) {
         next = ftbl->next;
-#ifdef DEBUG_MODE
-    fprintf(stderr, "ftmap_search: comparing %s with %s\n", str, ftbl->name);
-#endif
         if(!strcmp(str, ftbl->name)){
-            *ud = ftbl->ud;
+            *ft = ftbl;
             return PLUMBER_OK;
         }
         ftbl = next;
@@ -726,7 +741,8 @@ int plumber_ftmap_destroy(plumber_data *plumb)
             next = ftbl->next;
             free(ftbl->name);
             if(ftbl->to_delete) {
-                if(ftbl->type == 1) sp_ftbl_destroy((sp_ftbl **)&ftbl->ud);
+                if(ftbl->type == PTYPE_TABLE) 
+                    sp_ftbl_destroy((sp_ftbl **)&ftbl->ud);
                 else free(ftbl->ud);
             }
             free(ftbl);
@@ -1058,6 +1074,5 @@ int plumber_argtbl_destroy(plumber_data *plumb, plumber_argtbl **at)
 int plumber_get_userdata(plumber_data *plumb, const char *name, plumber_ptr **p)
 {
     plumber_ptr *pp = *p;
-    pp->type = 0;
     return plumber_ftmap_search_userdata(plumb, name, &pp->ud);
 }

@@ -26,7 +26,13 @@ PLUMBER_NOTOK,
 PLUMBER_OK,
 PLUMBER_PANIC
 };
-    
+
+enum {
+PTYPE_NIL,
+PTYPE_TABLE,
+PTYPE_USERDATA
+};
+
 typedef int (* plumber_func) (sporth_stack *, void *) ;
 
 typedef struct plumber_ftbl {
@@ -175,6 +181,7 @@ int plumber_ftmap_destroy(plumber_data *plumb);
 int plumber_ftmap_delete(plumber_data *plumb, char mode);
 void plumber_ftmap_dump(plumber_ftentry *ft);
 plumbing * plumber_get_pipes(plumber_data *plumb);
+int plumber_search(plumber_data *plumb, const char *str, plumber_ftbl **ft);
 
 void sporth_run(plumber_data *pd, int argc, char *argv[],
     void *ud, void (*process)(sp_data *, void *));
