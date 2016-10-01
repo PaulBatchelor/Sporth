@@ -72,6 +72,8 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-varget", ps_varget);
     PS_FUNC("load-extension", scm_load_ext);
 
+    scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
+            mk_string(sc, "/usr/local/share/sporth/polysporth/"));
     sc->ext_data = (void *)ps;
 
     ps->cb = sc->NIL;
