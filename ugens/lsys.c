@@ -87,6 +87,18 @@ typedef struct {
     int cur;
 } lsys_d;
 
+typedef struct lsys_item {
+    lsys_entry *ent;
+    struct lsys_item *nxt;
+} lsys_item;
+
+typedef struct {
+    lsys_item root;
+    lsys_item *last;
+    unsigned int size;
+} lsys_list;
+
+
 static int toint(unsigned char a) {
     if(a >= 97) 
         return a - 87;
@@ -158,17 +170,6 @@ static unsigned int lsys_parse(lsys_d *ls,
         return len;
     }
 }
-
-typedef struct lsys_item {
-    lsys_entry *ent;
-    struct lsys_item *nxt;
-} lsys_item;
-
-typedef struct {
-    lsys_item root;
-    lsys_item *last;
-    unsigned int size;
-} lsys_list;
 
 static int lsys_list_init(lsys_list *lst)
 {
@@ -315,12 +316,14 @@ int sporth_lsys(sporth_stack *stack, void *ud)
         case PLUMBER_COMPUTE:
             lsys = pd->last->ud;
             sporth_stack_pop_float(stack);
-            if(sporth_stack_pop_float(stack) != 0) {
+
+            if(sporth_stack_pop_float(stack) != 0 && lsys->lst.size > 0) {
                 lsys->pos = lsys_list_iter(&lsys->lst, 
                     &lsys->ent,
                     lsys->pos);
                 lsys->init = 0;
             }
+
             if(lsys->init) 
                 sporth_stack_push_float(stack, -1);
             else
