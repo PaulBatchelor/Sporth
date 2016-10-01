@@ -8,7 +8,7 @@
 
 #define car(p) ((p)->_object._cons._car)
 #define cdr(p) ((p)->_object._cons._cdr)
-#define PS_LOAD(NAME, FUNC) scheme_define(sc, sc->global_env, \
+#define PS_FUNC(NAME, FUNC) scheme_define(sc, sc->global_env, \
         mk_symbol(sc, NAME), \
         mk_foreign_func(sc, FUNC)) 
 
@@ -48,29 +48,29 @@ void ps_scm_load(polysporth *ps, char *filename)
     scheme_set_input_port_file(sc, stdin);
     scheme_set_output_port_file(sc, stdout);
 
-    PS_LOAD("ps-eval", ps_eval);
-    PS_LOAD("ps-parse", ps_parse);
-    PS_LOAD("ps-turnon", ps_turnon);
-    PS_LOAD("ps-turnoff", ps_turnoff);
-    PS_LOAD("ps-init-sporthlet", ps_init_sporthlet);
-    PS_LOAD("ps-lexer", ps_lexer);
-    PS_LOAD("ps-write-code", ps_write_code);
-    PS_LOAD("ps-show-pipes", ps_show_pipes);
-    PS_LOAD("ps-noteblock-begin", ps_noteblock_begin);
-    PS_LOAD("ps-clear-events", ps_clear_events);
-    PS_LOAD("ps-noteblock-end", ps_noteblock_end);
-    PS_LOAD("ps-set-release", ps_set_release);
-    PS_LOAD("ps-note", ps_note);
-    PS_LOAD("ps-metanote", ps_metanote);
-    PS_LOAD("ps-set-callback", ps_set_callback);
-    PS_LOAD("ps-rand", ps_rand);
-    PS_LOAD("ps-ftbl", ps_ftbl);
-    PS_LOAD("ps-tset", ps_tset);
-    PS_LOAD("ps-tget", ps_tget);
-    PS_LOAD("ps-mkvar", ps_mkvar);
-    PS_LOAD("ps-varset", ps_varset);
-    PS_LOAD("ps-varget", ps_varget);
-    PS_LOAD("load-extension", scm_load_ext);
+    PS_FUNC("ps-eval", ps_eval);
+    PS_FUNC("ps-parse", ps_parse);
+    PS_FUNC("ps-turnon", ps_turnon);
+    PS_FUNC("ps-turnoff", ps_turnoff);
+    PS_FUNC("ps-init-sporthlet", ps_init_sporthlet);
+    PS_FUNC("ps-lexer", ps_lexer);
+    PS_FUNC("ps-write-code", ps_write_code);
+    PS_FUNC("ps-show-pipes", ps_show_pipes);
+    PS_FUNC("ps-noteblock-begin", ps_noteblock_begin);
+    PS_FUNC("ps-clear-events", ps_clear_events);
+    PS_FUNC("ps-noteblock-end", ps_noteblock_end);
+    PS_FUNC("ps-set-release", ps_set_release);
+    PS_FUNC("ps-note", ps_note);
+    PS_FUNC("ps-metanote", ps_metanote);
+    PS_FUNC("ps-set-callback", ps_set_callback);
+    PS_FUNC("ps-rand", ps_rand);
+    PS_FUNC("ps-ftbl", ps_ftbl);
+    PS_FUNC("ps-tset", ps_tset);
+    PS_FUNC("ps-tget", ps_tget);
+    PS_FUNC("ps-mkvar", ps_mkvar);
+    PS_FUNC("ps-varset", ps_varset);
+    PS_FUNC("ps-varget", ps_varget);
+    PS_FUNC("load-extension", scm_load_ext);
 
     sc->ext_data = (void *)ps;
 
