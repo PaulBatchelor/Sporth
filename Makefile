@@ -106,6 +106,7 @@ install: $(SPORTHLIBS) sporth tmp.h
 	install util/ugen_lookup /usr/local/bin
 	install util/spparse /usr/local/bin
 	./util/installer.sh $(BIN)
+	./ugens/polysporth/install.sh
 
 clean:
 	rm -rf $(OBJ)
