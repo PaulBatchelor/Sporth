@@ -8,6 +8,10 @@
 
 #define car(p) ((p)->_object._cons._car)
 #define cdr(p) ((p)->_object._cons._cdr)
+#define PS_LOAD(NAME, FUNC) scheme_define(sc, sc->global_env, \
+        mk_symbol(sc, NAME), \
+        mk_foreign_func(sc, FUNC)) 
+
 
 static pointer ps_eval(scheme *sc, pointer args);
 static pointer ps_parse(scheme *sc, pointer args);
@@ -44,76 +48,29 @@ void ps_scm_load(polysporth *ps, char *filename)
     scheme_set_input_port_file(sc, stdin);
     scheme_set_output_port_file(sc, stdout);
 
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-eval"), 
-        mk_foreign_func(sc, ps_eval));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-parse"), 
-        mk_foreign_func(sc, ps_parse));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-turnon"), 
-        mk_foreign_func(sc, ps_turnon));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-turnoff"), 
-        mk_foreign_func(sc, ps_turnoff));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-init-sporthlet"), 
-        mk_foreign_func(sc, ps_init_sporthlet));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-lexer"), 
-        mk_foreign_func(sc, ps_lexer));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-write-code"), 
-        mk_foreign_func(sc, ps_write_code));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-show-pipes"), 
-        mk_foreign_func(sc, ps_show_pipes));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-noteblock-begin"), 
-        mk_foreign_func(sc, ps_noteblock_begin));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-clear-events"), 
-        mk_foreign_func(sc, ps_clear_events));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-noteblock-end"), 
-        mk_foreign_func(sc, ps_noteblock_end));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-set-release"), 
-        mk_foreign_func(sc, ps_set_release));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-note"), 
-        mk_foreign_func(sc, ps_note));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-metanote"), 
-        mk_foreign_func(sc, ps_metanote));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-set-callback"), 
-        mk_foreign_func(sc, ps_set_callback));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-rand"), 
-        mk_foreign_func(sc, ps_rand));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-ftbl"), 
-        mk_foreign_func(sc, ps_ftbl));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-tset"), 
-        mk_foreign_func(sc, ps_tset));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-tget"), 
-        mk_foreign_func(sc, ps_tget));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-mkvar"), 
-        mk_foreign_func(sc, ps_mkvar));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-varset"), 
-        mk_foreign_func(sc, ps_varset));
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "ps-varget"), 
-        mk_foreign_func(sc, ps_varget));
-  scheme_define(sc, sc->global_env,
-        mk_symbol(sc,"load-extension"),
-        mk_foreign_func(sc, scm_load_ext));
-
+    PS_LOAD("ps-eval", ps_eval);
+    PS_LOAD("ps-parse", ps_parse);
+    PS_LOAD("ps-turnon", ps_turnon);
+    PS_LOAD("ps-turnoff", ps_turnoff);
+    PS_LOAD("ps-init-sporthlet", ps_init_sporthlet);
+    PS_LOAD("ps-lexer", ps_lexer);
+    PS_LOAD("ps-write-code", ps_write_code);
+    PS_LOAD("ps-show-pipes", ps_show_pipes);
+    PS_LOAD("ps-noteblock-begin", ps_noteblock_begin);
+    PS_LOAD("ps-clear-events", ps_clear_events);
+    PS_LOAD("ps-noteblock-end", ps_noteblock_end);
+    PS_LOAD("ps-set-release", ps_set_release);
+    PS_LOAD("ps-note", ps_note);
+    PS_LOAD("ps-metanote", ps_metanote);
+    PS_LOAD("ps-set-callback", ps_set_callback);
+    PS_LOAD("ps-rand", ps_rand);
+    PS_LOAD("ps-ftbl", ps_ftbl);
+    PS_LOAD("ps-tset", ps_tset);
+    PS_LOAD("ps-tget", ps_tget);
+    PS_LOAD("ps-mkvar", ps_mkvar);
+    PS_LOAD("ps-varset", ps_varset);
+    PS_LOAD("ps-varget", ps_varget);
+    PS_LOAD("load-extension", scm_load_ext);
 
     sc->ext_data = (void *)ps;
 
