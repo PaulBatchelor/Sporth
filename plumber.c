@@ -83,6 +83,9 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
 
     plumb->pipes = pipes;
 
+    /* save temp */
+    plumbing *tmp = plumb->tmp;
+
     if(mode == PLUMBER_DESTROY) {
         sporth_stack_init(&plumb->sporth.stack);
     }
@@ -111,6 +114,8 @@ int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode)
     plumb->pipes = prev;
     /* restore top level next pipe */
     plumb->next = top_next;
+    /* restore temp */
+    plumb->tmp = tmp;
     return PLUMBER_OK;
 }
 
@@ -401,6 +406,11 @@ int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, char *str)
     pos = 0;
     len = 0;
     plumb->mode = PLUMBER_CREATE;
+
+    /* save top level tmp variable. */
+    plumbing *top_tmp = plumb->tmp;
+    plumb->tmp = pipes;
+
     while(pos < size) {
         out = sporth_tokenizer(str, size, &pos);
         len = (unsigned int)strlen(out);
@@ -408,6 +418,9 @@ int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, char *str)
         free(out);
         if(err == PLUMBER_NOTOK) break;
     }
+
+    /* restore tmp */
+    plumb->tmp = top_tmp;
     return err;
 }
 
@@ -421,7 +434,7 @@ plumbing *plumbing_choose(plumber_data *plumb,
 {
     plumbing *newpipes;
 
-    if(plumb->current_pipe == 0) {
+    if(*current_pipe == 0) {
 #ifdef DEBUG_MODE
         fprintf(stderr, "compiling to alt\n");
 #endif
@@ -430,12 +443,12 @@ plumbing *plumbing_choose(plumber_data *plumb,
         plumb->ftmap = plumb->ft2;
         plumb->ftnew = plumb->ft2;
         plumb->ftold = plumb->ft1;
-    } else {
+    } else if(*current_pipe == 1) {
 #ifdef DEBUG_MODE
         fprintf(stderr, "compiling to main\n");
 #endif
         newpipes = main;
-        *current_pipe = 0;
+        *current_pipe = 0; 
         plumb->ftmap = plumb->ft1;
         plumb->ftnew = plumb->ft1;
         plumb->ftold = plumb->ft2;
@@ -475,8 +488,9 @@ int plumber_reparse(plumber_data *plumb)
 
 int plumber_reparse_string(plumber_data *plumb, char *str) 
 {
-    if(plumbing_parse_string(plumb, plumb->tmp, str) == PLUMBER_OK) {
-        plumbing_compute(plumb, plumb->tmp, PLUMBER_INIT);
+    plumbing *pipes = plumb->tmp;
+    if(plumbing_parse_string(plumb, pipes, str) == PLUMBER_OK) {
+        plumbing_compute(plumb, pipes, PLUMBER_INIT);
 #ifdef DEBUG_MODE
         fprintf(stderr, "Successful parse...\n");
         fprintf(stderr, "at stack position %d\n",
@@ -484,7 +498,9 @@ int plumber_reparse_string(plumber_data *plumb, char *str)
         fprintf(stderr, "%d errors\n",
                 plumb->sporth.stack.error);
 #endif
+        plumb->tmp = pipes;
     } else {
+        plumb->tmp = pipes;
         return PLUMBER_NOTOK;
     }
     return PLUMBER_OK;
