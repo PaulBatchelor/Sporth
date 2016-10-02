@@ -1117,7 +1117,7 @@ int sporth_pos(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_COMPUTE:
             pos = pd->last->ud;
-            sporth_stack_push_float(stack, *pos / pd->sp->sr);
+            sporth_stack_push_float(stack, (SPFLOAT) *pos / pd->sp->sr);
             *pos = *pos + 1;
             break;
         case PLUMBER_DESTROY:
