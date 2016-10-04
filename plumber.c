@@ -432,7 +432,7 @@ int plumber_parse(plumber_data *plumb)
 plumbing *plumbing_choose(plumber_data *plumb, 
         plumbing *main, plumbing *alt, int *current_pipe)
 {
-    plumbing *newpipes;
+    plumbing *newpipes = NULL;
 
     if(*current_pipe == 0) {
 #ifdef DEBUG_MODE

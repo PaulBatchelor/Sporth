@@ -38,6 +38,7 @@ f \
 fm \
 fof \
 fog \
+fosc \
 ftsum \
 gbuzz \
 gen_file \
