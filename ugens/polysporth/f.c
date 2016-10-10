@@ -27,6 +27,7 @@ static pointer ps_init_sporthlet(scheme *sc, pointer args);
 static pointer ps_show_pipes(scheme *sc, pointer args);
 static pointer ps_write_code(scheme *sc, pointer args);
 static pointer ps_set_callback(scheme *sc, pointer args);
+static pointer ps_set_shutdown_callback(scheme *sc, pointer args);
 static pointer ps_rand(scheme *sc, pointer args);
 static pointer ps_ftbl(scheme *sc, pointer args);
 static pointer ps_tset(scheme *sc, pointer args);
@@ -63,6 +64,7 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-note", ps_note);
     PS_FUNC("ps-metanote", ps_metanote);
     PS_FUNC("ps-set-callback", ps_set_callback);
+    PS_FUNC("ps-set-shutdown-callback", ps_set_shutdown_callback);
     PS_FUNC("ps-rand", ps_rand);
     PS_FUNC("ps-ftbl", ps_ftbl);
     PS_FUNC("ps-tset", ps_tset);
@@ -77,6 +79,7 @@ void ps_scm_load(polysporth *ps, char *filename)
     sc->ext_data = (void *)ps;
 
     ps->cb = sc->NIL;
+    ps->shutdown= sc->NIL;
 
     FILE *fp =fopen(filename,"r");
     scheme_load_file(sc, fp);
@@ -297,6 +300,14 @@ static pointer ps_set_callback(scheme *sc, pointer args)
     polysporth *ps = sc->ext_data;
     pointer cb = car(args);
     ps->cb = cb;
+    return sc->NIL;
+}
+
+static pointer ps_set_shutdown_callback(scheme *sc, pointer args)
+{
+    polysporth *ps = sc->ext_data;
+    pointer cb = car(args);
+    ps->shutdown = cb;
     return sc->NIL;
 }
 

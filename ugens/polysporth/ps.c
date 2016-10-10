@@ -89,6 +89,9 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
 
 void ps_clean(polysporth *ps)
 {
+    if(ps->shutdown != ps->sc.NIL) {
+        scheme_call(&ps->sc, ps->shutdown, ps->sc.NIL);
+    }
 #ifdef DEBUG_POLYSPORTH
     fprintf(stderr, "--- PS CLEAN ---\n");
 #endif

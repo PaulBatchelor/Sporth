@@ -31,6 +31,7 @@ static pointer plugin_function(scheme *sc, pointer args) {
     /* return a float */
     return mk_real(sc, 0.2468);
 }
+
 void init_plugin(scheme *sc) 
 {
     scheme_define(sc, sc->global_env, 
