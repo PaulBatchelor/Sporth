@@ -490,7 +490,6 @@ int plumber_reparse_string(plumber_data *plumb, char *str)
 {
     plumbing *pipes = plumb->tmp;
     if(plumbing_parse_string(plumb, pipes, str) == PLUMBER_OK) {
-        plumbing_compute(plumb, pipes, PLUMBER_INIT);
 #ifdef DEBUG_MODE
         fprintf(stderr, "Successful parse...\n");
         fprintf(stderr, "at stack position %d\n",
@@ -539,6 +538,7 @@ int plumber_swap(plumber_data *plumb, int error)
         plumb->ftmap = plumb->ftnew;
         plumb->pipes = plumb->tmp;
         plumb->sp->pos = 0;
+        plumbing_compute(plumb, plumb->pipes, PLUMBER_INIT);
     }
     return PLUMBER_OK;
 }
