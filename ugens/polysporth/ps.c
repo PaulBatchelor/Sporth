@@ -18,7 +18,7 @@ static int get_voice_count(polysporth *ps);
 static int is_first_element(polysporth *ps, int id);
 static int is_last_element(polysporth *ps, int id);
 
-int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl,
+int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl,
     char *out_tbl, char *filename)
 {
     int i, j;
@@ -85,6 +85,13 @@ int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstance
     /* load scheme */
     ps_scm_load(ps, filename);
     return PLUMBER_OK;
+}
+
+void ps_init(polysporth *ps)
+{
+    if(ps->init != ps->sc.NIL) {
+        scheme_call(&ps->sc, ps->init, ps->sc.NIL);
+    }
 }
 
 void ps_clean(polysporth *ps)

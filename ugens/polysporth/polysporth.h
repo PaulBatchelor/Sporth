@@ -67,10 +67,12 @@ typedef struct polysporth {
     /* pointers for callbacks */
     pointer cb;
     pointer shutdown;
+    pointer init;
 } polysporth;
 
-int ps_init(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
+int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
     char *out_tbl, char *filename);
+void ps_init(polysporth *ps);
 void ps_clean(polysporth *ps);
 void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock);
 void dvector_print(dvector *dv);
