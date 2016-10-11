@@ -37,6 +37,7 @@ static pointer ps_mkvar(scheme *sc, pointer args);
 static pointer ps_varset(scheme *sc, pointer args);
 static pointer ps_varget(scheme *sc, pointer args);
 static pointer ps_clear_events(scheme *sc, pointer args);
+static pointer ps_gc_verbose(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -75,6 +76,7 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-varset", ps_varset);
     PS_FUNC("ps-varget", ps_varget);
     PS_FUNC("load-extension", scm_load_ext);
+    PS_FUNC("ps-gc-verbose", ps_gc_verbose);
 
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
             mk_string(sc, "/usr/local/share/sporth/polysporth/"));
@@ -418,5 +420,11 @@ static pointer ps_clear_events(scheme *sc, pointer args)
             ps->spl[i].state = PS_OFF;
         }
     }
+    return sc->NIL;
+}
+
+static pointer ps_gc_verbose(scheme *sc, pointer args)
+{
+    sc->gc_verbose = 1;
     return sc->NIL;
 }
