@@ -143,6 +143,9 @@ long gensym_cnt;
 struct scheme_interface *vptr;
 void *dump_base;    /* pointer to base of allocated dump stack */
 int dump_size;      /* number of frames allocated for dump stack */
+
+struct cell _cupboard;
+pointer cupboard; /* an attempt to make persitant pointers that aren't GC'd */
 };
 
 /* operator code */

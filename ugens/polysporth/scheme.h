@@ -162,6 +162,7 @@ void putstr(scheme *sc, const char *s);
 int list_length(scheme *sc, pointer a);
 int eqv(pointer a, pointer b);
 
+void scheme_cupboard(scheme *sc, pointer a);
 
 #if USE_INTERFACE
 struct scheme_interface {

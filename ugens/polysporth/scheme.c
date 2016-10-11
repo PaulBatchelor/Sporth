@@ -1307,6 +1307,10 @@ static void gc(scheme *sc, pointer a, pointer b) {
   mark(a);
   mark(b);
 
+  /* mark persistent pointers in cupboard */
+
+  mark(sc->cupboard);
+
   /* garbage collect */
   clrmark(sc->NIL);
   sc->fcells = 0;
@@ -4718,6 +4722,11 @@ int scheme_init_custom_alloc(scheme *sc, func_alloc malloc, func_dealloc free) {
   car(sc->sink) = sc->NIL;
   /* init c_nest */
   sc->c_nest = sc->NIL;
+  
+  /* set up memory cupboard */
+  sc->cupboard = &sc->_cupboard;
+  typeflag(sc->cupboard) = (T_PAIR | MARK);
+  car(sc->cupboard) = sc->NIL;
 
   sc->oblist = oblist_initial_value(sc);
   /* init global_env */
@@ -4967,6 +4976,14 @@ pointer scheme_eval(scheme *sc, pointer obj)
   return sc->value;
 }
 
+void scheme_cupboard(scheme *sc, pointer a)
+{
+    if(sc->cupboard == sc->NIL) {
+        sc->cupboard = a;
+    } else {
+        sc->cupboard = cons(sc, a, sc->cupboard);
+    }
+}
 
 #endif
 
