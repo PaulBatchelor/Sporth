@@ -59,6 +59,7 @@ int sporth_fload(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
     sporth_fload_d *fload;
+    char buf[512];
     switch(pd->mode) {
         case PLUMBER_CREATE:
 
@@ -74,8 +75,16 @@ int sporth_fload(sporth_stack *stack, void *ud)
             }
             fload->filename= sporth_stack_pop_string(stack);
             fload->name = sporth_stack_pop_string(stack);
-           
-            fload->handle = dlopen(fload->filename, RTLD_NOW);
+          
+            if(getenv("SPORTH_PLUGIN_PATH") != NULL && 
+                fload->filename[0] != '.') {
+                sprintf(buf, "%s/%s", 
+                        getenv("SPORTH_PLUGIN_PATH"),
+                        fload->filename);
+                fload->handle = dlopen(buf, RTLD_NOW);
+            } else {
+                fload->handle = dlopen(fload->filename, RTLD_NOW);
+            }
             if(fload->handle == NULL) {
                 fprintf(stderr, "Error loading %s: %s\n", fload->name, dlerror());
                 return PLUMBER_NOTOK;
