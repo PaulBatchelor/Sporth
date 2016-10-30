@@ -428,3 +428,9 @@ static pointer ps_gc_verbose(scheme *sc, pointer args)
     sc->gc_verbose = 1;
     return sc->NIL;
 }
+
+plumber_data * scheme_plumber(scheme *sc)
+{
+    polysporth *ps = sc->ext_data;
+    return &ps->pd;
+}
