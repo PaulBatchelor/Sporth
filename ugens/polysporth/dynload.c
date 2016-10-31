@@ -124,8 +124,15 @@ pointer scm_load_ext(scheme *sc, pointer args)
 }
 
 static void make_filename(const char *name, char *filename) {
- strcpy(filename,name);
- strcat(filename,SUFFIX);
+    if(name[0] != '.' && getenv("POLYSPORTH_PLUGIN_PATH") == NULL) {
+        strcpy(filename,name);
+        strcat(filename,SUFFIX);
+    } else {
+        sprintf(filename, "%s/%s%s", 
+                getenv("POLYSPORTH_PLUGIN_PATH"),
+                name,
+                SUFFIX);
+    }
 }
 
 static void make_init_fn(const char *name, char *init_fn) {
