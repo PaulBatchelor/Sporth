@@ -883,3 +883,8 @@ Args: freq(f), amp(f), carrier (f), modulator (f), index (f), table (s)
 Output: f
 Description: FM oscillator
 ---
+Name: incr
+Args: trig,step,min,max,ival
+Output: f
+Description: Incrementer
+---
