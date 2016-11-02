@@ -20,7 +20,7 @@ int sporth_incr(sporth_stack *stack, void *ud)
 
             sp_incr_create(&incr);
             plumber_add_ugen(pd, SPORTH_INCR, incr);
-            if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
+            if(sporth_check_args(stack, "fffff") != SPORTH_OK) {
                 fprintf(stderr,"Not enough arguments for incr\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
