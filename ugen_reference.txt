@@ -878,6 +878,7 @@ Args: trig (f), bpm (f), code (s)
 Output: f
 Description: prop with a triggerable reset
 ---
+Name: fosc
 Args: freq(f), amp(f), carrier (f), modulator (f), index (f), table (s)
 Output: f
 Description: FM oscillator
