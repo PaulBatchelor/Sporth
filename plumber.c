@@ -671,7 +671,7 @@ int plumber_ftmap_add_userdata(plumber_data *plumb, const char *str, void *ud)
 int plumber_ftmap_add_function(plumber_data *plumb, 
         const char *str, plumber_dyn_func f, void *ud)
 {
-    sporth_fload_d *fd = malloc(sizeof(sporth_func_d));
+    sporth_fload_d *fd = malloc(sizeof(sporth_fload_d));
     fd->fun = f;
     fd->ud = ud;
     return plumber_ftmap_add_userdata(plumb, str, (void *)fd);

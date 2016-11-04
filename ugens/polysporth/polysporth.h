@@ -68,6 +68,9 @@ typedef struct polysporth {
     pointer cb;
     pointer shutdown;
     pointer init;
+
+    /* current voice */
+    int id;
 } polysporth;
 
 int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 

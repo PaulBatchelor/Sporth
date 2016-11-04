@@ -17,6 +17,7 @@ static int find_free_voice(polysporth *ps, int grp_start, int grp_end);
 static int get_voice_count(polysporth *ps);
 static int is_first_element(polysporth *ps, int id);
 static int is_last_element(polysporth *ps, int id);
+static int ps_noteoff(plumber_data *pd, sporth_stack *stack, void **ud);
 
 int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl,
     char *out_tbl, char *filename)
@@ -82,8 +83,11 @@ int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstan
     /* set block boolean to off */
     ps->noteblock = PS_OFF;
 
+    plumber_ftmap_add_function(&ps->pd, "noteoff", ps_noteoff, ps);
+
     /* load scheme */
     ps_scm_load(ps, filename);
+
     return PLUMBER_OK;
 }
 
@@ -184,6 +188,7 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
     for(i = 0; i < count; i++) {
         id = get_next_voice_id(ps);
         ps->args->tbl = ps->spl[id].args;
+        ps->id = id;
         out[id] = compute_sample(ps, id);
     }
     ps->args->tbl = tmp;
@@ -342,5 +347,29 @@ int polysporth_eval(plumber_ptr *p, const char *str)
 {
     polysporth *ps = p->ud;
     scheme_load_string(&ps->sc, str);
+    return PLUMBER_OK;
+}
+
+static int ps_noteoff(plumber_data *pd, sporth_stack *stack, void **ud)
+{
+    SPFLOAT val;
+    polysporth *ps;
+    switch(pd->mode) {
+        case PLUMBER_CREATE:
+            sporth_stack_pop_float(stack);
+            break;
+        case PLUMBER_INIT:
+            val = sporth_stack_pop_float(stack);
+            break;
+        case PLUMBER_COMPUTE:
+            val = sporth_stack_pop_float(stack);
+            ps = *ud;
+            if(val != 0) {
+                ps_turnoff_sporthlet(ps, ps->id);
+            }
+            break;
+        default:
+            break;
+    }
     return PLUMBER_OK;
 }

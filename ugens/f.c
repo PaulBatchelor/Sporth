@@ -196,6 +196,7 @@ int sporth_fexec(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             fexec->fun = fload->fun;
+            fexec->ud = fload->ud;
             fexec->fun(pd, stack, &fexec->ud);
             break;
         case PLUMBER_INIT:

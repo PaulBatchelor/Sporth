@@ -1309,8 +1309,6 @@ static void gc(scheme *sc, pointer a, pointer b) {
 
   /* mark persistent pointers in cupboard */
 
-  /* mark(sc->cupboard); */
-
   /* garbage collect */
   clrmark(sc->NIL);
   sc->fcells = 0;
