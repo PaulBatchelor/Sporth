@@ -38,6 +38,8 @@ static pointer ps_varset(scheme *sc, pointer args);
 static pointer ps_varget(scheme *sc, pointer args);
 static pointer ps_clear_events(scheme *sc, pointer args);
 static pointer ps_gc_verbose(scheme *sc, pointer args);
+static pointer ps_noteoff(scheme *sc, pointer args);
+static pointer ps_argset(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -77,6 +79,8 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-varget", ps_varget);
     PS_FUNC("load-extension", scm_load_ext);
     PS_FUNC("ps-gc-verbose", ps_gc_verbose);
+    PS_FUNC("ps-noteoff", ps_noteoff);
+    PS_FUNC("ps-argset", ps_argset);
 
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
             mk_string(sc, "/usr/local/share/sporth/polysporth/"));
@@ -433,4 +437,24 @@ plumber_data * scheme_plumber(scheme *sc)
 {
     polysporth *ps = sc->ext_data;
     return &ps->pd;
+}
+
+static pointer ps_noteoff(scheme *sc, pointer args)
+{
+    polysporth *ps = sc->ext_data;
+    int id = ivalue(car(args));
+    ps_sporthlet_noteoff(ps, id);
+    return sc->NIL;
+}
+
+static pointer ps_argset(scheme *sc, pointer args)
+{
+    polysporth *ps = sc->ext_data;
+    int id = ivalue(car(args));
+    args = cdr(args);
+    int pos = ivalue(car(args));
+    args = cdr(args);
+    SPFLOAT val = rvalue(car(args));
+    ps_set_arg(ps, id, pos, val);
+    return sc->NIL;
 }

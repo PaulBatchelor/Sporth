@@ -17,7 +17,13 @@ static int find_free_voice(polysporth *ps, int grp_start, int grp_end);
 static int get_voice_count(polysporth *ps);
 static int is_first_element(polysporth *ps, int id);
 static int is_last_element(polysporth *ps, int id);
-static int ps_noteoff(plumber_data *pd, sporth_stack *stack, void **ud);
+static int ps_noteoff_ugen(plumber_data *pd, sporth_stack *stack, void **ud);
+static int ps_offtick(plumber_data *pd, sporth_stack *stack, void **ud);
+
+typedef struct {
+    polysporth *ps;
+    int prev_state;
+} off_data;
 
 int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl,
     char *out_tbl, char *filename)
@@ -83,8 +89,9 @@ int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstan
     /* set block boolean to off */
     ps->noteblock = PS_OFF;
 
-    plumber_ftmap_add_function(&ps->pd, "noteoff", ps_noteoff, ps);
-
+    plumber_ftmap_add_function(&ps->pd, "noteoff", ps_noteoff_ugen, ps);
+    plumber_ftmap_add_function(&ps->pd, "offtick", ps_offtick, ps);
+    
     /* load scheme */
     ps_scm_load(ps, filename);
 
@@ -132,6 +139,8 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
     int id;
     int count;
     dvalue *val;
+    int do_shutup = 0;
+    sporthlet *spl, *next;
     if(tick != 0) {
         if(ps->cb != ps->sc.NIL) scheme_call(&ps->sc, ps->cb, ps->sc.NIL);
     }
@@ -171,7 +180,6 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
 
         top_of_list(ps);
         count = get_voice_count(ps);
-        sporthlet *spl, *next;
         spl = ps->root.next;
         for(i = 0; i < count; i++) {
             next = spl->next;
@@ -190,6 +198,24 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
         ps->args->tbl = ps->spl[id].args;
         ps->id = id;
         out[id] = compute_sample(ps, id);
+        if(ps->spl[id].state == PS_PLEASE_SHUTUP) {
+            /*ps_turnoff_sporthlet(ps, id);*/
+            do_shutup = 1;
+        }
+    }
+  
+    /* there has to be a better way... */
+    /* top_of_list(ps); */
+    spl = ps->root.next;
+    if(do_shutup) {
+        for(i = 0; i < count; i++) {
+            next = spl->next;
+            id = spl->id;
+            if(ps->spl[id].state == PS_PLEASE_SHUTUP) {
+                ps_turnoff_sporthlet(ps, id);
+            }
+            spl = next;
+        }
     }
     ps->args->tbl = tmp;
 
@@ -240,7 +266,7 @@ void ps_turnoff_sporthlet(polysporth *ps, int id)
     ps->spl[id].state);
 #endif
     sporthlet *spl = &ps->spl[id];
-    if(spl->state == PS_ON) {
+    if(spl->state == PS_ON || spl->state == PS_PLEASE_SHUTUP) {
         spl->state = PS_OFF;
         sporthlet *prev = spl->prev;
         sporthlet *next = spl->next;
@@ -350,26 +376,78 @@ int polysporth_eval(plumber_ptr *p, const char *str)
     return PLUMBER_OK;
 }
 
-static int ps_noteoff(plumber_data *pd, sporth_stack *stack, void **ud)
+static int ps_noteoff_ugen(plumber_data *pd, sporth_stack *stack, void **ud)
 {
-    SPFLOAT val;
     polysporth *ps;
+    SPFLOAT val;
     switch(pd->mode) {
         case PLUMBER_CREATE:
+            ps = *ud;
             sporth_stack_pop_float(stack);
             break;
         case PLUMBER_INIT:
-            val = sporth_stack_pop_float(stack);
+            sporth_stack_pop_float(stack);
+            ps = *ud;
             break;
         case PLUMBER_COMPUTE:
             val = sporth_stack_pop_float(stack);
             ps = *ud;
             if(val != 0) {
-                ps_turnoff_sporthlet(ps, ps->id);
+                ps->spl[ps->id].state = PS_PLEASE_SHUTUP;
             }
             break;
-        default:
+        case PLUMBER_DESTROY:
             break;
     }
+
     return PLUMBER_OK;
+}
+
+static int ps_offtick(plumber_data *pd, sporth_stack *stack, void **ud)
+{
+    polysporth *ps;
+    off_data *off;
+    int state;
+    switch(pd->mode) {
+        case PLUMBER_CREATE:
+            ps = *ud;
+            off = malloc(sizeof(off_data));
+            off->ps = ps;
+            off->prev_state = PS_NULL;
+            *ud = off;
+            sporth_stack_push_float(stack, 0);
+            break;
+        case PLUMBER_INIT:
+            off = *ud;
+            sporth_stack_push_float(stack, 0);
+            break;
+        case PLUMBER_COMPUTE:
+            off = *ud;
+            state = off->ps->spl[off->ps->id].state;
+
+            if(state == PS_NOTEOFF && off->prev_state != PS_NOTEOFF) {
+                sporth_stack_push_float(stack, 1);
+            } else {
+                sporth_stack_push_float(stack, 0);
+            }
+            off->prev_state = state;
+
+            break;
+        case PLUMBER_DESTROY:
+            off = *ud;
+            free(off);
+            break;
+    }
+
+    return PLUMBER_OK;
+}
+
+void ps_set_arg(polysporth *ps, int id, int pos, SPFLOAT val)
+{
+    ps->spl[id].args[pos] = val;
+}
+
+void ps_sporthlet_noteoff(polysporth *ps, int id)
+{
+    ps->spl[id].state = PS_NOTEOFF;
 }
