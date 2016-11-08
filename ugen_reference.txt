@@ -882,3 +882,8 @@ Args: freq(f), amp(f), carrier (f), modulator (f), index (f), table (s)
 Output: f
 Description: FM oscillator
 ---
+Name: tport
+Args: trig (f) htime (f)
+Output: f
+Description: Applies portamento to a signal with triggerable reset.
+---
