@@ -878,6 +878,7 @@ Args: trig (f), bpm (f), code (s)
 Output: f
 Description: prop with a triggerable reset
 ---
+Name: fosc
 Args: freq(f), amp(f), carrier (f), modulator (f), index (f), table (s)
 Output: f
 Description: FM oscillator
@@ -886,4 +887,9 @@ Name: tport
 Args: trig (f) htime (f)
 Output: f
 Description: Applies portamento to a signal with triggerable reset.
+---
+Name: incr
+Args: trig,step,min,max,ival
+Output: f
+Description: Incrementer
 ---
