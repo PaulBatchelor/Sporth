@@ -17,6 +17,8 @@ int sp_process_jack(plumber_data *pd,
         void *ud, void (*callback)(sp_data *, void *), int port);
 #endif 
 
+size_t plumber_getline(char **lineptr, size_t *n, FILE *stream);
+
 enum {
     SPACE,
     QUOTE,
@@ -378,7 +380,7 @@ int plumbing_parse(plumber_data *plumb, plumbing *pipes)
     plumbing *top_tmp = plumb->tmp;
     plumb->tmp = pipes;
 
-    while((read = getline(&line, &length, fp)) != -1 && err == PLUMBER_OK) {
+    while((read = plumber_getline(&line, &length, fp)) != -1 && err == PLUMBER_OK) {
         pos = 0;
         len = 0;
         while(pos < read - 1) {
