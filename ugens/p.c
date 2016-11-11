@@ -115,7 +115,7 @@ int sporth_palias(sporth_stack *stack, void *ud)
             name = sporth_stack_pop_string(stack);
             foo = &pd->p[id];
             plumber_ftmap_delete(pd, 0);
-            plumber_set_var(pd, name, &foo);
+            plumber_set_var(pd, name, foo);
             plumber_ftmap_delete(pd, 1);
             break;
         case PLUMBER_INIT:
