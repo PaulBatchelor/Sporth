@@ -893,3 +893,8 @@ Args: trig,step,min,max,ival
 Output: f
 Description: Incrementer
 ---
+Name: palias
+Args: name,index
+Output: n/a
+Description: create a variable alias for p-value
+---
