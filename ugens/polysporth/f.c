@@ -40,6 +40,7 @@ static pointer ps_clear_events(scheme *sc, pointer args);
 static pointer ps_gc_verbose(scheme *sc, pointer args);
 static pointer ps_noteoff(scheme *sc, pointer args);
 static pointer ps_argset(scheme *sc, pointer args);
+static pointer ps_path(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -81,9 +82,12 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-gc-verbose", ps_gc_verbose);
     PS_FUNC("ps-noteoff", ps_noteoff);
     PS_FUNC("ps-argset", ps_argset);
+    PS_FUNC("ps-path", ps_path);
 
+    /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
             mk_string(sc, "/usr/local/share/sporth/polysporth/"));
+    */
     sc->ext_data = (void *)ps;
 
     ps->cb = sc->NIL;
@@ -457,4 +461,13 @@ static pointer ps_argset(scheme *sc, pointer args)
     SPFLOAT val = rvalue(car(args));
     ps_set_arg(ps, id, pos, val);
     return sc->NIL;
+}
+
+static pointer ps_path(scheme *sc, pointer args)
+{
+    const char *path = getenv("POLYSPORTH_PLUGIN_PATH");
+    if(path != NULL) 
+        return mk_string(sc, path);
+    else 
+        return mk_string(sc, ".");
 }

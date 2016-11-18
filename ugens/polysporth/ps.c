@@ -449,5 +449,7 @@ void ps_set_arg(polysporth *ps, int id, int pos, SPFLOAT val)
 
 void ps_sporthlet_noteoff(polysporth *ps, int id)
 {
-    ps->spl[id].state = PS_NOTEOFF;
+    if(ps->spl[id].state != PS_OFF) {
+        ps->spl[id].state = PS_NOTEOFF;
+    }
 }
