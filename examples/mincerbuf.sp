@@ -28,7 +28,7 @@ dup dup 10 10 8000 zrev 0.5 * drop +
 dup 0 p 'buf' tblrec 
 
 # mincer object shuffles through recording buffer
-0 'buf' tbldur 10 randi 1 1 'buf' mincer 
+0 'buf' tbldur 10 randi 1 1 2048 'buf' mincer 
 
 # Sum mincer with everything else
 +
