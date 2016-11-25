@@ -143,7 +143,6 @@ int sporth_tblsize(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
             tsize = pd->last->ud;
             ftname = sporth_stack_pop_string(stack);
-            *tsize = ft->size;
             sporth_stack_push_float(stack, *tsize);
             break;
 
