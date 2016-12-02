@@ -893,3 +893,18 @@ Args: trig,step,min,max,ival
 Output: f
 Description: Incrementer
 ---
+Name: palias
+Args: name,index
+Output: n/a
+Description: create a variable alias for p-value
+---
+Name: gen_eval
+Args: name (s), size (f), string 
+Output: n/a
+Description: Evaluates sporth string to table
+---
+Name: clock
+Args: trig, bpm, subdiv 
+Output: f
+Description: Clock with subdivisions and triggerable reset
+---

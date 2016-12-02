@@ -40,7 +40,11 @@ static pointer ps_clear_events(scheme *sc, pointer args);
 static pointer ps_gc_verbose(scheme *sc, pointer args);
 static pointer ps_noteoff(scheme *sc, pointer args);
 static pointer ps_argset(scheme *sc, pointer args);
+<<<<<<< HEAD
 static pointer ps_path(scheme *sc, pointer args);
+=======
+static pointer ps_push_string(scheme *sc, pointer args);
+>>>>>>> 39f1472f95fec3b31e8e5018b2a6c1c37535b69e
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -82,7 +86,11 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-gc-verbose", ps_gc_verbose);
     PS_FUNC("ps-noteoff", ps_noteoff);
     PS_FUNC("ps-argset", ps_argset);
+<<<<<<< HEAD
     PS_FUNC("ps-path", ps_path);
+=======
+    PS_FUNC("ps-push-string", ps_push_string);
+>>>>>>> 39f1472f95fec3b31e8e5018b2a6c1c37535b69e
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -470,4 +478,18 @@ static pointer ps_path(scheme *sc, pointer args)
         return mk_string(sc, path);
     else 
         return mk_string(sc, ".");
+}
+
+static pointer ps_push_string(scheme *sc, pointer args)
+{
+    /* plumber_add_string(&ps->pd, str); */
+    polysporth *ps = sc->ext_data;
+    char *tmp;
+    int id = (int)ivalue(car(args));
+    args = cdr(args);
+    const char *str = string_value(car(args));
+    sporthlet *spl= &ps->spl[id];
+    tmp = plumber_add_string(&ps->pd, &spl->pipes, str);
+    sporth_stack_push_string(&ps->pd.sporth.stack, &tmp);
+    return sc->NIL;
 }

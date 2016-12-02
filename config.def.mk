@@ -19,6 +19,7 @@ buthp \
 butlp \
 cdb \
 clip \
+clock \
 comb \
 conv \
 count \
@@ -41,6 +42,7 @@ fog \
 fosc \
 ftsum \
 gbuzz \
+gen_eval \
 gen_file \
 gen_line \
 gen_padsynth \
