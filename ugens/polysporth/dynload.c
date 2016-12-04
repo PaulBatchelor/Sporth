@@ -124,7 +124,7 @@ pointer scm_load_ext(scheme *sc, pointer args)
 }
 
 static void make_filename(const char *name, char *filename) {
-    if(name[0] != '.' && getenv("POLYSPORTH_PLUGIN_PATH") == NULL) {
+    if(name[0] == '.' || getenv("POLYSPORTH_PLUGIN_PATH") == NULL) {
         strcpy(filename,name);
         strcat(filename,SUFFIX);
     } else {
