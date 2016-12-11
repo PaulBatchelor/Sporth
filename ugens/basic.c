@@ -1353,10 +1353,12 @@ int sporth_limit(sporth_stack *stack, void *ud)
     }
     return PLUMBER_OK;
 }
+
 typedef struct {
     SPFLOAT pval;
     SPFLOAT out;
 } inv_d;
+
 int sporth_inv(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;

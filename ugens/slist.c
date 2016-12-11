@@ -9,8 +9,6 @@ typedef struct {
     int len;
 } slist_d;
 
-size_t plumber_getline(char **lineptr, size_t *n, FILE *stream);
-
 static int slist_parse(slist_d *sl, char *filename, uint32_t size)
 {
     sl->len = 0;
@@ -26,7 +24,7 @@ static int slist_parse(slist_d *sl, char *filename, uint32_t size)
     }
 
     for(i = 0; i < size; i++) {
-        if((read = plumber_getline(&line, &len, fp)) == -1) break;
+        if((read = sporth_getline(&line, &len, fp)) == -1) break;
         sl->list[i] = malloc(read + 1);
         memset(sl->list[i], 0, read + 1);
         strncpy(sl->list[i], line, read - 1);

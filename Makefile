@@ -23,7 +23,6 @@ endif
 
 include ugens/cdb/Makefile
 include ugens/polysporth/Makefile
-include util/getline/Makefile
 
 BIN += examples/parse examples/user_function util/jack_wrapper util/val \
 	  util/float2bin util/jacksporth util/sporthdot util/lsys
