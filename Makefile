@@ -9,12 +9,6 @@ ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE -DPOLY_DEBUG
 endif
 
-ifdef BUILD_LADSPA
-CFLAGS += -DBUILD_LADSPA -Iugens/ladspa/
-#UGENS += ladspa/ladspa
-OBJ += ugens/ladspa/load.o
-endif
-
 ifdef BUILD_JACK
 CFLAGS += -DBUILD_JACK -DLIVE_CODING
 OBJ += util/sp_jack.o

@@ -38,6 +38,7 @@ expon \
 f \
 fm \
 fof \
+fofilt \
 fog \
 fosc \
 ftsum \
@@ -57,7 +58,6 @@ in \
 incr \
 jcrev \
 jitter \
-ladspa/ladspa \
 line \
 load \
 loadfile \

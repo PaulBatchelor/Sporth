@@ -608,11 +608,6 @@ Args: tblname size filename
 Output: n/a
 Description: render a (mono) sporth file to a table
 ---
-Name: ladspa
-Args: in (f), plugin (s), argbl (s)
-Output: n/a
-Description: load up a ladspa plugin
----
 Name: loadfile
 Args: table name (s), file name (s)
 Output: n/a
@@ -907,4 +902,9 @@ Name: clock
 Args: trig, bpm, subdiv 
 Output: f
 Description: Clock with subdivisions and triggerable reset
+---
+Name: fofilt
+Args: in, freq, atk, rel
+Output: f
+Description: FOF filter
 ---
