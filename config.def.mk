@@ -26,6 +26,7 @@ count \
 crossfade \
 dcblock \
 delay \
+diode \
 diskin \
 dist \
 dmetro \

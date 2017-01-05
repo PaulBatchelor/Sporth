@@ -908,3 +908,8 @@ Args: in, freq, atk, rel
 Output: f
 Description: FOF filter
 ---
+Name: diode
+Args: in, cutoff, res
+Output: f
+Description: Diode ladder filter
+---
