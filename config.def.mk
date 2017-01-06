@@ -104,6 +104,7 @@ revsc \
 rpt \
 rms \
 samphold \
+saturator \
 say \
 scale \
 scrambler \

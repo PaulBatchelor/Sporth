@@ -8,9 +8,9 @@ _bpm 135 varset
 0 _bpm get 4 clock _clk set
 
 _clk get 0 _seq tseq 40 + _clk get 0.3 maygate 12 * + 
-_clk get 0.6 maygate 0.002 0.01 branch port mtof 0.7 saw 
-30 inv 1 sine 300 3000 biscale 0.75 0.96 (0.1 1 1 randh) randi diode
-2 0.3 0.2 0.01 dist
+_clk get 0.6 maygate 0.005 0.01 branch port mtof 0.7 saw 
+30 inv 1 sine 300 2000 biscale 0.75 0.96 (0.1 1 1 randh) randi diode
+dup 40 0 saturator bal 
 _clk get 0.005 10 inv 1 sine 0.01 0.1 biscale 0.1 tenvx * 
 
 # Square leads
@@ -18,7 +18,7 @@ _clk get 4 0 tdiv 0.2 maytrig _clk get dup 3 0 tdiv switch
 1 _seq2 tseq 62 + dup 
 mtof 0.015 (0.005 0.5 2 jitter) + port 0.2 0.1 square 
 swap 12.1 - mtof 0.02 port 0.2 0.2 square + 35 inv 1 sine 500 1000 biscale butlp  
-_clk get 16 0 tdiv 0.8 maygate 0.1 port * 200 buthp -8 ampdb *
+_clk get 16 0 tdiv 0.8 maygate 0.1 port * 200 buthp -7 ampdb *
 +
 
 # ping
