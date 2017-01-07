@@ -16,6 +16,7 @@
 #include "plumber.h"
 
 static int sporth_jack_in(sporth_stack *stack, void *ud);
+void plumber_stop_jack(plumber_data *pd, int wait);
 
 typedef struct {
     sp_data *sp;
@@ -30,7 +31,10 @@ typedef struct {
     sporth_listener sl;
 #endif
     char run;
+    const char **ports;
 } sp_jack;
+
+static sp_jack jd;
 
 void error(char *msg) {
   perror(msg);
@@ -112,23 +116,23 @@ static void *start_listening(void *ud)
 static int sp_jack_cb(jack_nframes_t nframes, void *arg)
 {
     int i, chan;
-    sp_jack *jd = arg;
-    if(jd->sl.start == 0 || jd->run == 0) {
+    sp_jack *jack = arg;
+    if(jack->sl.start == 0 || jack->run == 0) {
         return 0;
     }
-    jack_default_audio_sample_t  *out[jd->sp->nchan];
+    jack_default_audio_sample_t  *out[jack->sp->nchan];
     jack_default_audio_sample_t  *in;
 
-    in = jack_port_get_buffer(jd->input_port, nframes);
+    in = jack_port_get_buffer(jack->input_port, nframes);
 
-    for(chan = 0; chan < jd->sp->nchan; chan++)
-        out[chan] = jack_port_get_buffer (jd->output_port[chan], nframes);
+    for(chan = 0; chan < jack->sp->nchan; chan++)
+        out[chan] = jack_port_get_buffer (jack->output_port[chan], nframes);
 
     for(i = 0; i < nframes; i++){
-        jd->in = in[i];
-        jd->callback(jd->sp, jd->ud);
-        for(chan = 0; chan < jd->sp->nchan; chan++)
-        out[chan][i] = jd->sp->out[chan];
+        jack->in = in[i];
+        jack->callback(jack->sp, jack->ud);
+        for(chan = 0; chan < jack->sp->nchan; chan++)
+        out[chan][i] = jack->sp->out[chan];
     }
     return 0;
 }
@@ -145,19 +149,17 @@ void sporth_start_listener(sporth_listener *sl)
 
 
 int sp_process_jack(plumber_data *pd, 
-        void *ud, void (*callback)(sp_data *, void *), int port)
+        void *ud, void (*callback)(sp_data *, void *), int port, int wait)
 {
-    const char **ports;
-
     const char *server_name = NULL;
     int chan;
     jack_options_t options = JackNullOption;
     jack_status_t status;
-    sp_jack jd;
     jd.sp = pd->sp;
     jd.pd = pd;
     pd->ud = &jd;
 
+    const char **ports = jd.ports;
     char client_name[256];
 
     sp_data *sp = pd->sp;
@@ -238,12 +240,10 @@ int sp_process_jack(plumber_data *pd,
 #endif
     jd.run = 1;
 
-    fgetc(stdin);
-    free (ports);
-    jack_client_close(jd.client[0]);
-    free(jd.output_port);
-    free(jd.client);
-
+    if(wait) {
+        fgetc(stdin);
+        plumber_stop_jack(pd, wait);
+    }
 
     return SP_OK;
 }
@@ -289,4 +289,16 @@ static int sporth_jack_in(sporth_stack *stack, void *ud)
             break;
     }
     return PLUMBER_OK;
+}
+
+void plumber_stop_jack(plumber_data *pd, int wait)
+{
+    free (jd.ports);
+    jack_client_close(jd.client[0]);
+    free(jd.output_port);
+    free(jd.client);
+    if(!wait) {
+        plumber_clean(pd);
+        sp_destroy(&pd->sp);
+    }
 }

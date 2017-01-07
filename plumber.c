@@ -14,7 +14,7 @@
 
 #ifdef BUILD_JACK
 int sp_process_jack(plumber_data *pd, 
-        void *ud, void (*callback)(sp_data *, void *), int port);
+        void *ud, void (*callback)(sp_data *, void *), int port, int wait);
 #endif 
 
 enum {
@@ -819,6 +819,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     int rc;
 #ifdef BUILD_JACK
     int port = 6449;
+    int wait = 1;
 #endif
 
     while(argc > 0 && argv[0][0] == '-') {
@@ -926,6 +927,11 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
             case 'w':
                 write_code = 1;
                 break;
+#ifdef BUILD_JACK
+            case 'S':
+                wait = 0;
+                break;
+#endif
             case 's':
                 argv++;
                 if(--argc) { 
@@ -1012,7 +1018,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 break;
 #ifdef BUILD_JACK
             case DRIVER_JACK:
-                sp_process_jack(pd, ud, process, port);
+                sp_process_jack(pd, ud, process, port, wait);
                 break;
 #endif
             case DRIVER_NULL:
@@ -1025,6 +1031,12 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 break;
         }
     }
+
+
+#ifdef BUILD_JACK
+    if(!wait) return ;
+#endif
+
     if(pd->sporth.stack.error > 0) {
        fprintf(stderr,"Uh-oh! Sporth created %d error(s).\n",
                 pd->sporth.stack.error);
