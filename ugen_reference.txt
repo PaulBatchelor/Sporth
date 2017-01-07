@@ -913,3 +913,8 @@ Args: in, cutoff, res
 Output: f
 Description: Diode ladder filter
 ---
+Name: saturator
+Args: in, drive, dcoffset
+Output: f
+Description: saturator distortion unit
+---
