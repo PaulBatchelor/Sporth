@@ -96,6 +96,8 @@ typedef struct plumber_data {
     int showprog;
     int recompile;
     char *str;
+
+    FILE *log;
 } plumber_data;
 
 typedef int (* plumber_dyn_func) (plumber_data *, sporth_stack *, void **);

@@ -160,7 +160,6 @@ static unsigned int lsys_parse(lsys_d *ls,
             }
             break;
         default:
-            fprintf(stderr, "Unknown mode!\n");
             break;
     }
     if(len > 0) {
@@ -288,7 +287,7 @@ int sporth_lsys(sporth_stack *stack, void *ud)
             lsys = malloc(sizeof(sporth_lsys_d));
             plumber_add_ugen(pd, SPORTH_LSYS, lsys);
             if(sporth_check_args(stack, "ffs") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for ling\n");
+                plumber_print(pd,"Not enough arguments for ling\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -336,7 +335,7 @@ int sporth_lsys(sporth_stack *stack, void *ud)
             free(lsys);
             break;
         default:
-            fprintf(stderr, "lsys: Unknown mode!\n");
+            plumber_print(pd, "lsys: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

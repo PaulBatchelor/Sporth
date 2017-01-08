@@ -17,14 +17,14 @@ int sporth_mincer(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "mincer: Creating\n");
+            plumber_print(pd, "mincer: Creating\n");
 #endif
 
             sp_mincer_create(&mincer);
             plumber_add_ugen(pd, SPORTH_MINCER, mincer);
 
             if(sporth_check_args(stack, "ffffs") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for mincer\n");
+                plumber_print(pd,"Not enough arguments for mincer\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -40,7 +40,7 @@ int sporth_mincer(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "mincer: Initialising\n");
+            plumber_print(pd, "mincer: Initialising\n");
 #endif
 
             ftname = sporth_stack_pop_string(stack);
@@ -75,7 +75,7 @@ int sporth_mincer(sporth_stack *stack, void *ud)
             sp_mincer_destroy(&mincer);
             break;
         default:
-            fprintf(stderr, "mincer: Unknown mode!\n");
+            plumber_print(pd, "mincer: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

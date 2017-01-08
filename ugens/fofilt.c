@@ -14,13 +14,13 @@ int sporth_fofilt(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "fofilt: Creating\n");
+            plumber_print(pd, "fofilt: Creating\n");
 #endif
 
             sp_fofilt_create(&fofilt);
             plumber_add_ugen(pd, SPORTH_FOFILT, fofilt);
             if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for fofilt\n");
+                plumber_print(pd,"Not enough arguments for fofilt\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -33,7 +33,7 @@ int sporth_fofilt(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "fofilt: Initialising\n");
+            plumber_print(pd, "fofilt: Initialising\n");
 #endif
 
             dec = sporth_stack_pop_float(stack);
@@ -61,7 +61,7 @@ int sporth_fofilt(sporth_stack *stack, void *ud)
             sp_fofilt_destroy(&fofilt);
             break;
         default:
-            fprintf(stderr, "fofilt: Unknown mode!\n");
+            plumber_print(pd, "fofilt: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;
