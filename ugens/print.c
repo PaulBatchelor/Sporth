@@ -12,7 +12,7 @@ typedef struct {
 } sporth_print_d;
 
 
-int sporth_print(sporth_stack *stack, void *ud)
+int sporth_prints(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
     sporth_print_d *prnt;
