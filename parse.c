@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 #include "h/sporth.h"
 
 enum {
@@ -95,7 +96,6 @@ char * sporth_tokenizer(char *str,
                 }
                 break;
             default:
-                printf("This shouldn't happen. Eep.\n");
                 break;
         }
     }
@@ -291,4 +291,12 @@ size_t sporth_getline(char **lineptr, size_t *n, FILE *stream) {
     *n = size;
 
     return p - bufptr - 1;
+}
+
+void sporth_print(sporth_data *sporth, const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    vfprintf(stderr, fmt, args);
+    va_end(args);
 }
