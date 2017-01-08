@@ -13,13 +13,13 @@ int sporth_saturator(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "saturator: Creating\n");
+            plumber_print(pd, "saturator: Creating\n");
 #endif
 
             sp_saturator_create(&saturator);
             plumber_add_ugen(pd, SPORTH_SATURATOR, saturator);
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for saturator\n");
+                plumber_print(pd,"Not enough arguments for saturator\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -31,7 +31,7 @@ int sporth_saturator(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "saturator: Initialising\n");
+            plumber_print(pd, "saturator: Initialising\n");
 #endif
 
             dcoffset = sporth_stack_pop_float(stack);
@@ -56,7 +56,7 @@ int sporth_saturator(sporth_stack *stack, void *ud)
             sp_saturator_destroy(&saturator);
             break;
         default:
-            fprintf(stderr, "saturator: Unknown mode!\n");
+            plumber_print(pd, "saturator: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

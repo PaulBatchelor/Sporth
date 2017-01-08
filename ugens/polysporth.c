@@ -18,13 +18,13 @@ int sporth_ps(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "polysporth: Creating\n");
+            plumber_print(pd, "polysporth: Creating\n");
 #endif
 
             ps = malloc(sizeof(polysporth));
             plumber_add_ugen(pd, SPORTH_POLYSPORTH, ps);
             if(sporth_check_args(stack, "fffsss") != SPORTH_OK) {
-                fprintf(stderr, "polysporth: not enough/wrong arguments\n");
+                plumber_print(pd, "polysporth: not enough/wrong arguments\n");
                 return PLUMBER_NOTOK;
             }
 
@@ -35,7 +35,7 @@ int sporth_ps(sporth_stack *stack, void *ud)
             clock = sporth_stack_pop_float(stack);
             tick = sporth_stack_pop_float(stack);
             if(ps_create(pd, stack, ps, ninstances, in_tbl, out_tbl, filename) == PLUMBER_NOTOK) {
-                fprintf(stderr, "Initialization of polysporth failed\n");
+                plumber_print(pd, "Initialization of polysporth failed\n");
                 return PLUMBER_NOTOK;
             }
 
@@ -49,7 +49,7 @@ int sporth_ps(sporth_stack *stack, void *ud)
             clock = sporth_stack_pop_float(stack);
             tick = sporth_stack_pop_float(stack);
 #ifdef DEBUG_MODE
-            fprintf(stderr, "polysporth: Initialising\n");
+            plumber_print(pd, "polysporth: Initialising\n");
 #endif
             ps = pd->last->ud;
             ps_init(ps);

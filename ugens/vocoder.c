@@ -15,13 +15,13 @@ int sporth_vocoder(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "vocoder: Creating\n");
+            plumber_print(pd, "vocoder: Creating\n");
 #endif
 
             sp_vocoder_create(&vocoder);
             plumber_add_ugen(pd, SPORTH_VOCODER, vocoder);
             if(sporth_check_args(stack, "fffff") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for vocoder\n");
+                plumber_print(pd,"Not enough arguments for vocoder\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -35,7 +35,7 @@ int sporth_vocoder(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "vocoder: Initialising\n");
+            plumber_print(pd, "vocoder: Initialising\n");
 #endif
 
             bwratio = sporth_stack_pop_float(stack);
@@ -65,7 +65,7 @@ int sporth_vocoder(sporth_stack *stack, void *ud)
             sp_vocoder_destroy(&vocoder);
             break;
         default:
-            fprintf(stderr, "vocoder: Unknown mode!\n");
+            plumber_print(pd, "vocoder: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

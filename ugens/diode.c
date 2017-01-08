@@ -13,13 +13,13 @@ int sporth_diode(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "diode: Creating\n");
+            plumber_print(pd, "diode: Creating\n");
 #endif
 
             sp_diode_create(&diode);
             plumber_add_ugen(pd, SPORTH_DIODE, diode);
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for diode\n");
+                plumber_print(pd,"Not enough arguments for diode\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -31,7 +31,7 @@ int sporth_diode(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "diode: Initialising\n");
+            plumber_print(pd, "diode: Initialising\n");
 #endif
 
             res = sporth_stack_pop_float(stack);
@@ -56,7 +56,7 @@ int sporth_diode(sporth_stack *stack, void *ud)
             sp_diode_destroy(&diode);
             break;
         default:
-            fprintf(stderr, "diode: Unknown mode!\n");
+            plumber_print(pd, "diode: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;

@@ -13,13 +13,13 @@ int sporth_clock(sporth_stack *stack, void *ud)
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "clock: Creating\n");
+            plumber_print(pd, "clock: Creating\n");
 #endif
 
             sp_clock_create(&clock);
             plumber_add_ugen(pd, SPORTH_CLOCK, clock);
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {
-                fprintf(stderr,"Not enough arguments for clock\n");
+                plumber_print(pd,"Not enough arguments for clock\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -31,7 +31,7 @@ int sporth_clock(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            fprintf(stderr, "clock: Initialising\n");
+            plumber_print(pd, "clock: Initialising\n");
 #endif
 
             subdiv = sporth_stack_pop_float(stack);
@@ -56,7 +56,7 @@ int sporth_clock(sporth_stack *stack, void *ud)
             sp_clock_destroy(&clock);
             break;
         default:
-            fprintf(stderr, "clock: Unknown mode!\n");
+            plumber_print(pd, "clock: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;
