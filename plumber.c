@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdint.h>
 #include <signal.h>
+#include <stdarg.h>
 
 #include "plumber.h"
 
@@ -1106,4 +1107,12 @@ int plumber_get_userdata(plumber_data *plumb, const char *name, plumber_ptr **p)
 {
     plumber_ptr *pp = *p;
     return plumber_ftmap_search_userdata(plumb, name, &pp->ud);
+}
+
+void plumber_print(plumber_data *pd, const char *fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    vfprintf(stderr, fmt, args);
+    va_end(args);
 }
