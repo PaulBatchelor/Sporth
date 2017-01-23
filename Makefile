@@ -24,7 +24,7 @@ BIN += examples/parse examples/user_function util/jack_wrapper util/val \
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
-OBJ += func.o plumber.o stack.o parse.o hash.o
+OBJ += func.o plumber.o stack.o parse.o hash.o ftmap.o
 
 SPORTHLIBS = libsporth.a
 
