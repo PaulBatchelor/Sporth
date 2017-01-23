@@ -38,3 +38,10 @@ This will generate a 5 second audio clip of sound.
 
 More information on Sporth can be found 
 [here](http://paulbatchelor.github.io/proj/sporth.html).
+
+## Examples
+
+Several examples demonstrating specific ugens can be found in 
+the [examples](examples) folder of the repository. More musical
+examples can be found on my 
+[Sporthlings page](http://www.pbat.ch/sporthlings).

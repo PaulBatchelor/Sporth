@@ -471,7 +471,7 @@ static pointer ps_path(scheme *sc, pointer args)
     if(path != NULL) 
         return mk_string(sc, path);
     else 
-        return mk_string(sc, ".");
+        return mk_string(sc, "/usr/local/share/sporth/polysporth");
 }
 
 static pointer ps_push_string(scheme *sc, pointer args)
