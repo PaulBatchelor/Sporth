@@ -555,3 +555,8 @@ int plumber_recompile_string_v2(plumber_data *plumb,
     return PLUMBER_OK;
 }
 
+int plumber_parse_string(plumber_data *plumb, char *str)
+{
+    return plumbing_parse_string(plumb, plumb->pipes, str);
+}
+

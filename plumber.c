@@ -282,11 +282,6 @@ int plumber_add_ugen(plumber_data *plumb, uint32_t id, void *ud)
     return PLUMBER_OK;
 }
 
-int plumber_parse_string(plumber_data *plumb, char *str)
-{
-    return plumbing_parse_string(plumb, plumb->pipes, str);
-}
-
 plumbing *plumbing_choose(plumber_data *plumb, 
         plumbing *main, plumbing *alt, int *current_pipe)
 {
