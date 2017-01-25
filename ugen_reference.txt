@@ -918,3 +918,8 @@ Args: in, drive, dcoffset
 Output: f
 Description: saturator distortion unit
 ---
+Name: adsr
+Args: gate, attack, decay, sustain, release
+Output: f
+Description: Analogue modelled ADSR generator
+---
