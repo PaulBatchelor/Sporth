@@ -18,6 +18,7 @@ butbr \
 buthp \
 butlp \
 cdb \
+changed \
 clip \
 clock \
 comb \
