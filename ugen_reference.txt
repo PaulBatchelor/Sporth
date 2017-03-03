@@ -928,3 +928,8 @@ Args: sig
 Output: f
 Description: Returns a trigger if the input changes
 ---
+Name: brown
+Args: (none)
+Output: f
+Description: Brownian noise generator
+---
