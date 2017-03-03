@@ -13,6 +13,7 @@ blsaw \
 blsquare \
 bltriangle \
 bpm \
+brown \
 butbp \
 butbr \
 buthp \
