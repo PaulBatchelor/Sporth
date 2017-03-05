@@ -30,6 +30,7 @@ static pointer ps_set_callback(scheme *sc, pointer args);
 static pointer ps_set_shutdown_callback(scheme *sc, pointer args);
 static pointer ps_set_init_callback(scheme *sc, pointer args);
 static pointer ps_rand(scheme *sc, pointer args);
+static pointer ps_randi(scheme *sc, pointer args);
 static pointer ps_ftbl(scheme *sc, pointer args);
 static pointer ps_tset(scheme *sc, pointer args);
 static pointer ps_tget(scheme *sc, pointer args);
@@ -73,6 +74,7 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-set-init-callback", ps_set_init_callback);
     PS_FUNC("ps-set-shutdown-callback", ps_set_shutdown_callback);
     PS_FUNC("ps-rand", ps_rand);
+    PS_FUNC("ps-randi", ps_randi);
     PS_FUNC("ps-ftbl", ps_ftbl);
     PS_FUNC("ps-tset", ps_tset);
     PS_FUNC("ps-tget", ps_tget);
@@ -338,6 +340,22 @@ static pointer ps_rand(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     return mk_integer(sc, (long)sp_rand(ps->pd.sp));
+}
+
+static pointer ps_randi(scheme *sc, pointer args)
+{
+    polysporth *ps;
+    long min;
+    long max;
+    long out;
+
+    ps = sc->ext_data;
+    min = ivalue(car(args));
+    args = cdr(args);
+    max = ivalue(car(args));
+
+    out = min + ((long)sp_rand(ps->pd.sp) % (max - min));
+    return mk_integer(sc, out);
 }
 
 static pointer ps_ftbl(scheme *sc, pointer args)
