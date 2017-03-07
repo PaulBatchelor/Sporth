@@ -43,6 +43,7 @@ static pointer ps_noteoff(scheme *sc, pointer args);
 static pointer ps_argset(scheme *sc, pointer args);
 static pointer ps_path(scheme *sc, pointer args);
 static pointer ps_push_string(scheme *sc, pointer args);
+static pointer ps_writecode(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -87,6 +88,7 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-argset", ps_argset);
     PS_FUNC("ps-path", ps_path);
     PS_FUNC("ps-push-string", ps_push_string);
+    PS_FUNC("ps-writecode", ps_writecode);
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -503,5 +505,25 @@ static pointer ps_push_string(scheme *sc, pointer args)
     sporthlet *spl= &ps->spl[id];
     tmp = plumber_add_string(&ps->pd, &spl->pipes, str);
     sporth_stack_push_string(&ps->pd.sporth.stack, &tmp);
+    return sc->NIL;
+}
+
+static pointer ps_writecode(scheme *sc, pointer args)
+{
+    polysporth *ps;
+    int id;
+    const char *filename;
+    FILE *fp;
+    sporthlet *spl;
+
+    ps = sc->ext_data;
+    id = ivalue(car(args));
+    args = cdr(args);
+    filename = string_value(car(args));
+    
+    fp = fopen(filename, "w");
+    spl = &ps->spl[id];
+    plumbing_write_code(&ps->pd, &spl->pipes, fp);
+    fclose(fp);
     return sc->NIL;
 }
