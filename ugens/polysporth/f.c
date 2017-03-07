@@ -33,6 +33,7 @@ static pointer ps_rand(scheme *sc, pointer args);
 static pointer ps_randi(scheme *sc, pointer args);
 static pointer ps_ftbl(scheme *sc, pointer args);
 static pointer ps_tset(scheme *sc, pointer args);
+static pointer ps_tset(scheme *sc, pointer args);
 static pointer ps_tget(scheme *sc, pointer args);
 static pointer ps_mkvar(scheme *sc, pointer args);
 static pointer ps_varset(scheme *sc, pointer args);
@@ -44,6 +45,7 @@ static pointer ps_argset(scheme *sc, pointer args);
 static pointer ps_path(scheme *sc, pointer args);
 static pointer ps_push_string(scheme *sc, pointer args);
 static pointer ps_writecode(scheme *sc, pointer args);
+static pointer ps_talias(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -89,6 +91,7 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-path", ps_path);
     PS_FUNC("ps-push-string", ps_push_string);
     PS_FUNC("ps-writecode", ps_writecode);
+    PS_FUNC("ps-talias", ps_talias);
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -526,4 +529,37 @@ static pointer ps_writecode(scheme *sc, pointer args)
     plumbing_write_code(&ps->pd, &spl->pipes, fp);
     fclose(fp);
     return sc->NIL;
+}
+
+static pointer ps_talias(scheme *sc, pointer args)
+{
+    polysporth *ps;
+    sp_ftbl *ft;
+    const char *varname;
+    const char *ftname;
+    int index;
+    SPFLOAT *var;
+    plumber_data *pd;
+
+    ps = sc->ext_data;
+    pd = &ps->pd;
+    varname = string_value(car(args));
+    args = cdr(args);
+    index = ivalue(car(args));
+    args = cdr(args);
+    ftname = string_value(car(args));
+    args = cdr(args);
+
+    if(plumber_ftmap_search(pd, ftname, &ft) == PLUMBER_NOTOK) {
+        plumber_print(pd, "talias: could not find table '%s'\n", ftname);
+        return sc->NIL;
+    }
+       
+    var = &ft->tbl[index];
+
+    plumber_ftmap_delete(pd, 0);
+    plumber_ftmap_add_userdata(pd, varname, var);
+    plumber_ftmap_delete(pd, 1);
+
+    return mk_cptr(sc, (void **)&var);
 }

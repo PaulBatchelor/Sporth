@@ -234,7 +234,7 @@ int sporth_talias(sporth_stack *stack, void *ud)
             varname = sporth_stack_pop_string(stack);
 
             if(plumber_ftmap_search(pd, ftname, &ft) == PLUMBER_NOTOK) {
-                plumber_print(pd, "tblen: could not find table '%s'\n", ftname);
+                plumber_print(pd, "talias: could not find table '%s'\n", ftname);
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
