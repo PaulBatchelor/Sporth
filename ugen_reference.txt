@@ -933,3 +933,8 @@ Args: (none)
 Output: f
 Description: Brownian noise generator
 ---
+Name: talias
+Args: name, index, ftbl
+Output: n/a
+Description: alias a table value to a variable
+---
