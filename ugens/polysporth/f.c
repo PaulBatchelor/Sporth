@@ -169,6 +169,7 @@ static pointer ps_init_sporthlet(scheme *sc, pointer args)
     /* TODO: error checking */
     sporthlet *spl = &ps->spl[id];
     plumbing_compute(&ps->pd, &spl->pipes, PLUMBER_INIT);
+    sporth_stack_init(&ps->pd.sporth.stack);
     spl->state = PS_OFF;
     return sc->NIL;
 }
