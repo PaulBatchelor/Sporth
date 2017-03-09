@@ -938,3 +938,8 @@ Args: name, index, ftbl
 Output: n/a
 Description: alias a table value to a variable
 ---
+Name: spa
+Args: filename
+Output: f
+Description: Streams a spa file
+---

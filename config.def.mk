@@ -114,6 +114,7 @@ sdelay \
 slice \
 slist \
 smoothdelay \
+spa \
 srand \
 streson \
 switch \
