@@ -3,7 +3,7 @@
 int sporth_sparec(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
-    SPFLOAT input;
+    SPFLOAT input, output;
     const char * filename;
     sp_sparec *sparec;
 
@@ -18,17 +18,20 @@ int sporth_sparec(sporth_stack *stack, void *ud)
             }
             filename = sporth_stack_pop_string(stack);
             input = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, input);
             break;
         case PLUMBER_INIT:
             filename = sporth_stack_pop_string(stack);
             input = sporth_stack_pop_float(stack);
             sparec = pd->last->ud;
             sp_sparec_init(pd->sp, sparec, filename);
+            sporth_stack_push_float(stack, input);
             break;
         case PLUMBER_COMPUTE:
             input = sporth_stack_pop_float(stack);
             sparec = pd->last->ud;
-            sp_sparec_compute(pd->sp, sparec, &input, NULL);
+            sp_sparec_compute(pd->sp, sparec, &input, &output);
+            sporth_stack_push_float(stack, output);
             break;
         case PLUMBER_DESTROY:
             sparec = pd->last->ud;
