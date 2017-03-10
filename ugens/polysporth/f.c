@@ -46,6 +46,7 @@ static pointer ps_path(scheme *sc, pointer args);
 static pointer ps_push_string(scheme *sc, pointer args);
 static pointer ps_writecode(scheme *sc, pointer args);
 static pointer ps_talias(scheme *sc, pointer args);
+static pointer ps_pitch(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -92,6 +93,7 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-push-string", ps_push_string);
     PS_FUNC("ps-writecode", ps_writecode);
     PS_FUNC("ps-talias", ps_talias);
+    PS_FUNC("ps-pitch", ps_pitch);
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -563,4 +565,102 @@ static pointer ps_talias(scheme *sc, pointer args)
     plumber_ftmap_delete(pd, 1);
 
     return mk_cptr(sc, (void **)&var);
+}
+
+static pointer ps_pitch(scheme *sc, pointer args)
+{
+    const char *note;
+    int nn;
+    char nt;
+    char ac;
+    char oct;
+
+    note = string_value(car(args));
+
+    nn = 0;
+    /* the note */
+    nt = note[0];
+
+    /* accidental -, #, or b */
+
+    ac = note[1];
+
+    /* octave */
+
+    oct = note[2];
+
+    switch(nt) {
+        case 'C':
+        case 'c':
+            nn = 0;
+            break;
+        case 'd':
+        case 'D':
+            nn = 2;
+            break;
+        case 'e':
+        case 'E':
+            nn = 4;
+            break;
+        case 'f':
+        case 'F':
+            nn = 5;
+            break;
+        case 'g':
+        case 'G':
+            nn = 7;
+            break;
+        case 'a':
+        case 'A':
+            nn = 9;
+            break;
+        case 'b':
+        case 'B':
+            nn = 11;
+            break;
+    }
+
+    switch(ac) {
+        case 'b':
+            nn -= 1;
+            break;
+        case '#':
+            nn += 1;
+            break;
+    }
+
+    switch(oct) {
+        case '0':
+            nn += 12;
+            break;
+        case '1':
+            nn += 24;
+            break;
+        case '2':
+            nn += 36;
+            break;
+        case '3':
+            nn += 48;
+            break;
+        case '4':
+            nn += 60;
+            break;
+        case '5':
+            nn += 72;
+            break;
+        case '6':
+            nn += 84;
+            break;
+        case '7':
+            nn += 96;
+            break;
+        case '8':
+            nn += 108;
+            break;
+        case '9':
+            nn += 120;
+            break;
+    }
+
+    return mk_real(sc, nn);
 }
