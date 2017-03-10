@@ -28,12 +28,12 @@ dup dup 10 10 8000 zrev 0.5 * drop + dcblk
 
 
 # duplicate our entire signal and record it in buffer
-dup 3 p * swap 4 p 'buf' tblrec 
+dup 3 p * swap 4 p 'buf' tblrec drop
 
 # mincer object shuffles through recording buffer
 0 'buf' tbldur 
 1 p randi 1 
-0 p 'buf' mincer 2 p *
+0 p 2048 'buf' mincer 2 p *
 
 # Sum mincer with everything else
 +

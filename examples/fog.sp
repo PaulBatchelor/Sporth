@@ -6,7 +6,7 @@
 
 0.8 0 p * +
 
-dup tick 'buf' tblrec 
+tick 'buf' tblrec 
 
 1 
 80

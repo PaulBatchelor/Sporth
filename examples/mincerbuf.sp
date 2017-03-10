@@ -25,7 +25,7 @@ dup 0.6 0.75 delay 1000 buthp 0.7 * +
 dup dup 10 10 8000 zrev 0.5 * drop +
 
 # duplicate our entire signal and record it in buffer
-dup 0 p 'buf' tblrec 
+0 p 'buf' tblrec 
 
 # mincer object shuffles through recording buffer
 0 'buf' tbldur 10 randi 1 1 2048 'buf' mincer 
