@@ -20,6 +20,7 @@ typedef struct sporthlet {
     int state;
     int id;
     int dur;
+    char noteoff;
     SPFLOAT args[NARGS];
     struct sporthlet *prev, *next;
 } sporthlet;
@@ -96,3 +97,4 @@ void ps_turnoff_sporthlet(polysporth *ps, int id);
 void ps_scm_load(polysporth *ps, char *filename);
 void ps_set_arg(polysporth *ps, int id, int pos, SPFLOAT val);
 void ps_sporthlet_noteoff(polysporth *ps, int id);
+void ps_sporthlet_mode_noteoff(polysporth *ps, int id);

@@ -47,6 +47,7 @@ static pointer ps_push_string(scheme *sc, pointer args);
 static pointer ps_writecode(scheme *sc, pointer args);
 static pointer ps_talias(scheme *sc, pointer args);
 static pointer ps_pitch(scheme *sc, pointer args);
+static pointer ps_noteoff_mode(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -94,6 +95,7 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-writecode", ps_writecode);
     PS_FUNC("ps-talias", ps_talias);
     PS_FUNC("ps-pitch", ps_pitch);
+    PS_FUNC("ps-noteoff-mode", ps_noteoff_mode);
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -663,4 +665,17 @@ static pointer ps_pitch(scheme *sc, pointer args)
     }
 
     return mk_real(sc, nn);
+}
+
+static pointer ps_noteoff_mode(scheme *sc, pointer args)
+{
+    int id;
+    polysporth *ps;
+    
+    ps = sc->ext_data;
+    id = ivalue(car(args));
+  
+    ps_sporthlet_mode_noteoff(ps, id);
+
+    return sc->NIL;
 }

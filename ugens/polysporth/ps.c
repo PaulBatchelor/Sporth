@@ -68,6 +68,8 @@ int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstan
         ps->spl[i].id = i;
         ps->spl[i].next = NULL;
         ps->spl[i].prev = NULL;
+        /* noteoff mode set to off */
+        ps->spl[i].noteoff = 0;
         plumbing_init(&ps->spl[i].pipes);
         for(j = 0; j < NARGS; j++) ps->spl[i].args[j] = 0;
     }
@@ -328,7 +330,8 @@ static int find_free_voice(polysporth *ps, int grp_start, int grp_end)
     }
     for(i = grp_start; i <= grp_end; i++) {
         /* check if sporthlet is off or is about to be off */
-        if(ps->spl[i].state == PS_OFF || ps->spl[i].dur == 0) {
+        if(ps->spl[i].state == PS_OFF || 
+            (ps->spl[i].dur == 0 && ps->spl[i].noteoff == 0)) {
             /* turn off sporthlet early */
             if(ps->spl[i].state == PS_ON) {
                 ps_turnoff_sporthlet(ps, i);
@@ -363,7 +366,11 @@ static void ps_decrement_clock(polysporth *ps, int id)
     if(spl->dur < 0) {
         return;
     } else if(spl->dur == 0) {
-        ps_turnoff_sporthlet(ps, id);
+        if(spl->noteoff == 1) {
+            ps_sporthlet_noteoff(ps, id);
+        } else {
+            ps_turnoff_sporthlet(ps, id);
+        }
     } else {
         spl->dur--;
     }
@@ -452,4 +459,9 @@ void ps_sporthlet_noteoff(polysporth *ps, int id)
     if(ps->spl[id].state != PS_OFF) {
         ps->spl[id].state = PS_NOTEOFF;
     }
+}
+
+void ps_sporthlet_mode_noteoff(polysporth *ps, int id)
+{
+    ps->spl[id].noteoff = 1;
 }
