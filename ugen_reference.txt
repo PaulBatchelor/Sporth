@@ -943,3 +943,8 @@ Args: filename
 Output: f
 Description: Streams a spa file
 ---
+Name: sparec
+Args: input, filename
+Output: f
+Description: Writes a sparec file.
+---

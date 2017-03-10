@@ -115,6 +115,7 @@ slice \
 slist \
 smoothdelay \
 spa \
+sparec \
 srand \
 streson \
 switch \
