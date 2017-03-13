@@ -948,3 +948,8 @@ Args: input, filename
 Output: f
 Description: Writes a sparec file.
 ---
+Name: rspline
+Args: min, max, cps min, cps max
+Output: f
+Description: random spline generator 
+---

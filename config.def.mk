@@ -105,6 +105,7 @@ reverse \
 revsc \
 rpt \
 rms \
+rspline \
 samphold \
 saturator \
 say \
