@@ -676,26 +676,6 @@ plumbing * plumber_get_pipes(plumber_data *plumb)
     return plumb->tmp;
 }
 
-int plumber_argtbl_create(plumber_data *plumb, plumber_argtbl **at, uint32_t size)
-{
-    uint32_t i;
-    plumber_argtbl *atp = malloc(sizeof(plumber_argtbl));
-    atp->size = size;
-    atp->tbl = malloc(sizeof(SPFLOAT *) * size);
-    *at = atp;
-    /* initialize with p[0] so it doesn't segfault as easily */
-    for(i = 0; i < size; i++) atp->tbl[i] = &plumb->p[0];
-    return PLUMBER_OK;
-}
-
-int plumber_argtbl_destroy(plumber_data *plumb, plumber_argtbl **at)
-{
-    plumber_argtbl *atp = *at;
-    free(atp->tbl);
-    free(atp);
-    return PLUMBER_OK;
-}
-
 int plumber_get_userdata(plumber_data *plumb, const char *name, plumber_ptr **p)
 {
     plumber_ptr *pp = *p;
