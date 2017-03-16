@@ -359,7 +359,7 @@ Output: f
 Description: Evaluates a string of ling code. (0 = int mode, 1 = binary mode)
 ---
 Name: mincer
-Args: time (f), amp (f), pitch (f), ftable (s)
+Args: time (f), amp (f), pitch (f), winsize (f, 2048 is good), ftable (s)
 Output: f
 Description: Phase-locked vocoder
 ---
@@ -485,8 +485,8 @@ Description: Random hold
 ---
 Name: tblrec
 Args: in (f) trig (f) tbl name (s)
-Output: n/a
-Description: records values to table
+Output: f
+Description: records values to table. 
 ---
 Name: tog
 Args: trig (f)
