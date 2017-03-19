@@ -165,13 +165,10 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
                     /* TODO: does this need to be handled better? */
                     fprintf(stderr, "No free voices left!\n");
                 }
-                if(val->nargs > 0) {
-                    free(val->args);
-                }
-                free(val);
+                dvalue_free(ps, &val);
             } else if(val->type == PS_METANOTE) {
                 scheme_call(&ps->sc, val->func, ps->sc.NIL);
-                free(val);
+                dvalue_free(ps, &val);
             }
             if(ps->tmp.size > 0) {
                 ps->events = dvector_merge(&ps->events, &ps->tmp);

@@ -89,6 +89,8 @@ void dvector_append(dvector *dv,
 void dvector_append_metanote(dvector *dv, int start, pointer func);
 void dvector_init(dvector *dv);
 void dvector_free(dvector *dv);
+void dvalue_free(polysporth *ps, dvalue **val);
+
 dvector dvector_merge(dvector *dvect1, dvector *dvect2);
 int dvector_pop(dvector *dvect, dvalue **start);
 void dvector_time_to_delta(dvector *dvect);

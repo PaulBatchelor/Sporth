@@ -169,3 +169,12 @@ void dvector_time_to_delta(dvector *dvect)
         val = next;
     }
 }
+
+void dvalue_free(polysporth *ps, dvalue **val)
+{
+    dvalue *pval = *val;
+    if(pval->nargs > 0) {
+        free(pval->args);
+    }
+    free(*val);
+}
