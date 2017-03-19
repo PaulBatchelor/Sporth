@@ -13,41 +13,41 @@
         mk_foreign_func(sc, FUNC)) 
 
 
-static pointer ps_eval(scheme *sc, pointer args);
-static pointer ps_parse(scheme *sc, pointer args);
-static pointer ps_turnon(scheme *sc, pointer args);
-static pointer ps_turnoff(scheme *sc, pointer args);
-static pointer ps_noteblock_begin(scheme *sc, pointer args);
-static pointer ps_note(scheme *sc, pointer args);
-static pointer ps_noteblock_end(scheme *sc, pointer args);
-static pointer ps_metanote(scheme *sc, pointer args);
-static pointer ps_set_release(scheme *sc, pointer args);
-static pointer ps_lexer(scheme *sc, pointer args);
-static pointer ps_init_sporthlet(scheme *sc, pointer args);
-static pointer ps_show_pipes(scheme *sc, pointer args);
-static pointer ps_write_code(scheme *sc, pointer args);
-static pointer ps_set_callback(scheme *sc, pointer args);
-static pointer ps_set_shutdown_callback(scheme *sc, pointer args);
-static pointer ps_set_init_callback(scheme *sc, pointer args);
-static pointer ps_rand(scheme *sc, pointer args);
-static pointer ps_randi(scheme *sc, pointer args);
-static pointer ps_ftbl(scheme *sc, pointer args);
-static pointer ps_tset(scheme *sc, pointer args);
-static pointer ps_tset(scheme *sc, pointer args);
-static pointer ps_tget(scheme *sc, pointer args);
-static pointer ps_mkvar(scheme *sc, pointer args);
-static pointer ps_varset(scheme *sc, pointer args);
-static pointer ps_varget(scheme *sc, pointer args);
-static pointer ps_clear_events(scheme *sc, pointer args);
-static pointer ps_gc_verbose(scheme *sc, pointer args);
-static pointer ps_noteoff(scheme *sc, pointer args);
-static pointer ps_argset(scheme *sc, pointer args);
-static pointer ps_path(scheme *sc, pointer args);
-static pointer ps_push_string(scheme *sc, pointer args);
-static pointer ps_writecode(scheme *sc, pointer args);
-static pointer ps_talias(scheme *sc, pointer args);
-static pointer ps_pitch(scheme *sc, pointer args);
-static pointer ps_noteoff_mode(scheme *sc, pointer args);
+static pointer scm_eval(scheme *sc, pointer args);
+static pointer scm_parse(scheme *sc, pointer args);
+static pointer scm_turnon(scheme *sc, pointer args);
+static pointer scm_turnoff(scheme *sc, pointer args);
+static pointer scm_noteblock_begin(scheme *sc, pointer args);
+static pointer scm_note(scheme *sc, pointer args);
+static pointer scm_noteblock_end(scheme *sc, pointer args);
+static pointer scm_metanote(scheme *sc, pointer args);
+static pointer scm_set_release(scheme *sc, pointer args);
+static pointer scm_lexer(scheme *sc, pointer args);
+static pointer scm_init_sporthlet(scheme *sc, pointer args);
+static pointer scm_show_pipes(scheme *sc, pointer args);
+static pointer scm_write_code(scheme *sc, pointer args);
+static pointer scm_set_callback(scheme *sc, pointer args);
+static pointer scm_set_shutdown_callback(scheme *sc, pointer args);
+static pointer scm_set_init_callback(scheme *sc, pointer args);
+static pointer scm_rand(scheme *sc, pointer args);
+static pointer scm_randi(scheme *sc, pointer args);
+static pointer scm_ftbl(scheme *sc, pointer args);
+static pointer scm_tset(scheme *sc, pointer args);
+static pointer scm_tset(scheme *sc, pointer args);
+static pointer scm_tget(scheme *sc, pointer args);
+static pointer scm_mkvar(scheme *sc, pointer args);
+static pointer scm_varset(scheme *sc, pointer args);
+static pointer scm_varget(scheme *sc, pointer args);
+static pointer scm_clear_events(scheme *sc, pointer args);
+static pointer scm_gc_verbose(scheme *sc, pointer args);
+static pointer scm_noteoff(scheme *sc, pointer args);
+static pointer scm_argset(scheme *sc, pointer args);
+static pointer scm_path(scheme *sc, pointer args);
+static pointer scm_push_string(scheme *sc, pointer args);
+static pointer scm_writecode(scheme *sc, pointer args);
+static pointer scm_talias(scheme *sc, pointer args);
+static pointer scm_pitch(scheme *sc, pointer args);
+static pointer scm_noteoff_mode(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -61,41 +61,41 @@ void ps_scm_load(polysporth *ps, char *filename)
     scheme_set_input_port_file(sc, stdin);
     scheme_set_output_port_file(sc, stdout);
 
-    PS_FUNC("ps-eval", ps_eval);
-    PS_FUNC("ps-parse", ps_parse);
-    PS_FUNC("ps-turnon", ps_turnon);
-    PS_FUNC("ps-turnoff", ps_turnoff);
-    PS_FUNC("ps-init-sporthlet", ps_init_sporthlet);
-    PS_FUNC("ps-lexer", ps_lexer);
-    PS_FUNC("ps-write-code", ps_write_code);
-    PS_FUNC("ps-show-pipes", ps_show_pipes);
-    PS_FUNC("ps-noteblock-begin", ps_noteblock_begin);
-    PS_FUNC("ps-clear-events", ps_clear_events);
-    PS_FUNC("ps-noteblock-end", ps_noteblock_end);
-    PS_FUNC("ps-set-release", ps_set_release);
-    PS_FUNC("ps-note", ps_note);
-    PS_FUNC("ps-metanote", ps_metanote);
-    PS_FUNC("ps-set-callback", ps_set_callback);
-    PS_FUNC("ps-set-init-callback", ps_set_init_callback);
-    PS_FUNC("ps-set-shutdown-callback", ps_set_shutdown_callback);
-    PS_FUNC("ps-rand", ps_rand);
-    PS_FUNC("ps-randi", ps_randi);
-    PS_FUNC("ps-ftbl", ps_ftbl);
-    PS_FUNC("ps-tset", ps_tset);
-    PS_FUNC("ps-tget", ps_tget);
-    PS_FUNC("ps-mkvar", ps_mkvar);
-    PS_FUNC("ps-varset", ps_varset);
-    PS_FUNC("ps-varget", ps_varget);
+    PS_FUNC("ps-eval", scm_eval);
+    PS_FUNC("ps-parse", scm_parse);
+    PS_FUNC("ps-turnon", scm_turnon);
+    PS_FUNC("ps-turnoff", scm_turnoff);
+    PS_FUNC("ps-init-sporthlet", scm_init_sporthlet);
+    PS_FUNC("ps-lexer", scm_lexer);
+    PS_FUNC("ps-write-code", scm_write_code);
+    PS_FUNC("ps-show-pipes", scm_show_pipes);
+    PS_FUNC("ps-noteblock-begin", scm_noteblock_begin);
+    PS_FUNC("ps-clear-events", scm_clear_events);
+    PS_FUNC("ps-noteblock-end", scm_noteblock_end);
+    PS_FUNC("ps-set-release", scm_set_release);
+    PS_FUNC("ps-note", scm_note);
+    PS_FUNC("ps-metanote", scm_metanote);
+    PS_FUNC("ps-set-callback", scm_set_callback);
+    PS_FUNC("ps-set-init-callback", scm_set_init_callback);
+    PS_FUNC("ps-set-shutdown-callback", scm_set_shutdown_callback);
+    PS_FUNC("ps-rand", scm_rand);
+    PS_FUNC("ps-randi", scm_randi);
+    PS_FUNC("ps-ftbl", scm_ftbl);
+    PS_FUNC("ps-tset", scm_tset);
+    PS_FUNC("ps-tget", scm_tget);
+    PS_FUNC("ps-mkvar", scm_mkvar);
+    PS_FUNC("ps-varset", scm_varset);
+    PS_FUNC("ps-varget", scm_varget);
     PS_FUNC("load-extension", scm_load_ext);
-    PS_FUNC("ps-gc-verbose", ps_gc_verbose);
-    PS_FUNC("ps-noteoff", ps_noteoff);
-    PS_FUNC("ps-argset", ps_argset);
-    PS_FUNC("ps-path", ps_path);
-    PS_FUNC("ps-push-string", ps_push_string);
-    PS_FUNC("ps-writecode", ps_writecode);
-    PS_FUNC("ps-talias", ps_talias);
-    PS_FUNC("ps-pitch", ps_pitch);
-    PS_FUNC("ps-noteoff-mode", ps_noteoff_mode);
+    PS_FUNC("ps-gc-verbose", scm_gc_verbose);
+    PS_FUNC("ps-noteoff", scm_noteoff);
+    PS_FUNC("ps-argset", scm_argset);
+    PS_FUNC("ps-path", scm_path);
+    PS_FUNC("ps-push-string", scm_push_string);
+    PS_FUNC("ps-writecode", scm_writecode);
+    PS_FUNC("ps-talias", scm_talias);
+    PS_FUNC("ps-pitch", scm_pitch);
+    PS_FUNC("ps-noteoff-mode", scm_noteoff_mode);
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -112,7 +112,7 @@ void ps_scm_load(polysporth *ps, char *filename)
     fclose(fp);
 }
 
-static pointer ps_eval(scheme *sc, pointer args)
+static pointer scm_eval(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     sporthlet *spl;
@@ -131,7 +131,7 @@ static pointer ps_eval(scheme *sc, pointer args)
 
 /* Parse: just parses, doesn't call plumbing_compute. Can be called multiple times.
  * Designed to build up patches programatically. */
-static pointer ps_parse(scheme *sc, pointer args)
+static pointer scm_parse(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     sporthlet *spl;
@@ -147,7 +147,7 @@ static pointer ps_parse(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_turnon(scheme *sc, pointer args)
+static pointer scm_turnon(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     int id = (int) ivalue(car(args));
@@ -157,7 +157,7 @@ static pointer ps_turnon(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_turnoff(scheme *sc, pointer args)
+static pointer scm_turnoff(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     int id = (int) ivalue(car(args));
@@ -165,7 +165,7 @@ static pointer ps_turnoff(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_init_sporthlet(scheme *sc, pointer args)
+static pointer scm_init_sporthlet(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     int id = (int)ivalue(car(args));
@@ -179,7 +179,7 @@ static pointer ps_init_sporthlet(scheme *sc, pointer args)
 }
 
 
-static pointer ps_lexer(scheme *sc, pointer args)
+static pointer scm_lexer(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     int id = (int)ivalue(car(args));
@@ -199,7 +199,7 @@ static pointer ps_lexer(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_show_pipes(scheme *sc, pointer args)
+static pointer scm_show_pipes(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     int id = (int) ivalue(car(args));
@@ -210,7 +210,7 @@ static pointer ps_show_pipes(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_write_code(scheme *sc, pointer args)
+static pointer scm_write_code(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     int id = (int) ivalue(car(args));
@@ -220,7 +220,7 @@ static pointer ps_write_code(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_noteblock_begin(scheme *sc, pointer args)
+static pointer scm_noteblock_begin(scheme *sc, pointer args)
 {
 #ifdef DEBUG_POLYSPORTH
     fprintf(stderr, "--- NOTEBLOCK BEGIN ---\n");
@@ -236,7 +236,7 @@ static pointer ps_noteblock_begin(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_noteblock_end(scheme *sc, pointer args)
+static pointer scm_noteblock_end(scheme *sc, pointer args)
 {
 #ifdef DEBUG_POLYSPORTH
     fprintf(stderr, "--- NOTEBLOCK END ---\n");
@@ -253,7 +253,7 @@ static pointer ps_noteblock_end(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_note(scheme *sc, pointer args)
+static pointer scm_note(scheme *sc, pointer args)
 {
 #ifdef DEBUG_POLYSPORTH
     fprintf(stderr, "ps-note: adding value\n");
@@ -304,7 +304,7 @@ static pointer ps_note(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_metanote(scheme *sc, pointer args)
+static pointer scm_metanote(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     int start = (int)ivalue(car(args));
@@ -314,7 +314,7 @@ static pointer ps_metanote(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_set_release(scheme *sc, pointer args)
+static pointer scm_set_release(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     int release = ivalue(car(args));
@@ -322,7 +322,7 @@ static pointer ps_set_release(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_set_callback(scheme *sc, pointer args)
+static pointer scm_set_callback(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     pointer cb = car(args);
@@ -330,7 +330,7 @@ static pointer ps_set_callback(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_set_init_callback(scheme *sc, pointer args)
+static pointer scm_set_init_callback(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     pointer cb = car(args);
@@ -338,7 +338,7 @@ static pointer ps_set_init_callback(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_set_shutdown_callback(scheme *sc, pointer args)
+static pointer scm_set_shutdown_callback(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     pointer cb = car(args);
@@ -346,13 +346,13 @@ static pointer ps_set_shutdown_callback(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_rand(scheme *sc, pointer args)
+static pointer scm_rand(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     return mk_integer(sc, (long)sp_rand(ps->pd.sp));
 }
 
-static pointer ps_randi(scheme *sc, pointer args)
+static pointer scm_randi(scheme *sc, pointer args)
 {
     polysporth *ps;
     long min;
@@ -368,7 +368,7 @@ static pointer ps_randi(scheme *sc, pointer args)
     return mk_integer(sc, out);
 }
 
-static pointer ps_ftbl(scheme *sc, pointer args)
+static pointer scm_ftbl(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     plumber_data *pd = &ps->pd;
@@ -385,7 +385,7 @@ static pointer ps_ftbl(scheme *sc, pointer args)
     return out;
 }
 
-static pointer ps_tset(scheme *sc, pointer args)
+static pointer scm_tset(scheme *sc, pointer args)
 {
     sp_ftbl *ft;
     int index;
@@ -400,7 +400,7 @@ static pointer ps_tset(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_tget(scheme *sc, pointer args)
+static pointer scm_tget(scheme *sc, pointer args)
 {
     sp_ftbl *ft;
     int index;
@@ -414,7 +414,7 @@ static pointer ps_tget(scheme *sc, pointer args)
     return mk_real(sc, val);
 }
 
-static pointer ps_mkvar(scheme *sc, pointer args)
+static pointer scm_mkvar(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     plumber_data *pd = &ps->pd;
@@ -428,7 +428,7 @@ static pointer ps_mkvar(scheme *sc, pointer args)
     return mk_cptr(sc, (void **)&ptr);
 }
 
-static pointer ps_varset(scheme *sc, pointer args)
+static pointer scm_varset(scheme *sc, pointer args)
 {
     SPFLOAT *ptr;
 
@@ -439,14 +439,14 @@ static pointer ps_varset(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_varget(scheme *sc, pointer args)
+static pointer scm_varget(scheme *sc, pointer args)
 {
     SPFLOAT *ptr;
     ptr = (SPFLOAT *)string_value(car(args));
     return mk_real(sc, *ptr);
 }
 
-static pointer ps_clear_events(scheme *sc, pointer args)
+static pointer scm_clear_events(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     dvector_free(&ps->events);
@@ -461,7 +461,7 @@ static pointer ps_clear_events(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_gc_verbose(scheme *sc, pointer args)
+static pointer scm_gc_verbose(scheme *sc, pointer args)
 {
     sc->gc_verbose = 1;
     return sc->NIL;
@@ -473,7 +473,7 @@ plumber_data * scheme_plumber(scheme *sc)
     return &ps->pd;
 }
 
-static pointer ps_noteoff(scheme *sc, pointer args)
+static pointer scm_noteoff(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     int id = ivalue(car(args));
@@ -481,7 +481,7 @@ static pointer ps_noteoff(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_argset(scheme *sc, pointer args)
+static pointer scm_argset(scheme *sc, pointer args)
 {
     polysporth *ps = sc->ext_data;
     int id = ivalue(car(args));
@@ -493,7 +493,7 @@ static pointer ps_argset(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_path(scheme *sc, pointer args)
+static pointer scm_path(scheme *sc, pointer args)
 {
     const char *path = getenv("POLYSPORTH_PLUGIN_PATH");
     if(path != NULL) 
@@ -502,7 +502,7 @@ static pointer ps_path(scheme *sc, pointer args)
         return mk_string(sc, "/usr/local/share/sporth/polysporth");
 }
 
-static pointer ps_push_string(scheme *sc, pointer args)
+static pointer scm_push_string(scheme *sc, pointer args)
 {
     /* plumber_add_string(&ps->pd, str); */
     polysporth *ps = sc->ext_data;
@@ -516,7 +516,7 @@ static pointer ps_push_string(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_writecode(scheme *sc, pointer args)
+static pointer scm_writecode(scheme *sc, pointer args)
 {
     polysporth *ps;
     int id;
@@ -536,7 +536,7 @@ static pointer ps_writecode(scheme *sc, pointer args)
     return sc->NIL;
 }
 
-static pointer ps_talias(scheme *sc, pointer args)
+static pointer scm_talias(scheme *sc, pointer args)
 {
     polysporth *ps;
     sp_ftbl *ft;
@@ -569,7 +569,7 @@ static pointer ps_talias(scheme *sc, pointer args)
     return mk_cptr(sc, (void **)&var);
 }
 
-static pointer ps_pitch(scheme *sc, pointer args)
+static pointer scm_pitch(scheme *sc, pointer args)
 {
     const char *note;
     int nn;
@@ -667,7 +667,7 @@ static pointer ps_pitch(scheme *sc, pointer args)
     return mk_real(sc, nn);
 }
 
-static pointer ps_noteoff_mode(scheme *sc, pointer args)
+static pointer scm_noteoff_mode(scheme *sc, pointer args)
 {
     int id;
     polysporth *ps;
