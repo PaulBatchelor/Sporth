@@ -195,7 +195,7 @@ void plumbing_write_code(plumber_data *plumb, plumbing *pipes, FILE *fp);
 void plumber_write_code(plumber_data *plumb, FILE *fp);
 int plumber_process_null(sp_data *sp, void *ud, void (*callback)(sp_data *, void *));
 
-int plumber_create_var(plumber_data *pd, char *name, SPFLOAT **var);
+int plumber_create_var(plumber_data *pd, const char *name, SPFLOAT **var);
 
 int plumber_get_userdata(plumber_data *plumb, const char *name, plumber_ptr **p);
 int polysporth_eval(plumber_ptr *p, const char *str);
