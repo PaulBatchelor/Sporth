@@ -50,7 +50,7 @@ static pointer scm_pitch(scheme *sc, pointer args);
 static pointer scm_noteoff_mode(scheme *sc, pointer args);
 static pointer scm_copy(scheme *sc, pointer args);
 
-void ps_scm_load(polysporth *ps, char *filename)
+void ps_scm_load(polysporth *ps, const char *filename)
 {
     /* load scheme */
     scheme *sc = &ps->sc;

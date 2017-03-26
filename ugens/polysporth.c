@@ -8,9 +8,9 @@ int sporth_ps(sporth_stack *stack, void *ud)
     plumber_data *pd = ud;
     polysporth *ps;
 
-    char *in_tbl;
-    char *out_tbl;
-    char *filename;
+    const char *in_tbl;
+    const char *out_tbl;
+    const char *filename;
     int ninstances;
     SPFLOAT clock;
     SPFLOAT tick;

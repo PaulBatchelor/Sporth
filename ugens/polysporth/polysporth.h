@@ -77,8 +77,8 @@ typedef struct polysporth {
     int id;
 } polysporth;
 
-int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, char *in_tbl, 
-    char *out_tbl, char *filename);
+int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, 
+    const char *in_tbl, const char *out_tbl, const char *filename);
 void ps_init(polysporth *ps);
 void ps_clean(polysporth *ps);
 void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock);
@@ -97,7 +97,7 @@ int dvector_pop(dvector *dvect, dvalue **start);
 void dvector_time_to_delta(dvector *dvect);
 void ps_turnon_sporthlet(polysporth *ps, int id, int dur);
 void ps_turnoff_sporthlet(polysporth *ps, int id);
-void ps_scm_load(polysporth *ps, char *filename);
+void ps_scm_load(polysporth *ps, const char *filename);
 void ps_set_arg(polysporth *ps, int id, int pos, SPFLOAT val);
 void ps_sporthlet_noteoff(polysporth *ps, int id);
 void ps_sporthlet_mode_noteoff(polysporth *ps, int id);
