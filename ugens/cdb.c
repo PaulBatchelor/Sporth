@@ -20,8 +20,8 @@ int sporth_cdb(sporth_stack *stack, void *ud)
     plumber_data *pd = ud;
     
     sporth_cdb_t *cdb;
-    char *key = NULL;
-    char *ftname = NULL;
+    const char *key;
+    const char *ftname;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
@@ -88,8 +88,8 @@ int sporth_cdbload(sporth_stack *stack, void *ud)
     plumber_data *pd = ud;
 
     int *fd;    
-    char *ftname;
-    char *filename;
+    const char *ftname;
+    const char *filename;
     switch(pd->mode) {
         case PLUMBER_CREATE:
 
@@ -139,9 +139,9 @@ int sporth_cdbtab(sporth_stack *stack, void *ud)
     plumber_data *pd = ud;
     
     sporth_cdb_t *cdb;
-    char *key = NULL;
-    char *ftname = NULL;
-    char *bufname = NULL;
+    const char *key;
+    const char *ftname;
+    const char *bufname;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
