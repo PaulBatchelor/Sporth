@@ -107,8 +107,8 @@ typedef struct {
     sporth_func_d *fd;
     plumber_dyn_func fun;
     plumber_dyn_func (*getter)();
-    char *filename;
-    char *name;
+    const char *filename;
+    const char *name;
     void *handle;
     void *ud;
 } sporth_fload_d; 
@@ -158,7 +158,7 @@ int plumber_recompile_string_v2(plumber_data *plumb,
         void *ud,
         int (*callback)(plumber_data *, void *));
 int plumber_swap(plumber_data *plumb, int error);
-int plumber_open_file(plumber_data *plumb, char *filename);
+int plumber_open_file(plumber_data *plumb, const char *filename);
 int plumber_close_file(plumber_data *plumb);
 
 int plumber_gettype(plumber_data *plumb, char *str, int mode);

@@ -4,7 +4,7 @@
 
 typedef struct {
     void *handle;
-    char *name;
+    const char *name;
 } sporth_fclose_d;
 
 int sporth_f(sporth_stack *stack, void *ud)
@@ -35,7 +35,7 @@ int sporth_f(sporth_stack *stack, void *ud)
 
         case PLUMBER_INIT:
             fexec = pd->last->ud;
-            fexec->name = sporth_stack_pop_string(stack);
+            sporth_stack_pop_string(stack);
             fexec->fun(pd, stack, &fexec->ud);
             break;
 
