@@ -365,6 +365,23 @@ int plumber_search(plumber_data *plumb, const char *str, plumber_ftbl **ft)
     return PLUMBER_NOTOK;
 }
 
+int plumber_add(plumber_data *plumb, const char *str, plumber_ftbl **ft)
+{
+    uint32_t pos = sporth_hash(str);
+    plumber_ftentry *entry = &plumb->ftmap[pos];
+    entry->nftbl++;
+    plumber_ftbl *new = malloc(sizeof(plumber_ftbl));
+    new->type = PTYPE_USERDATA;
+    new->to_delete = plumb->delete_ft;
+    new->name = malloc(sizeof(char) * strlen(str) + 1);
+    strcpy(new->name, str);
+    entry->last->next = new;
+    entry->last = new;
+
+    *ft = new;
+    return PLUMBER_OK;
+}
+
 int plumber_register(plumber_data *plumb)
 {
 #define SPORTH_UGEN(key, func, macro, ninputs, noutputs) {key, func, plumb},

@@ -48,6 +48,7 @@ typedef struct dvector {
 typedef struct polysporth {
     scheme sc;
     plumber_data pd;
+    plumber_data *pd_ext;
     sporthlet *spl;
     int nvoices;
     uint32_t time;

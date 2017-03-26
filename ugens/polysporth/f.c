@@ -48,6 +48,7 @@ static pointer scm_writecode(scheme *sc, pointer args);
 static pointer scm_talias(scheme *sc, pointer args);
 static pointer scm_pitch(scheme *sc, pointer args);
 static pointer scm_noteoff_mode(scheme *sc, pointer args);
+static pointer scm_copy(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, char *filename)
 {
@@ -96,6 +97,7 @@ void ps_scm_load(polysporth *ps, char *filename)
     PS_FUNC("ps-talias", scm_talias);
     PS_FUNC("ps-pitch", scm_pitch);
     PS_FUNC("ps-noteoff-mode", scm_noteoff_mode);
+    PS_FUNC("ps-copy", scm_copy);
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -676,6 +678,38 @@ static pointer scm_noteoff_mode(scheme *sc, pointer args)
     id = ivalue(car(args));
   
     ps_sporthlet_mode_noteoff(ps, id);
+
+    return sc->NIL;
+}
+
+static pointer scm_copy(scheme *sc, pointer args)
+{
+    polysporth *ps;
+    const char *ftname_src;
+    const char *ftname_dst;
+    plumber_data *pd_ext;
+    plumber_data *pd;
+    plumber_ftbl *ft_src;
+    plumber_ftbl *ft_dst;
+
+    ps = sc->ext_data;
+
+    pd_ext = ps->pd_ext;
+    pd = &ps->pd;
+
+    ftname_src = string_value(car(args));
+    ftname_dst = string_value(car(args));
+
+    if(plumber_search(pd_ext, ftname_src, &ft_src) != PLUMBER_OK) {
+        plumber_print(pd, "ps-copy: Could not find ftable '%s'\n", ftname_src);
+        return sc->NIL;
+    }
+
+    plumber_ftmap_delete(pd, 0);
+    plumber_add(pd, ftname_dst, &ft_dst);
+    ft_dst->type = ft_src->type;
+    ft_dst->ud = ft_src->ud;
+    plumber_ftmap_delete(pd, 1);
 
     return sc->NIL;
 }

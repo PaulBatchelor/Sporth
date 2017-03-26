@@ -5,7 +5,6 @@
 
 #include "plumber.h"
 
-
 int sporth_get(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;

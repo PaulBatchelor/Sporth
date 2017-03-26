@@ -42,6 +42,7 @@ int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstan
     plumber_ftmap_add(pd, out_tbl, ps->out);
 
 
+    ps->pd_ext = pd;
     ps->nvoices = 0;
 
     plumber_register(&ps->pd);
