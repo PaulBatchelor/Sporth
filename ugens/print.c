@@ -8,7 +8,7 @@ typedef struct {
     int type;
     char label[128];
     SPFLOAT pval;
-    char *sval;
+    const char *sval;
 } sporth_print_d;
 
 
@@ -16,9 +16,9 @@ int sporth_prints(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
     sporth_print_d *prnt;
-    char *str = NULL; 
+    const char *str;
     SPFLOAT val = 0;
-    char *sval = NULL;
+    const char *sval; 
     sporth_stack_val *stackval; 
     switch(pd->mode) {
         case PLUMBER_CREATE:

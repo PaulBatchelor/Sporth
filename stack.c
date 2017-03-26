@@ -47,7 +47,7 @@ int sporth_stack_push_float(sporth_stack *stack, float val)
     return SPORTH_OK;
 }
 
-int sporth_stack_push_string(sporth_stack *stack, char **str)
+int sporth_stack_push_string(sporth_stack *stack, const char **str)
 {
     if(stack->error > 0) return SPORTH_NOTOK;
 
@@ -55,7 +55,8 @@ int sporth_stack_push_string(sporth_stack *stack, char **str)
     if(stack->pos < SPORTH_STACK_SIZE) {
         stack->pos++;
         pstack = &stack->stack[stack->pos - 1];
-        pstack->sval = *str;
+        /* TODO: can const strings work here? */
+        pstack->sval = (char *)*str;
         pstack->type = SPORTH_STRING;
         return SPORTH_OK;
     } else {
