@@ -47,7 +47,7 @@ int sporth_stack_push_float(sporth_stack *stack, float val)
     return SPORTH_OK;
 }
 
-int sporth_stack_push_string(sporth_stack *stack, const char **str)
+int sporth_stack_push_string(sporth_stack *stack, char **str)
 {
     if(stack->error > 0) return SPORTH_NOTOK;
 

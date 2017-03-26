@@ -44,7 +44,7 @@ int sporth_prints(sporth_stack *stack, void *ud)
             } else if(prnt->type == SPORTH_STRING) {
                 sval = sporth_stack_pop_string(stack);
                 prnt->sval = sval;
-                sporth_stack_push_string(stack, &sval);
+                sporth_stack_push_string(stack, (char **)&sval);
             } else {
                 plumber_print(pd, "Print: unknown type\n");
                 return PLUMBER_NOTOK;
@@ -66,7 +66,7 @@ int sporth_prints(sporth_stack *stack, void *ud)
                 sporth_stack_push_float(stack, val);
             } else if(prnt->type == SPORTH_STRING) {
                 sval = sporth_stack_pop_string(stack);
-                sporth_stack_push_string(stack, &sval);
+                sporth_stack_push_string(stack, (char **)&sval);
             }
 
             break;
