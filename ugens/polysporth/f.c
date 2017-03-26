@@ -698,6 +698,7 @@ static pointer scm_copy(scheme *sc, pointer args)
     pd = &ps->pd;
 
     ftname_src = string_value(car(args));
+    args = cdr(args);
     ftname_dst = string_value(car(args));
 
     if(plumber_search(pd_ext, ftname_src, &ft_src) != PLUMBER_OK) {
