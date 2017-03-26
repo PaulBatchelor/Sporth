@@ -6,7 +6,7 @@ int sporth_diskin(sporth_stack *stack, void *ud)
 #ifndef NO_LIBSNDFILE
     plumber_data *pd = ud;
     SPFLOAT out;
-    char * filename;
+    const char * filename;
     sp_diskin *diskin;
 
     switch(pd->mode) {
