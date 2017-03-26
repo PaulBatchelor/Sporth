@@ -134,7 +134,7 @@ static int lsys_init(lsys_d *ls)
 }
 
 static unsigned int lsys_parse(lsys_d *ls, 
-    char *ref, char *str, unsigned int len)
+    const char *ref, const char *str, unsigned int len)
 {
     ls->pos++;
     switch(ls->mode) {
@@ -201,7 +201,7 @@ static int lsys_list_append(lsys_d *lsys, lsys_list *lst, char c)
 }
 
 static int lsys_make_list(lsys_d *lsys, 
-    lsys_list *lst, char *str, char c, int N)
+    lsys_list *lst, const char *str, char c, int N)
 {
     if(N > 0) {
         int pos;
@@ -281,7 +281,7 @@ int sporth_lsys(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
     sporth_lsys_d *lsys;
-    char *str;
+    const char *str;
     switch(pd->mode) {
         case PLUMBER_CREATE:
             lsys = malloc(sizeof(sporth_lsys_d));
