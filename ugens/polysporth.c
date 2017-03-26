@@ -8,12 +8,9 @@ int sporth_ps(sporth_stack *stack, void *ud)
     plumber_data *pd = ud;
     polysporth *ps;
 
-    const char *in_tbl;
     const char *out_tbl;
     const char *filename;
     int ninstances;
-    SPFLOAT clock;
-    SPFLOAT tick;
     switch(pd->mode) {
         case PLUMBER_CREATE:
 
@@ -23,18 +20,15 @@ int sporth_ps(sporth_stack *stack, void *ud)
 
             ps = malloc(sizeof(polysporth));
             plumber_add_ugen(pd, SPORTH_POLYSPORTH, ps);
-            if(sporth_check_args(stack, "fffsss") != SPORTH_OK) {
+            if(sporth_check_args(stack, "fss") != SPORTH_OK) {
                 plumber_print(pd, "polysporth: not enough/wrong arguments\n");
                 return PLUMBER_NOTOK;
             }
 
             filename = sporth_stack_pop_string(stack);
             out_tbl = sporth_stack_pop_string(stack);
-            in_tbl = sporth_stack_pop_string(stack);
             ninstances = (int) sporth_stack_pop_float(stack);
-            clock = sporth_stack_pop_float(stack);
-            tick = sporth_stack_pop_float(stack);
-            if(ps_create(pd, stack, ps, ninstances, in_tbl, out_tbl, filename) == PLUMBER_NOTOK) {
+            if(ps_create(pd, stack, ps, ninstances, out_tbl, filename) == PLUMBER_NOTOK) {
                 plumber_print(pd, "Initialization of polysporth failed\n");
                 return PLUMBER_NOTOK;
             }
@@ -44,10 +38,7 @@ int sporth_ps(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
             filename = sporth_stack_pop_string(stack);
             out_tbl = sporth_stack_pop_string(stack);
-            in_tbl = sporth_stack_pop_string(stack);
             ninstances = (int) sporth_stack_pop_float(stack);
-            clock = sporth_stack_pop_float(stack);
-            tick = sporth_stack_pop_float(stack);
 #ifdef DEBUG_MODE
             plumber_print(pd, "polysporth: Initialising\n");
 #endif
@@ -57,10 +48,8 @@ int sporth_ps(sporth_stack *stack, void *ud)
 
         case PLUMBER_COMPUTE:
             ninstances = (int) sporth_stack_pop_float(stack);
-            clock = sporth_stack_pop_float(stack);
-            tick = sporth_stack_pop_float(stack);
             ps = pd->last->ud;
-            ps_compute(ps, tick, clock);
+            ps_compute(ps, 0, 0);
 
             break;
         case PLUMBER_DESTROY:

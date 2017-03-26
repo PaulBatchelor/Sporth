@@ -1,21 +1,18 @@
 # This example shows how to use the input table to make polysporth
 # an effects processor.
 
-# create an "input" table
-_in 1 zeros
+# create an "input" variable
+_in var
 
 # An input signal of blips
 200 1000 10 randh 0.5 sine
 # Create a copy of the signal, set it to the input table
-dup 0 _in tset
+dup _in set
 
 # call polysporth
 
 (
-0                # callback clock disabled
-1 dmetro         # our clock producing ticks once every seond
 1                # number of sporthlets to make
-_in              # name of input table
 _out             # name of output table created by polysporth
 "01_input.scm"   # name of scheme file to load
 ps               # polysporth!  

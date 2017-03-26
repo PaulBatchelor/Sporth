@@ -25,17 +25,10 @@ typedef struct {
     int prev_state;
 } off_data;
 
-int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, const char *in_tbl,
+int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, 
     const char *out_tbl, const char *filename)
 {
     int i, j;
-
-    /* search for input table */
-    if(plumber_ftmap_search(pd, in_tbl, &ps->in) == PLUMBER_NOTOK) {
-        stack->error++;
-        return PLUMBER_NOTOK;
-    }
-
 
     /* create output table */
     sp_ftbl_create(pd->sp, &ps->out, ninstances);
@@ -48,11 +41,6 @@ int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstan
     plumber_register(&ps->pd);
     plumber_init(&ps->pd);
     ps->pd.sp = pd->sp;
-
-    /* add input table to internal plumber instance with same name*/
-    plumber_ftmap_delete(&ps->pd, 0);
-    plumber_ftmap_add(&ps->pd, in_tbl, ps->in);
-    plumber_ftmap_delete(&ps->pd, 1);
 
     /* create arg table */
     plumber_ftmap_delete(&ps->pd, 0);

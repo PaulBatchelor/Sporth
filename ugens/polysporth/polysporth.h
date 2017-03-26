@@ -53,7 +53,6 @@ typedef struct polysporth {
     int nvoices;
     uint32_t time;
     uint32_t reltime;
-    sp_ftbl *in;
     sp_ftbl *out;
     /* linked list */
     sporthlet root;
@@ -78,7 +77,7 @@ typedef struct polysporth {
 } polysporth;
 
 int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, 
-    const char *in_tbl, const char *out_tbl, const char *filename);
+    const char *out_tbl, const char *filename);
 void ps_init(polysporth *ps);
 void ps_clean(polysporth *ps);
 void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock);
