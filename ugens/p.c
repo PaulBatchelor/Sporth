@@ -99,7 +99,7 @@ int sporth_pset(sporth_stack *stack, void *ud)
 int sporth_palias(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
-    char *name;
+    const char *name;
     int id;
     SPFLOAT *foo;
 
