@@ -24,7 +24,7 @@ enum {
     LEX_WORD
 };
 
-char * sporth_tokenizer(char *str,
+char * sporth_tokenizer(const char *str,
         uint32_t size, uint32_t *pos)
 {
     char c;
@@ -402,7 +402,7 @@ int plumbing_parse(plumber_data *plumb, plumbing *pipes)
 
 }
 
-int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, char *str)
+int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, const char *str)
 {
     char *out;
     uint32_t pos = 0, len = 0;
@@ -555,7 +555,7 @@ int plumber_recompile_string_v2(plumber_data *plumb,
     return PLUMBER_OK;
 }
 
-int plumber_parse_string(plumber_data *plumb, char *str)
+int plumber_parse_string(plumber_data *plumb, const char *str)
 {
     return plumbing_parse_string(plumb, plumb->pipes, str);
 }

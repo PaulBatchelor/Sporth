@@ -143,7 +143,7 @@ int plumber_add_ugen(plumber_data *plumb, uint32_t id, void *ud);
 int plumber_compute(plumber_data *plumb, int mode);
 
 int plumber_parse(plumber_data *plumb);
-int plumber_parse_string(plumber_data *plumb, char *str);
+int plumber_parse_string(plumber_data *plumb, const char *str);
 
 int plumber_recompile(plumber_data *plumb);
 int plumber_recompile_string(plumber_data *plumb, char *str);
@@ -189,7 +189,7 @@ int plumbing_destroy(plumbing *pipes);
 int plumbing_add_pipe(plumbing *pipes, plumber_pipe *pipe);
 int plumbing_compute(plumber_data *plumb, plumbing *pipes, int mode);
 int plumbing_parse(plumber_data *plumb, plumbing *pipes);
-int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, char *str);
+int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, const char *str);
 void plumbing_show_pipes(plumber_data *plumb, plumbing *pipes);
 void plumbing_write_code(plumber_data *plumb, plumbing *pipes, FILE *fp);
 void plumber_write_code(plumber_data *plumb, FILE *fp);

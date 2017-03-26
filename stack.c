@@ -98,12 +98,12 @@ sporth_stack_val * sporth_stack_get_last(sporth_stack *stack)
     return &stack->stack[stack->pos - 1];
 }
 
-char * sporth_stack_pop_string(sporth_stack *stack)
+const char * sporth_stack_pop_string(sporth_stack *stack)
 {
-    if(stack->error > 0) return NULL;
-
-    char *str;
+    const char *str;
     sporth_stack_val *pstack;
+
+    if(stack->error > 0) return NULL;
 
     if(stack->pos == 0) {
        fprintf(stderr, "Stack is empty.\n");
