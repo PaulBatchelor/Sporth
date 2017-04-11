@@ -18,8 +18,11 @@ inspired by stack languages like Forth and PostScript.
 
 ## Installation
 
-In order to compile Sporth, [SoundPipe](http://www.github.com/PaulBatchelor/soundpipe.git) 
-needs to be installed. **Be sure to use the 'dev' branch of soundpipe with 'git checkout dev'.**
+In order to compile Sporth, The development "dev" version of [SoundPipe](http://www.github.com/PaulBatchelor/soundpipe.git) 
+needs to be installed. 
+**When you clone soundpipe, be sure to use the 'dev' branch of soundpipe with 'git checkout dev'.**
+*Note: The development branch of Soundpipe is used because on any given day, there are 
+more modules there than in the master branch. More modules = more fun :)*
 
 Then:
 
