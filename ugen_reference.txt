@@ -99,7 +99,7 @@ Output: f
 Description: Two-step triggerable linear envelope generator.
 ---
 Name: fm
-Args: frequency (f), amplitutude (f), carrier (f), modulator (f), index (f)
+Args: frequency (f), amplitude (f), carrier (f), modulator (f), index (f)
 Output: f
 Description: A simple FM oscillator.
 ---
