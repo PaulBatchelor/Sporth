@@ -49,6 +49,7 @@ static pointer scm_talias(scheme *sc, pointer args);
 static pointer scm_pitch(scheme *sc, pointer args);
 static pointer scm_noteoff_mode(scheme *sc, pointer args);
 static pointer scm_copy(scheme *sc, pointer args);
+static pointer scm_mkftbl(scheme *sc, pointer args);
 
 void ps_scm_load(polysporth *ps, const char *filename)
 {
@@ -98,6 +99,7 @@ void ps_scm_load(polysporth *ps, const char *filename)
     PS_FUNC("ps-pitch", scm_pitch);
     PS_FUNC("ps-noteoff-mode", scm_noteoff_mode);
     PS_FUNC("ps-copy", scm_copy);
+    PS_FUNC("ps-mkftbl", scm_mkftbl);
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -713,4 +715,26 @@ static pointer scm_copy(scheme *sc, pointer args)
     plumber_ftmap_delete(pd, 1);
 
     return sc->NIL;
+}
+
+static pointer scm_mkftbl(scheme *sc, pointer args)
+{
+    const char *ftname;
+    int size;
+    sp_ftbl *ft;
+    polysporth *ps;
+    plumber_data *pd;
+
+    ps = sc->ext_data;
+    pd = &ps->pd;
+
+    ftname = string_value(car(args));
+    args = cdr(args);
+    size = ivalue(car(args));
+
+    sp_ftbl_create(pd->sp, &ft, size);
+
+    plumber_ftmap_add(pd, ftname, ft);
+
+    return mk_cptr(sc, (void **)&ft);
 }
