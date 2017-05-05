@@ -76,10 +76,10 @@ util/lsys: ugens/lsys.c
 sporth: sporth.c $(OBJ) h/ugens.h
 	$(CC) sporth.c -L/usr/local/lib $(CFLAGS) -g -Ih -o $@ $(OBJ) $(KOBJ) $(LIBS) 
 
-libsporth.a: $(OBJ) tmp.h
+libsporth.a: $(OBJ) sporth.h
 	$(AR) rcs libsporth.a $(KOBJ) $(OBJ) 
 
-tmp.h: $(OBJ)
+sporth.h: $(OBJ)
 	sh util/header_gen.sh
 
 examples/parse: examples/parse.c libsporth.a h/ugens.h
@@ -90,9 +90,9 @@ examples/user_function: examples/user_function.c libsporth.a h/ugens.h
 
 include util/luasporth/Makefile
 
-install: $(SPORTHLIBS) sporth tmp.h
+install: $(SPORTHLIBS) sporth sporth.h
 	install sporth /usr/local/bin
-	install tmp.h /usr/local/include/sporth.h
+	install sporth.h /usr/local/include/sporth.h
 	install $(SPORTHLIBS) /usr/local/lib
 	mkdir -p /usr/local/share/sporth
 	install ugen_reference.txt /usr/local/share/sporth
@@ -104,7 +104,7 @@ install: $(SPORTHLIBS) sporth tmp.h
 clean:
 	rm -rf $(OBJ)
 	rm -rf $(BIN)
-	rm -rf tmp.h
+	rm -rf sporth.h
 	rm -rf libsporth.a libsporth_dyn.so
 	rm -rf sporth
 
