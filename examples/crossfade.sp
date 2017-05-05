@@ -8,7 +8,7 @@
 
 # s s
 
-0 1 1 metro switch 0.005 port dup
+1 metro 0 1 switch 0.005 port dup
 
 # s s t t
 
