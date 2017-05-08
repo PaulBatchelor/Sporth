@@ -25,7 +25,7 @@ typedef struct {
     int prev_state;
 } off_data;
 
-int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, 
+int ps_create(plumber_data *pd, polysporth *ps, int ninstances, 
     const char *out_tbl, const char *filename)
 {
     int i, j;

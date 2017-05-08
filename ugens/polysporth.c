@@ -28,7 +28,7 @@ int sporth_ps(sporth_stack *stack, void *ud)
             filename = sporth_stack_pop_string(stack);
             out_tbl = sporth_stack_pop_string(stack);
             ninstances = (int) sporth_stack_pop_float(stack);
-            if(ps_create(pd, stack, ps, ninstances, out_tbl, filename) == PLUMBER_NOTOK) {
+            if(ps_create(pd, ps, ninstances, out_tbl, filename) == PLUMBER_NOTOK) {
                 plumber_print(pd, "Initialization of polysporth failed\n");
                 return PLUMBER_NOTOK;
             }

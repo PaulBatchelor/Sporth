@@ -76,7 +76,7 @@ typedef struct polysporth {
     int id;
 } polysporth;
 
-int ps_create(plumber_data *pd, sporth_stack *stack, polysporth *ps, int ninstances, 
+int ps_create(plumber_data *pd, polysporth *ps, int ninstances, 
     const char *out_tbl, const char *filename);
 void ps_init(polysporth *ps);
 void ps_clean(polysporth *ps);
