@@ -51,13 +51,13 @@ static pointer scm_noteoff_mode(scheme *sc, pointer args);
 static pointer scm_copy(scheme *sc, pointer args);
 static pointer scm_mkftbl(scheme *sc, pointer args);
 
-void ps_scm_load(polysporth *ps, const char *filename)
+int ps_scm_load(polysporth *ps, const char *filename)
 {
     /* load scheme */
     scheme *sc = &ps->sc;
     if(!scheme_init(sc)) {
         fprintf(stderr,"Polysporth: could not initialize!\n");
-        return;
+        return PLUMBER_NOTOK;
     }
     sc->code = sc->NIL;
     scheme_set_input_port_file(sc, stdin);
@@ -112,8 +112,13 @@ void ps_scm_load(polysporth *ps, const char *filename)
     ps->init = sc->NIL;
 
     FILE *fp =fopen(filename,"r");
+    if(fp == NULL) {
+        return PLUMBER_NOTOK;
+    }
     scheme_load_file(sc, fp);
     fclose(fp);
+
+    return PLUMBER_OK;
 }
 
 static pointer scm_eval(scheme *sc, pointer args)

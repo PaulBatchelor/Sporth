@@ -30,23 +30,13 @@ int ps_create(plumber_data *pd, polysporth *ps, int ninstances,
 {
     int i, j;
 
-    /* create output table */
-    sp_ftbl_create(pd->sp, &ps->out, ninstances);
-    plumber_ftmap_add(pd, out_tbl, ps->out);
-
-
     ps->pd_ext = pd;
     ps->nvoices = 0;
+    ps->ninstances = ninstances;
 
     plumber_register(&ps->pd);
     plumber_init(&ps->pd);
     ps->pd.sp = pd->sp;
-
-    /* create arg table */
-    plumber_ftmap_delete(&ps->pd, 0);
-    sp_ftbl_create(pd->sp, &ps->args, NARGS);
-    plumber_ftmap_add(&ps->pd, "args", ps->args);
-    plumber_ftmap_delete(&ps->pd, 1);
 
     /* create sporthlets */
     ps->spl = malloc(sizeof(sporthlet) * ninstances);
@@ -83,10 +73,22 @@ int ps_create(plumber_data *pd, polysporth *ps, int ninstances,
     plumber_ftmap_add_function(&ps->pd, "noteoff", ps_noteoff_ugen, ps);
     plumber_ftmap_add_function(&ps->pd, "offtick", ps_offtick, ps);
     
-    /* load scheme */
-    ps_scm_load(ps, filename);
-
     return PLUMBER_OK;
+}
+
+void ps_setup_outtable(plumber_data *pd, polysporth *ps, 
+        const char *out_tbl)
+{
+    sp_ftbl_create(pd->sp, &ps->out, ps->ninstances);
+    plumber_ftmap_add(pd, out_tbl, ps->out);
+}
+
+void ps_setup_argtable(plumber_data *pd, polysporth *ps, const char *name)
+{
+    plumber_ftmap_delete(&ps->pd, 0);
+    sp_ftbl_create(pd->sp, &ps->args, NARGS);
+    plumber_ftmap_add(&ps->pd, name, ps->args);
+    plumber_ftmap_delete(&ps->pd, 1);
 }
 
 void ps_init(polysporth *ps)

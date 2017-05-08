@@ -74,10 +74,16 @@ typedef struct polysporth {
 
     /* current voice */
     int id;
+
+    /* total number of instances */
+    int ninstances;
 } polysporth;
 
 int ps_create(plumber_data *pd, polysporth *ps, int ninstances, 
     const char *out_tbl, const char *filename);
+void ps_setup_outtable(plumber_data *pd, polysporth *ps, 
+        const char *out_tbl);
+void ps_setup_argtable(plumber_data *pd, polysporth *ps, const char *name);
 void ps_init(polysporth *ps);
 void ps_clean(polysporth *ps);
 void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock);
@@ -96,7 +102,7 @@ int dvector_pop(dvector *dvect, dvalue **start);
 void dvector_time_to_delta(dvector *dvect);
 void ps_turnon_sporthlet(polysporth *ps, int id, int dur);
 void ps_turnoff_sporthlet(polysporth *ps, int id);
-void ps_scm_load(polysporth *ps, const char *filename);
+int ps_scm_load(polysporth *ps, const char *filename);
 void ps_set_arg(polysporth *ps, int id, int pos, SPFLOAT val);
 void ps_sporthlet_noteoff(polysporth *ps, int id);
 void ps_sporthlet_mode_noteoff(polysporth *ps, int id);
