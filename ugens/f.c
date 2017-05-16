@@ -7,54 +7,6 @@ typedef struct {
     const char *name;
 } sporth_fclose_d;
 
-int sporth_f(sporth_stack *stack, void *ud)
-{
-    plumber_data *pd = ud;
-    sporth_fload_d *fexec;
-    sporth_fload_d *fload;
-    switch(pd->mode) {
-        case PLUMBER_CREATE:
-            fexec = malloc(sizeof(sporth_fload_d));
-            plumber_add_ugen(pd, SPORTH_FEXEC, fexec);
-            if(sporth_check_args(stack, "s") != SPORTH_OK) {
-                plumber_print(pd,"Not enough arguments for fclose\n");
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
-            fexec->name = sporth_stack_pop_string(stack);
-           
-            if(plumber_ftmap_search_userdata(pd, fexec->name, (void *)&fload) == PLUMBER_NOTOK) {
-                stack->error++;
-                return PLUMBER_NOTOK;
-            }
-
-            fexec->fun = fload->fun;
-            fexec->fun(pd, stack, &fexec->ud);
-            fexec->ud = fload->ud;
-            break;
-
-        case PLUMBER_INIT:
-            fexec = pd->last->ud;
-            sporth_stack_pop_string(stack);
-            fexec->fun(pd, stack, &fexec->ud);
-            break;
-
-        case PLUMBER_COMPUTE:
-            fexec = pd->last->ud;
-            fexec->fun(pd, stack, &fexec->ud);
-            break;
-
-        case PLUMBER_DESTROY:
-            fexec = pd->last->ud;
-            fexec->fun(pd, stack, &fexec->ud);
-            free(fexec);
-            break;
-
-        default: break;
-    }
-    return PLUMBER_OK;
-}
-
 int sporth_fload(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
@@ -185,7 +137,7 @@ int sporth_fexec(sporth_stack *stack, void *ud)
             fexec = malloc(sizeof(sporth_fload_d));
             plumber_add_ugen(pd, SPORTH_FEXEC, fexec);
             if(sporth_check_args(stack, "s") != SPORTH_OK) {
-                plumber_print(pd,"Not enough arguments for fclose\n");
+                plumber_print(pd,"Not enough arguments for fexec\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
