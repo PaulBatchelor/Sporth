@@ -19,7 +19,7 @@ include ugens/cdb/Makefile
 include ugens/polysporth/Makefile
 
 BIN += examples/parse examples/user_function util/jack_wrapper util/val \
-	  util/float2bin util/jacksporth util/sporthdot util/lsys
+	  util/float2bin util/jacksporth util/sporthdot util/lsys util/ugen_dump
 
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
@@ -51,6 +51,11 @@ val: util/val
 
 util/val: util/val.c
 	$(CC) $< -o $@
+
+ugen_dump: util/ugen_dump
+ 
+util/ugen_dump: util/ugen_dump.c
+	$(CC) $(CFLAGS) -Ih $< -o $@
 
 float2bin: util/float2bin
 
