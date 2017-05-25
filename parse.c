@@ -94,6 +94,9 @@ char * sporth_tokenizer(const char *str,
                         break;
                     default:
                         *pos = *pos + 1;
+                        /* this was added for sporth_tex so comments could
+                         * be visible. */
+                        offset++;
                         break;
                 }
                 break;
