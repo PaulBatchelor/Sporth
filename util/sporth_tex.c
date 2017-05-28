@@ -23,6 +23,12 @@ static void escape_me(char *out)
     int i;
     for(i = 0; i < strlen(out); i++) {
         switch(out[i]) {
+            case '|':
+            case '+':
+            case '-':
+            case '*':
+                printf("$%c$", out[i]);
+                break;
             case '_':
             case '#':
                 printf("\\%c", out[i]);
@@ -33,7 +39,7 @@ static void escape_me(char *out)
     }
 }
 
-static void lexer(char *out, uint32_t len)
+static int lexer(char *out, uint32_t len)
 {
     switch(sporth_lexer(out, len)) {
         case SPORTH_FLOAT:
@@ -62,8 +68,10 @@ static void lexer(char *out, uint32_t len)
             printf("}\n");
             break;
         default:
-            break;
+            return 0;
     }
+
+    return 1;
 }
 
 int main(int argc, char *argv[])
@@ -73,6 +81,7 @@ int main(int argc, char *argv[])
     size_t length;
     ssize_t read;
     char *out;
+    uint32_t nugens;
     
     uint32_t pos = 0, len = 0;
 
@@ -100,17 +109,22 @@ int main(int argc, char *argv[])
     while((read = sporth_getline(&line, &length, fp)) != -1) {
         pos = 0;
         len = 0;
+        nugens = 0;
         printf("\\noindent\n");
         while(pos < read - 1) {
             out = sporth_tokenizer(line, (unsigned int)read - 1, &pos);
             len = (unsigned int)strlen(out);
-            lexer(out, len);
+            nugens += lexer(out, len);
             free(out);
+        }
+        if(nugens == 0) {
+            printf("\\medskip\n");
         }
         printf("\n");
     }
     printf("\\endgroup");
 
+    fclose(fp);
     free(line);
     return 0;
 }
