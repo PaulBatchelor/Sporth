@@ -107,6 +107,7 @@ typedef struct {
     sporth_func_d *fd;
     plumber_dyn_func fun;
     plumber_dyn_func (*getter)();
+    int (*getter_multi)(int, plumber_dyn_func *);
     const char *filename;
     const char *name;
     void *handle;

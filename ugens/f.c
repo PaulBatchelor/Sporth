@@ -178,3 +178,64 @@ int sporth_fexec(sporth_stack *stack, void *ud)
     }
     return PLUMBER_OK;
 }
+
+int sporth_floadi(sporth_stack *stack, void *ud)
+{
+    plumber_data *pd = ud;
+    sporth_fload_d *fload;
+    char buf[512];
+    int num;
+    switch(pd->mode) {
+        case PLUMBER_CREATE:
+
+            fload = malloc(sizeof(sporth_fload_d));
+            plumber_add_ugen(pd, SPORTH_FLOADI, fload);
+            if(sporth_check_args(stack, "sfs") != SPORTH_OK) {
+                plumber_print(pd,"Not enough arguments for fload\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            fload->filename= sporth_stack_pop_string(stack);
+            num = sporth_stack_pop_float(stack);
+            fload->name = sporth_stack_pop_string(stack);
+          
+            if(getenv("SPORTH_PLUGIN_PATH") != NULL && 
+                fload->filename[0] != '.') {
+                sprintf(buf, "%s/%s", 
+                        getenv("SPORTH_PLUGIN_PATH"),
+                        fload->filename);
+                fload->handle = dlopen(buf, RTLD_NOW);
+            } else {
+                fload->handle = dlopen(fload->filename, RTLD_NOW);
+            }
+            if(fload->handle == NULL) {
+                plumber_print(pd, "Error loading %s: %s\n", fload->name, dlerror());
+                return PLUMBER_NOTOK;
+            }
+
+            fload->getter_multi = 
+                dlsym(fload->handle, "sporth_return_ugen_multi");
+            if(fload->getter_multi(num, &fload->fun) != PLUMBER_OK) {
+                plumber_print(pd, "fli: could not load\n");
+                return PLUMBER_NOTOK;
+            }
+            plumber_ftmap_add_userdata(pd, fload->name, (void *)fload);
+            break;
+
+        case PLUMBER_INIT:
+            fload = pd->last->ud;
+            fload->filename= sporth_stack_pop_string(stack);
+            num = sporth_stack_pop_float(stack);
+            fload->name = sporth_stack_pop_string(stack);
+
+            break;
+
+        case PLUMBER_COMPUTE:
+            sporth_stack_pop_float(stack);
+            break;
+
+        case PLUMBER_DESTROY:
+            break;
+    }
+    return PLUMBER_OK;
+}
