@@ -113,7 +113,7 @@ int sporth_fclose(sporth_stack *stack, void *ud)
             plumber_print(pd, "fclose: destroying\n");
 #endif
             fclose= pd->last->ud;
-            dlclose(fclose->handle);
+            if(fclose->handle != NULL) dlclose(fclose->handle);
             free(fclose);
             break;
         default:
