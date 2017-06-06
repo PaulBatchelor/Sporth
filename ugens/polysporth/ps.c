@@ -25,8 +25,7 @@ typedef struct {
     int prev_state;
 } off_data;
 
-int ps_create(plumber_data *pd, polysporth *ps, int ninstances, 
-    const char *out_tbl, const char *filename)
+int ps_create(plumber_data *pd, polysporth *ps, int ninstances)
 {
     int i, j;
 
@@ -72,6 +71,10 @@ int ps_create(plumber_data *pd, polysporth *ps, int ninstances,
 
     plumber_ftmap_add_function(&ps->pd, "noteoff", ps_noteoff_ugen, ps);
     plumber_ftmap_add_function(&ps->pd, "offtick", ps_offtick, ps);
+
+    /* no arguments by default */
+
+    ps->nargs = 0;
     
     return PLUMBER_OK;
 }
@@ -86,6 +89,8 @@ void ps_setup_outtable(plumber_data *pd, polysporth *ps,
 void ps_setup_argtable(plumber_data *pd, polysporth *ps, const char *name)
 {
     plumber_ftmap_delete(&ps->pd, 0);
+    /* set nargs to NARGS */
+    ps->nargs = NARGS;
     sp_ftbl_create(pd->sp, &ps->args, NARGS);
     plumber_ftmap_add(&ps->pd, name, ps->args);
     plumber_ftmap_delete(&ps->pd, 1);
@@ -107,11 +112,8 @@ void ps_clean(polysporth *ps)
     fprintf(stderr, "--- PS CLEAN ---\n");
 #endif
     int i;
-    for(i = 0; i < ps->out->size; i++) {
+    for(i = 0; i < ps->ninstances; i++) {
         if(ps->spl[i].state != PS_NULL) {
-#ifdef DEBUG_POLYSPORTH
-            fprintf(stderr, "\tdestroying %d\n", i);
-#endif
             plumbing_compute(&ps->pd, &ps->spl[i].pipes, PLUMBER_DESTROY);
             plumbing_destroy(&ps->spl[i].pipes);
         }
@@ -119,7 +121,7 @@ void ps_clean(polysporth *ps)
     dvector_free(&ps->events);
     plumber_clean(&ps->pd);
     /* clean arg table stuff */
-    sp_ftbl_destroy(&ps->args);
+    if(ps->nargs != 0) sp_ftbl_destroy(&ps->args);
     scheme_load_string(&ps->sc, "(quit)");
     scheme_deinit(&ps->sc);
     free(ps->spl);

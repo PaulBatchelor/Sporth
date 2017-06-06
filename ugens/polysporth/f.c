@@ -59,7 +59,6 @@ int ps_scm_load(polysporth *ps, const char *filename)
         fprintf(stderr,"Polysporth: could not initialize!\n");
         return PLUMBER_NOTOK;
     }
-    sc->code = sc->NIL;
     scheme_set_input_port_file(sc, stdin);
     scheme_set_output_port_file(sc, stdout);
 

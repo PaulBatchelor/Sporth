@@ -77,10 +77,12 @@ typedef struct polysporth {
 
     /* total number of instances */
     int ninstances;
+
+    /* total number of args */
+    int nargs;
 } polysporth;
 
-int ps_create(plumber_data *pd, polysporth *ps, int ninstances, 
-    const char *out_tbl, const char *filename);
+int ps_create(plumber_data *pd, polysporth *ps, int ninstances);
 void ps_setup_outtable(plumber_data *pd, polysporth *ps, 
         const char *out_tbl);
 void ps_setup_argtable(plumber_data *pd, polysporth *ps, const char *name);
