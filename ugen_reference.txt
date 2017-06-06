@@ -953,3 +953,8 @@ Args: min, max, cps min, cps max
 Output: f
 Description: random spline generator 
 ---
+Name: Voc
+Args: freq, pos, diameter, tenseness, velum
+Output: f
+Description: Vocal Tract Physical Model
+---

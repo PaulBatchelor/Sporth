@@ -140,6 +140,7 @@ tseg \
 tseq \
 v \
 vdelay \
+voc \
 vocoder \
 waveset \
 writecode \
