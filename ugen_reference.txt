@@ -958,3 +958,13 @@ Args: freq, pos, diameter, tenseness, velum
 Output: f
 Description: Vocal Tract Physical Model
 ---
+Name: psh
+Args: ftname, ninstances, filename
+Output: n/a
+Description: Create polysporth handle
+---
+Name: pst
+Args: tog, id, ftname
+Output: f
+Description: toggle a polysporth sporthlet
+---
