@@ -130,9 +130,6 @@ typedef struct {
     void *ud;
 } plumber_ptr;
 
-typedef struct scheme scheme;
-typedef struct cell *pointer;
-
 int plumber_init(plumber_data *plumb);
 int plumber_register(plumber_data *plumb);
 int plumber_clean(plumber_data *plumb);
