@@ -6,8 +6,19 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 #include "cdb.h"
 #include "jsmn.h"
+
+static void *realloc_it(void *ptrmem, size_t size)
+{
+    void *p = realloc(ptrmem, size);
+    if(!p) {
+        free(ptrmem);
+        fprintf(stderr, "realloc(): errno=%d\n", errno);
+    }
+    return p;
+}
 
 static int parse_json(struct cdb_make *cdbm, char *filename)
 {
@@ -21,16 +32,25 @@ static int parse_json(struct cdb_make *cdbm, char *filename)
 
 	int i;
 	int r;
+    int tok_size = 128;
 	jsmn_parser p;
-	jsmntok_t t[128]; 
+	jsmntok_t *t;
+	t = malloc(sizeof(jsmntok_t) * tok_size);
 
     jsmn_init(&p);
-	r = jsmn_parse(&p, str, size, t, sizeof(t)/sizeof(t[0]));
+again:
+	r = jsmn_parse(&p, str, size, t, tok_size);
 
-	if (r < 0) {
-		printf("Failed to parse JSON: %d\n", r);
-		return 1;
-	}
+    if(r < 0) {
+        if(r == JSMN_ERROR_NOMEM) {
+            tok_size *= 2;
+            t = realloc_it(t, sizeof(jsmntok_t) * tok_size);
+            goto again;
+        }  else {
+            printf("Failed to parse JSON: %d\n", r);
+            return 1;
+        }
+    }
 
     for(i = 1; i < r; i+=2) {
         if(!strncmp((str + t[i].start), "0x", 2)) {
@@ -67,6 +87,7 @@ static int parse_json(struct cdb_make *cdbm, char *filename)
 
     free(str);
     fclose(fp);
+    free(t);
     return 0;
 }
 
