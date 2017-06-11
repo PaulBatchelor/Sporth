@@ -142,6 +142,8 @@ int sporth_cdbtab(sporth_stack *stack, void *ud)
     const char *key;
     const char *ftname;
     const char *bufname;
+    sp_ftbl *ft;
+    SPFLOAT *tbl;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
@@ -170,9 +172,9 @@ int sporth_cdbtab(sporth_stack *stack, void *ud)
             if(cdb_seek(*cdb->fd, key, strlen(key), &cdb->vlen) > 0) {
                 cdb->val = malloc(cdb->vlen);
                 cdb_bread(*cdb->fd, cdb->val, cdb->vlen);
-                sp_ftbl *ft = malloc(sizeof(sp_ftbl));
-                ft->size = cdb->vlen / sizeof(SPFLOAT);
-                ft->tbl = (SPFLOAT *)cdb->val;
+                tbl = (SPFLOAT *)cdb->val;
+                sp_ftbl_bind(pd->sp, &ft, tbl, cdb->vlen/sizeof(SPFLOAT));
+                ft->del = 1;
                 plumber_ftmap_add(pd, bufname, ft);
             } else {
                 plumber_print(pd,"cdbtab: could not find value from key %s\n", key);
