@@ -558,6 +558,18 @@ int plumber_recompile_string_v2(plumber_data *plumb,
     return PLUMBER_OK;
 }
 
+int plumber_recompile_v2(plumber_data *plumb,
+        void *ud, 
+        int (*callback)(plumber_data *, void *))
+{
+    int error;
+    plumber_reinit(plumb);
+    callback(plumb, ud);
+    error = plumber_reparse(plumb);
+    plumber_swap(plumb, error);
+    return PLUMBER_OK;
+}
+
 int plumber_parse_string(plumber_data *plumb, const char *str)
 {
     return plumbing_parse_string(plumb, plumb->pipes, str);

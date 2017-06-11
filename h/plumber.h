@@ -155,6 +155,9 @@ int plumber_recompile_string_v2(plumber_data *plumb,
         char *str, 
         void *ud,
         int (*callback)(plumber_data *, void *));
+int plumber_recompile_v2(plumber_data *plumb,
+        void *ud, 
+        int (*callback)(plumber_data *, void *));
 int plumber_swap(plumber_data *plumb, int error);
 int plumber_open_file(plumber_data *plumb, const char *filename);
 int plumber_close_file(plumber_data *plumb);
