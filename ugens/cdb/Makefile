@@ -23,7 +23,8 @@ util/cdb: ugens/cdb/cdb.o $(CDB_OBJ)
 
 cdbjson: util/cdbjson
 util/cdbjson: ugens/cdb/cdbjson.o $(CDB_OBJ) $(JSMN_OBJ)
-	$(CC) $(CFLAGS) $(CDB_OBJ) $(JSMN_OBJ) ugens/cdb/cdbjson.o -o $@
+	$(CC) $(CFLAGS) $(CDB_OBJ) $(JSMN_OBJ) ugens/cdb/cdbjson.o -o $@ \
+		-lsoundpipe -lsndfile -lm
 
 BIN += util/cdb
 BIN += util/cdbjson

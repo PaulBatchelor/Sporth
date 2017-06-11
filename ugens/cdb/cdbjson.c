@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
+#include "soundpipe.h"
 #include "cdb.h"
 #include "jsmn.h"
 
@@ -26,6 +27,9 @@ static int parse_json(struct cdb_make *cdbm, char *filename)
     fseek(fp, 0, SEEK_END);
     uint32_t size = ftell(fp);
     char *str = malloc(size + 1);
+    char buf[256];
+    sp_ftbl *ft;
+    sp_data *sp;
     fseek(fp, 0, SEEK_SET);
     fread(str, 1, size, fp);
     str[size] = 0;
@@ -36,7 +40,7 @@ static int parse_json(struct cdb_make *cdbm, char *filename)
 	jsmn_parser p;
 	jsmntok_t *t;
 	t = malloc(sizeof(jsmntok_t) * tok_size);
-
+    sp_create(&sp);
     jsmn_init(&p);
 again:
 	r = jsmn_parse(&p, str, size, t, tok_size);
@@ -54,13 +58,12 @@ again:
 
     for(i = 1; i < r; i+=2) {
         if(!strncmp((str + t[i].start), "0x", 2)) {
-            char filename[256];
-            memset(filename, 0, 256);
+            memset(buf, 0, 256);
             char *tmp;
-            strncpy(filename, 
+            strncpy(buf, 
                 &str[t[i + 1].start], 
                 t[i + 1].end - t[i + 1].start);
-            FILE *data = fopen(filename, "rb+");
+            FILE *data = fopen(buf, "rb+");
             if(data == NULL) {
                 printf("Couldn't open file %s\n", filename);
             } 
@@ -76,6 +79,19 @@ again:
                     tmp, size);
             fclose(data);
             free(tmp);
+        } else if(!strncmp((str + t[i].start), "Wx", 2)) {
+            memset(buf, 0, 256);
+            strncpy(buf, 
+                &str[t[i + 1].start], 
+                t[i + 1].end - t[i + 1].start);
+            sp_ftbl_loadfile(sp, &ft, buf);
+             
+            cdb_make_add(cdbm, 
+                    &str[t[i].start + 2], 
+                    (t[i].end - t[i].start) - 2,
+                    ft->tbl, sizeof(SPFLOAT) * ft->size);
+            sp_ftbl_destroy(&ft);
+
         } else {
             cdb_make_add(cdbm, 
                     &str[t[i].start], 
@@ -88,6 +104,7 @@ again:
     free(str);
     fclose(fp);
     free(t);
+    sp_destroy(&sp);
     return 0;
 }
 
