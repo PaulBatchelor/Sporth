@@ -968,3 +968,8 @@ Args: tog, id, ftname
 Output: f
 Description: toggle a polysporth sporthlet
 ---
+Name: lpc
+Args: in, framesize
+Output: f
+Description: apply linear-predictive coding (LPC10) to signal
+---

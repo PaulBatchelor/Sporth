@@ -64,6 +64,7 @@ line \
 load \
 loadfile \
 loadspa \
+lpc \
 lpf18 \
 lsys \
 mark \
