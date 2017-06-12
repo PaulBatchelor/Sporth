@@ -9,10 +9,16 @@ ifdef DEBUG_MODE
 CFLAGS += -DDEBUG_MODE -DPOLY_DEBUG
 endif
 
+ifdef LIVE_CODING
+CFLAGS += -DLIVE_CODING
+OBJ += util/listener.o
+LIBS += -lpthread
+endif
+
 ifdef BUILD_JACK
 CFLAGS += -DBUILD_JACK -DLIVE_CODING
-OBJ += util/sp_jack.o util/listener.o
-LIBS += -ljack -lpthread
+OBJ += util/sp_jack.o 
+LIBS += -ljack 
 endif
 
 include ugens/cdb/Makefile

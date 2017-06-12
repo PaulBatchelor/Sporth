@@ -157,8 +157,8 @@ zitarev
 # LADSPA support
 BUILD_LADSPA=1
 
-# Enable support for JACK audio
-# BUILD_JACK=1
+# Build live coding UDP listener
+LIVE_CODING=1
 
 # GDB Debugging Symbols
 CFLAGS += -g 
