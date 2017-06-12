@@ -11,7 +11,7 @@ endif
 
 ifdef BUILD_JACK
 CFLAGS += -DBUILD_JACK -DLIVE_CODING
-OBJ += util/sp_jack.o
+OBJ += util/sp_jack.o util/listener.o
 LIBS += -ljack -lpthread
 endif
 
