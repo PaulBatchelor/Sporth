@@ -973,3 +973,8 @@ Args: in, framesize
 Output: f
 Description: apply linear-predictive coding (LPC10) to signal
 ---
+Name: lpcsynth
+Args: framesize, ftbl
+Output: f
+Description: LPC synth. Manipulate parameters directly. 
+---
