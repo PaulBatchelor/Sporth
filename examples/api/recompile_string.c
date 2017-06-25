@@ -7,10 +7,8 @@ void process(sp_data *sp, void *ud)
 {
     plumber_data *pd = ud;
     if(++counter == sp->sr * 3) {
-        printf("we are here...\n");
-        /*TODO: fix memory leaks while not compiled properly */
-        /* plumber_recompile_string(pd, "mtof 0.5 saw"); */
-        plumber_recompile_string(pd, "0.5 sine");
+        plumber_print(pd, "Recompiling!\n");
+        plumber_recompile_string(pd, "60 mtof 0.5 saw"); 
     }
     plumber_compute(pd, PLUMBER_COMPUTE);
     SPFLOAT out;
