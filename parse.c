@@ -439,8 +439,8 @@ int plumber_parse(plumber_data *plumb)
 
 int plumber_reparse(plumber_data *plumb) 
 {
-    if(plumbing_parse(plumb, plumb->tmp) == PLUMBER_OK) {
-        plumbing_compute(plumb, plumb->tmp, PLUMBER_INIT);
+    plumbing *pipes = plumb->tmp;
+    if(plumbing_parse(plumb, pipes) == PLUMBER_OK) {
 #ifdef DEBUG_MODE
         plumber_print(plumb, "Successful parse...\n");
         plumber_print(plumb, "at stack position %d\n",
@@ -448,8 +448,10 @@ int plumber_reparse(plumber_data *plumb)
         plumber_print(plumb, "%d errors\n",
                 plumb->sporth.stack.error);
 #endif
+        plumb->tmp = pipes; 
     } else {
-       return PLUMBER_NOTOK;
+        plumb->tmp = pipes; 
+        return PLUMBER_NOTOK;
     }
     return PLUMBER_OK;
 }
