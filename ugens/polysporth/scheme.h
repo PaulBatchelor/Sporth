@@ -151,7 +151,7 @@ pointer _cons(scheme *sc, pointer a, pointer b, int immutable);
 pointer mk_integer(scheme *sc, long num);
 pointer mk_real(scheme *sc, double num);
 pointer mk_symbol(scheme *sc, const char *name);
-pointer gensym(scheme *sc);
+pointer scm_gensym(scheme *sc); /* renamed to avoid name collision in PD */
 pointer mk_string(scheme *sc, const char *str);
 pointer mk_counted_string(scheme *sc, const char *str, int len);
 pointer mk_empty_string(scheme *sc, int len, char fill);

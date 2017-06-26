@@ -1069,7 +1069,7 @@ INTERFACE pointer mk_symbol(scheme *sc, const char *name) {
      }
 }
 
-INTERFACE pointer gensym(scheme *sc) {
+INTERFACE pointer scm_gensym(scheme *sc) {
      pointer x;
      char name[40];
 
@@ -2574,7 +2574,7 @@ static pointer opexe_0(scheme *sc, enum scheme_opcodes op) {
           s_goto(sc,OP_RDSEXPR);
 
      case OP_GENSYM:
-          s_return(sc, gensym(sc));
+          s_return(sc, scm_gensym(sc));
 
      case OP_VALUEPRINT: /* print evaluation result */
           /* OP_VALUEPRINT is always pushed, because when changing from
@@ -4585,7 +4585,7 @@ static struct scheme_interface vtbl ={
   mk_integer,
   mk_real,
   mk_symbol,
-  gensym,
+  scm_gensym,
   mk_string,
   mk_counted_string,
   mk_character,
