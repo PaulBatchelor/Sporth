@@ -33,9 +33,9 @@ int sporth_fload(sporth_stack *stack, void *ud)
                 sprintf(buf, "%s/%s", 
                         getenv("SPORTH_PLUGIN_PATH"),
                         fload->filename);
-                fload->handle = dlopen(buf, RTLD_NOW);
+                fload->handle = dlopen(buf, RTLD_NOW | RTLD_GLOBAL);
             } else {
-                fload->handle = dlopen(fload->filename, RTLD_NOW);
+                fload->handle = dlopen(fload->filename, RTLD_NOW | RTLD_GLOBAL);
             }
             if(fload->handle == NULL) {
                 plumber_print(pd, "Error loading %s: %s\n", fload->name, dlerror());
