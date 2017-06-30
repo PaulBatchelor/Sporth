@@ -1,3 +1,4 @@
+#include <string.h>
 #include "soundpipe.h"
 #include "sporth.h"
 #include "m_pd.h"
@@ -5,6 +6,8 @@
 #pragma warning( disable : 4244 )
 #pragma warning( disable : 4305 )
 #endif
+
+#define BUFSIZE 4096
 
 /* ------------------------ sporth~ ----------------------------- */
 
@@ -21,6 +24,9 @@ typedef struct _sporth
     plumber_data pd;
     int please_parse;
     SPFLOAT in;
+    int whichbuf;
+    char buf0[BUFSIZE];
+    char buf1[BUFSIZE];
 } t_sporth;
 
     /* this is the actual performance routine which acts on the samples.
@@ -36,11 +42,18 @@ static t_int *sporth_perform(t_int *w)
     t_float *out = (t_float *)(w[3]);
     int n = (int)(w[4]);
 
-    if(x->please_parse) {
+    if(x->please_parse == 1) {
         x->please_parse = 0;
         plumber_recompile(&x->pd);
         fclose(x->pd.fp);
         x->pd.fp = NULL;
+    } else if(x->please_parse == 2) {
+        x->please_parse = 0;
+        if(x->whichbuf) { 
+            plumber_recompile_string(&x->pd, x->buf1);
+        } else {
+            plumber_recompile_string(&x->pd, x->buf0);
+        }
     }
 
     while (n--)
@@ -74,6 +87,7 @@ static void *sporth_new(void)
     x->pd.ud = x;
     char *str = "0";
     x->please_parse = 0;
+    x->whichbuf = 0;
     plumber_parse_string(&x->pd, str);
     plumber_compute(&x->pd, PLUMBER_INIT);
 
@@ -111,6 +125,51 @@ static void pprint (t_sporth *x, t_symbol *selector, int argcount, t_atom *argve
     post("p %d: %g", pos, x->pd.p[pos]);
 }
 
+static void parse (t_sporth *x, t_symbol *s, int ac, t_atom *av)
+{
+    char tmp[250];
+    int i;
+    char *buf;
+    unsigned int bufpos;
+    unsigned int len;
+    unsigned int c;
+    t_atom *ap;
+
+    post("Parsing!, %d args\n", ac);
+    bufpos = 0;
+
+    if(x->whichbuf == 1) {
+        buf = x->buf0;
+        x->whichbuf = 1;
+    } else {
+        buf = x->buf1;
+        x->whichbuf = 1;
+    }
+
+    for(ap = av, i = 0; i < ac; ap++, i++) {
+        if(bufpos > (BUFSIZE - 1)) {
+            post("Buffer overflow!");
+            return;
+        }
+        atom_string(ap, tmp, 250);
+        len = strnlen(tmp, 250);
+        post("%s %d", tmp, len);
+        for(c = 0; c < len; c++) {
+            buf[bufpos] = tmp[c];
+            bufpos++;
+            if(bufpos > (BUFSIZE - 1)) {
+                post("Buffer overflow!");
+                return;
+            }
+        }
+        buf[bufpos++] = ' ';
+    }
+    buf[++bufpos] = 0;
+    post("%s %d\n", buf, bufpos);
+    x->please_parse = 2;
+}
+
+
 
 void sporth_tilde_setup(void)
 {
@@ -133,6 +192,7 @@ void sporth_tilde_setup(void)
     class_addmethod(sporth_class, (t_method)open_file, gensym("open"), A_GIMME, 0);
     class_addmethod(sporth_class, (t_method)pset, gensym("pset"), A_GIMME, 0);
     class_addmethod(sporth_class, (t_method)pprint, gensym("pprint"), A_GIMME, 0);
+    class_addmethod(sporth_class, (t_method)parse, gensym("parse"), A_GIMME, 0);
 }
 
 static int sporth_pd_in(sporth_stack *stack, void *ud)

@@ -1,3 +1,5 @@
+default: pd_linux
+
 current: 
 	echo make pd_linux
 
