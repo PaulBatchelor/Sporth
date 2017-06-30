@@ -1,0 +1,14 @@
+#N canvas 913 47 451 700 10;
+#X obj 95 164 sporth~;
+#X obj 131 304 dac~;
+#X obj 75 34 loadbang;
+#X msg 73 115 parse 100 800 10 randh 0.5 sine;
+#X obj 142 243 sporth~;
+#X msg 328 115 parse in jcrev;
+#X connect 0 0 4 0;
+#X connect 2 0 3 0;
+#X connect 2 0 5 0;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X connect 4 0 1 1;
+#X connect 5 0 4 0;

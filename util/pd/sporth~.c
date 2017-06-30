@@ -140,7 +140,7 @@ static void parse (t_sporth *x, t_symbol *s, int ac, t_atom *av)
 
     if(x->whichbuf == 1) {
         buf = x->buf0;
-        x->whichbuf = 1;
+        x->whichbuf = 0;
     } else {
         buf = x->buf1;
         x->whichbuf = 1;
