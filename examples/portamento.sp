@@ -8,7 +8,7 @@ dup
 
 swap 1 1 count
 
-0 eq swap dup 0.01 port branch
+0 eq dup 0.01 port branch
 
 mtof 0.5 sine
 

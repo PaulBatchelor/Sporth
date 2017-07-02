@@ -10,7 +10,7 @@ dup dup 0.5 maygate rot rot
 
 0 'seq1' tseq 
 
-swap 0 'seq2' tseq branch
+0 'seq2' tseq branch
 
 mtof 
 0.001 0.9 0.1 randi

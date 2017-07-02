@@ -281,7 +281,7 @@ Description: conditional not-equal to
 Name: branch
 Args: gate (f), sig1 (f), sig2 (f)
 Output: f
-Description: returns signal based on state of gate
+Description: returns signal based on state of gate (0 = sig1, 1 = sig2)
 ---
 Name: pos
 Args: (none)

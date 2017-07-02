@@ -4,5 +4,5 @@
 rot 0.01 0.1 0.1 tenv
 swap mtof 0.3 1 1 1 fm mul dup
 # Send to reverb if note is 72 (c)
-rot 72 eq 1 0 branch mul
+rot 72 eq 0 1 branch mul
 dup 0.97 10000 revsc drop 0.3 mul add
