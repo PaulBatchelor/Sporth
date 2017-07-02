@@ -43,7 +43,6 @@ int plumber_init(plumber_data *plumb)
     plumb->pipes= &plumb->main;
     plumb->tmp = &plumb->main;
     plumbing_init(plumb->pipes);
-    plumb->nchan = 1;
     sporth_stack_init(&plumb->sporth.stack);
     plumber_ftmap_delete(plumb, 1);
     plumber_ftmap_init(plumb);
@@ -577,10 +576,9 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     }
 
     plumber_register(pd);
-    pd->nchan = nchan;
     srand(pd->seed);
     sp_data *sp;
-    sp_createn(&sp, pd->nchan);
+    sp_createn(&sp, nchan);
     strncpy(sp->filename, filename, 60);
     pd->sp = sp;
     sp_srand(pd->sp, pd->seed);

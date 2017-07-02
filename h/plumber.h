@@ -69,7 +69,6 @@ typedef struct {
 } plumbing;
 
 typedef struct plumber_data {
-    int nchan;
     int mode;
     uint32_t seed;
     sp_data *sp;
