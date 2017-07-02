@@ -26,8 +26,6 @@ endif
 
 pd_linux: sporth~.pd_linux 
 
-sporthlive: sporthlive~.pd_linux 
-
 
 .SUFFIXES: .pd_linux
 
@@ -41,13 +39,6 @@ LINUXINCLUDE =  -I../../src -I $(SP_PATH)/h
 	cc $(LINUXCFLAGS) $(LINUXINCLUDE) -o $*.o -c $*.c
 	#ld -shared -o $*.pd_linux $*.o $(SP_O) $(SPORTH_O) $(K_) -lc -lm -lsndfile
 	ld -o $*.pd_linux $*.o -lc -lsporth -lsoundpipe -lsndfile -lm -shared
-	strip --strip-unneeded $*.pd_linux
-	rm $*.o
-
-sporthlive~.pd_linux:
-	cc $(LINUXCFLAGS) $(LINUXINCLUDE) -o $*.o -c $*.c
-	#ld -shared -o $*.pd_linux $*.o $(SP_O) $(SPORTH_O) $(K_) -lc -lm -lsndfile
-	ld -o $*.pd_linux $*.o -lc -lsporth -lsoundpipe -lsndfile -lm -llo -shared
 	strip --strip-unneeded $*.pd_linux
 	rm $*.o
 
