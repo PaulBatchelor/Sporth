@@ -2,16 +2,8 @@
 #include "soundpipe.h"
 #include "sporth.h"
 #include "m_pd.h"
-#ifdef NT
-#pragma warning( disable : 4244 )
-#pragma warning( disable : 4305 )
-#endif
 
 #define BUFSIZE 4096
-
-/* ------------------------ sporth~ ----------------------------- */
-
-/* tilde object to take absolute value. */
 
 static int sporth_pd_in(sporth_stack *stack, void *ud);
 static t_class *sporth_class;
@@ -29,12 +21,6 @@ typedef struct _sporth
     char buf1[BUFSIZE];
 } t_sporth;
 
-    /* this is the actual performance routine which acts on the samples.
-    It's called with a single pointer "w" which is our location in the
-    DSP call list.  We return a new "w" which will point to the next item
-    after us.  Meanwhile, w[0] is just a pointer to dsp-perform itself
-    (no use to us), w[1] and w[2] are the input and output vector locations,
-    and w[3] is the number of points to calculate. */
 static t_int *sporth_perform(t_int *w)
 {
     t_sporth *x = (t_sporth *)(w[1]);
@@ -66,9 +52,6 @@ static t_int *sporth_perform(t_int *w)
     return (w+5);
 }
 
-    /* called to start DSP.  Here we call Pd back to add our perform
-    routine to a linear callback list which Pd in turn calls to grind
-    out the samples. */
 static void sporth_dsp(t_sporth *x, t_signal **sp)
 {
     dsp_add(sporth_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
@@ -93,10 +76,6 @@ static void *sporth_new(void)
 
     return (x);
 }
-
-    /* this routine, which must have exactly this name (with the "~" replaced
-    by "_tilde) is called when the code is first loaded, and tells Pd how
-    to build the "class". */
 
 static void sporth_free(t_sporth *x) 
 {
