@@ -24,9 +24,8 @@ endif
 include ugens/cdb/Makefile
 include ugens/polysporth/Makefile
 
-BIN += examples/parse examples/user_function util/jack_wrapper util/val \
-	  util/float2bin util/jacksporth util/sporthdot util/lsys util/ugen_dump \
-	  util/sporth_tex
+BIN += util/val util/float2bin util/sporthdot util/lsys util/ugen_dump \
+	   util/sporth_tex
 
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
@@ -73,10 +72,6 @@ jacksporth: util/jacksporth
 util/jacksporth: util/jacksporth.c libsporth.a
 	$(CC) $< -L. -lsporth $(LIBS) -lm -ljack -llo -o $@ 
 
-jsporth: util/jsporth
-util/jsporth: util/jsporth.c libsporth.a
-	$(CC) $< $(CFLAGS) -L. -lsporth $(LIBS) -lm -ljack -o $@ 
-
 sporthdot: util/sporthdot
 util/sporthdot: util/sporthdot.c libsporth.a
 	$(CC) $< $(CFLAGS) -Ih libsporth.a $(LIBS) -lm -ljack -o $@
@@ -98,12 +93,6 @@ libsporth.a: $(OBJ) sporth.h
 
 sporth.h: $(OBJ)
 	sh util/header_gen.sh
-
-examples/parse: examples/parse.c libsporth.a h/ugens.h
-	gcc $< $(CFLAGS) -g -Ih -o $@ libsporth.a $(LIBS)
-
-examples/user_function: examples/user_function.c libsporth.a h/ugens.h
-	gcc $< $(CFLAGS) -g -Ih -o $@ libsporth.a $(LIBS)
 
 include util/luasporth/Makefile
 
