@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
+#ifdef USE_DL
 #include <dlfcn.h>
+#endif
 #include "plumber.h"
 #include "scheme-private.h"
 #include "polysporth.h"

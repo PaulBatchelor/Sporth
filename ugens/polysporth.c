@@ -1,11 +1,18 @@
 #include <stdlib.h>
 #include "plumber.h"
+
+#ifndef NO_POLYSPORTH
 #include "scheme-private.h"
 #include "polysporth.h"
+#endif
 
 int sporth_ps(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
+#ifdef NO_POLYSPORTH
+    plumber_print(pd, "ps: Sorry, this version doesn't implement it\n");
+    return PLUMBER_NOTOK;
+#else
     polysporth *ps;
 
     const char *out_tbl;
@@ -65,11 +72,16 @@ int sporth_ps(sporth_stack *stack, void *ud)
             break;
     }
     return PLUMBER_OK;
+#endif
 }
 
 int sporth_psh(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
+#ifdef NO_POLYSPORTH
+    plumber_print(pd, "ps: Sorry, this version doesn't implement it\n");
+    return PLUMBER_NOTOK;
+#else
     polysporth *ps;
 
     const char *ftname;
@@ -119,13 +131,15 @@ int sporth_psh(sporth_stack *stack, void *ud)
             break;
     }
     return PLUMBER_OK;
+#endif
 }
 
+#ifndef NO_POLYSPORTH
 static SPFLOAT compute_sample(polysporth *ps, SPFLOAT tog, int id)
 {
+    plumber_data *pd = &ps->pd;
     SPFLOAT out = 0;
     sporthlet *spl = &ps->spl[id];
-    plumber_data *pd = &ps->pd;
 
     if(tog != 0 && spl->state != PS_ON) {
         spl->state = PS_ON;
@@ -145,10 +159,15 @@ static SPFLOAT compute_sample(polysporth *ps, SPFLOAT tog, int id)
 
     return out;
 }
+#endif
 
 int sporth_pst(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
+#ifdef NO_POLYSPORTH
+    plumber_print(pd, "pst: Sorry, this isn't implemented here.\n");
+    return PLUMBER_NOTOK;
+#else
     polysporth **ps;
     const char *ftname;
     int id;
@@ -197,5 +216,6 @@ int sporth_pst(sporth_stack *stack, void *ud)
             break;
     }
     return PLUMBER_OK;
+#endif
 }
 

@@ -149,14 +149,14 @@ wpkorg35 \
 zeros \
 zitarev
 
-# Enable debug mode
-# DEBUG_MODE=1
+# Disable libdl
+# NO_LIBDL=1
 
-# Build dynamic library (needed for Chorth)
-# BUILD_DYNAMIC=1
+# Build jack driver
+# BUILD_JACK=1
 
-# LADSPA support
-BUILD_LADSPA=1
+# polysporth support
+BUILD_POLYSPORTH=1
 
 # Build live coding UDP listener
 LIVE_CODING=1

@@ -21,8 +21,19 @@ OBJ += util/sp_jack.o
 LIBS += -ljack 
 endif
 
+ifdef NO_LIBDL
+CFLAGS += -DNO_LIBDL
+else
+LIBS += -ldl
+endif
+
 include ugens/cdb/Makefile
+
+ifdef BUILD_POLYSPORTH
 include ugens/polysporth/Makefile
+else
+CFLAGS += -DNO_POLYSPORTH
+endif
 
 BIN += util/val util/float2bin util/sporthdot util/lsys util/ugen_dump \
 	   util/sporth_tex
@@ -34,12 +45,7 @@ OBJ += func.o plumber.o stack.o parse.o hash.o ftmap.o
 
 SPORTHLIBS = libsporth.a
 
-LIBS += -lsoundpipe -lsndfile -lm -ldl
-
-
-ifdef BUILD_DYNAMIC
-#SPORTHLIBS += libsporth_dyn.so
-endif
+LIBS += -lsoundpipe -lsndfile -lm 
 
 config.mk: config.def.mk
 	cp config.def.mk config.mk
@@ -93,8 +99,6 @@ libsporth.a: $(OBJ) sporth.h
 
 sporth.h: $(OBJ)
 	sh util/header_gen.sh
-
-include util/luasporth/Makefile
 
 install: $(SPORTHLIBS) sporth sporth.h
 	install sporth /usr/local/bin

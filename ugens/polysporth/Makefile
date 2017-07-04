@@ -19,7 +19,11 @@
 OBJ += ugens/polysporth/dvector.o \
 	ugens/polysporth/ps.o \
 	ugens/polysporth/scheme.o \
-	ugens/polysporth/f.o \
-	ugens/polysporth/dynload.o 
+	ugens/polysporth/f.o 
 
-CFLAGS += -DUSE_DL -DSTANDALONE=0 -Iugens/polysporth
+CFLAGS += -DSTANDALONE=0 -Iugens/polysporth
+
+ifndef NO_LIBDL
+CFLAGS += -DUSE_DL
+OBJ += ugens/polysporth/dynload.o
+endif
