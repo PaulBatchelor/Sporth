@@ -21,6 +21,11 @@ typedef struct _sporth
     char buf1[BUFSIZE];
 } t_sporth;
 
+static int add_ugens(plumber_data *pd, void *ud)
+{
+    return PLUMBER_OK;
+}
+
 static t_int *sporth_perform(t_int *w)
 {
     t_sporth *x = (t_sporth *)(w[1]);
@@ -36,9 +41,9 @@ static t_int *sporth_perform(t_int *w)
     } else if(x->please_parse == 2) {
         x->please_parse = 0;
         if(x->whichbuf) { 
-            plumber_recompile_string(&x->pd, x->buf1);
+            plumber_recompile_string_v2(&x->pd, x->buf1, x, add_ugens);
         } else {
-            plumber_recompile_string(&x->pd, x->buf0);
+            plumber_recompile_string_v2(&x->pd, x->buf0, x, add_ugens);
         }
     }
 

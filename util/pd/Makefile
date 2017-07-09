@@ -30,8 +30,7 @@ pd_linux: sporth~.pd_linux
 .SUFFIXES: .pd_linux
 
 LINUXCFLAGS = -DPD -O2 -funroll-loops -fomit-frame-pointer \
-    -Wall -W -Wshadow -Wstrict-prototypes \
-    -Wno-unused -Wno-parentheses -Wno-switch -fPIC
+    -Wall -Wno-unused -Wno-parentheses -Wno-switch -fPIC
 
 LINUXINCLUDE =  -I../../src -I $(SP_PATH)/h
 
