@@ -130,7 +130,6 @@ static void parse (t_sporth *x, t_symbol *s, int ac, t_atom *av)
     unsigned int c;
     t_atom *ap;
 
-    post("Parsing!, %d args\n", ac);
     bufpos = 0;
 
     if(x->whichbuf == 1) {
@@ -143,24 +142,22 @@ static void parse (t_sporth *x, t_symbol *s, int ac, t_atom *av)
 
     for(ap = av, i = 0; i < ac; ap++, i++) {
         if(bufpos > (BUFSIZE - 1)) {
-            post("Buffer overflow!");
+            post("String length too long!");
             return;
         }
         atom_string(ap, tmp, 250);
         len = strnlen(tmp, 250);
-        post("%s %d", tmp, len);
         for(c = 0; c < len; c++) {
             buf[bufpos] = tmp[c];
             bufpos++;
             if(bufpos > (BUFSIZE - 1)) {
-                post("Buffer overflow!");
+                post("String length too long!");
                 return;
             }
         }
         buf[bufpos++] = ' ';
     }
     buf[++bufpos] = 0;
-    post("%s %d\n", buf, bufpos);
     x->please_parse = 2;
 }
 
