@@ -1,11 +1,14 @@
 #include <string.h>
+#include <stdlib.h>
 #include "soundpipe.h"
 #include "sporth.h"
 #include "m_pd.h"
 
 #define BUFSIZE 4096
+#define BLKSIZE 64
 
 static int sporth_pd_in(sporth_stack *stack, void *ud);
+static int sporth_pdsend(plumber_data *pd, sporth_stack *stack, void **ud);
 static t_class *sporth_class;
 
 typedef struct _sporth
@@ -21,8 +24,16 @@ typedef struct _sporth
     char buf1[BUFSIZE];
 } t_sporth;
 
+typedef struct {
+    t_word *pdarray_vec;
+    t_garray *pdarray;
+    int pos;
+    int size;
+} pdsend;
+
 static int add_ugens(plumber_data *pd, void *ud)
 {
+    plumber_ftmap_add_function(pd, "pdsend", sporth_pdsend, ud);
     return PLUMBER_OK;
 }
 
@@ -222,6 +233,66 @@ static int sporth_pd_in(sporth_stack *stack, void *ud)
 
         default:
             fprintf(stderr, "Unknown mode!\n");
+            break;
+    }
+    return PLUMBER_OK;
+}
+
+static int sporth_pdsend(plumber_data *pd, sporth_stack *stack, void **ud)
+{
+    pdsend *ps;
+    SPFLOAT in;
+    const char *tab;
+    switch(pd->mode) {
+        case PLUMBER_CREATE:
+            if(sporth_check_args(stack, "fs") != SPORTH_OK) {
+                fprintf(stderr,"Not enough arguments for gain\n");
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            /* malloc and assign address to user data */
+            ps = malloc(sizeof(pdsend));
+            *ud = ps;
+            tab = sporth_stack_pop_string(stack);
+            sporth_stack_pop_float(stack);
+
+            ps->pdarray = 
+                (t_garray *)pd_findbyclass(gensym(tab), garray_class);
+            if(ps->pdarray != NULL) {
+                garray_getfloatwords(ps->pdarray, &ps->size, &ps->pdarray_vec); 
+
+                if(ps->size < BLKSIZE) {
+                    post("sporth~: array %s should have size of %d or more\n",
+                            tab, BLKSIZE);
+                    stack->error++;
+                    return PLUMBER_NOTOK;
+                }
+            } else {
+                plumber_print(pd, "Could not find pd array %s\n", tab);
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            ps->pos = 0;
+            break;
+        case PLUMBER_INIT:
+            sporth_stack_pop_string(stack);
+            in = sporth_stack_pop_float(stack);
+            break;
+
+        case PLUMBER_COMPUTE:
+            ps = *ud;
+
+            in = sporth_stack_pop_float(stack);
+            ps->pdarray_vec[ps->pos].w_float = in;
+            ps->pos = (ps->pos + 1) % 64;
+            break;
+
+        case PLUMBER_DESTROY:
+            ps = *ud;
+            free(ps);
+            break;
+        default:
+            fprintf(stderr, "gain: unknown mode!\n");
             break;
     }
     return PLUMBER_OK;
