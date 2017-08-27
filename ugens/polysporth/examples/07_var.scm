@@ -1,7 +1,7 @@
 (define freq (ps-mkvar "freq" 300))
 (define rate (ps-mkvar "rate" 8))
 (define depth (ps-mkvar "depth" 0))
-(ps-copy "in" "in")
+(ps-import "in" "in")
 (ps-eval 0 "_freq get _rate get _depth get sine + 0.5 sine")
 (display "frequency is ")
 (write (ps-varget freq))
