@@ -46,5 +46,5 @@ More information on Sporth can be found
 
 Several examples demonstrating specific ugens can be found in 
 the [examples](examples) folder of the repository. More musical
-examples can be found on my 
+examples can be found on the
 [Sporthlings page](http://www.pbat.ch/sporthlings).
