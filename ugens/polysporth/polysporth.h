@@ -1,3 +1,4 @@
+#include "line.h"
 enum {
 PS_ON,
 PS_OFF,
@@ -80,6 +81,10 @@ typedef struct polysporth {
 
     /* total number of args */
     int nargs;
+
+    /* libline central control*/
+
+    ll_lines *lines;
 } polysporth;
 
 int ps_create(plumber_data *pd, polysporth *ps, int ninstances);

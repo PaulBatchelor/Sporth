@@ -50,6 +50,12 @@ static pointer scm_pitch(scheme *sc, pointer args);
 static pointer scm_noteoff_mode(scheme *sc, pointer args);
 static pointer scm_copy(scheme *sc, pointer args);
 static pointer scm_mkftbl(scheme *sc, pointer args);
+static pointer scm_line_begin(scheme *sc, pointer args);
+static pointer scm_line_end(scheme *sc, pointer args);
+static pointer scm_line_linpoint(scheme *sc, pointer args);
+static pointer scm_line_tick(scheme *sc, pointer args);
+static pointer scm_line_exppoint(scheme *sc, pointer args);
+static pointer scm_line_step(scheme *sc, pointer args);
 
 int ps_scm_load(polysporth *ps, const char *filename)
 {
@@ -99,6 +105,12 @@ int ps_scm_load(polysporth *ps, const char *filename)
     PS_FUNC("ps-noteoff-mode", scm_noteoff_mode);
     PS_FUNC("ps-copy", scm_copy);
     PS_FUNC("ps-mkftbl", scm_mkftbl);
+    PS_FUNC("ps-line-begin", scm_line_begin);
+    PS_FUNC("ps-line-end", scm_line_end);
+    PS_FUNC("ps-line-linpoint", scm_line_linpoint);
+    PS_FUNC("ps-line-exppoint", scm_line_exppoint);
+    PS_FUNC("ps-line-tick", scm_line_tick);
+    PS_FUNC("ps-line-step", scm_line_step);
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -741,4 +753,91 @@ static pointer scm_mkftbl(scheme *sc, pointer args)
     plumber_ftmap_add(pd, ftname, ft);
 
     return mk_cptr(sc, (void **)&ft);
+}
+
+static pointer scm_line_begin(scheme *sc, pointer args)
+{
+    const char *name;
+    polysporth *ps;
+    plumber_data *pd;
+
+    ps = sc->ext_data;
+    pd = &ps->pd;
+
+    name = string_value(car(args));
+    ll_sporth_line(ps->lines, pd, name);
+
+    return sc->NIL;
+}
+
+static pointer scm_line_end(scheme *sc, pointer args)
+{
+    polysporth *ps;
+
+    ps = sc->ext_data;
+    ll_end(ps->lines);
+    return sc->NIL;
+}
+
+static pointer scm_line_linpoint(scheme *sc, pointer args)
+{
+    SPFLOAT val;
+    SPFLOAT dur;
+    polysporth *ps;
+
+    ps = sc->ext_data;
+
+    val = rvalue(car(args));
+    args = cdr(args);
+    dur = rvalue(car(args));
+    ll_add_linpoint(ps->lines, val, dur);
+
+    return sc->NIL;
+}
+
+static pointer scm_line_tick(scheme *sc, pointer args)
+{
+    SPFLOAT dur;
+    polysporth *ps;
+
+    ps = sc->ext_data;
+
+    dur = rvalue(car(args));
+    ll_add_tick(ps->lines, dur);
+    return sc->NIL;
+}
+
+static pointer scm_line_exppoint(scheme *sc, pointer args)
+{
+    SPFLOAT val;
+    SPFLOAT dur;
+    SPFLOAT curve;
+    polysporth *ps;
+
+    ps = sc->ext_data;
+
+    val = rvalue(car(args));
+    args = cdr(args);
+    dur = rvalue(car(args));
+    args = cdr(args);
+    curve = rvalue(car(args));
+
+    ll_add_exppoint(ps->lines, val, dur, curve);
+
+    return sc->NIL;
+}
+
+static pointer scm_line_step(scheme *sc, pointer args)
+{
+    SPFLOAT val;
+    SPFLOAT dur;
+    polysporth *ps;
+
+    ps = sc->ext_data;
+
+    val = rvalue(car(args));
+    args = cdr(args);
+    dur = rvalue(car(args));
+    ll_add_step(ps->lines, val, dur);
+    return sc->NIL;
 }

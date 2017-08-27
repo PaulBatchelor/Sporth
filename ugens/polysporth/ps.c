@@ -77,7 +77,14 @@ int ps_create(plumber_data *pd, polysporth *ps, int ninstances)
     /* no arguments by default */
 
     ps->nargs = 0;
+
+    /* set up libline */
     
+    
+    ps->lines = malloc(ll_lines_size());
+    ll_lines_init(ps->lines, pd->sp->sr);
+    ll_sporth_ugen(ps->lines, &ps->pd, "ll");
+
     return PLUMBER_OK;
 }
 
@@ -127,6 +134,11 @@ void ps_clean(polysporth *ps)
     scheme_load_string(&ps->sc, "(quit)");
     scheme_deinit(&ps->sc);
     free(ps->spl);
+
+    /* clean up libline */
+
+    ll_lines_free(ps->lines);
+    free(ps->lines);
 }
 
 void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
