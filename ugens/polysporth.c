@@ -25,7 +25,7 @@ int sporth_ps(sporth_stack *stack, void *ud)
             plumber_print(pd, "polysporth: Creating\n");
 #endif
 
-            ps = malloc(sizeof(polysporth));
+            ps = calloc(1, sizeof(polysporth));
             plumber_add_ugen(pd, SPORTH_POLYSPORTH, ps);
             if(sporth_check_args(stack, "fss") != SPORTH_OK) {
                 plumber_print(pd, "polysporth: not enough/wrong arguments\n");
