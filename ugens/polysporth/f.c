@@ -175,10 +175,19 @@ static pointer scm_parse(scheme *sc, pointer args)
 
 static pointer scm_turnon(scheme *sc, pointer args)
 {
+    int id;
+    int dur;
     polysporth *ps = sc->ext_data;
-    int id = (int) ivalue(car(args));
+    id = (int) ivalue(car(args));
     args = cdr(args);
-    int dur = (int) ivalue(car(args));
+
+    if(is_number(car(args))) {
+        dur = (int) ivalue(car(args));
+    } else {
+        /* -1 turns on note indefinitely */
+        dur = -1;
+    }
+
     ps_turnon_sporthlet(ps, id, dur);
     return sc->NIL;
 }
