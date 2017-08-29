@@ -44,6 +44,7 @@ typedef struct dvalue {
 
 typedef struct dvector {
     int size;
+    int pos;
     dvalue root;
     dvalue *last;
     dvalue *top;

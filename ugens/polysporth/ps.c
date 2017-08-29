@@ -165,10 +165,10 @@ void ps_tick(polysporth *ps)
                 /* TODO: does this need to be handled better? */
                 fprintf(stderr, "No free voices left!\n");
             }
-            dvalue_free(&val);
+            /* dvalue_free(&val); */
         } else if(val->type == PS_METANOTE) {
             scheme_call(&ps->sc, val->func, ps->sc.NIL);
-            dvalue_free(&val);
+            /* dvalue_free(&val); */
         }
         if(ps->tmp.size > 0) {
             ps->events = dvector_merge(&ps->events, &ps->tmp);

@@ -137,9 +137,9 @@ int dvector_pop(dvector *dvect, dvalue **start)
 {
     dvalue *val = dvect->top, *next;
     *start = dvect->top;
-    if(dvect->size <= 0) return 0;
+    if(dvect->pos <= 0) return 0;
     if(val->delta == 0) {
-        dvect->size--;
+        dvect->pos--;
         next = val->next;
         dvect->top = next;
         return 1;
@@ -176,4 +176,5 @@ void dvalue_free(dvalue **val)
 void dvector_rewind(dvector *dv)
 {
     dv->top = dv->root.next;
+    dv->pos = dv->size;
 }
