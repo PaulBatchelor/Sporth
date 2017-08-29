@@ -60,7 +60,7 @@ int sporth_ps(sporth_stack *stack, void *ud)
         case PLUMBER_COMPUTE:
             ninstances = (int) sporth_stack_pop_float(stack);
             ps = pd->last->ud;
-            ps_compute(ps, 0, 0);
+            ps_compute(ps);
 
             break;
         case PLUMBER_DESTROY:

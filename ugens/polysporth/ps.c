@@ -141,26 +141,16 @@ void ps_clean(polysporth *ps)
     free(ps->lines);
 }
 
-void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
+void ps_tick(polysporth *ps, SPFLOAT tick)
 {
-    SPFLOAT *out = ps->out->tbl;
+    int count;
     int i;
     int id;
-    int count;
     dvalue *val;
-    int do_shutup = 0;
     sporthlet *spl, *next;
     if(tick != 0) {
-        if(ps->cb != ps->sc.NIL) scheme_call(&ps->sc, ps->cb, ps->sc.NIL);
-    }
-
-    if(clock != 0) {
         while(dvector_pop(&ps->events, &val)){
             if(val->type == PS_NOTE) {
-#ifdef DEBUG_POLYSPORTH
-                fprintf(stderr, "\t ### Time: %d Dur: %d\n",
-                    ps->time, val->dur);
-#endif
                 id = find_free_voice(ps, val->grp_start, val->grp_end);
                 if(id >= 0) {
                     ps_turnon_sporthlet(ps, id, val->dur);
@@ -194,7 +184,17 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
             spl = next;
         }
         ps->time++;
-    }
+    } 
+}
+
+void ps_compute(polysporth *ps)
+{
+    int count;
+    int i;
+    int id;
+    SPFLOAT *out = ps->out->tbl;
+    int do_shutup = 0;
+    sporthlet *spl, *next;
 
     top_of_list(ps);
     count = get_voice_count(ps);
@@ -224,9 +224,7 @@ void ps_compute(polysporth *ps, SPFLOAT tick, SPFLOAT clock)
         }
     }
     ps->args->tbl = tmp;
-
 }
-
 
 static SPFLOAT compute_sample(polysporth *ps, int id)
 {
