@@ -46,6 +46,7 @@ typedef struct dvector {
     int size;
     dvalue root;
     dvalue *last;
+    dvalue *top;
 } dvector;
 
 typedef struct polysporth {
@@ -107,7 +108,8 @@ void dvector_append(dvector *dv,
 void dvector_append_metanote(dvector *dv, int start, pointer func);
 void dvector_init(dvector *dv);
 void dvector_free(dvector *dv);
-void dvalue_free(polysporth *ps, dvalue **val);
+void dvalue_free(dvalue **val);
+void dvector_rewind(dvector *dv);
 
 dvector dvector_merge(dvector *dvect1, dvector *dvect2);
 int dvector_pop(dvector *dvect, dvalue **start);

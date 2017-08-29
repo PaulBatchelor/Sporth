@@ -64,12 +64,7 @@ void dvector_free(dvector *dv)
     dvalue *next;
     for(i = 0; i < dv->size; i++) {
         next = val->next;
-        if(val->type == PS_NOTE) {
-            if(val->nargs > 0) {
-                free(val->args);
-            }
-        }
-        free(val);
+        dvalue_free(&val);
         val = next;
     }
 }
@@ -170,7 +165,7 @@ void dvector_time_to_delta(dvector *dvect)
     }
 }
 
-void dvalue_free(polysporth *ps, dvalue **val)
+void dvalue_free(dvalue **val)
 {
     dvalue *pval = *val;
     if(pval->nargs > 0) {
