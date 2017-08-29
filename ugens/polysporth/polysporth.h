@@ -87,6 +87,9 @@ typedef struct polysporth {
     /* libline central control*/
 
     ll_lines *lines;
+
+    SPFLOAT *ptick;
+    SPFLOAT tick;
 } polysporth;
 
 int ps_create(plumber_data *pd, polysporth *ps, int ninstances);
@@ -115,5 +118,6 @@ int ps_scm_load(polysporth *ps, const char *filename);
 void ps_set_arg(polysporth *ps, int id, int pos, SPFLOAT val);
 void ps_sporthlet_noteoff(polysporth *ps, int id);
 void ps_sporthlet_mode_noteoff(polysporth *ps, int id);
-void ps_tick(polysporth *ps, SPFLOAT tick);
+void ps_tick(polysporth *ps);
+int ps_bind_clock(polysporth *ps, const char *name);
 #endif

@@ -85,6 +85,10 @@ int ps_create(plumber_data *pd, polysporth *ps, int ninstances)
     ll_lines_init(ps->lines, pd->sp->sr);
     ll_sporth_ugen(ps->lines, &ps->pd, "ll");
 
+    /* initialize tick */
+
+    ps->tick = 0;
+    ps->ptick = &ps->tick;
     return PLUMBER_OK;
 }
 
@@ -141,50 +145,48 @@ void ps_clean(polysporth *ps)
     free(ps->lines);
 }
 
-void ps_tick(polysporth *ps, SPFLOAT tick)
+void ps_tick(polysporth *ps)
 {
     int count;
     int i;
     int id;
     dvalue *val;
     sporthlet *spl, *next;
-    if(tick != 0) {
-        while(dvector_pop(&ps->events, &val)){
-            if(val->type == PS_NOTE) {
-                id = find_free_voice(ps, val->grp_start, val->grp_end);
-                if(id >= 0) {
-                    ps_turnon_sporthlet(ps, id, val->dur);
-                    int len = (val->nargs < NARGS) ? val->nargs : NARGS;
-                    for(i = 0; i < len; i++) {
-                        ps->spl[id].args[i] = val->args[i];
-                    }
-                } else {
-                    /* TODO: does this need to be handled better? */
-                    fprintf(stderr, "No free voices left!\n");
+    while(dvector_pop(&ps->events, &val)){
+        if(val->type == PS_NOTE) {
+            id = find_free_voice(ps, val->grp_start, val->grp_end);
+            if(id >= 0) {
+                ps_turnon_sporthlet(ps, id, val->dur);
+                int len = (val->nargs < NARGS) ? val->nargs : NARGS;
+                for(i = 0; i < len; i++) {
+                    ps->spl[id].args[i] = val->args[i];
                 }
-                dvalue_free(ps, &val);
-            } else if(val->type == PS_METANOTE) {
-                scheme_call(&ps->sc, val->func, ps->sc.NIL);
-                dvalue_free(ps, &val);
+            } else {
+                /* TODO: does this need to be handled better? */
+                fprintf(stderr, "No free voices left!\n");
             }
-            if(ps->tmp.size > 0) {
-                ps->events = dvector_merge(&ps->events, &ps->tmp);
-                dvector_init(&ps->tmp);
-            }
+            dvalue_free(ps, &val);
+        } else if(val->type == PS_METANOTE) {
+            scheme_call(&ps->sc, val->func, ps->sc.NIL);
+            dvalue_free(ps, &val);
         }
+        if(ps->tmp.size > 0) {
+            ps->events = dvector_merge(&ps->events, &ps->tmp);
+            dvector_init(&ps->tmp);
+        }
+    }
 
 
-        top_of_list(ps);
-        count = get_voice_count(ps);
-        spl = ps->root.next;
-        for(i = 0; i < count; i++) {
-            next = spl->next;
-            id = spl->id;
-            ps_decrement_clock(ps, id);
-            spl = next;
-        }
-        ps->time++;
-    } 
+    top_of_list(ps);
+    count = get_voice_count(ps);
+    spl = ps->root.next;
+    for(i = 0; i < count; i++) {
+        next = spl->next;
+        id = spl->id;
+        ps_decrement_clock(ps, id);
+        spl = next;
+    }
+    ps->time++;
 }
 
 void ps_compute(polysporth *ps)
@@ -195,6 +197,10 @@ void ps_compute(polysporth *ps)
     SPFLOAT *out = ps->out->tbl;
     int do_shutup = 0;
     sporthlet *spl, *next;
+
+    if(*ps->ptick != 0) {
+        ps_tick(ps);
+    }
 
     top_of_list(ps);
     count = get_voice_count(ps);
@@ -466,4 +472,19 @@ void ps_sporthlet_noteoff(polysporth *ps, int id)
 void ps_sporthlet_mode_noteoff(polysporth *ps, int id)
 {
     ps->spl[id].noteoff = 1;
+}
+
+int ps_bind_clock(polysporth *ps, const char *name)
+{
+    plumber_ftbl *ft;
+
+    if(plumber_search(&ps->pd, name, &ft) != PLUMBER_OK) {
+        return PLUMBER_NOTOK;
+    }
+
+    if(ft->type != PTYPE_USERDATA) return PLUMBER_NOTOK;
+
+    ps->ptick = (SPFLOAT *)ft->ud;
+
+    return PLUMBER_OK;
 }

@@ -59,6 +59,7 @@ static pointer scm_line_exppoint(scheme *sc, pointer args);
 static pointer scm_line_step(scheme *sc, pointer args);
 static pointer scm_line_timescale(scheme *sc, pointer args);
 static pointer scm_line_bpm(scheme *sc, pointer args);
+static pointer scm_bind_clock(scheme *sc, pointer args);
 
 int ps_scm_load(polysporth *ps, const char *filename)
 {
@@ -117,6 +118,7 @@ int ps_scm_load(polysporth *ps, const char *filename)
     PS_FUNC("ps-line-step", scm_line_step);
     PS_FUNC("ps-line-timescale", scm_line_timescale);
     PS_FUNC("ps-line-bpm", scm_line_bpm);
+    PS_FUNC("ps-bind-clock", scm_bind_clock);
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -913,5 +915,22 @@ static pointer scm_line_bpm(scheme *sc, pointer args)
 
     bpm = rvalue(car(args));
     ll_timescale_bpm(ps->lines, bpm);
+    return sc->NIL;
+}
+
+static pointer scm_bind_clock(scheme *sc, pointer args)
+{
+    polysporth *ps;
+    const char *name;
+    
+    ps = sc->ext_data;
+    name = string_value(car(args));
+
+    if(ps_bind_clock(ps, name) != PLUMBER_OK) {
+        plumber_print(&ps->pd, 
+            "scm-bind-clock: could not find variable %s\n",
+            name);
+    }
+
     return sc->NIL;
 }
