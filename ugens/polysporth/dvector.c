@@ -126,7 +126,6 @@ dvector dvector_merge(dvector *dvect1, dvector *dvect2)
         }
         out_t += out_d;
     }
-
     return new;
 }
 
@@ -136,13 +135,13 @@ void dvector_time_sort(dvector *dvect)
 
 int dvector_pop(dvector *dvect, dvalue **start)
 {
-    dvalue *val = dvect->root.next, *next;
-    *start = dvect->root.next;
+    dvalue *val = dvect->top, *next;
+    *start = dvect->top;
     if(dvect->size <= 0) return 0;
     if(val->delta == 0) {
         dvect->size--;
         next = val->next;
-        dvect->root.next = next;
+        dvect->top = next;
         return 1;
     } else {
         val->delta--;
@@ -172,4 +171,9 @@ void dvalue_free(dvalue **val)
         free(pval->args);
     }
     free(*val);
+}
+
+void dvector_rewind(dvector *dv)
+{
+    dv->top = dv->root.next;
 }

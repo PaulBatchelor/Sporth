@@ -137,6 +137,8 @@ int ps_scm_load(polysporth *ps, const char *filename)
     scheme_load_file(sc, fp);
     fclose(fp);
 
+    /* rewind note events to beginning */
+    dvector_rewind(&ps->events);
     return PLUMBER_OK;
 }
 
