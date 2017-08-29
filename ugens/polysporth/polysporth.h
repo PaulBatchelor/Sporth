@@ -1,3 +1,5 @@
+#ifndef POLYSPORTH_H
+#define POLYSPORTH_H
 #include "line.h"
 enum {
 PS_ON,
@@ -113,3 +115,4 @@ int ps_scm_load(polysporth *ps, const char *filename);
 void ps_set_arg(polysporth *ps, int id, int pos, SPFLOAT val);
 void ps_sporthlet_noteoff(polysporth *ps, int id);
 void ps_sporthlet_mode_noteoff(polysporth *ps, int id);
+#endif
