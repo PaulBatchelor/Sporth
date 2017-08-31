@@ -60,6 +60,9 @@ static pointer scm_line_step(scheme *sc, pointer args);
 static pointer scm_line_timescale(scheme *sc, pointer args);
 static pointer scm_line_bpm(scheme *sc, pointer args);
 static pointer scm_bind_clock(scheme *sc, pointer args);
+static pointer scm_note_delay(scheme *sc, pointer args);
+static pointer scm_note_delay_add(scheme *sc, pointer args);
+static pointer scm_note_delay_zero(scheme *sc, pointer args);
 
 int ps_scm_load(polysporth *ps, const char *filename)
 {
@@ -119,6 +122,9 @@ int ps_scm_load(polysporth *ps, const char *filename)
     PS_FUNC("ps-line-timescale", scm_line_timescale);
     PS_FUNC("ps-line-bpm", scm_line_bpm);
     PS_FUNC("ps-bind-clock", scm_bind_clock);
+    PS_FUNC("ps-note-delay", scm_note_delay);
+    PS_FUNC("ps-note-delay-zero", scm_note_delay_zero);
+    PS_FUNC("ps-note-delay-add", scm_note_delay_add);
 
     /*
     scheme_define(sc,sc->global_env,mk_symbol(sc,"ps-path"),
@@ -312,8 +318,8 @@ static pointer scm_note(scheme *sc, pointer args)
     args = cdr(args);
     /* add release value to duration */
     dur += ps->reltime;
+    start += ps->delay;
     int len = 0;
-
 
     pointer tmp = args;
     while(args != sc->NIL) {
@@ -934,5 +940,29 @@ static pointer scm_bind_clock(scheme *sc, pointer args)
             name);
     }
 
+    return sc->NIL;
+}
+
+static pointer scm_note_delay(scheme *sc, pointer args)
+{
+    polysporth *ps;
+    ps = sc->ext_data;
+    ps->delay = ivalue(car(args));
+    return sc->NIL;
+}
+
+static pointer scm_note_delay_add(scheme *sc, pointer args)
+{
+    polysporth *ps;
+    ps = sc->ext_data;
+    ps->delay += ivalue(car(args));
+    return sc->NIL;
+}
+
+static pointer scm_note_delay_zero(scheme *sc, pointer args)
+{
+    polysporth *ps;
+    ps = sc->ext_data;
+    ps->delay = 0;
     return sc->NIL;
 }

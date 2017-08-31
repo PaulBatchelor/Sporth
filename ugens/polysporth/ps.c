@@ -89,6 +89,9 @@ int ps_create(plumber_data *pd, polysporth *ps, int ninstances)
 
     ps->tick = 0;
     ps->ptick = &ps->tick;
+
+    /* no note delay */
+    ps->delay = 0;
     return PLUMBER_OK;
 }
 

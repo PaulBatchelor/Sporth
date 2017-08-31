@@ -92,6 +92,8 @@ typedef struct polysporth {
 
     SPFLOAT *ptick;
     SPFLOAT tick;
+
+    int delay;
 } polysporth;
 
 int ps_create(plumber_data *pd, polysporth *ps, int ninstances);
