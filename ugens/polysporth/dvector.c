@@ -39,6 +39,7 @@ void dvector_append(dvector *dv,
     new->type = PS_NOTE;
     new->nargs = nargs;
     new->args = args;
+    new->next = NULL;
     dvector_append_value(dv, new);
 }
 
@@ -55,6 +56,7 @@ void dvector_init(dvector *dv)
 {
     dv->size = 0;
     dv->last = &dv->root;
+    dv->root.next = NULL;
 }
 
 void dvector_free(dvector *dv)
@@ -131,6 +133,37 @@ dvector dvector_merge(dvector *dvect1, dvector *dvect2)
 
 void dvector_time_sort(dvector *dvect)
 {
+    dvalue *entry;
+    dvalue *head;
+    dvalue *current;
+    dvalue *p;
+
+    entry = dvect->root.next;
+    head = NULL;
+
+    while(entry != NULL) {
+        current = entry;
+        entry = entry->next;
+        if(head == NULL || current->delta < head->delta) {
+            current->next = head;
+            head = current;
+        } else {
+            p = head;
+
+            while(p != NULL) {
+                if(p->next == NULL /* last element */ ||
+                    current->delta < p->next->delta) {
+                    current->next = p->next;
+                    p->next = current;
+                    break;
+                }
+
+                p = p->next;
+            }
+        }
+    }
+
+    dvect->root.next = head;
 }
 
 int dvector_pop(dvector *dvect, dvalue **start)

@@ -113,6 +113,7 @@ void dvector_init(dvector *dv);
 void dvector_free(dvector *dv);
 void dvalue_free(dvalue **val);
 void dvector_rewind(dvector *dv);
+void dvector_time_sort(dvector *dvect);
 
 dvector dvector_merge(dvector *dvect1, dvector *dvect2);
 int dvector_pop(dvector *dvect, dvalue **start);

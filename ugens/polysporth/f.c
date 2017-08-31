@@ -288,6 +288,7 @@ static pointer scm_noteblock_end(scheme *sc, pointer args)
 #endif
     polysporth *ps = sc->ext_data;
     if(ps->noteblock == PS_ON) {
+        dvector_time_sort(&ps->tmp);
         dvector_time_to_delta(&ps->tmp);
         ps->noteblock = PS_OFF;
         if(ps->tmp.size > 0) {
