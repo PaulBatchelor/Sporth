@@ -145,39 +145,40 @@ void ll_line_mem_callback(ll_line*ln,ll_cb_malloc m,ll_cb_free f);
 #line 168 "./header.w"
 
 void ll_line_done(ll_line*ln);
+void ll_line_reset(ll_line*ln);
 
 /*:31*//*32:*/
-#line 174 "./header.w"
+#line 175 "./header.w"
 
 ll_flt ll_line_step(ll_line*ln);
 
 /*:32*//*33:*/
-#line 178 "./header.w"
+#line 179 "./header.w"
 
 void ll_line_print(ll_line*ln);
 
 /*:33*//*34:*/
-#line 182 "./header.w"
+#line 183 "./header.w"
 
 void ll_linpoint(ll_point*pt);
 
 /*:34*//*35:*/
-#line 186 "./header.w"
+#line 187 "./header.w"
 
 void ll_exppoint(ll_point*pt,ll_flt curve);
 
 /*:35*//*36:*/
-#line 190 "./header.w"
+#line 191 "./header.w"
 
 void ll_tick(ll_point*pt);
 
 /*:36*//*37:*/
-#line 194 "./header.w"
+#line 195 "./header.w"
 
 void ll_line_timescale(ll_line*ln,ll_flt scale);
 
 /*:37*//*39:*/
-#line 200 "./header.w"
+#line 201 "./header.w"
 
 size_t ll_lines_size();
 void ll_lines_init(ll_lines*l,int sr);
@@ -185,9 +186,10 @@ void ll_lines_mem_callback(ll_lines*l,void*ud,ll_cb_malloc m,ll_cb_free f);
 void ll_lines_append(ll_lines*l,ll_line**line,ll_flt**val);
 void ll_lines_step(ll_lines*l);
 void ll_lines_free(ll_lines*l);
+ll_line*ll_lines_current_line(ll_lines*l);
 
 /*:39*//*40:*/
-#line 210 "./header.w"
+#line 212 "./header.w"
 
 void ll_add_linpoint(ll_lines*l,ll_flt val,ll_flt dur);
 void ll_add_exppoint(ll_lines*l,ll_flt val,ll_flt dur,ll_flt curve);
@@ -198,11 +200,12 @@ void ll_timescale(ll_lines*l,ll_flt scale);
 void ll_timescale_bpm(ll_lines*l,ll_flt bpm);
 
 /*:40*//*41:*/
-#line 222 "./header.w"
+#line 224 "./header.w"
 
 #ifdef LL_SPORTH
 void ll_sporth_ugen(ll_lines*l,plumber_data*pd,const char*ugen);
 ll_line*ll_sporth_line(ll_lines*l,plumber_data*pd,const char*name);
+void ll_sporth_reset_ugen(ll_lines*l,plumber_data*pd,const char*ugen);
 #endif
 
 #line 1 "./point.w"

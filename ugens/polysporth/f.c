@@ -52,6 +52,7 @@ static pointer scm_import(scheme *sc, pointer args);
 static pointer scm_export(scheme *sc, pointer args);
 static pointer scm_mkftbl(scheme *sc, pointer args);
 static pointer scm_line_begin(scheme *sc, pointer args);
+static pointer scm_line_add_reset(scheme *sc, pointer args);
 static pointer scm_line_end(scheme *sc, pointer args);
 static pointer scm_line_linpoint(scheme *sc, pointer args);
 static pointer scm_line_tick(scheme *sc, pointer args);
@@ -114,6 +115,7 @@ int ps_scm_load(polysporth *ps, const char *filename)
     PS_FUNC("ps-export", scm_export);
     PS_FUNC("ps-mkftbl", scm_mkftbl);
     PS_FUNC("ps-line-begin", scm_line_begin);
+    PS_FUNC("ps-line-add-reset", scm_line_add_reset);
     PS_FUNC("ps-line-end", scm_line_end);
     PS_FUNC("ps-line-linpoint", scm_line_linpoint);
     PS_FUNC("ps-line-exppoint", scm_line_exppoint);
@@ -827,6 +829,21 @@ static pointer scm_line_begin(scheme *sc, pointer args)
 
     name = string_value(car(args));
     ll_sporth_line(ps->lines, pd, name);
+
+    return sc->NIL;
+}
+
+static pointer scm_line_add_reset(scheme *sc, pointer args)
+{
+    const char *name;
+    polysporth *ps;
+    plumber_data *pd;
+
+    ps = sc->ext_data;
+    pd = &ps->pd;
+
+    name = string_value(car(args));
+    ll_sporth_reset_ugen(ps->lines, pd, name);
 
     return sc->NIL;
 }
