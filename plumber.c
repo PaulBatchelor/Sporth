@@ -360,7 +360,6 @@ int plumber_search(plumber_data *plumb, const char *str, plumber_ftbl **ft)
         }
         ftbl = next;
     }
-    plumber_print(plumb,"Could not find an ftable match for %s.\n", str);
     return PLUMBER_NOTOK;
 }
 

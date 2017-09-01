@@ -177,8 +177,13 @@ void ll_tick(ll_point*pt);
 
 void ll_line_timescale(ll_line*ln,ll_flt scale);
 
-/*:37*//*39:*/
-#line 201 "./header.w"
+/*:37*//*38:*/
+#line 199 "./header.w"
+
+void ll_line_bind_float(ll_line*ln,ll_flt*line);
+
+/*:38*//*40:*/
+#line 205 "./header.w"
 
 size_t ll_lines_size();
 void ll_lines_init(ll_lines*l,int sr);
@@ -188,8 +193,8 @@ void ll_lines_step(ll_lines*l);
 void ll_lines_free(ll_lines*l);
 ll_line*ll_lines_current_line(ll_lines*l);
 
-/*:39*//*40:*/
-#line 212 "./header.w"
+/*:40*//*41:*/
+#line 216 "./header.w"
 
 void ll_add_linpoint(ll_lines*l,ll_flt val,ll_flt dur);
 void ll_add_exppoint(ll_lines*l,ll_flt val,ll_flt dur,ll_flt curve);
@@ -199,8 +204,8 @@ void ll_end(ll_lines*l);
 void ll_timescale(ll_lines*l,ll_flt scale);
 void ll_timescale_bpm(ll_lines*l,ll_flt bpm);
 
-/*:40*//*41:*/
-#line 224 "./header.w"
+/*:41*//*42:*/
+#line 228 "./header.w"
 
 #ifdef LL_SPORTH
 void ll_sporth_ugen(ll_lines*l,plumber_data*pd,const char*ugen);
@@ -209,7 +214,7 @@ void ll_sporth_reset_ugen(ll_lines*l,plumber_data*pd,const char*ugen);
 #endif
 
 #line 1 "./point.w"
-/*:41*/
+/*:42*/
 #line 13 "./header.w"
 
 #endif
