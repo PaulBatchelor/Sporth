@@ -103,6 +103,7 @@ sporth.h: $(OBJ)
 install: $(SPORTHLIBS) sporth sporth.h
 	install sporth /usr/local/bin
 	install sporth.h /usr/local/include/sporth.h
+	install ugens/cdb/cdb.h /usr/local/include/cdb.h
 	install $(SPORTHLIBS) /usr/local/lib
 	mkdir -p /usr/local/share/sporth
 	install ugen_reference.txt /usr/local/share/sporth
