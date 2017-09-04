@@ -201,4 +201,5 @@ int plumber_get_userdata(plumber_data *plumb, const char *name, plumber_ptr **p)
 int polysporth_eval(plumber_ptr *p, const char *str);
 
 void plumber_print(plumber_data *pd, const char *fmt, ...);
+int plumber_cdbtab(plumber_data *pd, int fd, const char *key, sp_ftbl **ft);
 #endif
