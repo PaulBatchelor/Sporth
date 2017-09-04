@@ -134,6 +134,29 @@ int sporth_cdbload(sporth_stack *stack, void *ud)
     return PLUMBER_OK;
 }
 
+int plumber_cdbtab(plumber_data *pd, int fd, const char *key, sp_ftbl **ft)
+{
+    int rc;
+    cdbi_t vlen;
+    char *val;
+    SPFLOAT *tbl;
+
+    rc = cdb_seek(fd, key, strlen(key), &vlen);
+
+
+    if(rc > 0) {
+        val = malloc(vlen);
+        tbl = (SPFLOAT *)val;
+        cdb_bread(fd, val, vlen);
+        sp_ftbl_bind(pd->sp, ft, tbl, vlen / sizeof(SPFLOAT));
+        (*ft)->del = 1;
+        return PLUMBER_OK;
+    } else {
+        return PLUMBER_NOTOK;
+    }
+
+}
+
 int sporth_cdbtab(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
@@ -144,14 +167,10 @@ int sporth_cdbtab(sporth_stack *stack, void *ud)
     const char *bufname;
     sp_ftbl *ft;
     SPFLOAT *tbl;
+    int rc;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
-
-#ifdef DEBUG_MODE
-            plumber_print(pd, "cdbraw: Creating\n");
-#endif
-
             cdb = malloc(sizeof(sporth_cdb_t));
             plumber_add_ugen(pd, SPORTH_CDBTAB, cdb);
 
@@ -169,12 +188,9 @@ int sporth_cdbtab(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
             cdb->val = NULL;
-            if(cdb_seek(*cdb->fd, key, strlen(key), &cdb->vlen) > 0) {
-                cdb->val = malloc(cdb->vlen);
-                cdb_bread(*cdb->fd, cdb->val, cdb->vlen);
-                tbl = (SPFLOAT *)cdb->val;
-                sp_ftbl_bind(pd->sp, &ft, tbl, cdb->vlen/sizeof(SPFLOAT));
-                ft->del = 1;
+            /* if(cdb_seek(*cdb->fd, key, strlen(key), &cdb->vlen) > 0) { */
+            rc = plumber_cdbtab(pd, *cdb->fd, key, &ft);
+            if(rc == PLUMBER_OK) {
                 plumber_ftmap_add(pd, bufname, ft);
             } else {
                 plumber_print(pd,"cdbtab: could not find value from key %s\n", key);
@@ -184,10 +200,6 @@ int sporth_cdbtab(sporth_stack *stack, void *ud)
             break;
 
         case PLUMBER_INIT:
-            
-#ifdef DEBUG_MODE
-            plumber_print(pd, "cdb: Initialising\n");
-#endif
             sporth_stack_pop_string(stack);
             sporth_stack_pop_string(stack);
             sporth_stack_pop_string(stack);
