@@ -138,22 +138,18 @@ int plumber_cdbtab(plumber_data *pd, int fd, const char *key, sp_ftbl **ft)
 {
     int rc;
     cdbi_t vlen;
-    char *val;
-    SPFLOAT *tbl;
+    size_t size;
 
     rc = cdb_seek(fd, key, strlen(key), &vlen);
 
-
-    if(rc > 0) {
-        val = malloc(vlen);
-        tbl = (SPFLOAT *)val;
-        cdb_bread(fd, val, vlen);
-        sp_ftbl_bind(pd->sp, ft, tbl, vlen / sizeof(SPFLOAT));
-        (*ft)->del = 1;
-        return PLUMBER_OK;
-    } else {
+    if(rc <= 0) {
         return PLUMBER_NOTOK;
     }
+
+    size = vlen / sizeof(SPFLOAT);
+    sp_ftbl_create(pd->sp, ft, size);
+    cdb_bread(fd, (*ft)->tbl, vlen);
+    return PLUMBER_OK;
 
 }
 
@@ -166,7 +162,6 @@ int sporth_cdbtab(sporth_stack *stack, void *ud)
     const char *ftname;
     const char *bufname;
     sp_ftbl *ft;
-    SPFLOAT *tbl;
     int rc;
 
     switch(pd->mode) {
