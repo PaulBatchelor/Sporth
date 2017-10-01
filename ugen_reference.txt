@@ -978,3 +978,8 @@ Args: framesize, ftbl
 Output: f
 Description: LPC synth. Manipulate parameters directly. 
 ---
+Name: talkbox
+Args: source, excitation, quality
+Output: f
+Description: high-resolution vocoder
+---

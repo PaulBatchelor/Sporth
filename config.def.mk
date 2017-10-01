@@ -123,6 +123,7 @@ switch \
 t \
 tabread \
 tadsr \
+talkbox \
 tblrec \
 tdiv \
 tenv \
