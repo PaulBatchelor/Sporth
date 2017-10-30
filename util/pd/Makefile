@@ -1,7 +1,7 @@
-default: pd_linux
+default: current
 
 current: 
-	echo make pd_linux
+	@echo Usage: make pd_linux pd_darwin
 
 clean: ; rm -f *.pd_linux *.o *.pd_darwin
 
@@ -48,8 +48,10 @@ pd_darwin: sporth~.pd_darwin
 DARWINCFLAGS = -DPD -O2 -Wall -W -Wshadow -Wstrict-prototypes \
     -Wno-unused -Wno-parentheses -Wno-switch -I/usr/local/include
 
+DARWINLDFLAGS = -L/usr/local/lib -lsporth -lsoundpipe -lsndfile -lm  
+
 .c.pd_darwin:
 	cc $(DARWINCFLAGS) -o $*.o -c $*.c
-	cc -bundle -undefined suppress -flat_namespace -o $*.pd_darwin $*.o -lsporth -lsoundpipe -lsndfile -lm 
+	cc -bundle -undefined suppress -flat_namespace -o $*.pd_darwin $*.o $(DARWINLDFLAGS)
 	rm -f $*.o
 
