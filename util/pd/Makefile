@@ -50,6 +50,6 @@ DARWINCFLAGS = -DPD -O2 -Wall -W -Wshadow -Wstrict-prototypes \
 
 .c.pd_darwin:
 	cc $(DARWINCFLAGS) -o $*.o -c $*.c
-	cc -bundle -undefined suppress -flat_namespace -o $*.pd_darwin $*.o 
+	cc -bundle -undefined suppress -flat_namespace -o $*.pd_darwin $*.o -lsporth -lsoundpipe -lsndfile -lm 
 	rm -f $*.o
 
