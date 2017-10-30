@@ -3,7 +3,7 @@ default: pd_linux
 current: 
 	echo make pd_linux
 
-clean: ; rm -f *.pd_linux *.o
+clean: ; rm -f *.pd_linux *.o *.pd_darwin
 
 # If you're building kona, this is where the kona directory is
 K_PATH=~/playground/kona/kona
@@ -32,8 +32,6 @@ pd_linux: sporth~.pd_linux
 LINUXCFLAGS = -DPD -O2 -funroll-loops -fomit-frame-pointer \
     -Wall -Wno-unused -Wno-parentheses -Wno-switch -fPIC -g
 
-LINUXINCLUDE =  -I../../src -I $(SP_PATH)/h
-
 .c.pd_linux:
 	cc $(LINUXCFLAGS) $(LINUXINCLUDE) -o $*.o -c $*.c
 	#ld -shared -o $*.pd_linux $*.o $(SP_O) $(SPORTH_O) $(K_) -lc -lm -lsndfile
@@ -48,10 +46,10 @@ pd_darwin: sporth~.pd_darwin
 .SUFFIXES: .pd_darwin
 
 DARWINCFLAGS = -DPD -O2 -Wall -W -Wshadow -Wstrict-prototypes \
-    -Wno-unused -Wno-parentheses -Wno-switch
+    -Wno-unused -Wno-parentheses -Wno-switch -I/usr/local/include
 
 .c.pd_darwin:
-	cc $(DARWINCFLAGS) $(LINUXINCLUDE) -o $*.o -c $*.c
+	cc $(DARWINCFLAGS) -o $*.o -c $*.c
 	cc -bundle -undefined suppress -flat_namespace -o $*.pd_darwin $*.o 
 	rm -f $*.o
 
