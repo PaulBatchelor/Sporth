@@ -51,15 +51,6 @@ static pointer scm_noteoff_mode(scheme *sc, pointer args);
 static pointer scm_import(scheme *sc, pointer args);
 static pointer scm_export(scheme *sc, pointer args);
 static pointer scm_mkftbl(scheme *sc, pointer args);
-static pointer scm_line_begin(scheme *sc, pointer args);
-static pointer scm_line_add_reset(scheme *sc, pointer args);
-static pointer scm_line_end(scheme *sc, pointer args);
-static pointer scm_line_linpoint(scheme *sc, pointer args);
-static pointer scm_line_tick(scheme *sc, pointer args);
-static pointer scm_line_exppoint(scheme *sc, pointer args);
-static pointer scm_line_step(scheme *sc, pointer args);
-static pointer scm_line_timescale(scheme *sc, pointer args);
-static pointer scm_line_bpm(scheme *sc, pointer args);
 static pointer scm_bind_clock(scheme *sc, pointer args);
 static pointer scm_note_delay(scheme *sc, pointer args);
 static pointer scm_note_delay_add(scheme *sc, pointer args);
@@ -114,15 +105,6 @@ int ps_scm_load(polysporth *ps, const char *filename)
     PS_FUNC("ps-import", scm_import);
     PS_FUNC("ps-export", scm_export);
     PS_FUNC("ps-mkftbl", scm_mkftbl);
-    PS_FUNC("ps-line-begin", scm_line_begin);
-    PS_FUNC("ps-line-add-reset", scm_line_add_reset);
-    PS_FUNC("ps-line-end", scm_line_end);
-    PS_FUNC("ps-line-linpoint", scm_line_linpoint);
-    PS_FUNC("ps-line-exppoint", scm_line_exppoint);
-    PS_FUNC("ps-line-tick", scm_line_tick);
-    PS_FUNC("ps-line-step", scm_line_step);
-    PS_FUNC("ps-line-timescale", scm_line_timescale);
-    PS_FUNC("ps-line-bpm", scm_line_bpm);
     PS_FUNC("ps-bind-clock", scm_bind_clock);
     PS_FUNC("ps-note-delay", scm_note_delay);
     PS_FUNC("ps-note-delay-zero", scm_note_delay_zero);
@@ -816,132 +798,6 @@ static pointer scm_mkftbl(scheme *sc, pointer args)
     plumber_ftmap_add(pd, ftname, ft);
 
     return mk_cptr(sc, (void **)&ft);
-}
-
-static pointer scm_line_begin(scheme *sc, pointer args)
-{
-    const char *name;
-    polysporth *ps;
-    plumber_data *pd;
-
-    ps = sc->ext_data;
-    pd = &ps->pd;
-
-    name = string_value(car(args));
-    ll_sporth_line(ps->lines, pd, name);
-
-    return sc->NIL;
-}
-
-static pointer scm_line_add_reset(scheme *sc, pointer args)
-{
-    const char *name;
-    polysporth *ps;
-    plumber_data *pd;
-
-    ps = sc->ext_data;
-    pd = &ps->pd;
-
-    name = string_value(car(args));
-    ll_sporth_reset_ugen(ps->lines, pd, name);
-
-    return sc->NIL;
-}
-
-static pointer scm_line_end(scheme *sc, pointer args)
-{
-    polysporth *ps;
-
-    ps = sc->ext_data;
-    ll_end(ps->lines);
-    return sc->NIL;
-}
-
-static pointer scm_line_linpoint(scheme *sc, pointer args)
-{
-    SPFLOAT val;
-    SPFLOAT dur;
-    polysporth *ps;
-
-    ps = sc->ext_data;
-
-    val = rvalue(car(args));
-    args = cdr(args);
-    dur = rvalue(car(args));
-    ll_add_linpoint(ps->lines, val, dur);
-
-    return sc->NIL;
-}
-
-static pointer scm_line_tick(scheme *sc, pointer args)
-{
-    SPFLOAT dur;
-    polysporth *ps;
-
-    ps = sc->ext_data;
-
-    dur = rvalue(car(args));
-    ll_add_tick(ps->lines, dur);
-    return sc->NIL;
-}
-
-static pointer scm_line_exppoint(scheme *sc, pointer args)
-{
-    SPFLOAT val;
-    SPFLOAT dur;
-    SPFLOAT curve;
-    polysporth *ps;
-
-    ps = sc->ext_data;
-
-    val = rvalue(car(args));
-    args = cdr(args);
-    dur = rvalue(car(args));
-    args = cdr(args);
-    curve = rvalue(car(args));
-
-    ll_add_exppoint(ps->lines, val, dur, curve);
-
-    return sc->NIL;
-}
-
-static pointer scm_line_step(scheme *sc, pointer args)
-{
-    SPFLOAT val;
-    SPFLOAT dur;
-    polysporth *ps;
-
-    ps = sc->ext_data;
-
-    val = rvalue(car(args));
-    args = cdr(args);
-    dur = rvalue(car(args));
-    ll_add_step(ps->lines, val, dur);
-    return sc->NIL;
-}
-
-static pointer scm_line_timescale(scheme *sc, pointer args)
-{
-    SPFLOAT scale;
-    polysporth *ps;
-
-    ps = sc->ext_data;
-
-    scale = rvalue(car(args));
-    ll_timescale(ps->lines, scale);
-    return sc->NIL;
-}
-
-static pointer scm_line_bpm(scheme *sc, pointer args)
-{
-    SPFLOAT bpm;
-    polysporth *ps;
-
-    ps = sc->ext_data;
-
-    bpm = rvalue(car(args));
-    ll_timescale_bpm(ps->lines, bpm);
-    return sc->NIL;
 }
 
 static pointer scm_bind_clock(scheme *sc, pointer args)

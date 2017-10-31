@@ -1,6 +1,5 @@
 #ifndef POLYSPORTH_H
 #define POLYSPORTH_H
-#include "line.h"
 enum {
 PS_ON,
 PS_OFF,
@@ -85,10 +84,6 @@ typedef struct polysporth {
 
     /* total number of args */
     int nargs;
-
-    /* libline central control*/
-
-    ll_lines *lines;
 
     SPFLOAT *ptick;
     SPFLOAT tick;

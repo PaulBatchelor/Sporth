@@ -78,13 +78,6 @@ int ps_create(plumber_data *pd, polysporth *ps, int ninstances)
 
     ps->nargs = 0;
 
-    /* set up libline */
-    
-    
-    ps->lines = malloc(ll_lines_size());
-    ll_lines_init(ps->lines, pd->sp->sr);
-    ll_sporth_ugen(ps->lines, &ps->pd, "ll");
-
     /* initialize tick */
 
     ps->tick = 0;
@@ -142,10 +135,6 @@ void ps_clean(polysporth *ps)
     scheme_deinit(&ps->sc);
     free(ps->spl);
 
-    /* clean up libline */
-
-    ll_lines_free(ps->lines);
-    free(ps->lines);
 }
 
 void ps_tick(polysporth *ps)

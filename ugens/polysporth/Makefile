@@ -23,11 +23,6 @@ OBJ += ugens/polysporth/dvector.o \
 
 CFLAGS += -DSTANDALONE=0 -Iugens/polysporth
 
-# libline
-
-OBJ += ugens/polysporth/libline/libline.o
-CFLAGS += -DLL_SPORTH -DLL_SPORTH_UGEN -Iugens/polysporth/libline
-
 ifndef NO_LIBDL
 CFLAGS += -DUSE_DL
 OBJ += ugens/polysporth/dynload.o
