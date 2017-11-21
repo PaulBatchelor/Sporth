@@ -109,6 +109,7 @@ install: $(SPORTHLIBS) sporth sporth.h
 	install ugen_reference.txt /usr/local/share/sporth
 	install util/ugen_lookup /usr/local/bin
 	install util/spparse /usr/local/bin
+	install util/sp_eval_file /usr/local/bin
 	./util/installer.sh $(BIN)
 	./ugens/polysporth/install.sh
 
