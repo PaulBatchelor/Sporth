@@ -80,7 +80,7 @@ util/jacksporth: util/jacksporth.c libsporth.a
 
 sporthdot: util/sporthdot
 util/sporthdot: util/sporthdot.c libsporth.a
-	$(CC) $< $(CFLAGS) -Ih libsporth.a $(LIBS) -lm -ljack -o $@
+	$(CC) $< $(CFLAGS) -Ih libsporth.a $(LIBS) -lm -o $@
 
 lsys: util/lsys
 util/lsys: ugens/lsys.c
