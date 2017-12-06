@@ -427,6 +427,12 @@ int plumbing_parse_string(plumber_data *plumb, plumbing *pipes, const char *str)
         if(err == PLUMBER_NOTOK) break;
     }
 
+    if(plumb->stacksize > 0) {
+            if(plumb->stacksize != plumber_stack_pos(plumb)) {
+                plumber_print(plumb, "Stack overflow in evaluated code.\n");
+                err = PLUMBER_NOTOK;
+            }
+    }
     /* restore tmp */
     plumb->tmp = top_tmp;
     return err;

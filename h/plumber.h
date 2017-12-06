@@ -94,6 +94,7 @@ typedef struct plumber_data {
     sp_progress *prog;
     int showprog;
     int recompile;
+    int stacksize;
     char *str;
 
     FILE *log;
@@ -202,4 +203,8 @@ int polysporth_eval(plumber_ptr *p, const char *str);
 
 void plumber_print(plumber_data *pd, const char *fmt, ...);
 int plumber_cdbtab(plumber_data *pd, int fd, const char *key, sp_ftbl **ft);
+
+int plumber_stack_pos(plumber_data *pd);
+
+void plumber_check_stack(plumber_data *pd, int nitems);
 #endif

@@ -130,3 +130,8 @@ int sporth_stack_init(sporth_stack *stack)
     stack->error = 0;
     return SPORTH_OK;
 }
+
+int sporth_stack_pos(sporth_stack *stack)
+{
+    return stack->pos;
+}

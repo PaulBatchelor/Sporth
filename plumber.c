@@ -53,6 +53,7 @@ int plumber_init(plumber_data *plumb)
     for(pos = 0; pos < 16; pos++) plumb->p[pos] = 0;
     plumb->showprog = 0;
     plumb->log = stderr;
+    plumb->stacksize = -1;
     return PLUMBER_OK;
 }
 
@@ -703,4 +704,14 @@ void plumber_print(plumber_data *pd, const char *fmt, ...)
     vfprintf(pd->log, fmt, args);
     va_end(args);
     fflush(pd->log);
+}
+
+int plumber_stack_pos(plumber_data *pd)
+{
+    return sporth_stack_pos(&pd->sporth.stack);
+}
+
+void plumber_check_stack(plumber_data *pd, int nitems)
+{
+    pd->stacksize = nitems;
 }

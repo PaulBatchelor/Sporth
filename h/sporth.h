@@ -73,6 +73,7 @@ int sporth_register_func(sporth_data *sporth, sporth_func *flist);
 int sporth_exec(sporth_data *sporth, const char *keyword);
 int sporth_init(sporth_data *sporth);
 int sporth_destroy(sporth_data *sporth);
+int sporth_stack_pos(sporth_stack *stack);
 
 int sporth_gettype(sporth_data *sporth, char *str, int mode);
 int sporth_parse(sporth_data *sporth, const char *filename);
