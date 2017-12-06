@@ -15,7 +15,7 @@ static int slist_parse(slist_d *sl, const char *filename, uint32_t size)
     FILE *fp = fopen(filename, "r");
     uint32_t i;
     size_t len = 0;
-    ssize_t read = 0;
+    long read = 0;
     char *line = NULL;
     sl-> list = malloc(sizeof(char *) * size); 
     if(fp == NULL) {

@@ -376,7 +376,7 @@ int plumbing_parse(plumber_data *plumb, plumbing *pipes)
     FILE *fp = plumb->fp;
     char *line = NULL;
     size_t length = 0;
-    ssize_t read;
+    long read;
     char *out;
     uint32_t pos = 0, len = 0;
     int err = PLUMBER_OK;
