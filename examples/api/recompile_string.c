@@ -6,9 +6,17 @@ long counter = 0;
 void process(sp_data *sp, void *ud)
 {
     plumber_data *pd = ud;
-    if(++counter == sp->sr * 3) {
+    counter++;
+    if(counter == sp->sr * 3) {
         plumber_print(pd, "Recompiling!\n");
         plumber_recompile_string(pd, "60 mtof 0.5 saw"); 
+    } else if(counter == sp->sr * 3.5) {
+        plumber_print(pd, 
+            "Trying to compile a string with too few arguments\n");
+        plumber_recompile_string(pd, "mtof 0.5 saw"); 
+    } else if(counter == sp->sr * 3.8) {
+        plumber_print(pd, "Trying to compile a patch with stack overflow\n");
+        plumber_recompile_string(pd, "0 0"); 
     }
     plumber_compute(pd, PLUMBER_COMPUTE);
     SPFLOAT out;
@@ -22,11 +30,14 @@ int main()
     plumber_data pd;
     plumber_register(&pd);
     plumber_init(&pd);
+    /* turn on stack checking to make it mono */
+    plumber_check_stack(&pd, 1);
     pd.sp = sp;
     char *str =
     "0 p 0.2 sine "
     "1 p 0.2 sine "
     "add";
+
     plumber_parse_string(&pd, str);
     plumber_compute(&pd, PLUMBER_INIT);
 
