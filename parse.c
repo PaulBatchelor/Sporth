@@ -291,8 +291,18 @@ size_t sporth_getline(char **lineptr, size_t *n, FILE *stream) {
         c = fgetc(stream);
     }
 
-    *p++ = '\0';
+
     *lineptr = bufptr;
+
+    /* Some text editors do not insert a linebreak on the last line.
+     * For these cases, shift everything by 1.
+     */ 
+
+    if(c == EOF) {
+        p = p + 1;
+        size += 1;
+    } 
+    *p++ = '\0';
     *n = size;
 
     return p - bufptr - 1;
