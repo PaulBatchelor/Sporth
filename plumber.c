@@ -43,6 +43,7 @@ int plumber_init(plumber_data *plumb)
     plumb->pipes= &plumb->main;
     plumb->tmp = &plumb->main;
     plumbing_init(plumb->pipes);
+    plumb->nchan = 1;
     sporth_stack_init(&plumb->sporth.stack);
     plumber_ftmap_delete(plumb, 1);
     plumber_ftmap_init(plumb);
@@ -360,6 +361,7 @@ int plumber_search(plumber_data *plumb, const char *str, plumber_ftbl **ft)
         }
         ftbl = next;
     }
+    plumber_print(plumb,"Could not find an ftable match for %s.\n", str);
     return PLUMBER_NOTOK;
 }
 
@@ -515,7 +517,25 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 }
                 break;
             case 'h':
-                plumber_print(pd, "Usage: sporth input.sp\n");
+                plumber_print(pd,
+"Usage: sporth [options] input.sp\n"
+"options include:\n"
+"    -r (sample rate) [...|44100|48000|96000|...]\n"
+"    -c (# of audio channels, which must match # of stack items left\n"
+"        for every rendered frame of your sporth code) [1|2|...]\n"
+"    -d (duration in seconds, only meaningful in non-realtime rendering)\n"
+"        e.g. -d 6s\n"
+"    -o (output filename in non-realtime mode)\n"
+"    -b (backend output driver) [jack|file|raw|plot|spa]\n"
+"        'jack' is recommended, but you must install 'jackd' package.\n"
+"    -p (jack port #, if using jack. Optional.)\n"
+"    -h (this help, of course!)\n"
+"A simple example for running a stereo sporth process through jack.\n"
+"Runs for an indefinite length:\n"
+"    sporth -r 48000 -c 2 -b jack myinput.sp\n"
+"Another example, non-realtime, using the same input, but writing 11 seconds\n"
+"to a file called 'myoutput.wav', using an samplerate of 44100 and mono:\n"
+"    sporth -d 11s -r 44100 -c 1 -o myoutput.wav myinput.sp\n\n");
                 exit(1);
                 break;
             case 'n':
@@ -575,9 +595,10 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     }
 
     plumber_register(pd);
+    pd->nchan = nchan;
     srand(pd->seed);
     sp_data *sp;
-    sp_createn(&sp, nchan);
+    sp_createn(&sp, pd->nchan);
     strncpy(sp->filename, filename, 60);
     pd->sp = sp;
     sp_srand(pd->sp, pd->seed);
