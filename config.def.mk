@@ -80,6 +80,7 @@ osc \
 oscmorph \
 p \
 pan \
+panst \
 pareq \
 paulstretch \
 pdhalf \

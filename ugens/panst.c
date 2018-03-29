@@ -51,7 +51,7 @@ int sporth_panst(sporth_stack *stack, void *ud)
             in_left = sporth_stack_pop_float(stack);
             panst = pd->last->ud;
             panst->pan = pan;
-            sp_panst_compute(pd->sp, panst, &in_left, &out_left, &out_left, &out_right);
+            sp_panst_compute(pd->sp, panst, &in_left, &in_right, &out_left, &out_right);
             sporth_stack_push_float(stack, out_left);
             sporth_stack_push_float(stack, out_right);
             break;
