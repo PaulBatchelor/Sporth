@@ -91,7 +91,7 @@ CK_DLL_CTOR(sporth_ctor)
     data->in = 0;
     sp_create(&data->sp);
     sp_srand(data->sp, rand());
-    data->sp->sr = API->vm->get_srate();
+    data->sp->sr = API->vm->get_srate(API, SHRED);
     plumber_register(&data->pd);
     data->pd.sporth.flist[SPORTH_IN - SPORTH_FOFFSET].func = sporth_chuck_in;
     plumber_init(&data->pd);
@@ -145,7 +145,7 @@ CK_DLL_MFUN(sporth_set_table)
     float val = GET_NEXT_FLOAT(ARGS);
     
     Chuck_String * ckstring = GET_CK_STRING(ARGS);
-    const char * cstr = ckstring->str.c_str();
+    const char * cstr = ckstring->c_str();
     char *ftname= (char *)malloc(strlen(cstr) + 1);
     ftname = strdup(cstr);
 
@@ -182,7 +182,7 @@ CK_DLL_MFUN(sporth_get_table)
     sp_ftbl *ft;
     
     Chuck_String * ckstring = GET_CK_STRING(ARGS);
-    const char * cstr = ckstring->str.c_str();
+    const char * cstr = ckstring->c_str();
     char *ftname= (char *)malloc(strlen(cstr) + 1);
     ftname = strdup(cstr);
 
@@ -216,7 +216,7 @@ CK_DLL_MFUN(sporth_parse_string)
 {
     sporthData * data = (sporthData *) OBJ_MEMBER_INT(SELF, sporth_data_offset);
     Chuck_String * ckstring = GET_CK_STRING(ARGS);
-    const char * cstr = ckstring->str.c_str();
+    const char * cstr = ckstring->c_str();
     char *str = (char *)malloc(strlen(cstr) + 1);
     str = strdup(cstr);
     if(!data->parsed) {
@@ -234,7 +234,7 @@ CK_DLL_MFUN(sporth_parse_file)
 {
     sporthData * data = (sporthData *) OBJ_MEMBER_INT(SELF, sporth_data_offset);
     Chuck_String * ckstring = GET_CK_STRING(ARGS);
-    const char * cstr = ckstring->str.c_str();
+    const char * cstr = ckstring->c_str();
     char *str = (char *)malloc(strlen(cstr) + 1);
     str = strdup(cstr);
 
