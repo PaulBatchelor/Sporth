@@ -827,6 +827,54 @@ int sporth_mtof(sporth_stack *stack, void *ud)
     return PLUMBER_OK;
 }
 
+SPFLOAT sporth_edo_helper(SPFLOAT nn, SPFLOAT edo)
+{
+    return pow(2, nn / edo) * 261.6255653005986;
+}
+
+/* edo = "equal division of the octave". */
+int sporth_edo(sporth_stack *stack, void *ud)
+{
+    if(stack->error > 0) return PLUMBER_NOTOK;
+
+    plumber_data *pd = ud;
+    SPFLOAT nn;
+    SPFLOAT edo;
+    switch(pd->mode){
+        case PLUMBER_CREATE:
+            plumber_add_ugen(pd, SPORTH_EDO, NULL);
+            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
+                stack->error++;
+                return PLUMBER_NOTOK;
+            }
+            edo = sporth_stack_pop_float(stack);
+            nn = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, sporth_edo_helper(nn, edo));
+            break;
+        case PLUMBER_INIT:
+            edo = sporth_stack_pop_float(stack);
+            nn = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, sporth_edo_helper(nn, edo));
+            break;
+        case PLUMBER_COMPUTE:
+            if(sporth_check_args(stack, "ff") != SPORTH_OK) {
+                return PLUMBER_NOTOK;
+            }
+            edo = sporth_stack_pop_float(stack);
+            nn = sporth_stack_pop_float(stack);
+            sporth_stack_push_float(stack, sporth_edo_helper(nn, edo));
+            break;
+        case PLUMBER_DESTROY:
+            break;
+        default:
+            plumber_print(pd,"Error: Unknown mode!");
+            stack->error++;
+            return PLUMBER_NOTOK;
+            break;
+    }
+    return PLUMBER_OK;
+}
+
 int sporth_eq(sporth_stack *stack, void *ud)
 {
     if(stack->error > 0) return PLUMBER_NOTOK;
