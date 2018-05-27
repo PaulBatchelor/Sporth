@@ -111,9 +111,7 @@ Description: Converts MIDI note number to Hz.
 Name: edo
 Args: pitch_num (f), edo (f)
 Output: f
-Description: Return a pitch that divides an octave into `edo` steps.
-             `pitch_num` sets to 0 always equals Middle-C, ~261.6255 HZ.
-             Negative `pitch_num` will go below middle-C.
+Description: Return a pitch that divides an octave into `edo` steps. `pitch_num` set to 0 always equals Middle-C, ~261.6255 HZ. Negative `pitch_num` will go below middle-C.
 ---
 Name: dup
 Args: f
