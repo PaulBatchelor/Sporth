@@ -827,7 +827,7 @@ int sporth_mtof(sporth_stack *stack, void *ud)
     return PLUMBER_OK;
 }
 
-SPFLOAT sporth_edo_helper(SPFLOAT nn, SPFLOAT edo)
+static SPFLOAT sporth_edo_helper(SPFLOAT nn, SPFLOAT edo)
 {
     return pow(2, nn / edo) * 261.6255653005986;
 }
