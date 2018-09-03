@@ -1,4 +1,4 @@
-/* 
+/*
  * ftable.c
  * This example will compile Sporth code that references a Soundpipe ftable
  *
@@ -24,7 +24,7 @@ static void process(sp_data *sp, void *udp)
     sp->out[0] = sporth_stack_pop_float(&pd->sporth.stack);
 }
 
-int main() 
+int main()
 {
     UserData ud;
 
@@ -37,16 +37,16 @@ int main()
     sp_ftbl_create(ud.sp, &ud.seq, 1);
     /* Gen_vals will create a table from a string of numbers */
     sp_gen_vals(ud.sp, ud.seq, "60 63 67 72");
-    
+
     /* Sporth code to be parsed, using a ftable generated in c called 'seq' */
-    char *str = 
+    char *str =
         "0.1 dmetro "
         "0 'seq' tseq "
         "0.01 port mtof "
         "0.5 1 1 1 fm";
 
     /* Tell plumber that that we will take care of removing the following ftables */
-    /* This is needed for persistant ftables that don't get cleaned for 
+    /* This is needed for persistant ftables that don't get cleaned for
      * recompilation */
     plumber_ftmap_delete(&ud.pd, 0);
     /* add ftable to plumber and call it "seq" */

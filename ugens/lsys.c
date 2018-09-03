@@ -1,4 +1,4 @@
-/* 
+/*
  * LSYS
  * Yet Another Micro-language by Paul Batchelor
  *
@@ -18,7 +18,7 @@
  * N | output
  * ----------
  * 1 | a
- * 2 | ab 
+ * 2 | ab
  * 3 | aba
  * 4 | abaab
  * 5 | abaababa
@@ -29,19 +29,19 @@
  *
  * ## LSYS in Sporth
  *
- * LSYS is implemented as a Sporth UGen, which takes in 
+ * LSYS is implemented as a Sporth UGen, which takes in
  * 3 arguments. From left to right, they are:
  *
  * 1. trigger signal, which iterates through the L-System
  * 2. The order N of the L-System (init-time only)
  * 3. The code itself.
  *
- * The signal output by the LSYS ugen a number in 
+ * The signal output by the LSYS ugen a number in
  * the range of 0-35, which correspond to the base-36
  * numbering system:
  *
  * 0123456789abcdefghijklmnopqrstuvwxyz
- * 
+ *
  * In the example above, the signal would be alternating between
  * 10 and 11.
  *
@@ -77,11 +77,11 @@ MODE_AXIOM
 typedef struct {
     int val;
     unsigned int start;
-    unsigned int end; 
+    unsigned int end;
 } lsys_entry;
 
 typedef struct {
-    lsys_entry ent[37]; 
+    lsys_entry ent[37];
     unsigned int pos;
     int mode;
     int cur;
@@ -100,7 +100,7 @@ typedef struct {
 
 
 static int toint(unsigned char a) {
-    if(a >= 97) 
+    if(a >= 97)
         return a - 87;
     else
         return a - 48;
@@ -133,7 +133,7 @@ static int lsys_init(lsys_d *ls)
     return 0;
 }
 
-static unsigned int lsys_parse(lsys_d *ls, 
+static unsigned int lsys_parse(lsys_d *ls,
     const char *ref, const char *str, unsigned int len)
 {
     ls->pos++;
@@ -200,7 +200,7 @@ static int lsys_list_append(lsys_d *lsys, lsys_list *lst, char c)
     return 0;
 }
 
-static int lsys_make_list(lsys_d *lsys, 
+static int lsys_make_list(lsys_d *lsys,
     lsys_list *lst, const char *str, char c, int N)
 {
     if(N > 0) {
@@ -220,7 +220,7 @@ static int lsys_make_list(lsys_d *lsys,
         lsys_list_append(lsys, lst, c);
     }
     return 0;
-} 
+}
 
 static void lsys_list_reset(lsys_list *lst)
 {
@@ -231,7 +231,7 @@ static unsigned int lsys_list_iter(lsys_list *lst, lsys_entry **ent, unsigned po
 {
     if(pos == 0) {
         lsys_list_reset(lst);
-    }     
+    }
     *ent = lst->last->ent;
     lst->last = lst->last->nxt;
     return (pos + 1) % lst->size;
@@ -317,17 +317,17 @@ int sporth_lsys(sporth_stack *stack, void *ud)
             sporth_stack_pop_float(stack);
 
             if(sporth_stack_pop_float(stack) != 0 && lsys->lst.size > 0) {
-                lsys->pos = lsys_list_iter(&lsys->lst, 
+                lsys->pos = lsys_list_iter(&lsys->lst,
                     &lsys->ent,
                     lsys->pos);
                 lsys->init = 0;
             }
 
-            if(lsys->init) 
+            if(lsys->init)
                 sporth_stack_push_float(stack, -1);
             else
                 sporth_stack_push_float(stack, lsys->ent->val + 1);
-                
+
             break;
         case PLUMBER_DESTROY:
             lsys = pd->last->ud;
@@ -341,6 +341,3 @@ int sporth_lsys(sporth_stack *stack, void *ud)
     return PLUMBER_OK;
 }
 #endif
-
-
-

@@ -185,8 +185,8 @@ int sporth_pst(sporth_stack *stack, void *ud)
             id = sporth_stack_pop_float(stack);
             tog = sporth_stack_pop_float(stack);
 
-            id = plumber_ftmap_search_userdata(pd, ftname, (void **)ps); 
-            if(id != PLUMBER_OK) { 
+            id = plumber_ftmap_search_userdata(pd, ftname, (void **)ps);
+            if(id != PLUMBER_OK) {
                 plumber_print(pd, "pst: could not find table %s\n", ftname);
                 return PLUMBER_NOTOK;
             }
@@ -205,7 +205,7 @@ int sporth_pst(sporth_stack *stack, void *ud)
             ps = pd->last->ud;
             id = sporth_stack_pop_float(stack);
             tog = sporth_stack_pop_float(stack);
-            tmp = compute_sample(*ps, tog, id); 
+            tmp = compute_sample(*ps, tog, id);
             sporth_stack_push_float(stack, tmp);
             break;
         case PLUMBER_DESTROY:
@@ -218,4 +218,3 @@ int sporth_pst(sporth_stack *stack, void *ud)
     return PLUMBER_OK;
 #endif
 }
-

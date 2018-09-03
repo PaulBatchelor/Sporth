@@ -88,7 +88,7 @@ int ps_create(plumber_data *pd, polysporth *ps, int ninstances)
     return PLUMBER_OK;
 }
 
-void ps_setup_outtable(plumber_data *pd, polysporth *ps, 
+void ps_setup_outtable(plumber_data *pd, polysporth *ps,
         const char *out_tbl)
 {
     sp_ftbl_create(pd->sp, &ps->out, ps->ninstances);
@@ -207,7 +207,7 @@ void ps_compute(polysporth *ps)
             do_shutup = 1;
         }
     }
-  
+
     /* there has to be a better way... */
     /* top_of_list(ps); */
     spl = ps->root.next;
@@ -330,7 +330,7 @@ static int find_free_voice(polysporth *ps, int grp_start, int grp_end)
     }
     for(i = grp_start; i <= grp_end; i++) {
         /* check if sporthlet is off or is about to be off */
-        if(ps->spl[i].state == PS_OFF || 
+        if(ps->spl[i].state == PS_OFF ||
             (ps->spl[i].dur == 0 && ps->spl[i].noteoff == 0)) {
             /* turn off sporthlet early */
             if(ps->spl[i].state == PS_ON) {

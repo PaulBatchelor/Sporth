@@ -1220,7 +1220,7 @@ static pointer mk_sharp_const(scheme *sc, char *name) {
 
 void shouldnothappen()
 {
-    printf("this shouldn't be happening\n"); 
+    printf("this shouldn't be happening\n");
 }
 
 static void mark(pointer a) {
@@ -4004,7 +4004,7 @@ static pointer opexe_4(scheme *sc, enum scheme_opcodes op) {
 
      case OP_CURR_ENV: /* current-environment */
           s_return(sc,sc->envir);
-     default: break;        
+     default: break;
      }
      return sc->T;
 }
@@ -4720,7 +4720,7 @@ int scheme_init_custom_alloc(scheme *sc, func_alloc malloc, func_dealloc free) {
   car(sc->sink) = sc->NIL;
   /* init c_nest */
   sc->c_nest = sc->NIL;
-  
+
   /* set up memory cupboard */
   sc->cupboard = &sc->_cupboard;
   typeflag(sc->cupboard) = (T_PAIR | MARK);

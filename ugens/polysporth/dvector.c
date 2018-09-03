@@ -4,7 +4,7 @@
 #include "scheme-private.h"
 #include "polysporth.h"
 
-void dvector_print(dvector *dv) 
+void dvector_print(dvector *dv)
 {
     if(dv->size == 0) {
         printf("The vector is empty!\n");
@@ -27,8 +27,8 @@ void dvector_append_value(dvector *dv, dvalue *new)
     dv->size++;
 }
 
-void dvector_append(dvector *dv, 
-    int grp_start, int grp_end, int delta, int dur, 
+void dvector_append(dvector *dv,
+    int grp_start, int grp_end, int delta, int dur,
     SPFLOAT *args, int nargs)
 {
     dvalue *new = malloc(sizeof(dvalue));
@@ -52,7 +52,7 @@ void dvector_append_metanote(dvector *dv, int start, pointer func)
     dvector_append_value(dv, new);
 }
 
-void dvector_init(dvector *dv) 
+void dvector_init(dvector *dv)
 {
     dv->size = 0;
     dv->last = &dv->root;
@@ -85,12 +85,12 @@ dvector dvector_merge(dvector *dvect1, dvector *dvect2)
 
     dvector new, *tmp;
     dvector_init(&new);
- 
+
     if(dvect1->size < dvect2->size) {
         tmp = dvect1;
         dvect1 = dvect2;
-        dvect2 = tmp; 
-    } 
+        dvect2 = tmp;
+    }
 
     dvalue *val1 = dvect1->root.next;
     dvalue *val2 = dvect2->root.next;
@@ -113,7 +113,7 @@ dvector dvector_merge(dvector *dvect1, dvector *dvect2)
             if(dv1_pos < dvect1->size) {
                 val1 = val1->next;
                 dv1_t += val1->delta;
-            } 
+            }
         } else {
             dv2_pos++;
             out_d = dv2_t - out_t;

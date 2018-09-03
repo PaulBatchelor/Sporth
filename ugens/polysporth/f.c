@@ -10,7 +10,7 @@
 #define cdr(p) ((p)->_object._cons._cdr)
 #define PS_FUNC(NAME, FUNC) scheme_define(sc, sc->global_env, \
         mk_symbol(sc, NAME), \
-        mk_foreign_func(sc, FUNC)) 
+        mk_foreign_func(sc, FUNC))
 
 
 static pointer scm_eval(scheme *sc, pointer args);
@@ -220,10 +220,10 @@ static pointer scm_lexer(scheme *sc, pointer args)
     sporthlet *spl= &ps->spl[id];
     int prev_mode = ps->pd.mode;
     ps->pd.mode = PLUMBER_CREATE;
-    old_tmp = ps->pd.tmp; 
-    ps->pd.tmp = &spl->pipes; 
+    old_tmp = ps->pd.tmp;
+    ps->pd.tmp = &spl->pipes;
     plumber_lexer(&ps->pd, &spl->pipes, (char *)str, size);
-    ps->pd.tmp = old_tmp; 
+    ps->pd.tmp = old_tmp;
     ps->pd.mode = prev_mode;
     return sc->NIL;
 }
@@ -289,16 +289,16 @@ static pointer scm_note(scheme *sc, pointer args)
     fprintf(stderr, "ps-note: adding value\n");
 #endif
     polysporth *ps = sc->ext_data;
-    int grp_start = 
+    int grp_start =
         (int)ivalue(car(args));
     args = cdr(args);
-    int grp_end = 
+    int grp_end =
         (int)ivalue(car(args));
     args = cdr(args);
-    int start = 
+    int start =
         (int)ivalue(car(args));
     args = cdr(args);
-    int dur = 
+    int dur =
         (int)ivalue(car(args));
     args = cdr(args);
     /* add release value to duration */
@@ -526,9 +526,9 @@ static pointer scm_argset(scheme *sc, pointer args)
 static pointer scm_path(scheme *sc, pointer args)
 {
     const char *path = getenv("POLYSPORTH_PLUGIN_PATH");
-    if(path != NULL) 
+    if(path != NULL)
         return mk_string(sc, path);
-    else 
+    else
         return mk_string(sc, "/usr/local/share/sporth/polysporth");
 }
 
@@ -558,7 +558,7 @@ static pointer scm_writecode(scheme *sc, pointer args)
     id = ivalue(car(args));
     args = cdr(args);
     filename = string_value(car(args));
-    
+
     fp = fopen(filename, "w");
     spl = &ps->spl[id];
     plumbing_write_code(&ps->pd, &spl->pipes, fp);
@@ -589,7 +589,7 @@ static pointer scm_talias(scheme *sc, pointer args)
         plumber_print(pd, "talias: could not find table '%s'\n", ftname);
         return sc->NIL;
     }
-       
+
     var = &ft->tbl[index];
 
     plumber_ftmap_delete(pd, 0);
@@ -701,10 +701,10 @@ static pointer scm_noteoff_mode(scheme *sc, pointer args)
 {
     int id;
     polysporth *ps;
-    
+
     ps = sc->ext_data;
     id = ivalue(car(args));
-  
+
     ps_sporthlet_mode_noteoff(ps, id);
 
     return sc->NIL;
@@ -804,12 +804,12 @@ static pointer scm_bind_clock(scheme *sc, pointer args)
 {
     polysporth *ps;
     const char *name;
-    
+
     ps = sc->ext_data;
     name = string_value(car(args));
 
     if(ps_bind_clock(ps, name) != PLUMBER_OK) {
-        plumber_print(&ps->pd, 
+        plumber_print(&ps->pd,
             "scm-bind-clock: could not find variable %s\n",
             name);
     }

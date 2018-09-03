@@ -63,7 +63,7 @@ static void sp_jack_shutdown (void *arg)
     exit (1);
 }
 
-int sp_process_jack(plumber_data *pd, 
+int sp_process_jack(plumber_data *pd,
         void *ud, void (*callback)(sp_data *, void *), int port, int wait)
 {
     const char *server_name = NULL;
@@ -92,7 +92,7 @@ int sp_process_jack(plumber_data *pd,
 
     jd.output_port = malloc(sizeof(jack_port_t *) * sp->nchan);
     jd.client = malloc(sizeof(jack_client_t *));
-   
+
     jd.client[0] = jack_client_open (client_name, options, &status, server_name);
     if (jd.client[0] == NULL) {
         fprintf (stderr, "jack_client_open() failed, "
@@ -148,9 +148,9 @@ int sp_process_jack(plumber_data *pd,
 
 #ifdef LIVE_CODING
     sporth_listener *sl = &jd.sl;
-    sl->portno = port; 
+    sl->portno = port;
     sl->pd = pd;
-    sporth_start_listener(sl); 
+    sporth_start_listener(sl);
     sl->start = 1;
 #endif
     jd.run = 1;

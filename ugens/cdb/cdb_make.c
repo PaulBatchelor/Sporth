@@ -180,4 +180,3 @@ cdb_make_finish(struct cdb_make *cdbmp)
   cdb_make_free(cdbmp);
   return r;
 }
-

@@ -63,12 +63,12 @@ typedef struct polysporth {
     sporthlet *last;
 
     /* Delta Vector Event list */
-    dvector events; 
+    dvector events;
 
     /* temp list for notelists */
     dvector tmp;
     int noteblock;
-    
+
     sp_ftbl *args;
 
     /* pointers for callbacks */
@@ -92,7 +92,7 @@ typedef struct polysporth {
 } polysporth;
 
 int ps_create(plumber_data *pd, polysporth *ps, int ninstances);
-void ps_setup_outtable(plumber_data *pd, polysporth *ps, 
+void ps_setup_outtable(plumber_data *pd, polysporth *ps,
         const char *out_tbl);
 void ps_setup_argtable(plumber_data *pd, polysporth *ps, const char *name);
 void ps_init(polysporth *ps);
@@ -100,8 +100,8 @@ void ps_clean(polysporth *ps);
 void ps_compute(polysporth *ps);
 void dvector_print(dvector *dv);
 void dvector_append_value(dvector *dv, dvalue *new);
-void dvector_append(dvector *dv, 
-    int grp_start, int grp_end, int delta, int dur, 
+void dvector_append(dvector *dv,
+    int grp_start, int grp_end, int delta, int dur,
     SPFLOAT *args, int nargs);
 void dvector_append_metanote(dvector *dv, int start, pointer func);
 void dvector_init(dvector *dv);

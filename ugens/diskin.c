@@ -51,7 +51,7 @@ int sporth_diskin(sporth_stack *stack, void *ud)
             break;
     }
     return PLUMBER_OK;
-#else 
+#else
     return PLUMBER_OK;
 #endif
 }

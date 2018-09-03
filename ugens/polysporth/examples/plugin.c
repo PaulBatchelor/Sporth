@@ -20,10 +20,10 @@ static pointer plugin_function(scheme *sc, pointer args) {
     /* second argument is a string */
     char *str = string_value(car(args));
     printf("the second argument is %s\n", str);
-   
+
     /* pop the argument */
     args = cdr(args);
-    
+
     /* second argument is a float*/
     SPFLOAT flt  = rvalue(car(args));
     printf("the third argument is %g\n", flt);
@@ -32,9 +32,9 @@ static pointer plugin_function(scheme *sc, pointer args) {
     return mk_real(sc, 0.2468);
 }
 
-void init_plugin(scheme *sc) 
+void init_plugin(scheme *sc)
 {
-    scheme_define(sc, sc->global_env, 
-        mk_symbol(sc, "plugin"), 
+    scheme_define(sc, sc->global_env,
+        mk_symbol(sc, "plugin"),
         mk_foreign_func(sc, plugin_function));
 }

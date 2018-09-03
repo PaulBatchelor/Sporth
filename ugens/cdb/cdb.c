@@ -539,4 +539,3 @@ int main(int argc, char **argv)
     error(errno, "unable to write: %d", c);
   return r;
 }
-

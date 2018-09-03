@@ -60,43 +60,43 @@ again:
         if(!strncmp((str + t[i].start), "0x", 2)) {
             memset(buf, 0, 256);
             char *tmp;
-            strncpy(buf, 
-                &str[t[i + 1].start], 
+            strncpy(buf,
+                &str[t[i + 1].start],
                 t[i + 1].end - t[i + 1].start);
             FILE *data = fopen(buf, "rb+");
             if(data == NULL) {
                 printf("Couldn't open file %s\n", filename);
-            } 
+            }
             fseek(data, 0, SEEK_END);
             size_t size = ftell(data);
             tmp = malloc(size * sizeof(char));
             fseek(data, 0, SEEK_SET);
             fread(tmp, sizeof(char), size, data);
 
-            cdb_make_add(cdbm, 
-                    &str[t[i].start + 2], 
+            cdb_make_add(cdbm,
+                    &str[t[i].start + 2],
                     (t[i].end - t[i].start) - 2,
                     tmp, size);
             fclose(data);
             free(tmp);
         } else if(!strncmp((str + t[i].start), "Wx", 2)) {
             memset(buf, 0, 256);
-            strncpy(buf, 
-                &str[t[i + 1].start], 
+            strncpy(buf,
+                &str[t[i + 1].start],
                 t[i + 1].end - t[i + 1].start);
             sp_ftbl_loadfile(sp, &ft, buf);
-             
-            cdb_make_add(cdbm, 
-                    &str[t[i].start + 2], 
+
+            cdb_make_add(cdbm,
+                    &str[t[i].start + 2],
                     (t[i].end - t[i].start) - 2,
                     ft->tbl, sizeof(SPFLOAT) * ft->size);
             sp_ftbl_destroy(&ft);
 
         } else {
-            cdb_make_add(cdbm, 
-                    &str[t[i].start], 
+            cdb_make_add(cdbm,
+                    &str[t[i].start],
                     t[i].end - t[i].start,
-                    &str[t[i + 1].start], 
+                    &str[t[i + 1].start],
                     t[i + 1].end - t[i + 1].start);
         }
     }
@@ -111,7 +111,7 @@ again:
 int main(int argc, char **argv)
 {
     if(argc < 3) {
-        fprintf(stderr, "%s out.db file1.json file2.json ... fileN.json\n", 
+        fprintf(stderr, "%s out.db file1.json file2.json ... fileN.json\n",
                 argv[0]);
         return 0;
     }
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 
     int i;
     for(i = 0; i < argc; i++) {
-        parse_json(&cdbm, argv[0]); 
+        parse_json(&cdbm, argv[0]);
         argv++;
     }
 
