@@ -11,7 +11,7 @@ typedef struct {
 
 typedef struct {
     char label[256];
-    int tick;    
+    int tick;
 } sporthdot_stacklet;
 
 sporthdot_entry tbl[] = {
@@ -47,7 +47,7 @@ void sd_init(sporthdot *sd)
 int sd_pop(sporthdot *sd, const char *func)
 {
     if(sd->stack_pos == 0) {
-        fprintf(stderr, "%s_%d: not enough arguments on the stack!. Bye.\n", 
+        fprintf(stderr, "%s_%d: not enough arguments on the stack!. Bye.\n",
                 func, sd->pipe_pos);
         return 0;
     }
@@ -105,18 +105,18 @@ void sd_push_func(sporthdot *sd, uint32_t type)
             break;
     }
 
-    fprintf(sd->fp, "%s_%d [label=\"%s\",shape=\"box\"]\n", 
+    fprintf(sd->fp, "%s_%d [label=\"%s\",shape=\"box\"]\n",
             var, sd->pipe_pos, label);
 
     for(i = 0; i < ent->ninputs; i++) {
         sd_pop(sd, var);
     }
-    
+
     if(ent->noutputs != 0) {
         sd->stack_pos++;
         sporthdot_stacklet *stack = &sd->stack[sd->stack_pos - 1];
         stack->tick = ent->noutputs;
-        sprintf(stack->label, "%s_%d", var, sd->pipe_pos);  
+        sprintf(stack->label, "%s_%d", var, sd->pipe_pos);
     }
 
 }

@@ -51,7 +51,7 @@ static t_int *sporth_perform(t_int *w)
         x->pd.fp = NULL;
     } else if(x->please_parse == 2) {
         x->please_parse = 0;
-        if(x->whichbuf) { 
+        if(x->whichbuf) {
             plumber_recompile_string_v2(&x->pd, x->buf1, x, add_ugens);
         } else {
             plumber_recompile_string_v2(&x->pd, x->buf0, x, add_ugens);
@@ -93,7 +93,7 @@ static void *sporth_new(void)
     return (x);
 }
 
-static void sporth_free(t_sporth *x) 
+static void sporth_free(t_sporth *x)
 {
     printf("freeing!\n");
     plumber_clean(&x->pd);
@@ -166,12 +166,12 @@ static void parse (t_sporth *x, t_symbol *s, int ac, t_atom *av)
 void sporth_tilde_setup(void)
 {
     sporth_class = class_new(
-            gensym("sporth~"), 
-            (t_newmethod)sporth_new, 
-            (t_method)sporth_free, 
-    	    sizeof(t_sporth), 
-            0, 
-            A_DEFFLOAT, 
+            gensym("sporth~"),
+            (t_newmethod)sporth_new,
+            (t_method)sporth_free,
+    	    sizeof(t_sporth),
+            0,
+            A_DEFFLOAT,
             0);
 
 	    /* this is magic to declare that the leftmost, "main" inlet
@@ -253,10 +253,10 @@ static int sporth_pdsend(plumber_data *pd, sporth_stack *stack, void **ud)
             tab = sporth_stack_pop_string(stack);
             sporth_stack_pop_float(stack);
 
-            ps->pdarray = 
+            ps->pdarray =
                 (t_garray *)pd_findbyclass(gensym(tab), garray_class);
             if(ps->pdarray != NULL) {
-                garray_getfloatwords(ps->pdarray, &ps->size, &ps->pdarray_vec); 
+                garray_getfloatwords(ps->pdarray, &ps->size, &ps->pdarray_vec);
 
                 if(ps->size < BLKSIZE) {
                     post("sporth~: array %s should have size of %d or more\n",

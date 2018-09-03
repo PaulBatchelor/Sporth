@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main() 
+int main()
 {
     FILE *fp = stdin;
     char *line = NULL;

@@ -200,4 +200,3 @@ cdb_make_put(struct cdb_make *cdbmp,
 
   return r;
 }
-

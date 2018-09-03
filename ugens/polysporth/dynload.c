@@ -128,7 +128,7 @@ static void make_filename(const char *name, char *filename) {
         strcpy(filename,name);
         strcat(filename,SUFFIX);
     } else {
-        sprintf(filename, "%s/%s%s", 
+        sprintf(filename, "%s/%s%s",
                 getenv("POLYSPORTH_PLUGIN_PATH"),
                 name,
                 SUFFIX);

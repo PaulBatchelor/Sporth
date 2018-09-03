@@ -9,14 +9,14 @@ void process(sp_data *sp, void *ud)
     counter++;
     if(counter == sp->sr * 3) {
         plumber_print(pd, "Recompiling!\n");
-        plumber_recompile_string(pd, "60 mtof 0.5 saw"); 
+        plumber_recompile_string(pd, "60 mtof 0.5 saw");
     } else if(counter == sp->sr * 3.5) {
-        plumber_print(pd, 
+        plumber_print(pd,
             "Trying to compile a string with too few arguments\n");
-        plumber_recompile_string(pd, "mtof 0.5 saw"); 
+        plumber_recompile_string(pd, "mtof 0.5 saw");
     } else if(counter == sp->sr * 3.8) {
         plumber_print(pd, "Trying to compile a patch with stack overflow\n");
-        plumber_recompile_string(pd, "0 0"); 
+        plumber_recompile_string(pd, "0 0");
     }
     plumber_compute(pd, PLUMBER_COMPUTE);
     SPFLOAT out;

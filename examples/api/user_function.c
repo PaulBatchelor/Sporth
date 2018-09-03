@@ -101,16 +101,16 @@ int main(int argc, char *argv[])
     pd.sp = sp;
     plumber_register(&pd);
     plumber_init(&pd);
-    
+
     char *sporth_string = "8 metro 14 0 count 250 _bp f 0.5 sine";
 
-    bp_data bd; 
+    bp_data bd;
     plumber_ftmap_add_function(&pd, "bp", bp2frq, &bd);
 
     if(plumber_parse_string(&pd, sporth_string) == PLUMBER_OK) {
         plumber_compute(&pd, PLUMBER_INIT);
-    } 
-    
+    }
+
     sp_process(sp, &pd, process);
 
     plumber_clean(&pd);

@@ -65,4 +65,3 @@ int sporth_panst(sporth_stack *stack, void *ud)
     }
     return PLUMBER_OK;
 }
-

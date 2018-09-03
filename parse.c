@@ -296,12 +296,12 @@ size_t sporth_getline(char **lineptr, size_t *n, FILE *stream) {
 
     /* Some text editors do not insert a linebreak on the last line.
      * For these cases, shift everything by 1.
-     */ 
+     */
 
     if(c == EOF) {
         p = p + 1;
         size += 1;
-    } 
+    }
     *p++ = '\0';
     *n = size;
 
@@ -343,7 +343,7 @@ int plumber_lexer(plumber_data *plumb, plumbing *pipes, char *out, uint32_t len)
         case SPORTH_WORD:
             /* A sporth word is like a string, except it looks like _this
              * instead of "this" or 'this'.
-             * It saves a character, and it can make things look nicer. 
+             * It saves a character, and it can make things look nicer.
              * A sporth word has no spaces, hence the name.
              */
             tmp = out;
@@ -453,7 +453,7 @@ int plumber_parse(plumber_data *plumb)
     return plumbing_parse(plumb, plumb->pipes);
 }
 
-int plumber_reparse(plumber_data *plumb) 
+int plumber_reparse(plumber_data *plumb)
 {
     plumbing *pipes = plumb->tmp;
     if(plumbing_parse(plumb, pipes) == PLUMBER_OK) {
@@ -464,15 +464,15 @@ int plumber_reparse(plumber_data *plumb)
         plumber_print(plumb, "%d errors\n",
                 plumb->sporth.stack.error);
 #endif
-        plumb->tmp = pipes; 
+        plumb->tmp = pipes;
     } else {
-        plumb->tmp = pipes; 
+        plumb->tmp = pipes;
         return PLUMBER_NOTOK;
     }
     return PLUMBER_OK;
 }
 
-int plumber_reparse_string(plumber_data *plumb, char *str) 
+int plumber_reparse_string(plumber_data *plumb, char *str)
 {
     plumbing *pipes = plumb->tmp;
     if(plumbing_parse_string(plumb, pipes, str) == PLUMBER_OK) {
@@ -557,8 +557,8 @@ int plumber_recompile_string(plumber_data *plumb, char *str)
  * to be called after it is reinitialized, but before the string
  * is parsed. Useful for adding global ftables.
  */
-int plumber_recompile_string_v2(plumber_data *plumb, 
-        char *str, 
+int plumber_recompile_string_v2(plumber_data *plumb,
+        char *str,
         void *ud,
         int (*callback)(plumber_data *, void *))
 {
@@ -577,7 +577,7 @@ int plumber_recompile_string_v2(plumber_data *plumb,
 }
 
 int plumber_recompile_v2(plumber_data *plumb,
-        void *ud, 
+        void *ud,
         int (*callback)(plumber_data *, void *))
 {
     int error;
@@ -592,4 +592,3 @@ int plumber_parse_string(plumber_data *plumb, const char *str)
 {
     return plumbing_parse_string(plumb, plumb->pipes, str);
 }
-

@@ -18,7 +18,7 @@ typedef struct {
 int sporth_cdb(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
-    
+
     sporth_cdb_t *cdb;
     const char *key;
     const char *ftname;
@@ -59,7 +59,7 @@ int sporth_cdb(sporth_stack *stack, void *ud)
             break;
 
         case PLUMBER_INIT:
-            
+
 #ifdef DEBUG_MODE
             plumber_print(pd, "cdb: Initialising\n");
 #endif
@@ -87,7 +87,7 @@ int sporth_cdbload(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
 
-    int *fd;    
+    int *fd;
     const char *ftname;
     const char *filename;
     switch(pd->mode) {
@@ -106,8 +106,8 @@ int sporth_cdbload(sporth_stack *stack, void *ud)
             }
             filename = sporth_stack_pop_string(stack);
             ftname = sporth_stack_pop_string(stack);
-            
-             
+
+
             *fd = open(filename, O_RDONLY);
             plumber_ftmap_add_userdata(pd, ftname, fd);
             break;
@@ -115,7 +115,7 @@ int sporth_cdbload(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
             sporth_stack_pop_string(stack);
             sporth_stack_pop_string(stack);
-            
+
 #ifdef DEBUG_MODE
             plumber_print(pd, "cdbload: Initialising\n");
 #endif
@@ -156,7 +156,7 @@ int plumber_cdbtab(plumber_data *pd, int fd, const char *key, sp_ftbl **ft)
 int sporth_cdbtab(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
-    
+
     sporth_cdb_t *cdb;
     const char *key;
     const char *ftname;
@@ -175,7 +175,7 @@ int sporth_cdbtab(sporth_stack *stack, void *ud)
             }
             ftname = sporth_stack_pop_string(stack);
             key = sporth_stack_pop_string(stack);
-            bufname = sporth_stack_pop_string(stack); 
+            bufname = sporth_stack_pop_string(stack);
 
             if(plumber_ftmap_search_userdata(
                 pd, ftname, (void **)&cdb->fd) == PLUMBER_NOTOK) {

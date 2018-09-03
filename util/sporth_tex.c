@@ -1,14 +1,14 @@
 /* sporth_tex.c
  *
- * This program parses a sporth file and generates plain tex code with 
- * syntax highlighting. 
+ * This program parses a sporth file and generates plain tex code with
+ * syntax highlighting.
  *
  * Example usage:
  *
  *      sporth_tex in.sp > code.tex
  *      tex "\nopagenumbers \input code \bye"
  *      dvipng code
- *     
+ *
  * This will typically generate one page of output to "code1.png"
  *
  */
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
     ssize_t read;
     char *out;
     uint32_t nugens;
-    
+
     uint32_t pos = 0, len = 0;
 
     if(argc == 1) {

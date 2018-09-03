@@ -2,7 +2,7 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 #include <netdb.h>
-#include <sys/types.h> 
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <stdio.h>
 #include <string.h>
@@ -30,19 +30,19 @@ static void *start_listening(void *ud)
     plumber_data *pd = sl->pd;
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);
-    if (sockfd < 0) 
+    if (sockfd < 0)
     fprintf(stderr, "ERROR opening socket");
 
     optval = 1;
-    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, 
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR,
     (const void *)&optval , sizeof(int));
 
     memset((char *) &serveraddr, 0, sizeof(serveraddr));
     serveraddr.sin_family = AF_INET;
     serveraddr.sin_addr.s_addr = htonl(INADDR_ANY);
     serveraddr.sin_port = htons((unsigned short)portno);
-    if (bind(sockfd, (struct sockaddr *) &serveraddr, 
-    sizeof(serveraddr)) < 0) 
+    if (bind(sockfd, (struct sockaddr *) &serveraddr,
+    sizeof(serveraddr)) < 0)
     fprintf(stderr, "ERROR on binding");
 
     clientlen = sizeof(clientaddr);
@@ -59,7 +59,7 @@ static void *start_listening(void *ud)
 
         if (n < 0) fprintf(stderr, "ERROR in recvfrom");
 
-        hostp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr, 
+        hostp = gethostbyaddr((const char *)&clientaddr.sin_addr.s_addr,
 
         sizeof(clientaddr.sin_addr.s_addr), AF_INET);
 
@@ -69,12 +69,12 @@ static void *start_listening(void *ud)
 
         if (hostaddrp == NULL) fprintf(stderr, "ERROR on inet_ntoa\n");
 
-        printf("server received datagram from %s (%s)\n", 
+        printf("server received datagram from %s (%s)\n",
         hostp->h_name, hostaddrp);
         printf("server received %lu/%d bytes: %s\n", strlen(buf), n, buf);
-        /* n = sendto(sockfd, buf, strlen(buf), 0, 
+        /* n = sendto(sockfd, buf, strlen(buf), 0,
         (struct sockaddr *) &clientaddr, clientlen); */
-        if (n < 0) fprintf(stderr, "ERROR in sendto"); 
+        if (n < 0) fprintf(stderr, "ERROR in sendto");
         pd->str = buf;
         whichbuf = (whichbuf == 0) ? 1 : 0;
         pd->recompile = 2;
@@ -88,5 +88,3 @@ void sporth_start_listener(sporth_listener *sl)
 {
     pthread_create(&sl->thread, NULL, start_listening, sl);
 }
-
-
