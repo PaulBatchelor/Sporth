@@ -26,7 +26,7 @@ static void *start_listening(void *ud)
     char *buf; /* message buf */
     char *hostaddrp; /* dotted decimal host addr string */
     int optval; /* flag value for setsockopt */
-    uint32_t n; /* message byte size */
+    int32_t n; /* message byte size */
     plumber_data *pd = sl->pd;
 
     sockfd = socket(AF_INET, SOCK_DGRAM, 0);

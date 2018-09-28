@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <signal.h>
 #include <stdarg.h>
+#include <unistd.h>
 
 #include "plumber.h"
 
