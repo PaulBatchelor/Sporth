@@ -6,6 +6,7 @@ exit 1
 fi
 
 NAME=$1
+OS="$(uname)"
 
 REF=/usr/local/share/sporth/ugen_reference.txt
 
@@ -15,7 +16,18 @@ echo "$REF does not exist!"
 exit 1
 fi
 
-LINES=$(grep -r -n "^Name:" $REF | egrep "$NAME" | cut -d ':' -f 1 | sed "s/\n/ /g")
+if [ "$OS" = "Linux" ]
+then
+FIELD=1
+elif [ "$OS" = "Darwin" ]
+then
+FIELD=2
+else
+echo "Requires macOS or Linux."
+exit 1
+fi
+
+LINES=$(grep -r -n "^Name:" $REF | egrep "$NAME" | cut -d ':' -f "$FIELD" | sed "s/\n/ /g")
 
 if [ -z "$LINES" ]
 then
