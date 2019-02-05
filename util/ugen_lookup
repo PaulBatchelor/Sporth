@@ -15,7 +15,7 @@ echo "$REF does not exist!"
 exit 1
 fi
 
-LINES=$(grep -r -n "^Name:" $REF | egrep "$NAME" | cut -d ':' -f 1 | sed "s/\n/ /g")
+LINES=$(grep -r -n "^Name:" $REF | egrep "$NAME" | cut -d ':' -f 2 | sed "s/\n/ /g")
 
 if [ -z "$LINES" ]
 then
