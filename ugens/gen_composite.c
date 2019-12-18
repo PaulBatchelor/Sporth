@@ -47,8 +47,8 @@ int sporth_gen_composite(sporth_stack *stack, void *ud)
             break;
 
         default:
-          plumber_print(pd,"Error: Unknown mode!");
-           break;
+            plumber_print(pd,"Error: Unknown mode!");
+            break;
     }
     return PLUMBER_OK;
 }

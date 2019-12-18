@@ -63,11 +63,6 @@ Args: freq (f), amp (f)
 Output: f
 Description: Simple sine oscillator.
 ---
-Name: c
-Args: init value (f)
-Output: f
-Description: Constant generator, used for feedback loops.
----
 Name: max
 Args: ff
 Output: f
@@ -112,6 +107,11 @@ Name: dup
 Args: f
 Output: f f
 Description: Duplicates last item on the stack.
+---
+Name: dup2
+Args: f f
+Output: f f f f
+Description: Duplicates last two items on the stack. Useful for a 2-channel audio signal
 ---
 Name: swap
 Args: f f
@@ -248,6 +248,11 @@ Args: in (f), limit (f)
 Output: f
 Description: clip limiter / distortion
 ---
+Name: limit
+Args: in (f), min (f), max (f)
+Output: f
+Description: limit signal within range given
+---
 Name: p
 Args: num (f)
 Output: f
@@ -308,6 +313,16 @@ Args: name (s), size (f), args (s)
 Output: ftable
 Description: Generates a line from ordered list of breakpoints.
 ---
+Name: gen_composite
+Args: name (s), size (f), args (s)
+Output: ftable
+Description: Generate composite waveforms made up of weighted sums of simple sinusoids. Based on GEN19.
+---
+Name: gen_file
+Args: name (s), size (f), filename (s)
+Output: ftable
+Description: Generate ftable from given file
+---
 Name: dmetro
 Args: time (f)
 Output: f
@@ -353,10 +368,10 @@ Args: (none)
 Output: f
 Description: returns duration of sporth patch (in seconds)
 ---
-Name: ling
-Args: trig (f) N (f) mode (f) code (s)
+Name: durs
+Args: (none)
 Output: f
-Description: Evaluates a string of ling code. (0 = int mode, 1 = binary mode)
+Description: returns duration of sporth patch (in samples)
 ---
 Name: mincer
 Args: time (f), amp (f), pitch (f), winsize (f, 2048 is good), ftable (s)
@@ -373,30 +388,40 @@ Args: ftable (s)
 Output: f
 Description: Get duration of table (in seconds)
 ---
-Name: poly
-Args: max voices (f) max params (f) polyfile (s) ftable (s)
-Output: (none)
-Description: Parse a poly file and write to table ftable
----
-Name: polyget
-Args: voice number (f) param number (f) tbl (s)
-Output: f
-Description: get a value from a poly table. p0 = tick p1 = dur p2,3,etc: other
----
 Name: blsaw
 Args: freq (f) amp (f)
 Output: f
-Description: Band-limited sawtooth oscillator
+Description: Band-limited sawtooth oscillator (alias: saw)
+---
+Name: saw
+Args: freq (f), amp (f)
+Output: f
+Description: Band-limited sawtooth oscillator. (alias of saw)
 ---
 Name: blsquare
 Args: freq (f) width (f) amp (f)
 Output: f
-Description: Band-limited square oscillator with pulse-width
+Description: Band-limited square oscillator with pulse-width (alias: square)
+---
+Name: square
+Args: freq (f) width (f) amp (f)
+Output: f
+Description: Band-limited square oscillator with pulse-width (alias of blsquare)
 ---
 Name: bltriangle
 Args: freq (f) amp (f)
 Output: f
-Description: Band-limited triangle oscillator
+Description: Band-limited triangle oscillator (alias: tri)
+---
+Name: triangle
+Args: freq (f) amp (f)
+Output: f
+Description: Band-limited triangle oscillator (alias of bltriangle)
+---
+Name: tri
+Args: freq (f) amp (f)
+Output: f
+Description: Band-limited triangle oscillator (alias of bltriangle)
 ---
 Name: bitcrush
 Args: bitdepth (f) samplerate (f)
@@ -418,15 +443,15 @@ Args: in (f) pan (f)
 Output: ff
 Description: Equal power panning. -1 = hardL 1 = hardR
 ---
+Name: panst
+Args: left signal (f), right signal (f), pan (f)
+Output: ff
+Description: Stereo panning.
+---
 Name: jitter
 Args: amp (f) cpsMin (f) cpsMax(f)
 Output: f
 Description: Jitter control signal
----
-Name: tpoly
-Args: trig (f) max voices (f) max params (f) arg_ft (s) poly_ft (s)
-Output: n/a
-Description: triggered polyphony
 ---
 Name: vdelay
 Args: in (f), feedback (f), deltime (f) maxdelay(f)
@@ -477,11 +502,6 @@ Name: tabread
 Args: (f) index, scaled (1: yes, 0: no), offset, wrap, (s) ftname
 Output: f
 Description: read from table with interpolation
----
-Name: randh
-Args: min (f), max (f), freq (f)
-Output: f
-Description: Random hold
 ---
 Name: tblrec
 Args: in (f) trig (f) tbl name (s)
@@ -596,7 +616,12 @@ Description: fog
 Name: crossfade
 Args: sig1 sig2 pos
 Output: f
-Description: crossfade two signals
+Description: crossfade two signals (alias: cf)
+---
+Name: cf
+Args: sig1 sig2 pos
+Output: f
+Description: crossfade two signals (alias of crossfade)
 ---
 Name: vocoder
 Args: atk rel bwq sig exc
@@ -613,25 +638,15 @@ Args: table name (s), file name (s)
 Output: n/a
 Description: load a (mono) audio file into a table
 ---
+Name: loadspa
+Args: table name (s), file name (s)
+Output: n/a
+Description: load a audio file into a table
+---
 Name: paulstretch
 Args: stretch (F), window size (F), tbl (s)
 Output: f
 Description: Paulstretch algorithm
----
-Name: metatable_create
-Args: name (s), length (F)
-Output: n/a
-Description: create metatable that holds a number of tables
----
-Name: metatable_add
-Args: name (s), metatable (s), position
-Output: n/a
-Description: add ftable to position in metatable
----
-Name: metatable_copy
-Args: name (s), metatable (s), position
-Output: n/a
-Description: create a new ftable which shares the data at a metatable position
 ---
 Name: ftsum
 Args: start (f), end (f), tbl (s)
@@ -642,6 +657,11 @@ Name: fl
 Args: filename (s), tbl
 Output: n/a
 Description: dynamically load a ugen
+---
+Name: fli
+Args: filename (s), num (f), tbl
+Output: n/a
+Description: dynamically load multiple ugens
 ---
 Name: fe
 Args: tbl (s)
@@ -743,6 +763,11 @@ Args: val (f/s) label (s)
 Output: f/s
 Description: prints values to terminal
 ---
+Name: say
+Args: val (f/s)
+Output: f/s
+Description: prints string value to terminal
+---
 Name: cdbload
 Args: ftname (s) filename (s)
 Output: n/a
@@ -792,11 +817,6 @@ Name: varset
 Args: name (s) val (f)
 Output: 0
 Description: creates and sets a variable
----
-Name: load
-Args: filename (s)
-Output: 0
-Description: loads a sporth file
 ---
 Name: slist
 Args: ftname (s) size (s) slist
@@ -898,6 +918,11 @@ Args: name (s), size (f), string
 Output: n/a
 Description: Evaluates sporth string to table
 ---
+Name: eval
+Args: sporth instructions (s)
+Output: n/a
+Description: Evaluates sporth string to stack
+---
 Name: clock
 Args: trig, bpm, subdiv
 Output: f
@@ -982,4 +1007,54 @@ Name: talkbox
 Args: source, excitation, quality
 Output: f
 Description: high-resolution vocoder
+---
+Name: ampdb
+Args: decibel value (f)
+Output: amplitude (f)
+Description: Returns the amplitude equivalent of the decibel value x. (60 -> 1000)
+---
+Name: bal
+Args: input signal (f), comparator signal (f)
+Output: f
+Description: Adjust one audio signal according to the values of another
+---
+Name: diskin
+Args: sound filename (s)
+Output: f
+Description: Read audio data from filename and output each sample value
+---
+Name: rms
+Args: signal (f)
+Output: f
+Description: Determines the root-mean-square amplitude of an audio signal
+---
+Name: scrambler
+Args: name (s), name (s)
+Output: f
+Description: Scramble signals between two ftables
+---
+Name: sqrt
+Args: f
+Output: f
+Description: Return square root of input value
+---
+Name: sr
+Args: (none)
+Output: f
+Description: Return current sample rate of patch
+---
+Name: tadsr
+Args: trigger, attack, decay, sustain, release
+Output: f
+Description: Analogue modelled ADSR generator
+---
+Name: tin
+Args: (none)
+Output: f
+Description: Read trigger from STDIN.
+---
+Name: tone
+Args: f
+Output: f
+Description: first-order recursive low-pass filter with variable frequency response.
 ---

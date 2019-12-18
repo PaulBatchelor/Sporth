@@ -1127,7 +1127,7 @@ int sporth_dur(sporth_stack *stack, void *ud)
             free(dur);
             break;
         default:
-            plumber_print(pd,"pos: unknown mode!");
+            plumber_print(pd,"dur: unknown mode!");
             stack->error++;
             return PLUMBER_NOTOK;
             break;
@@ -1144,7 +1144,7 @@ int sporth_durs(sporth_stack *stack, void *ud)
     switch(pd->mode){
         case PLUMBER_CREATE:
 #ifdef DEBUG_MODE
-            plumber_print(pd, "dur: Creating\n");
+            plumber_print(pd, "durs: Creating\n");
 #endif
             dur = malloc(sizeof(SPFLOAT));
             *dur = (SPFLOAT) pd->sp->len;
@@ -1153,7 +1153,7 @@ int sporth_durs(sporth_stack *stack, void *ud)
             break;
         case PLUMBER_INIT:
 #ifdef DEBUG_MODE
-            plumber_print(pd, "dur: Initializing\n");
+            plumber_print(pd, "durs: Initializing\n");
 #endif
             dur = pd->last->ud;
             sporth_stack_push_float(stack, *dur);
@@ -1167,7 +1167,7 @@ int sporth_durs(sporth_stack *stack, void *ud)
             free(dur);
             break;
         default:
-            plumber_print(pd,"pos: unknown mode!");
+            plumber_print(pd,"durs: unknown mode!");
             stack->error++;
             return PLUMBER_NOTOK;
             break;

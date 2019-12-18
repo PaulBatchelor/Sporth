@@ -5,4 +5,4 @@ csplit h/plumber.h '/* ---- */'
 sh util/macro_gen.sh >> $HEADER
 cat xx01 | sed "1d" >> $HEADER
 rm -f xx*
-mv tmp.h sporth.h
+mv $HEADER sporth.h
