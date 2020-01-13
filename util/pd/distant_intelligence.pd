@@ -1,0 +1,27 @@
+#N canvas 0 34 528 566 12;
+#X obj 96 275 sporth~;
+#X obj 96 330 dac~;
+#X msg 252 139 open distant_intelligence.sp;
+#X obj 49 54 vsl 15 128 0 1 0 0 empty empty pitch 0 -9 0 10 -262144
+-1 -1 3700 1;
+#X msg 49 197 pset 0 \$1;
+#X obj 141 51 vsl 15 128 0 1 0 0 empty empty tempo 0 -9 0 10 -262144
+-1 -1 3500 1;
+#X msg 140 194 pset 1 \$1;
+#X obj 314 199 vsl 15 128 0 1 0 0 empty empty brightness 0 -9 0 10
+-262144 -1 -1 7300 1;
+#X msg 313 342 pset 2 \$1;
+#X obj 222 217 vsl 15 128 0 1 0 0 empty empty detune 0 -9 0 10 -262144
+-1 -1 2600 1;
+#X msg 221 360 pset 3 \$1;
+#X connect 0 0 1 0;
+#X connect 0 0 1 1;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
+#X connect 7 0 8 0;
+#X connect 8 0 0 0;
+#X connect 9 0 10 0;
+#X connect 10 0 0 0;
