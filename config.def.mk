@@ -116,6 +116,7 @@ sdelay \
 slice \
 slist \
 smoothdelay \
+sndwarp \
 spa \
 sparec \
 srand \
@@ -164,4 +165,4 @@ BUILD_POLYSPORTH=1
 LIVE_CODING=1
 
 # GDB Debugging Symbols
-CFLAGS += -g 
+CFLAGS += -g
