@@ -2,7 +2,10 @@
 # of just intonation as an option. Make sure to render with '-c 2' as a 
 # commandline parameter. Hack by Aaron Krister Johnson.
 
-"seq" "1 1.1667 1 0.875 1.125 1 1.5 1.5 1 1.1667 1 0.875 1.125 1 1.5 1.666 1.75 2" gen_vals
+# shows line continuation via '\':
+"seq" "1 1.1667 1 0.875 1.125 1 1.5 1.5 \
+       1 1.1667 1 0.875 1.125 1 1.5 1.666 \
+       1.75 2" gen_vals
 
 _t 2 zeros
 

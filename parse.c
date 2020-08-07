@@ -284,6 +284,14 @@ size_t sporth_getline(char **lineptr, size_t *n, FILE *stream) {
                 return -1;
             }
         }
+        /* allow for extended lines by replacing backslash-newline with
+           a space */
+        if (c == '\\') {
+            c = fgetc(stream);
+            if (c == '\n') {
+              c = ' ';
+            }
+        }
         *p++ = c;
         if (c == '\n') {
             break;
@@ -396,7 +404,8 @@ int plumbing_parse(plumber_data *plumb, plumbing *pipes)
     plumbing *top_tmp = plumb->tmp;
     plumb->tmp = pipes;
 
-    while((read = sporth_getline(&line, &length, fp)) != -1 && err == PLUMBER_OK) {
+    while((read = sporth_getline(&line, &length, fp)) != -1
+          && err == PLUMBER_OK) {
         pos = 0;
         len = 0;
         while(pos < read - 1) {

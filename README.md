@@ -49,7 +49,6 @@ the [examples](examples) folder of the repository. More musical
 examples can be found on the
 [Sporthlings page](http://www.pbat.ch/sporthlings).
 
-
 ## Licensing
 
 This project is dual-licensed under MIT or
