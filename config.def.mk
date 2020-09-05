@@ -88,7 +88,6 @@ tseg \
 tseq \
 v \
 voc \
-vocoder \
 writecode \
 wpkorg35 \
 zeros \

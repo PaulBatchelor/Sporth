@@ -91,7 +91,6 @@ typedef struct plumber_data {
     void *ud;
     plumber_pipe *next;
     plumber_pipe *last;
-    sp_progress *prog;
     int showprog;
     int recompile;
     int stacksize;

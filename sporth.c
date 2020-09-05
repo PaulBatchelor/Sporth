@@ -25,7 +25,7 @@ static void process(sp_data *sp, void *udata){
     }
 
     if(pd->showprog) {
-        sp_progress_compute(sp, pd->prog, NULL, NULL);
+        /* sp_progress_compute(sp, pd->prog, NULL, NULL); */
     }
 }
 

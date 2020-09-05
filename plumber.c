@@ -605,8 +605,8 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     if(time != NULL) sp->len = str2time(pd, time);
     pd->ud = ud;
     if(pd->showprog) {
-        sp_progress_create(&pd->prog);
-        sp_progress_init(sp, pd->prog);
+        /* sp_progress_create(&pd->prog); */
+        /* sp_progress_init(sp, pd->prog); */
     }
     if(nullfile) {
         pd->mode = PLUMBER_CREATE;
@@ -671,7 +671,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
     }
 
     if(pd->showprog){
-        sp_progress_destroy(&pd->prog);
+        /* sp_progress_destroy(&pd->prog); */
     }
 
     plumber_clean(pd);
