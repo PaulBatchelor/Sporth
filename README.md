@@ -18,11 +18,7 @@ inspired by stack languages like Forth and PostScript.
 
 ## Installation
 
-In order to compile Sporth, The development "dev" version of [SoundPipe](http://www.github.com/PaulBatchelor/soundpipe.git)
-needs to be installed.
-**When you clone soundpipe, be sure to use the 'dev' branch of soundpipe with 'git checkout dev'.**
-*Note: The development branch of Soundpipe is used because on any given day, there are
-more modules there than in the master branch. More modules = more fun :)*
+In order to compile Sporth, [SoundPipe](https://pbat.ch/proj/soundpipe.html) needs to be installed.
 
 Then:
 
@@ -47,7 +43,7 @@ More information on Sporth can be found
 Several examples demonstrating specific ugens can be found in
 the [examples](examples) folder of the repository. More musical
 examples can be found on the
-[Sporthlings page](http://www.pbat.ch/sporthlings).
+[Sporthlings page](https://www.pbat.ch/sporthlings).
 
 ## Licensing
 
