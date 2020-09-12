@@ -4,12 +4,12 @@ int sporth_port(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
 
-    SPFLOAT htime;
+    SPFLOAT smooth;
     SPFLOAT in = 0, out = 0;
-    sp_port *data;
+    sp_smoother *data;
     switch(pd->mode){
         case PLUMBER_CREATE:
-            sp_port_create(&data);
+            sp_smoother_create(&data);
             plumber_add_ugen(pd, SPORTH_PORT, data);
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                plumber_print(pd,"Not enough arguments for port\n");
@@ -17,7 +17,7 @@ int sporth_port(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
 
-            htime = sporth_stack_pop_float(stack);
+            smooth = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
 
             sporth_stack_push_float(stack, 0);
@@ -25,26 +25,26 @@ int sporth_port(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
             data = pd->last->ud;
 
-            htime = sporth_stack_pop_float(stack);
+            smooth = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
 
-            sp_port_init(pd->sp, data, htime);
+            sp_smoother_init(pd->sp, data);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
             data = pd->last->ud;
 
-            htime = sporth_stack_pop_float(stack);
+            smooth = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
 
-            data->htime = htime;
+            data->smooth = smooth;
 
-            sp_port_compute(pd->sp, data, &in, &out);
+            sp_smoother_compute(pd->sp, data, &in, &out);
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
             data = pd->last->ud;
-            sp_port_destroy(&data);
+            sp_smoother_destroy(&data);
             break;
         default:
           plumber_print(pd,"Error: Unknown mode!");
@@ -57,12 +57,12 @@ int sporth_tport(sporth_stack *stack, void *ud)
 {
     plumber_data *pd = ud;
 
-    SPFLOAT htime;
+    SPFLOAT smooth;
     SPFLOAT in = 0, out = 0, trig = 0;
-    sp_port *data;
+    sp_smoother *data;
     switch(pd->mode){
         case PLUMBER_CREATE:
-            sp_port_create(&data);
+            sp_smoother_create(&data);
             plumber_add_ugen(pd, SPORTH_TPORT, data);
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {
                plumber_print(pd,"Not enough arguments for port\n");
@@ -70,7 +70,7 @@ int sporth_tport(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
 
-            htime = sporth_stack_pop_float(stack);
+            smooth = sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
 
@@ -79,29 +79,29 @@ int sporth_tport(sporth_stack *stack, void *ud)
         case PLUMBER_INIT:
             data = pd->last->ud;
 
-            htime = sporth_stack_pop_float(stack);
+            smooth = sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
 
-            sp_port_init(pd->sp, data, htime);
+            sp_smoother_init(pd->sp, data);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
             data = pd->last->ud;
 
-            htime = sporth_stack_pop_float(stack);
+            smooth = sporth_stack_pop_float(stack);
             trig = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
 
-            data->htime = htime;
+            data->smooth = smooth;
 
-            if(trig != 0) sp_port_reset(pd->sp, data, &in);
-            sp_port_compute(pd->sp, data, &in, &out);
+            if(trig != 0) sp_smoother_reset(pd->sp, data, &in);
+            sp_smoother_compute(pd->sp, data, &in, &out);
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
             data = pd->last->ud;
-            sp_port_destroy(&data);
+            sp_smoother_destroy(&data);
             break;
         default:
           plumber_print(pd,"Error: Unknown mode!");

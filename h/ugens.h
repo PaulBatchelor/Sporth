@@ -27,10 +27,10 @@ SPORTH_UGEN("bpm2dur", sporth_bpm2dur, SPORTH_BPM2DUR, 1, 1)
 SPORTH_UGEN("bpm2rate", sporth_bpm2rate, SPORTH_BPM2RATE, 1, 1)
 SPORTH_UGEN("branch", sporth_branch, SPORTH_BRANCH, 3, 1)
 SPORTH_UGEN("brown", sporth_brown, SPORTH_BROWN, 0, 1)
-/* SPORTH_UGEN("butbp", sporth_butbp, SPORTH_BUTBP, 3, 1) */
-/* SPORTH_UGEN("butbr", sporth_butbr, SPORTH_BUTBR, 3, 1) */
-/* SPORTH_UGEN("buthp", sporth_buthp, SPORTH_BUTHP, 2, 1) */
-/* SPORTH_UGEN("butlp", sporth_butlp, SPORTH_BUTLP, 2, 1) */
+SPORTH_UGEN("butbp", sporth_butbp, SPORTH_BUTBP, 3, 1)
+SPORTH_UGEN("butbr", sporth_butbr, SPORTH_BUTBR, 3, 1)
+SPORTH_UGEN("buthp", sporth_buthp, SPORTH_BUTHP, 2, 1)
+SPORTH_UGEN("butlp", sporth_butlp, SPORTH_BUTLP, 2, 1)
 SPORTH_UGEN("cdb", sporth_cdb, SPORTH_CDB, 2, 1)
 SPORTH_UGEN("cdbload", sporth_cdbload, SPORTH_CDBLOAD, 2, 1)
 SPORTH_UGEN("cdbtab", sporth_cdbtab, SPORTH_CDBTAB, 3, 0)
@@ -42,7 +42,7 @@ SPORTH_UGEN("clock", sporth_clock, SPORTH_CLOCK, 3, 1)
 /* SPORTH_UGEN("conv", sporth_conv, SPORTH_CONV, 3, 1) */
 SPORTH_UGEN("count", sporth_count, SPORTH_COUNT, 3, 1)
 SPORTH_UGEN("crossfade", sporth_crossfade, SPORTH_CROSSFADE, 3, 1)
-/* SPORTH_UGEN("dcblk", sporth_dcblock, SPORTH_DCBLK, 1, 1) */
+SPORTH_UGEN("dcblk", sporth_dcblock, SPORTH_DCBLK, 1, 1)
 SPORTH_UGEN("delay", sporth_delay, SPORTH_DELAY, 3, 1)
 SPORTH_UGEN("diode", sporth_diode, SPORTH_DIODE, 3, 1)
 /* SPORTH_UGEN("diskin", sporth_diskin, SPORTH_DISKIN, 1, 1) */
@@ -61,18 +61,18 @@ SPORTH_UGEN("edo", sporth_edo, SPORTH_EDO, 2, 1)
 SPORTH_UGEN("eq", sporth_eq, SPORTH_EQ, 2, 1)
 /* SPORTH_UGEN("eqfil", sporth_eqfil, SPORTH_EQFIL, 4, 1) */
 SPORTH_UGEN("eval", sporth_eval, SPORTH_EVAL, 1, 0)
-/* SPORTH_UGEN("expon", sporth_expon, SPORTH_EXPON, 4, 1) */
+SPORTH_UGEN("expon", sporth_expon, SPORTH_EXPON, 4, 1)
 SPORTH_UGEN("f", sporth_fexec, SPORTH_F, 1, 0)
 SPORTH_UGEN("fl", sporth_fload, SPORTH_FLOAD, 2, 0)
 SPORTH_UGEN("fli", sporth_floadi, SPORTH_FLOADI, 3, 0)
 SPORTH_UGEN("fc", sporth_fclose, SPORTH_FCLOSE, 1, 0)
 SPORTH_UGEN("fe", sporth_fexec, SPORTH_FEXEC, 1, 0)
 SPORTH_UGEN("floor", sporth_floor, SPORTH_FLOOR, 1, 1)
-/* SPORTH_UGEN("fm", sporth_fm, SPORTH_FM, 5, 1) */
+SPORTH_UGEN("fm", sporth_fm, SPORTH_FM, 5, 1)
 /* SPORTH_UGEN("fof", sporth_fof, SPORTH_FOF, 12, 1) */
 /* SPORTH_UGEN("fofilt", sporth_fofilt, SPORTH_FOFILT, 4, 1) */
 /* SPORTH_UGEN("fog", sporth_fog, SPORTH_FOG, 13, 1) */
-/* SPORTH_UGEN("fosc", sporth_fosc, SPORTH_FOSC, 6, 1) */
+SPORTH_UGEN("fosc", sporth_fosc, SPORTH_FOSC, 6, 1)
 SPORTH_UGEN("frac", sporth_frac, SPORTH_FRAC, 1, 1)
 SPORTH_UGEN("ftsum", sporth_ftsum, SPORTH_FTSUM, 3, 1)
 /* SPORTH_UGEN("gbuzz", sporth_gbuzz, SPORTH_GBUZZ, 7, 1) */
@@ -116,14 +116,14 @@ SPORTH_UGEN("metro", sporth_metro, SPORTH_METRO, 1, 1)
 /* SPORTH_UGEN("mincer", sporth_mincer, SPORTH_MINCER, 5, 1) */
 SPORTH_UGEN("min", sporth_min, SPORTH_MIN, 2, 1)
 SPORTH_UGEN("mix", sporth_mix, SPORTH_MIX, 2, 1)
-/* SPORTH_UGEN("mode", sporth_mode, SPORTH_MODE, 3, 1) */
+SPORTH_UGEN("mode", sporth_mode, SPORTH_MODE, 3, 1)
 /* SPORTH_UGEN("moogladder", sporth_moogladder, SPORTH_MOOGLADDER, 3, 1) */
 SPORTH_UGEN("mtof", sporth_mtof, SPORTH_MTOF, 1, 1)
 SPORTH_UGEN("mul", sporth_mul, SPORTH_MULv2, 2, 1)
 SPORTH_UGEN("ne", sporth_ne, SPORTH_NE, 2, 1)
 SPORTH_UGEN("noise", sporth_noise, SPORTH_NOISE, 1, 1)
 SPORTH_UGEN("nsmp", sporth_nsmp, SPORTH_NSMP, 5, 1)
-/* SPORTH_UGEN("osc", sporth_osc, SPORTH_OSC, 4, 1) */
+SPORTH_UGEN("osc", sporth_osc, SPORTH_OSC, 4, 1)
 /* SPORTH_UGEN("oscmorph4", sporth_oscmorph4, SPORTH_OSCMORPH4, 6, 1) */
 /* SPORTH_UGEN("oscmorph2", sporth_oscmorph2, SPORTH_OSCMORPH2, 6, 1) */
 SPORTH_UGEN("p", sporth_p, SPORTH_P, 1, 1)
@@ -132,13 +132,13 @@ SPORTH_UGEN("palias", sporth_palias, SPORTH_PALIAS, 2, 0)
 /* SPORTH_UGEN("panst", sporth_panst, SPORTH_PANST, 3, 2) */
 /* SPORTH_UGEN("pareq", sporth_pareq, SPORTH_PAREQ, 5, 1) */
 SPORTH_UGEN("paulstretch", sporth_paulstretch, SPORTH_PAULSTRETCH, 3, 1)
-/* SPORTH_UGEN("pdhalf", sporth_pdhalf, SPORTH_PDHALF, 2, 1) */
+SPORTH_UGEN("phasewarp", sporth_phasewarp, SPORTH_PHASEWARP, 2, 1)
 SPORTH_UGEN("peaklim", sporth_peaklim, SPORTH_PEAKLIM, 4, 1)
 SPORTH_UGEN("phaser", sporth_phaser, SPORTH_PHASER, 12, 2)
-/* SPORTH_UGEN("phasor", sporth_phasor, SPORTH_PHASOR, 2, 1) */
+SPORTH_UGEN("phasor", sporth_phasor, SPORTH_PHASOR, 2, 1)
 SPORTH_UGEN("pinknoise", sporth_pinknoise, SPORTH_PINKNOISE, 1, 1)
 /* SPORTH_UGEN("pluck", sporth_pluck, SPORTH_PLUCK, 4, 1) */
-/* SPORTH_UGEN("port", sporth_port, SPORTH_PORT, 2, 1) */
+SPORTH_UGEN("port", sporth_port, SPORTH_PORT, 2, 1)
 SPORTH_UGEN("pos", sporth_pos, SPORTH_POS, 0, 1)
 /* SPORTH_UGEN("posc3", sporth_posc3, SPORTH_POSC3, 3, 1) */
 SPORTH_UGEN("print", sporth_prints, SPORTH_PRINT, 2, 1)
@@ -151,12 +151,12 @@ SPORTH_UGEN("pst", sporth_pst, SPORTH_PST, 3, 0)
 /* SPORTH_UGEN("ptrack", sporth_ptrack, SPORTH_PTRACK, 3, 2) */
 SPORTH_UGEN("rand", sporth_rand, SPORTH_RAND, 2, 1)
 SPORTH_UGEN("randh", sporth_randh, SPORTH_RANDH, 3, 1)
-/* SPORTH_UGEN("randi", sporth_randi, SPORTH_RANDI, 3, 1) */
+SPORTH_UGEN("randi", sporth_randi, SPORTH_RANDI, 3, 1)
 SPORTH_UGEN("ref", sporth_ref, SPORTH_REF, 1, 0)
 SPORTH_UGEN("render", sporth_render, SPORTH_RENDER, 0, 0)
 /* SPORTH_UGEN("reson", sporth_reson, SPORTH_RESON, 3, 1) */
 SPORTH_UGEN("reverse", sporth_reverse, SPORTH_REVERSE, 2, 1)
-/* SPORTH_UGEN("revsc", sporth_revsc, SPORTH_REVSC, 4, 2) */
+SPORTH_UGEN("revsc", sporth_revsc, SPORTH_REVSC, 4, 2)
 /* SPORTH_UGEN("rms", sporth_rms, SPORTH_RMS, 2, 1) */
 SPORTH_UGEN("rot", sporth_rot, SPORTH_ROT, 3, 3)
 SPORTH_UGEN("round", sporth_round, SPORTH_ROUND, 1, 1)
@@ -203,8 +203,8 @@ SPORTH_UGEN("tin", sporth_tin, SPORTH_TIN, 1, 1)
 SPORTH_UGEN("tick", sporth_tick, SPORTH_TICK, 0, 1)
 SPORTH_UGEN("tog", sporth_tog, SPORTH_TOG, 1, 1)
 /* SPORTH_UGEN("tone", sporth_tone, SPORTH_TONE, 2, 1) */
-/* SPORTH_UGEN("tphasor", sporth_tphasor, SPORTH_TPHASOR, 3, 1) */
-/* SPORTH_UGEN("tport", sporth_tport, SPORTH_TPORT, 3, 1) */
+SPORTH_UGEN("tphasor", sporth_tphasor, SPORTH_TPHASOR, 3, 1)
+SPORTH_UGEN("tport", sporth_tport, SPORTH_TPORT, 3, 1)
 SPORTH_UGEN("tprop", sporth_tprop, SPORTH_TPROP, 3, 1)
 SPORTH_UGEN("trand", sporth_trand, SPORTH_TRAND, 3, 1)
 SPORTH_UGEN("triangle", sporth_bltriangle, SPORTH_TRIANGLE, 2, 1)
@@ -214,7 +214,7 @@ SPORTH_UGEN("tseg", sporth_tseg, SPORTH_TSEG, 5, 1)
 SPORTH_UGEN("tset", sporth_tset, SPORTH_TSET, 3, 0)
 SPORTH_UGEN("var", sporth_var, SPORTH_VAR, 1, 0)
 SPORTH_UGEN("varset", sporth_varset, SPORTH_VARSET, 2, 0)
-/* SPORTH_UGEN("vdelay", sporth_vdelay, SPORTH_VDELAY, 3, 1) */
+SPORTH_UGEN("vdelay", sporth_vdelay, SPORTH_VDELAY, 3, 1)
 SPORTH_UGEN("voc", sporth_voc, SPORTH_VOC, 5, 1)
 /* SPORTH_UGEN("vocoder", sporth_vocoder, SPORTH_VOCODER, 5, 1) */
 /* SPORTH_UGEN("waveset", sporth_waveset, SPORTH_WAVESET, 3, 1) */

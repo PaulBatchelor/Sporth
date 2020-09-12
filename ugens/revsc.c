@@ -7,11 +7,11 @@ int sporth_revsc(sporth_stack *stack, void *ud)
     SPFLOAT in1, in2, feedback, lpfreq;
 
     SPFLOAT out1 = 0, out2 = 0;
-    sp_revsc *data;
+    sp_bigverb *data;
 
     switch(pd->mode){
         case PLUMBER_CREATE:
-            sp_revsc_create(&data);
+            sp_bigverb_create(&data);
             plumber_add_ugen(pd, SPORTH_REVSC, data);
             if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
                plumber_print(pd,"Init: not enough arguments for revsc!\n");
@@ -36,7 +36,7 @@ int sporth_revsc(sporth_stack *stack, void *ud)
             in2 = sporth_stack_pop_float(stack);
             in1 = sporth_stack_pop_float(stack);
 
-            sp_revsc_init(pd->sp, data);
+            sp_bigverb_init(pd->sp, data);
 
             sporth_stack_push_float(stack, 0);
             sporth_stack_push_float(stack, 0);
@@ -54,7 +54,7 @@ int sporth_revsc(sporth_stack *stack, void *ud)
             data->feedback = feedback;
             data->lpfreq = lpfreq;
             out1 = 0; out2 = 0;
-            sp_revsc_compute(pd->sp, data, &in1, &in2, &out1, &out2);
+            sp_bigverb_compute(pd->sp, data, &in1, &in2, &out1, &out2);
 
             sporth_stack_push_float(stack, out1);
             sporth_stack_push_float(stack, out2);
@@ -63,7 +63,7 @@ int sporth_revsc(sporth_stack *stack, void *ud)
 
         case PLUMBER_DESTROY:
             data = pd->last->ud;
-            sp_revsc_destroy(&data);
+            sp_bigverb_destroy(&data);
             break;
 
         default:

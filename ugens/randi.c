@@ -7,7 +7,7 @@ int sporth_randi(sporth_stack *stack, void *ud)
     SPFLOAT min;
     SPFLOAT max;
     SPFLOAT cps;
-    sp_randi *randi;
+    sp_rline *randi;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
@@ -16,7 +16,7 @@ int sporth_randi(sporth_stack *stack, void *ud)
             plumber_print(pd, "randi: Creating\n");
 #endif
 
-            sp_randi_create(&randi);
+            sp_rline_create(&randi);
             plumber_add_ugen(pd, SPORTH_RANDI, randi);
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {
                 plumber_print(pd,"Not enough arguments for randi\n");
@@ -37,7 +37,7 @@ int sporth_randi(sporth_stack *stack, void *ud)
             max = sporth_stack_pop_float(stack);
             min = sporth_stack_pop_float(stack);
             randi = pd->last->ud;
-            sp_randi_init(pd->sp, randi);
+            sp_rline_init(pd->sp, randi);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
@@ -48,12 +48,12 @@ int sporth_randi(sporth_stack *stack, void *ud)
             randi->min = min;
             randi->max = max;
             randi->cps = cps;
-            sp_randi_compute(pd->sp, randi, NULL, &out);
+            sp_rline_compute(pd->sp, randi, NULL, &out);
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
             randi = pd->last->ud;
-            sp_randi_destroy(&randi);
+            sp_rline_destroy(&randi);
             break;
         default:
             plumber_print(pd, "randi: Unknown mode!\n");

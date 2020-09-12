@@ -48,7 +48,7 @@ int sporth_tphasor(sporth_stack *stack, void *ud)
             tphasor->freq = freq;
 
             if(trig != 0) {
-                tphasor->curphs = iphs;
+                tphasor->phs = iphs;
             }
 
             sp_phasor_compute(pd->sp, tphasor, NULL, &out);

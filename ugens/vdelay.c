@@ -9,7 +9,7 @@ int sporth_vdelay(sporth_stack *stack, void *ud)
     SPFLOAT maxdel;
     SPFLOAT feedback;
     SPFLOAT del;
-    sp_vdelay *vd;
+    sp_vardelay *vd;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
@@ -17,7 +17,7 @@ int sporth_vdelay(sporth_stack *stack, void *ud)
 #ifdef DEBUG_MODE
             plumber_print(pd, "vdelay: Creating\n");
 #endif
-            sp_vdelay_create(&vd);
+            sp_vardelay_create(&vd);
             plumber_add_ugen(pd, SPORTH_VDELAY, vd);
             if(sporth_check_args(stack, "ffff") != SPORTH_OK) {
                 plumber_print(pd,"Not enough arguments for vdelay\n");
@@ -41,7 +41,7 @@ int sporth_vdelay(sporth_stack *stack, void *ud)
             feedback = sporth_stack_pop_float(stack);
             in = sporth_stack_pop_float(stack);
             vd = pd->last->ud;
-            sp_vdelay_init(pd->sp, vd, maxdel);
+            sp_vardelay_init(pd->sp, vd, maxdel);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
@@ -52,12 +52,12 @@ int sporth_vdelay(sporth_stack *stack, void *ud)
             in = sporth_stack_pop_float(stack);
             vd->feedback = feedback;
             vd->del = del;
-            sp_vdelay_compute(pd->sp, vd, &in, &out);
+            sp_vardelay_compute(pd->sp, vd, &in, &out);
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
             vd = pd->last->ud;
-            sp_vdelay_destroy(&vd);
+            sp_vardelay_destroy(&vd);
             break;
         default:
             plumber_print(pd, "vdelay: Unknown mode!\n");
