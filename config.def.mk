@@ -24,6 +24,7 @@ delay \
 diode \
 dmetro \
 dtrig \
+eqfil \
 eval \
 expon \
 f \

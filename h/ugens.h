@@ -59,7 +59,7 @@ SPORTH_UGEN("durs", sporth_durs, SPORTH_DURS, 0, 1)
 /* SPORTH_UGEN("dust", sporth_dust, SPORTH_DUST, 3, 1) */
 SPORTH_UGEN("edo", sporth_edo, SPORTH_EDO, 2, 1)
 SPORTH_UGEN("eq", sporth_eq, SPORTH_EQ, 2, 1)
-/* SPORTH_UGEN("eqfil", sporth_eqfil, SPORTH_EQFIL, 4, 1) */
+SPORTH_UGEN("eqfil", sporth_eqfil, SPORTH_EQFIL, 4, 1)
 SPORTH_UGEN("eval", sporth_eval, SPORTH_EVAL, 1, 0)
 SPORTH_UGEN("expon", sporth_expon, SPORTH_EXPON, 4, 1)
 SPORTH_UGEN("f", sporth_fexec, SPORTH_F, 1, 0)
