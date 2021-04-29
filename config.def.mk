@@ -125,5 +125,3 @@ LIVE_CODING=1
 
 # GDB Debugging Symbols
 CFLAGS += -g
-
-CFLAGS +=-DNO_LIBSNDFILE

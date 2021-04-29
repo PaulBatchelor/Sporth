@@ -7,6 +7,10 @@
 #include <stdarg.h>
 #include <unistd.h>
 
+#ifndef NO_LIBSNDFILE
+#include <sndfile.h>
+#endif
+
 #include "plumber.h"
 
 #define SPORTH_UGEN(key, func, macro, ninputs, noutputs) \
@@ -18,6 +22,10 @@
 int sp_process_jack(plumber_data *pd,
         void *ud, void (*callback)(sp_data *, void *), int port, int wait);
 #endif
+
+static int plumber_sp_process(sp_data *sp,
+                            void *ud,
+                            void (*callback)(sp_data *, void *));
 
 enum {
     DRIVER_FILE,
@@ -632,7 +640,8 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
         switch(driver) {
             case DRIVER_FILE:
 #ifndef NO_LIBSNDFILE
-                sp_process(sp, ud, process);
+                plumber_sp_process(sp, ud, process);
+
 #endif
                 break;
             case DRIVER_RAW:
@@ -654,7 +663,7 @@ void sporth_run(plumber_data *pd, int argc, char *argv[],
                 break;
             default:
 #ifndef NO_LIBSNDFILE
-                sp_process(sp, ud, process);
+                plumber_sp_process(sp, ud, process);
 #endif
                 break;
         }
@@ -733,4 +742,58 @@ int plumber_stack_pos(plumber_data *pd)
 void plumber_check_stack(plumber_data *pd, int nitems)
 {
     pd->stacksize = nitems;
+}
+
+
+static int plumber_sp_process(sp_data *sp,
+                              void *ud,
+                              void (*callback)(sp_data *, void *))
+{
+    SNDFILE *sf[sp->nchan];
+    char tmp[140];
+    SF_INFO info;
+    memset(&info, 0, sizeof(SF_INFO));
+    SPFLOAT buf[sp->nchan][SP_BUFSIZE];
+    info.samplerate = sp->sr;
+    info.channels = 1;
+    info.format = SF_FORMAT_WAV | SF_FORMAT_PCM_24;
+    int numsamps, i, chan;
+
+    if (sp->nchan == 1) {
+        sf[0] = sf_open(sp->filename, SFM_WRITE, &info);
+    } else {
+        for (chan = 0; chan < sp->nchan; chan++) {
+            sprintf(tmp, "%02d_%s", chan, sp->filename);
+            sf[chan] = sf_open(tmp, SFM_WRITE, &info);
+        }
+    }
+
+    while (sp->len > 0) {
+        if (sp->len < SP_BUFSIZE) {
+            numsamps = sp->len;
+        } else {
+            numsamps = SP_BUFSIZE;
+        }
+
+        for (i = 0; i < numsamps; i++) {
+            callback(sp, ud);
+            for (chan = 0; chan < sp->nchan; chan++) {
+                buf[chan][i] = sp->out[chan];
+            }
+            sp->pos++;
+        }
+
+        for (chan = 0; chan < sp->nchan; chan++) {
+#ifdef USE_DOUBLE
+            sf_write_double(sf[chan], buf[chan], numsamps);
+#else
+            sf_write_float(sf[chan], buf[chan], numsamps);
+#endif
+        }
+        sp->len -= numsamps;
+    }
+    for (i = 0; i < sp->nchan; i++) {
+        sf_close(sf[i]);
+    }
+    return 0;
 }
