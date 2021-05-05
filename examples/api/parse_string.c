@@ -21,7 +21,7 @@ int main()
     plumber_show_pipes(&pd);
     plumber_compute(&pd, PLUMBER_INIT);
 
-    sp_process(sp, &pd, process);
+    plumber_sp_process(sp, &pd, process);
 
     plumber_clean(&pd);
     sp_destroy(&sp);

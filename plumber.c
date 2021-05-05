@@ -23,10 +23,6 @@ int sp_process_jack(plumber_data *pd,
         void *ud, void (*callback)(sp_data *, void *), int port, int wait);
 #endif
 
-static int plumber_sp_process(sp_data *sp,
-                            void *ud,
-                            void (*callback)(sp_data *, void *));
-
 enum {
     DRIVER_FILE,
     DRIVER_RAW,
