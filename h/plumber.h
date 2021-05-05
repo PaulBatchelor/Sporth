@@ -206,4 +206,8 @@ int plumber_cdbtab(plumber_data *pd, int fd, const char *key, sp_ftbl **ft);
 int plumber_stack_pos(plumber_data *pd);
 
 void plumber_check_stack(plumber_data *pd, int nitems);
+
+int plumber_sp_process(sp_data *sp,
+                       void *ud,
+                       void (*callback)(sp_data *, void *));
 #endif

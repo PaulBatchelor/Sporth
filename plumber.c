@@ -745,9 +745,9 @@ void plumber_check_stack(plumber_data *pd, int nitems)
 }
 
 
-static int plumber_sp_process(sp_data *sp,
-                              void *ud,
-                              void (*callback)(sp_data *, void *))
+int plumber_sp_process(sp_data *sp,
+                       void *ud,
+                       void (*callback)(sp_data *, void *))
 {
     SNDFILE *sf[sp->nchan];
     char tmp[140];
