@@ -41,6 +41,8 @@ BIN += util/val util/float2bin util/sporthdot util/lsys util/ugen_dump \
 
 OBJ += $(addprefix ugens/, $(addsuffix .o, $(UGENS)))
 
+UGENS_C += $(addprefix ugens/, $(addsuffix .c, $(UGENS)))
+
 OBJ += func.o plumber.o stack.o parse.o hash.o ftmap.o
 
 SPORTHLIBS = libsporth.a
@@ -99,6 +101,9 @@ libsporth.a: $(OBJ) sporth.h
 
 sporth.h: $(OBJ)
 	sh util/header_gen.sh
+
+analyze:
+	$(CC) -Ih -I. -I/usr/local/include -Wall -ansi --analyze *.c $(UGENS_C) 
 
 install: $(SPORTHLIBS) sporth sporth.h
 	install sporth /usr/local/bin
