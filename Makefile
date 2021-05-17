@@ -105,6 +105,9 @@ sporth.h: $(OBJ)
 analyze:
 	$(CC) -Ih -I. -I/usr/local/include -Wall -ansi --analyze *.c $(UGENS_C) 
 
+test: sporth
+	/bin/bash test.sh
+
 install: $(SPORTHLIBS) sporth sporth.h
 	install sporth /usr/local/bin
 	install sporth.h /usr/local/include/sporth.h
