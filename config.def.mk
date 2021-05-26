@@ -41,6 +41,7 @@ incr \
 jcrev \
 line \
 load \
+loadwav \
 loadspa \
 lpc \
 lsys \
@@ -86,6 +87,7 @@ sparec \
 srand \
 switch \
 t \
+tabread \
 tadsr \
 talkbox \
 tblrec \

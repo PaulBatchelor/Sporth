@@ -12,19 +12,19 @@ int sporth_tabread(sporth_stack *stack, void *ud)
     SPFLOAT mode;
     SPFLOAT offset;
     SPFLOAT wrap;
-    sp_tabread *tabread;
+    sp_tread *tread;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
 
 #ifdef DEBUG_MODE
-            plumber_print(pd, "tabread: Creating\n");
+            plumber_print(pd, "tread: Creating\n");
 #endif
 
-            sp_tabread_create(&tabread);
-            plumber_add_ugen(pd, SPORTH_TABREAD, tabread);
+            sp_tread_create(&tread);
+            plumber_add_ugen(pd, SPORTH_TABREAD, tread);
             if(sporth_check_args(stack, "ffffs") != SPORTH_OK) {
-                plumber_print(pd,"Not enough arguments for tabread\n");
+                plumber_print(pd,"Not enough arguments for tread\n");
                 stack->error++;
                 return PLUMBER_NOTOK;
             }
@@ -39,20 +39,20 @@ int sporth_tabread(sporth_stack *stack, void *ud)
                 return PLUMBER_NOTOK;
             }
 
-            sp_tabread_init(pd->sp, tabread, ft, mode);
+            sp_tread_init(pd->sp, tread, ft, mode);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
 
 #ifdef DEBUG_MODE
-            plumber_print(pd, "tabread: Initialising\n");
+            plumber_print(pd, "tread: Initialising\n");
 #endif
             ftname = sporth_stack_pop_string(stack);
             wrap = sporth_stack_pop_float(stack);
             offset = sporth_stack_pop_float(stack);
             mode = sporth_stack_pop_float(stack);
             index = sporth_stack_pop_float(stack);
-            tabread = pd->last->ud;
+            tread = pd->last->ud;
 
             sporth_stack_push_float(stack, 0);
             break;
@@ -61,20 +61,20 @@ int sporth_tabread(sporth_stack *stack, void *ud)
             offset = sporth_stack_pop_float(stack);
             mode = sporth_stack_pop_float(stack);
             index = sporth_stack_pop_float(stack);
-            tabread = pd->last->ud;
-            tabread->index = index;
-            tabread->mode = mode;
-            tabread->offset = offset;
-            tabread->wrap = wrap;
-            sp_tabread_compute(pd->sp, tabread, NULL, &out);
+            tread = pd->last->ud;
+            tread->index = index;
+            tread->mode = mode;
+            tread->offset = offset;
+            tread->wrap = wrap;
+            sp_tread_compute(pd->sp, tread, NULL, &out);
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
-            tabread = pd->last->ud;
-            sp_tabread_destroy(&tabread);
+            tread = pd->last->ud;
+            sp_tread_destroy(&tread);
             break;
         default:
-            plumber_print(pd, "tabread: Unknown mode!\n");
+            plumber_print(pd, "tread: Unknown mode!\n");
             break;
     }
     return PLUMBER_OK;
