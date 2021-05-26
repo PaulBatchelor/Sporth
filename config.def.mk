@@ -78,6 +78,7 @@ saturator \
 say \
 scale \
 scrambler \
+scrubby \
 sdelay \
 slice \
 slist \
