@@ -39,6 +39,7 @@ gen_vals \
 in \
 incr \
 jcrev \
+jitter \
 line \
 load \
 loadwav \

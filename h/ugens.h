@@ -92,7 +92,7 @@ SPORTH_UGEN("in", sporth_in, SPORTH_IN, 0, 1)
 SPORTH_UGEN("incr", sporth_incr, SPORTH_INCR, 4, 1)
 SPORTH_UGEN("inv", sporth_inv, SPORTH_INV, 1, 1)
 SPORTH_UGEN("jcrev", sporth_jcrev, SPORTH_JCREV, 1, 1)
-/* SPORTH_UGEN("jitter", sporth_jitter, SPORTH_JITTER, 3, 1) */
+SPORTH_UGEN("jitter", sporth_jitter, SPORTH_JITTER, 3, 1)
 SPORTH_UGEN("limit", sporth_limit, SPORTH_LIMIT, 3, 1)
 SPORTH_UGEN("line", sporth_line, SPORTH_LINE, 4, 1)
 SPORTH_UGEN("load", sporth_load, SPORTH_LOAD, 1, 0)
