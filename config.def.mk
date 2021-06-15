@@ -51,6 +51,7 @@ maygate \
 maytrig \
 metro \
 mode \
+moogladder \
 noise \
 nsmp \
 osc \

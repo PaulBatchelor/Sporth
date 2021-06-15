@@ -118,7 +118,7 @@ SPORTH_UGEN("metro", sporth_metro, SPORTH_METRO, 1, 1)
 SPORTH_UGEN("min", sporth_min, SPORTH_MIN, 2, 1)
 SPORTH_UGEN("mix", sporth_mix, SPORTH_MIX, 2, 1)
 SPORTH_UGEN("mode", sporth_mode, SPORTH_MODE, 3, 1)
-/* SPORTH_UGEN("moogladder", sporth_moogladder, SPORTH_MOOGLADDER, 3, 1) */
+SPORTH_UGEN("moogladder", sporth_moogladder, SPORTH_MOOGLADDER, 3, 1)
 SPORTH_UGEN("mtof", sporth_mtof, SPORTH_MTOF, 1, 1)
 SPORTH_UGEN("mul", sporth_mul, SPORTH_MULv2, 2, 1)
 SPORTH_UGEN("ne", sporth_ne, SPORTH_NE, 2, 1)
