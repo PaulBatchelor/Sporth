@@ -125,8 +125,8 @@ SPORTH_UGEN("ne", sporth_ne, SPORTH_NE, 2, 1)
 SPORTH_UGEN("noise", sporth_noise, SPORTH_NOISE, 1, 1)
 SPORTH_UGEN("nsmp", sporth_nsmp, SPORTH_NSMP, 5, 1)
 SPORTH_UGEN("osc", sporth_osc, SPORTH_OSC, 4, 1)
-/* SPORTH_UGEN("oscmorph4", sporth_oscmorph4, SPORTH_OSCMORPH4, 6, 1) */
-/* SPORTH_UGEN("oscmorph2", sporth_oscmorph2, SPORTH_OSCMORPH2, 6, 1) */
+SPORTH_UGEN("oscmorph4", sporth_oscmorph4, SPORTH_OSCMORPH4, 6, 1)
+SPORTH_UGEN("oscmorph2", sporth_oscmorph2, SPORTH_OSCMORPH2, 6, 1)
 SPORTH_UGEN("p", sporth_p, SPORTH_P, 1, 1)
 SPORTH_UGEN("palias", sporth_palias, SPORTH_PALIAS, 2, 0)
 /* SPORTH_UGEN("pan", sporth_pan2, SPORTH_PAN, 2, 2) */

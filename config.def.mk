@@ -54,6 +54,7 @@ mode \
 noise \
 nsmp \
 osc \
+oscmorph \
 p \
 paulstretch \
 peaklim \
