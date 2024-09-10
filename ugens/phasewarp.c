@@ -6,7 +6,7 @@ int sporth_phasewarp(sporth_stack *stack, void *ud)
     SPFLOAT sig;
     SPFLOAT out;
     SPFLOAT amount;
-    sp_phasewarp *phasewarp;
+    sp_pdhalf *phasewarp;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
@@ -15,7 +15,7 @@ int sporth_phasewarp(sporth_stack *stack, void *ud)
             plumber_print(pd, "phasewarp: Creating\n");
 #endif
 
-            sp_phasewarp_create(&phasewarp);
+            sp_pdhalf_create(&phasewarp);
             plumber_add_ugen(pd, SPORTH_PHASEWARP, phasewarp);
             if(sporth_check_args(stack, "ff") != SPORTH_OK) {
                 plumber_print(pd,"Not enough arguments for phasewarp\n");
@@ -35,7 +35,7 @@ int sporth_phasewarp(sporth_stack *stack, void *ud)
             amount = sporth_stack_pop_float(stack);
             sig = sporth_stack_pop_float(stack);
             phasewarp = pd->last->ud;
-            sp_phasewarp_init(pd->sp, phasewarp);
+            sp_pdhalf_init(pd->sp, phasewarp);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
@@ -43,12 +43,12 @@ int sporth_phasewarp(sporth_stack *stack, void *ud)
             sig = sporth_stack_pop_float(stack);
             phasewarp = pd->last->ud;
             phasewarp->amount = amount;
-            sp_phasewarp_compute(pd->sp, phasewarp, &sig, &out);
+            sp_pdhalf_compute(pd->sp, phasewarp, &sig, &out);
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
             phasewarp = pd->last->ud;
-            sp_phasewarp_destroy(&phasewarp);
+            sp_pdhalf_destroy(&phasewarp);
             break;
         default:
             plumber_print(pd, "phasewarp: Unknown mode!\n");

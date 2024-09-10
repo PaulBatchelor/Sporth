@@ -5,7 +5,7 @@
 #include "plumber.h"
 
 typedef struct {
-    sp_fmpair *osc;
+    sp_fosc *osc;
     sp_ftbl *ft;
 } sporth_fm_d;
 
@@ -23,7 +23,7 @@ int sporth_fm(sporth_stack *stack, void *ud)
 #endif
             fm = malloc(sizeof(sporth_fm_d));
             sp_ftbl_create(pd->sp, &fm->ft, 8192);
-            sp_fmpair_create(&fm->osc);
+            sp_fosc_create(&fm->osc);
             plumber_add_ugen(pd, SPORTH_FM, fm);
             if(sporth_check_args(stack, "fffff") != SPORTH_OK) {
                 stack->error++;
@@ -48,7 +48,7 @@ int sporth_fm(sporth_stack *stack, void *ud)
             freq = sporth_stack_pop_float(stack);
 
             sp_gen_sine(pd->sp, fm->ft);
-            sp_fmpair_init(pd->sp, fm->osc, fm->ft);
+            sp_fosc_init(pd->sp, fm->osc, fm->ft);
             sporth_stack_push_float(stack, 0.0);
             break;
         case PLUMBER_COMPUTE:
@@ -70,12 +70,12 @@ int sporth_fm(sporth_stack *stack, void *ud)
             fm->osc->mod = mod;
             fm->osc->indx = index;
 
-            sp_fmpair_compute(pd->sp, fm->osc, NULL, &out);
+            sp_fosc_compute(pd->sp, fm->osc, NULL, &out);
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
             fm = pd->last->ud;
-            sp_fmpair_destroy(&fm->osc);
+            sp_fosc_destroy(&fm->osc);
             sp_ftbl_destroy(&fm->ft);
             free(fm);
             break;

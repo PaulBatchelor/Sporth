@@ -8,7 +8,7 @@ int sporth_eqfil(sporth_stack *stack, void *ud)
     SPFLOAT freq;
     SPFLOAT bw;
     SPFLOAT gain;
-    sp_peakeq *eqfil;
+    sp_eqfil *eqfil;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
@@ -17,7 +17,7 @@ int sporth_eqfil(sporth_stack *stack, void *ud)
             plumber_print(pd, "eqfil: Creating\n");
 #endif
 
-            sp_peakeq_create(&eqfil);
+            sp_eqfil_create(&eqfil);
             plumber_add_ugen(pd, SPORTH_EQFIL, eqfil);
             if(sporth_check_args(stack, "fff") != SPORTH_OK) {
                 plumber_print(pd,"Not enough arguments for eqfil\n");
@@ -37,7 +37,7 @@ int sporth_eqfil(sporth_stack *stack, void *ud)
             freq = sporth_stack_pop_float(stack);
             input = sporth_stack_pop_float(stack);
             eqfil = pd->last->ud;
-            sp_peakeq_init(pd->sp, eqfil);
+            sp_eqfil_init(pd->sp, eqfil);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_COMPUTE:
@@ -49,12 +49,12 @@ int sporth_eqfil(sporth_stack *stack, void *ud)
             eqfil->freq = freq;
             eqfil->bw = bw;
             eqfil->gain = gain;
-            sp_peakeq_compute(pd->sp, eqfil, &input, &output);
+            sp_eqfil_compute(pd->sp, eqfil, &input, &output);
             sporth_stack_push_float(stack, output);
             break;
         case PLUMBER_DESTROY:
             eqfil = pd->last->ud;
-            sp_peakeq_destroy(&eqfil);
+            sp_eqfil_destroy(&eqfil);
             break;
         default:
             plumber_print(pd, "eqfil: Unknown mode!\n");

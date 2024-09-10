@@ -11,7 +11,7 @@ int sporth_fosc(sporth_stack *stack, void *ud)
     SPFLOAT car;
     SPFLOAT mod;
     SPFLOAT indx;
-    sp_fmpair *fosc;
+    sp_fosc *fosc;
 
     switch(pd->mode) {
         case PLUMBER_CREATE:
@@ -20,7 +20,7 @@ int sporth_fosc(sporth_stack *stack, void *ud)
             plumber_print(pd, "fosc: Creating\n");
 #endif
 
-            sp_fmpair_create(&fosc);
+            sp_fosc_create(&fosc);
             plumber_add_ugen(pd, SPORTH_FOSC, fosc);
             if(sporth_check_args(stack, "fffffs") != SPORTH_OK) {
                 plumber_print(pd,"Not enough arguments for fosc\n");
@@ -38,7 +38,7 @@ int sporth_fosc(sporth_stack *stack, void *ud)
                 plumber_print(pd, "fosc: could not find ftable %s\n", str);
                 return PLUMBER_NOTOK;
             }
-            sp_fmpair_init(pd->sp, fosc, tbl);
+            sp_fosc_init(pd->sp, fosc, tbl);
             sporth_stack_push_float(stack, 0);
             break;
         case PLUMBER_INIT:
@@ -68,12 +68,12 @@ int sporth_fosc(sporth_stack *stack, void *ud)
             fosc->car = car;
             fosc->mod = mod;
             fosc->indx = indx;
-            sp_fmpair_compute(pd->sp, fosc, NULL, &out);
+            sp_fosc_compute(pd->sp, fosc, NULL, &out);
             sporth_stack_push_float(stack, out);
             break;
         case PLUMBER_DESTROY:
             fosc = pd->last->ud;
-            sp_fmpair_destroy(&fosc);
+            sp_fosc_destroy(&fosc);
             break;
         default:
             plumber_print(pd, "fosc: Unknown mode!\n");
